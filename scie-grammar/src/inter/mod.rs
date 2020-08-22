@@ -153,3 +153,33 @@ impl IRawGrammar {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use serde::{Deserialize, Serialize};
+    use serde_json::Result;
+
+    #[derive(Serialize, Deserialize)]
+    struct Person {
+        name: String,
+        age: u8,
+        phones: Vec<String>,
+    }
+
+    #[test]
+    fn should_convert_json() {
+        let data = r#"
+        {
+            "name": "John Doe",
+            "age": 43,
+            "phones": [
+                "+44 1234567",
+                "+44 2345678"
+            ]
+        }"#;
+
+        let p: Person = serde_json::from_str(data).unwrap();
+        assert_eq!(43, p.age)
+
+    }
+}
