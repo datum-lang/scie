@@ -3,6 +3,7 @@ extern crate onig;
 pub mod inter;
 pub mod grammar;
 pub mod grammar_registry;
+pub mod rule;
 
 #[cfg(test)]
 mod tests {

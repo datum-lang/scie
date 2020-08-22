@@ -1,4 +1,6 @@
 use onig::*;
+use crate::inter::IRawGrammar;
+use crate::rule::RuleFactory;
 
 pub struct StackElement {}
 
@@ -35,13 +37,15 @@ pub trait IGrammar {
 }
 
 pub struct Grammar {
-    pub _root_id: i32
+    root_id: i32,
+    grammar: IRawGrammar
 }
 
 impl Grammar {
-    pub fn new () -> Grammar {
+    pub fn new (grammar: IRawGrammar) -> Grammar {
         Grammar {
-            _root_id: -1
+            grammar,
+            root_id: -1
         }
     }
     // todo: refactor to callback ??
@@ -56,7 +60,9 @@ impl Grammar {
     }
 
     fn tokenize(&self, line_text: String, prev_state: Option<StackElement>, emit_binary_tokens: bool) {
-
+        if self.root_id == -1 {
+            RuleFactory::get_compiled_rule_id(self.grammar.repository.clone())
+        }
     }
 
     pub fn tokenize_line(&self, line_text: String, prev_state: Option<StackElement>) {
