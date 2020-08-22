@@ -9,10 +9,11 @@ fn parse_raw_grammar(content: String, file_path: Option<String>) -> IRawGrammar 
         }
     }
 
-    return parse_plistgrammar(content, file_path.clone())
+    return parse_plist_grammar(content, file_path.clone())
 }
 
-fn parse_plistgrammar(content: String, file_path: Option<String>) -> IRawGrammar {
+// todo: in current, we don't need to impl it
+fn parse_plist_grammar(content: String, file_path: Option<String>) -> IRawGrammar {
     IRawGrammar::new()
 }
 
