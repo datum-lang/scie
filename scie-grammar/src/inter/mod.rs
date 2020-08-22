@@ -1,7 +1,8 @@
 use std::collections::HashMap;
+use serde::{Deserialize, Serialize};
+use serde_json::Result;
 
-
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ILocation {
     pub filename: String,
     pub line: String,
@@ -18,7 +19,7 @@ impl ILocation {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ILocatable {
     pub textmate_location: Option<ILocation>,
 }
@@ -31,12 +32,12 @@ impl ILocatable {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct IRawCapturesMap {
     capture_map: HashMap<String, IRawRule>
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct IRawRepositoryMap {
     name_map: HashMap<String, IRawRule>,
     self_s: IRawRule,
@@ -53,7 +54,7 @@ impl IRawRepositoryMap {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct IRawRepository {
     pub map: Box<IRawRepositoryMap>,
     pub location: ILocatable,
@@ -68,13 +69,13 @@ impl IRawRepository {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct IRawCaptures {
     pub map: IRawCapturesMap,
     pub location: ILocatable,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct IRawRule {
     pub id: Option<i32>,
 
@@ -119,7 +120,7 @@ impl IRawRule {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct InjectionMap {
     // todo: readonly injections?: { [expression: string]: IRawRule };
     map: HashMap<String, IRawRule>
