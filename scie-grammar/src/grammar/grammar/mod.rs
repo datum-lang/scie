@@ -1,3 +1,5 @@
+use onig::*;
+
 pub struct StackElement {}
 
 pub struct IToken {
@@ -30,4 +32,38 @@ pub trait IGrammar {
 	 * e.g. for getting the languageId: `(metadata & MetadataConsts.LANGUAGEID_MASK) >>> MetadataConsts.LANGUAGEID_OFFSET`
 	 */
     fn tokenize_line2(line_text: String, prev_state: Option<StackElement>) -> ITokenizeLineResult2;
+}
+
+pub struct Grammar {
+    pub _root_id: i32
+}
+
+impl Grammar {
+    pub fn new () -> Grammar {
+        Grammar {
+            _root_id: -1
+        }
+    }
+    // todo: refactor to callback ??
+    pub fn create_onig_scanner(&self, sources: String) -> Regex {
+        // reg.scan(to_match, scan_callback)
+        Regex::new(sources.as_str()).unwrap()
+    }
+    // todo: refactor to callback ??
+    pub fn create_onig_string(&self, sources: String) -> Regex {
+        // regex.captures("hello").unwrap().iter_pos().enumerate()
+        Regex::new(sources.as_str()).unwrap()
+    }
+
+    fn tokenize(&self, line_text: String, prev_state: Option<StackElement>, emit_binary_tokens: bool) {
+
+    }
+
+    pub fn tokenize_line(&self, line_text: String, prev_state: Option<StackElement>) {
+        self.tokenize(line_text, prev_state, false)
+    }
+
+    pub fn tokenize_line2(&self, line_text: String, prev_state: Option<StackElement>) {
+
+    }
 }
