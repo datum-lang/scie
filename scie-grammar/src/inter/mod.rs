@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+
+#[derive(Debug, Clone)]
 pub struct ILocation {
     pub filename: String,
     pub line: String,
@@ -21,7 +23,7 @@ pub struct IRawRepositoryMap {
 }
 
 pub struct IRawRepository {
-    pub map: IRawRepositoryMap,
+    pub map: Box<IRawRepositoryMap>,
     pub location: ILocatable,
 }
 
@@ -37,15 +39,15 @@ pub struct IRawRule {
     pub include: Option<String>,
     pub content_name: Option<String>,
     pub match_s: Option<String>,
-    pub captures: Option<IRawCaptures>,
+    pub captures: Option<Box<IRawCaptures>>,
 
     pub begin: Option<String>,
-    pub beginCaptures: Option<IRawCaptures>,
+    pub beginCaptures: Option<Box<IRawCaptures>>,
     pub end: Option<String>,
-    pub endCaptures: Option<IRawCaptures>,
+    pub endCaptures: Option<Box<IRawCaptures>>,
 
     pub while_s: Option<String>,
-    pub whileCaptures: Option<IRawCaptures>,
+    pub whileCaptures: Option<Box<IRawCaptures>>,
 
     pub pattern: Option<Vec<IRawRule>>,
     pub repository: Option<IRawRepository>,

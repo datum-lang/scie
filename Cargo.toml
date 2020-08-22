@@ -8,6 +8,9 @@ edition = "2018"
 
 [dependencies]
 
+[dependencies.scie-grammar]
+path = "scie-grammar"
+
 [workspace]
 members = [
  "scie-grammar"
