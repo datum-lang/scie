@@ -8,6 +8,7 @@ pub struct ILocation {
     pub chart: String,
 }
 
+#[derive(Debug, Clone)]
 pub struct ILocatable {
     pub textmate_location: Option<ILocation>,
 }
@@ -69,4 +70,19 @@ pub struct IRawGrammar {
     pub fileTypes: Option<Vec<String>>,
     pub name: Option<String>,
     pub firstLineMatch: Option<String>,
+}
+
+impl IRawGrammar {
+    pub fn new() -> IRawGrammar {
+        IRawGrammar {
+            location: ILocatable { textmate_location: None },
+            scope_name: "".to_string(),
+            patterns: vec![],
+            injections: None,
+            injectionSelector: None,
+            fileTypes: None,
+            name: None,
+            firstLineMatch: None
+        }
+    }
 }
