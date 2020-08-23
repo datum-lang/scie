@@ -151,7 +151,16 @@ mod tests {
 
         let g: IRawGrammar = serde_json::from_str(&data).unwrap();
 
-        let grammar = Grammar::new(g);
-        println!("{:?}", grammar.root_id);
+        let mut grammar = Grammar::new(g);
+        let c_code = String::from("
+#include <stdio.h>
+int main() {
+   printf(\"Hello, World!\");
+   return 0;
+}
+");
+        for line in c_code.lines() {
+            grammar.tokenize_line(String::from(line), None)
+        }
     }
 }
