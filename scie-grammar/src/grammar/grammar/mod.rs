@@ -121,10 +121,9 @@ impl IRuleRegistry for Grammar {
         Rule::new(ILocation::new(), pattern_id, None, None)
     }
 
-    fn register_rule(&mut self, c: fn(id: i32) -> Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
+    fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
         self.last_rule_id = self.last_rule_id + 1;
         let id = self.last_rule_id;
-        let result = c(id);
         self.rule_id2desc.insert(id.clone(), result.clone());
         result
     }

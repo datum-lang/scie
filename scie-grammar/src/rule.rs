@@ -14,27 +14,7 @@ impl RuleFactory {
     pub fn get_compiled_rule_id(mut desc: IRawRule, helper: &mut Grammar, repository: IRawRepository) -> i32 {
         match desc.id {
             None => {
-                helper.register_rule(|id| -> Box<dyn AbstractRule> {
-                    // desc.id = Some(id);
-                    //
-                    // if let Some(match_s) = desc.match_s {
-                    //     let match_rule = MatchRule::new(
-                    //         desc.location, id, desc.name, match_s,
-                    //         RuleFactory::_compile_captures(desc.captures, helper, repository)
-                    //     );
-                    //     Box::from(match_rule)
-                    // };
-                    let rule = BeginEndRule {
-                        rule: Rule {
-                            location: Some(ILocation::new()),
-                            id: id,
-                            name: None,
-                            content_name: None
-                        }
-                    };
-
-                    Box::from(rule)
-                });
+                // helper.register_rule();
             },
             Some(_) => {},
         }
@@ -127,7 +107,7 @@ pub trait IRuleRegistry {
     // fn method(&self) -> Self::Output;
 
     fn get_rule(&self, pattern_id: i32) -> Rule;
-    fn register_rule(&mut self, c: fn(id: i32) -> Box<dyn AbstractRule>) -> Box<dyn AbstractRule>;
+    fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule>;
 }
 
 pub trait IGrammarRegistry {
