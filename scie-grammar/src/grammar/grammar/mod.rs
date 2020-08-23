@@ -1,4 +1,4 @@
-use crate::inter::{IRawGrammar, IRawRepository, ILocation};
+use crate::inter::{IRawGrammar, IRawRepository, ILocation, IRawRule, IRawRepositoryMap};
 use crate::rule::{RuleFactory, IRuleFactoryHelper, IGrammarRegistry, IRuleRegistry, Rule};
 use onig::*;
 
@@ -41,10 +41,33 @@ pub struct Grammar {
     grammar: IRawGrammar,
 }
 
+pub fn init_grammar(grammar: IRawGrammar, base: Option<IRawRule>) -> IRawGrammar {
+    let mut _grammar = grammar.clone();
+
+    _grammar.repository = grammar.repository.clone();
+
+    let mut new_based: IRawRule = IRawRule::new();
+    new_based.location = grammar.repository.unwrap().clone().location;
+    new_based.patterns = Some(grammar.patterns.clone());
+    new_based.name = grammar.name;
+
+    let mut repository_map = IRawRepositoryMap::new();
+    repository_map.base_s = Some(new_based.clone());
+    repository_map.self_s = Some(new_based.clone());
+
+    _grammar.repository = Some(IRawRepository {
+        map: Box::new(repository_map.clone()),
+        location: None
+    });
+
+    _grammar
+}
+
 impl Grammar {
     pub fn new(grammar: IRawGrammar) -> Grammar {
+        let _grammar = init_grammar(grammar.clone(), None);
         Grammar {
-            grammar,
+            grammar: _grammar,
             root_id: -1,
         }
     }

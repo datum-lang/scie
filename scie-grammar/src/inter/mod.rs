@@ -41,9 +41,9 @@ pub struct IRawCapturesMap {
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawRepositoryMap {
     #[serde(flatten)]
-    name_map: HashMap<String, IRawRule>,
-    self_s: Option<IRawRule>,
-    base_s: Option<IRawRule>,
+    pub name_map: HashMap<String, IRawRule>,
+    pub self_s: Option<IRawRule>,
+    pub base_s: Option<IRawRule>,
 }
 
 impl IRawRepositoryMap {
