@@ -65,7 +65,10 @@ impl Grammar {
         prev_state: Option<StackElement>,
         emit_binary_tokens: bool,
     ) {
-        if self.root_id == -1 {}
+        if self.root_id == -1 {
+            let repository = self.grammar.repository.clone().unwrap();
+            RuleFactory::get_compiled_rule_id(repository);
+        }
     }
 
     pub fn tokenize_line(&self, line_text: String, prev_state: Option<StackElement>) {
