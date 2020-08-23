@@ -5,24 +5,23 @@ use crate::grammar::grammar::Grammar;
 
 pub struct RuleFactory {}
 
-fn create_rule(id: i32) -> Box<dyn AbstractRule> {
-    let rule = BeginEndRule {
-        rule: Rule {
-            location: ILocation::new(),
-            id: id,
-            name: None,
-            content_name: None
-        }
-    };
-
-    Box::from(rule)
-}
-
 impl RuleFactory {
-    pub fn get_compiled_rule_id(desc: IRawRule, helper: &mut Grammar, repository: IRawRepository) -> i32 {
+    pub fn get_compiled_rule_id(mut desc: IRawRule, helper: &mut Grammar, repository: IRawRepository) -> i32 {
         match desc.id {
             None => {
-                helper.register_rule(create_rule);
+                helper.register_rule(|id| {
+                    desc.id = Some(id);
+                    let rule = BeginEndRule {
+                        rule: Rule {
+                            location: ILocation::new(),
+                            id: id,
+                            name: None,
+                            content_name: None
+                        }
+                    };
+
+                    Box::from(rule)
+                });
             },
             Some(_) => {},
         }
