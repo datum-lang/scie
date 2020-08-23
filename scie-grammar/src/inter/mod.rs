@@ -85,8 +85,11 @@ pub struct IRawRule {
 
     pub include: Option<String>,
     pub name: Option<String>,
+
+    #[serde(alias = "contentName")]
     pub content_name: Option<String>,
 
+    #[serde(alias = "match")]
     pub match_s: Option<String>,
     pub captures: Option<Box<IRawCaptures>>,
 
@@ -95,6 +98,7 @@ pub struct IRawRule {
     pub end: Option<String>,
     pub end_captures: Option<Box<IRawCaptures>>,
 
+    #[serde(alias = "while")]
     pub while_s: Option<String>,
     pub while_captures: Option<Box<IRawCaptures>>,
 
@@ -128,7 +132,7 @@ impl IRawRule {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct InjectionMap {
-    // todo: readonly injections?: { [expression: string]: IRawRule };
+    #[serde(flatten)]
     map: HashMap<String, IRawRule>
 }
 
@@ -164,7 +168,7 @@ impl IRawGrammar {
 mod tests {
     use serde::{Deserialize, Serialize};
     use serde_json::Result;
-    use crate::inter::IRawCaptures;
+    use crate::inter::{IRawCaptures, InjectionMap};
 
     #[derive(Serialize, Deserialize, Debug, Clone)]
     struct Captures {
@@ -172,7 +176,7 @@ mod tests {
     }
 
     #[test]
-    fn should_convert_json() {
+    fn should_convert_captures() {
         let data = r#"
         {
             "captures": {
@@ -185,5 +189,26 @@ mod tests {
         let p: Captures = serde_json::from_str(data).unwrap();
         let name = p.captures.unwrap().map.capture_map.get("1").unwrap().name.clone();
         assert_eq!("punctuation.definition.item.text", name.unwrap())
+    }
+
+    #[test]
+    fn should_convert_injections() {
+        let data = r#"
+        "injections": {
+            "R:text.html - comment.block": {
+                "comment": "Use R: to ensure this matches after any other injections.",
+                "patterns": [
+                    {
+                        "match": "<",
+                        "name": "invalid.illegal.bad-angle-bracket.html"
+                    }
+                ]
+            }
+        }"#;
+
+        let p: InjectionMap = serde_json::from_str(data).unwrap();
+        let pattern = p.map.get("R:text.html - comment.block").unwrap().pattern.clone();
+        assert_eq!(1, pattern.clone().unwrap().len());
+        assert_eq!("<", pattern.clone().unwrap().first().unwrap().match_s.clone().unwrap())
     }
 }
