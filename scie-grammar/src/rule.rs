@@ -7,8 +7,34 @@ use core::fmt;
 pub struct RuleFactory {}
 
 impl RuleFactory {
-    fn _compile_captures(captures: Option<Box<IRawCaptures>>, helper: &mut Grammar, repository: IRawRepository) -> Option<CaptureRule> {
-        let r = None;
+    fn _compile_captures(captures: Option<Box<IRawCaptures>>, helper: &mut Grammar, repository: IRawRepository) -> Vec<CaptureRule> {
+        let mut r = vec![];
+
+        match captures.clone() {
+            None => {}
+            Some(capts) => {
+                let mut maximum_capture_id = 0;
+                for (id_str, value) in capts.clone().map.capture_map {
+                    let id: i32 = id_str.parse().unwrap_or(0);
+                    if id > maximum_capture_id {
+                        maximum_capture_id = id
+                    }
+                }
+                for i in 0..maximum_capture_id {
+                    r.push(CaptureRule::new());
+                }
+                for (id_str, value)  in capts.clone().map.capture_map {
+                    let numeric_capture_id: i32 = id_str.parse().unwrap_or(0);
+                    let mut retokenizeCapturedWithRuleId = 0;
+                    println!("{:?}", numeric_capture_id.clone().to_string());
+                    let options_patterns = captures.clone().unwrap().map.capture_map.get(&*numeric_capture_id.to_string());
+                    if let None = options_patterns {
+                        // retokenizeCapturedWithRuleId = RuleFactory::get_compiled_rule_id(captures.clone[id_str], helper, repository.clone());
+                    }
+                    // r[numericCaptureId] = RuleFactory.createCaptureRule(helper, captures[captureId].$vscodeTextmateLocation, captures[captureId].name, captures[captureId].contentName, retokenizeCapturedWithRuleId);
+                }
+            }
+        };
 
         r
     }
@@ -18,17 +44,14 @@ impl RuleFactory {
                 let id = helper.register_id();
                 desc.id = Some(id.clone());
 
-                match desc.match_s {
-                    None => {}
-                    Some(match_s) => {
-                        MatchRule::new(
-                            desc.location.clone(),
-                            id.clone(),
-                            desc.name.clone(),
-                            match_s.clone(),
-                            RuleFactory::_compile_captures(desc.captures.clone(), helper, repository.clone()),
-                        );
-                    }
+                if let Some(match_s) = desc.match_s {
+                    MatchRule::new(
+                        desc.location.clone(),
+                        id.clone(),
+                        desc.name.clone(),
+                        match_s.clone(),
+                        RuleFactory::_compile_captures(desc.captures.clone(), helper, repository.clone()),
+                    );
                 };
                 // helper.register_rule();
             }
@@ -87,11 +110,11 @@ impl AbstractRule for BeginWhileRule {}
 pub struct MatchRule {
     pub rule: Rule,
     pub _match: RegExpSource,
-    pub captures: Option<CaptureRule>,
+    pub captures: Vec<CaptureRule>,
 }
 
 impl MatchRule {
-    pub fn new(location: Option<ILocation>, id: i32, name: Option<String>, match_s: String, captures: Option<CaptureRule>) -> Self {
+    pub fn new(location: Option<ILocation>, id: i32, name: Option<String>, match_s: String, captures: Vec<CaptureRule>) -> Self {
         MatchRule {
             rule: Rule {
                 location,
@@ -117,6 +140,14 @@ impl AbstractRule for BeginEndRule {}
 #[derive(Clone, Debug)]
 pub struct CaptureRule {
     pub rule: Rule
+}
+
+impl CaptureRule {
+    pub fn new() -> Self {
+        CaptureRule {
+            rule: Rule { location: None, id: 0, name: None, content_name: None }
+        }
+    }
 }
 
 impl AbstractRule for CaptureRule {}

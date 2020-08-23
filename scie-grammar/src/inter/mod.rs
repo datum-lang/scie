@@ -35,7 +35,7 @@ impl ILocatable {
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawCapturesMap {
     #[serde(flatten)]
-    capture_map: HashMap<String, IRawRule>,
+    pub capture_map: HashMap<String, IRawRule>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
