@@ -1,5 +1,6 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Deserializer, de};
 use std::collections::HashMap;
+use serde::de::{Unexpected, Error};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ILocation {
@@ -109,8 +110,10 @@ pub struct IRawRule {
 
     pub patterns: Option<Vec<IRawRule>>,
     pub repository: Option<IRawRepository>,
-    pub apply_end_pattern_last: Option<bool>,
 
+    pub applyEndPatternLast: Option<bool>,
+
+    #[serde(alias = "information_for_contributors")]
     pub information_for_contributors: Option<Vec<String>>,
 }
 
@@ -132,8 +135,8 @@ impl IRawRule {
             while_captures: None,
             patterns: None,
             repository: None,
-            apply_end_pattern_last: None,
             information_for_contributors: None,
+            applyEndPatternLast: None
         }
     }
 }
@@ -144,24 +147,38 @@ pub struct InjectionMap {
     map: HashMap<String, IRawRule>,
 }
 
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawGrammar {
-    pub location: ILocatable,
+    #[serde(flatten)]
     pub repository: IRawRepository,
+    pub location: Option<ILocatable>,
+
+    #[serde(alias = "scopeName")]
     pub scope_name: String,
     pub patterns: Vec<IRawRule>,
+
     pub injections: Option<InjectionMap>,
+    #[serde(alias = "injectionSelector")]
     pub injection_selector: Option<String>,
+
+    #[serde(alias = "fileTypes")]
     pub file_types: Option<Vec<String>>,
     pub name: Option<String>,
+
+    #[serde(alias = "firstLineMatch")]
     pub first_line_match: Option<String>,
+
+    // not in list
+    pub comment: Option<String>,
+    pub foldingStartMarker: Option<String>,
+    pub foldingStopMarker: Option<String>,
+    pub keyEquivalent: Option<String>,
 }
 
 impl IRawGrammar {
     pub fn new() -> IRawGrammar {
         IRawGrammar {
-            location: ILocatable {
-                textmate_location: None,
-            },
+            location: None,
             repository: IRawRepository::new(),
             scope_name: "".to_string(),
             patterns: vec![],
@@ -170,13 +187,17 @@ impl IRawGrammar {
             file_types: None,
             name: None,
             first_line_match: None,
+            comment: None,
+            foldingStartMarker: None,
+            foldingStopMarker: None,
+            keyEquivalent: None
         }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::inter::{IRawCaptures, IRawRule, InjectionMap};
+    use crate::inter::{IRawCaptures, IRawRule, InjectionMap, IRawGrammar};
     use serde::{Deserialize, Serialize};
     use std::fs;
     use std::path::Path;
@@ -330,5 +351,21 @@ mod tests {
         file.read_to_string(&mut data).unwrap();
 
         let p: IRawRule = serde_json::from_str(&data).unwrap();
+    }
+
+    #[test]
+    fn should_convert_json_files_list() {
+        let path = Path::new("test-cases/first-mate/fixtures/");
+        for entry in fs::read_dir(path).expect("Unable to list") {
+            let entry = entry.expect("unable to get entry");
+
+            let mut file = File::open(entry.path()).unwrap();
+            let mut data = String::new();
+            file.read_to_string(&mut data).unwrap();
+            let p: IRawGrammar = serde_json::from_str(&data).unwrap();
+
+            println!("{:?}", entry.path());
+            assert_eq!(true, p.scope_name.len() > 0);
+        }
     }
 }
