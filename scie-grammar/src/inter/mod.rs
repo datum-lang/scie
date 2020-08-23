@@ -176,10 +176,12 @@ impl IRawGrammar {
 
 #[cfg(test)]
 mod tests {
-    use crate::inter::{IRawCaptures, IRawRepository, IRawRule, InjectionMap};
+    use crate::inter::{IRawCaptures, IRawRule, InjectionMap};
     use serde::{Deserialize, Serialize};
     use std::fs;
     use std::path::Path;
+    use std::fs::File;
+    use std::io::Read;
 
     #[derive(Serialize, Deserialize, Debug, Clone)]
     struct Captures {
@@ -319,13 +321,14 @@ mod tests {
             .len();
         assert_eq!(3, pattern_len)
     }
-    //
-    // #[test]
-    // fn should_convert_json_file() {
-    //     let path = Path::new("../../../../extensions/json/syntaxes/JSON.tmLanguage.json");
-    //     for entry in fs::read_dir(path).expect("Unable to list") {
-    //         let entry = entry.expect("unable to get entry");
-    //         println!("{}", entry.path().display());
-    //     }
-    // }
+
+    #[test]
+    fn should_convert_json_file() {
+        let path = "test-cases/first-mate/fixtures/c.json";
+        let mut file = File::open(path).unwrap();
+        let mut data = String::new();
+        file.read_to_string(&mut data).unwrap();
+
+        let p: IRawRule = serde_json::from_str(&data).unwrap();
+    }
 }
