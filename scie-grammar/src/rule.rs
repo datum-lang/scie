@@ -1,4 +1,4 @@
-use crate::inter::{IRawRepository, IRawGrammar, ILocation, IRawRule};
+use crate::inter::{IRawRepository, IRawGrammar, ILocation, IRawRule, IRawCaptures};
 use dyn_clone::{clone_trait_object, DynClone};
 use std::borrow::Borrow;
 use crate::grammar::grammar::Grammar;
@@ -6,14 +6,27 @@ use crate::grammar::grammar::Grammar;
 pub struct RuleFactory {}
 
 impl RuleFactory {
+    fn _compile_captures(captures: Option<Box<IRawCaptures>>, helper: &mut Grammar, repository: IRawRepository) -> Option<CaptureRule> {
+        let r = None;
+
+        r
+    }
     pub fn get_compiled_rule_id(mut desc: IRawRule, helper: &mut Grammar, repository: IRawRepository) -> i32 {
         match desc.id {
             None => {
-                helper.register_rule(|id| {
-                    desc.id = Some(id);
+                helper.register_rule(|id| -> Box<dyn AbstractRule> {
+                    // desc.id = Some(id);
+                    //
+                    // if let Some(match_s) = desc.match_s {
+                    //     let match_rule = MatchRule::new(
+                    //         desc.location, id, desc.name, match_s,
+                    //         RuleFactory::_compile_captures(desc.captures, helper, repository)
+                    //     );
+                    //     Box::from(match_rule)
+                    // };
                     let rule = BeginEndRule {
                         rule: Rule {
-                            location: ILocation::new(),
+                            location: Some(ILocation::new()),
                             id: id,
                             name: None,
                             content_name: None
@@ -35,7 +48,7 @@ impl RuleFactory {
 
 #[derive(Clone, Debug)]
 pub struct Rule {
-    pub location: ILocation,
+    pub location: Option<ILocation>,
     pub id: i32,
     pub name: Option<String>,
     pub content_name: Option<String>,
@@ -43,9 +56,12 @@ pub struct Rule {
 
 impl Rule {
     pub fn new(location: ILocation, id: i32, name: Option<String>, content_name: Option<String>) -> Self {
-        Rule { location, id, name, content_name }
+        Rule { location: Some(location), id, name, content_name }
     }
 }
+
+#[derive(Clone, Debug)]
+pub struct RegExpSource {}
 
 pub trait AbstractRule: DynClone {}
 
@@ -67,7 +83,24 @@ impl AbstractRule for BeginWhileRule {}
 
 #[derive(Clone, Debug)]
 pub struct MatchRule {
-    pub rule: Rule
+    pub rule: Rule,
+    pub _match: RegExpSource,
+    pub captures: Option<CaptureRule>,
+}
+
+impl MatchRule {
+    pub fn new(location: Option<ILocation>, id: i32, name: Option<String>, match_s: String, captures: Option<CaptureRule>) -> Self {
+        MatchRule {
+            rule: Rule {
+                location,
+                id,
+                name,
+                content_name: None,
+            },
+            _match: RegExpSource {},
+            captures,
+        }
+    }
 }
 
 impl AbstractRule for MatchRule {}
