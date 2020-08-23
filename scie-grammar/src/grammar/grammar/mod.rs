@@ -38,6 +38,8 @@ pub trait IGrammar {
     fn tokenize_line2(line_text: String, prev_state: Option<StackElement>) -> ITokenizeLineResult2;
 }
 
+
+#[derive(Debug, Clone)]
 pub struct Grammar {
     root_id: i32,
     grammar: IRawGrammar,
@@ -117,14 +119,17 @@ impl IGrammarRegistry for Grammar {
 }
 
 impl IRuleRegistry for Grammar {
+    fn register_id(&mut self) -> i32 {
+        self.last_rule_id = self.last_rule_id + 1;
+        self.last_rule_id
+    }
+
     fn get_rule(&self, pattern_id: i32) -> Rule {
         Rule::new(ILocation::new(), pattern_id, None, None)
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
-        self.last_rule_id = self.last_rule_id + 1;
-        let id = self.last_rule_id;
-        self.rule_id2desc.insert(id.clone(), result.clone());
+        self.rule_id2desc.insert(self.last_rule_id.clone(), result.clone());
         result
     }
 }

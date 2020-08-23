@@ -2,6 +2,7 @@ use crate::inter::{IRawRepository, IRawGrammar, ILocation, IRawRule, IRawCapture
 use dyn_clone::{clone_trait_object, DynClone};
 use std::borrow::Borrow;
 use crate::grammar::grammar::Grammar;
+use core::fmt;
 
 pub struct RuleFactory {}
 
@@ -14,9 +15,24 @@ impl RuleFactory {
     pub fn get_compiled_rule_id(mut desc: IRawRule, helper: &mut Grammar, repository: IRawRepository) -> i32 {
         match desc.id {
             None => {
+                let id = helper.register_id();
+                desc.id = Some(id.clone());
+
+                match desc.match_s {
+                    None => {}
+                    Some(match_s) => {
+                        MatchRule::new(
+                            desc.location.clone(),
+                            id.clone(),
+                            desc.name.clone(),
+                            match_s.clone(),
+                            RuleFactory::_compile_captures(desc.captures.clone(), helper, repository.clone()),
+                        );
+                    }
+                };
                 // helper.register_rule();
-            },
-            Some(_) => {},
+            }
+            Some(_) => {}
         }
 
         desc.id.unwrap()
@@ -44,6 +60,12 @@ impl Rule {
 pub struct RegExpSource {}
 
 pub trait AbstractRule: DynClone {}
+
+impl fmt::Debug for dyn AbstractRule {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "AbstractRule")
+    }
+}
 
 clone_trait_object!(AbstractRule);
 
@@ -106,6 +128,7 @@ pub trait IRuleRegistry {
     // type Output;
     // fn method(&self) -> Self::Output;
 
+    fn register_id(&mut self) -> i32;
     fn get_rule(&self, pattern_id: i32) -> Rule;
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule>;
 }
