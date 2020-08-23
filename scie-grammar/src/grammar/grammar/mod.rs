@@ -1,5 +1,5 @@
 use crate::inter::{IRawGrammar, IRawRepository, ILocation, IRawRule, IRawRepositoryMap};
-use crate::rule::{RuleFactory, IRuleFactoryHelper, IGrammarRegistry, IRuleRegistry, Rule};
+use crate::rule::{RuleFactory, IRuleFactoryHelper, IGrammarRegistry, IRuleRegistry, Rule, AbstractRule, BeginEndRule};
 use onig::*;
 
 pub struct StackElement {}
@@ -90,7 +90,8 @@ impl Grammar {
     ) {
         if self.root_id == -1 {
             let repository = self.grammar.repository.clone().unwrap();
-            RuleFactory::get_compiled_rule_id(repository, Box::new(self.clone()));
+            let based = repository.clone().map.base_s.unwrap();
+            RuleFactory::get_compiled_rule_id(based.clone(), Box::new(self.clone()), repository.clone());
         }
     }
 
@@ -112,6 +113,18 @@ impl IGrammarRegistry for Grammar {
 impl IRuleRegistry for Grammar {
     fn get_rule(&self, pattern_id: i32) -> Rule {
         Rule::new(ILocation::new(), pattern_id, None, None)
+    }
+
+    fn register_rule(&self, c: fn() -> Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
+        let rule = BeginEndRule {
+            rule: Rule {
+                location: ILocation::new(),
+                id: 0,
+                name: None,
+                content_name: None
+            }
+        };
+        Box::new(rule)
     }
 }
 

@@ -1,9 +1,31 @@
-use crate::inter::{IRawRepository, IRawGrammar, ILocation};
+use crate::inter::{IRawRepository, IRawGrammar, ILocation, IRawRule};
 
 pub struct RuleFactory {}
 
+fn create_rule() -> Box<dyn AbstractRule> {
+    let rule = BeginEndRule {
+        rule: Rule {
+            location: ILocation::new(),
+            id: 0,
+            name: None,
+            content_name: None
+        }
+    };
+
+    Box::from(rule)
+}
+
 impl RuleFactory {
-    pub fn get_compiled_rule_id(repository: IRawRepository, helper: Box<&dyn IRuleFactoryHelper>) {}
+    pub fn get_compiled_rule_id(desc: IRawRule, helper: Box<&dyn IRuleFactoryHelper>, repository: IRawRepository) -> i32 {
+        match desc.id {
+            None => {
+                helper.register_rule(create_rule);
+            },
+            Some(_) => {},
+        }
+
+        desc.id.unwrap()
+    }
 
     pub fn create_capture_rule() {}
 }
@@ -58,8 +80,11 @@ impl AbstractRule for CaptureRule {}
 // todo: trait with types
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2
 pub trait IRuleRegistry {
+    // type Output;
+    // fn method(&self) -> Self::Output;
+
     fn get_rule(&self, pattern_id: i32) -> Rule;
-    // fn register_rule(&self);
+    fn register_rule(&self, c: fn() -> Box<dyn AbstractRule>) -> Box<dyn AbstractRule>;
 }
 
 pub trait IGrammarRegistry {
