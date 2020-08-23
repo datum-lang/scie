@@ -14,7 +14,7 @@ impl ILocation {
         ILocation {
             filename: "".to_string(),
             line: "".to_string(),
-            chart: "".to_string()
+            chart: "".to_string(),
         }
     }
 }
@@ -94,12 +94,16 @@ pub struct IRawRule {
     pub captures: Option<Box<IRawCaptures>>,
 
     pub begin: Option<String>,
+    #[serde(alias = "beginCaptures")]
     pub begin_captures: Option<Box<IRawCaptures>>,
+
     pub end: Option<String>,
+    #[serde(alias = "endCaptures")]
     pub end_captures: Option<Box<IRawCaptures>>,
 
     #[serde(alias = "while")]
     pub while_s: Option<String>,
+    #[serde(alias = "whileCaptures")]
     pub while_captures: Option<Box<IRawCaptures>>,
 
     pub pattern: Option<Vec<IRawRule>>,
@@ -168,7 +172,7 @@ impl IRawGrammar {
 mod tests {
     use serde::{Deserialize, Serialize};
     use serde_json::Result;
-    use crate::inter::{IRawCaptures, InjectionMap};
+    use crate::inter::{IRawCaptures, InjectionMap, IRawRule};
 
     #[derive(Serialize, Deserialize, Debug, Clone)]
     struct Captures {
@@ -210,5 +214,40 @@ mod tests {
         let pattern = p.map.get("R:text.html - comment.block").unwrap().pattern.clone();
         assert_eq!(1, pattern.clone().unwrap().len());
         assert_eq!("<", pattern.clone().unwrap().first().unwrap().match_s.clone().unwrap())
+    }
+
+    #[test]
+    fn should_convert_rawrule() {
+        let data = r#"
+       {
+			"begin": "'''",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.coffee"
+				}
+			},
+			"end": "'''",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.coffee"
+				}
+			},
+			"name": "string.quoted.single.heredoc.coffee",
+			"patterns": [
+				{
+					"captures": {
+						"1": {
+							"name": "punctuation.definition.escape.backslash.coffee"
+						}
+					},
+					"match": "(\\\\).",
+					"name": "constant.character.escape.backslash.coffee"
+				}
+			]
+		}"#;
+
+        let p: IRawRule = serde_json::from_str(data).unwrap();
+        let capture_map = p.end_captures.unwrap().map.capture_map;
+        assert_eq!("punctuation.definition.string.end.coffee", capture_map.get("0").unwrap().name.clone().unwrap());
     }
 }
