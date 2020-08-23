@@ -1,5 +1,6 @@
 pub mod stack_element;
 pub mod scope_list_element;
+pub mod scope_metadata;
 
 use crate::inter::{IRawGrammar, IRawRepository, ILocation, IRawRule, IRawRepositoryMap};
 use crate::rule::{RuleFactory, IRuleFactoryHelper, IGrammarRegistry, IRuleRegistry, Rule, AbstractRule, BeginEndRule};

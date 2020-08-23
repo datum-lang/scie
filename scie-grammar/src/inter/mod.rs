@@ -152,7 +152,7 @@ pub struct IRawGrammar {
     pub repository: Option<IRawRepository>,
     pub location: Option<ILocatable>,
 
-    #[serde(alias = "scopeName")]
+    #[serde(alias = "scope_name")]
     pub scope_name: String,
     pub patterns: Vec<IRawRule>,
 
