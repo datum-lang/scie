@@ -41,32 +41,34 @@ pub struct IRawCapturesMap {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawRepositoryMap {
+    #[serde(flatten)]
     name_map: HashMap<String, IRawRule>,
-    self_s: IRawRule,
-    base_s: IRawRule,
+    self_s: Option<IRawRule>,
+    base_s: Option<IRawRule>,
 }
 
 impl IRawRepositoryMap {
     pub fn new() -> Self {
         IRawRepositoryMap {
             name_map: Default::default(),
-            self_s: IRawRule::new(),
-            base_s: IRawRule::new(),
+            self_s: None,
+            base_s: None,
         }
     }
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawRepository {
+    #[serde(flatten)]
     pub map: Box<IRawRepositoryMap>,
-    pub location: ILocatable,
+    pub location: Option<ILocation>,
 }
 
 impl IRawRepository {
     pub fn new() -> Self {
         IRawRepository {
             map: Box::new(IRawRepositoryMap::new()),
-            location: ILocatable::new(),
+            location: None,
         }
     }
 }
@@ -106,7 +108,7 @@ pub struct IRawRule {
     #[serde(alias = "whileCaptures")]
     pub while_captures: Option<Box<IRawCaptures>>,
 
-    pub pattern: Option<Vec<IRawRule>>,
+    pub patterns: Option<Vec<IRawRule>>,
     pub repository: Option<IRawRepository>,
     pub apply_end_pattern_last: Option<bool>,
 }
@@ -127,7 +129,7 @@ impl IRawRule {
             end_captures: None,
             while_s: None,
             while_captures: None,
-            pattern: None,
+            patterns: None,
             repository: None,
             apply_end_pattern_last: None,
         }
@@ -172,7 +174,7 @@ impl IRawGrammar {
 mod tests {
     use serde::{Deserialize, Serialize};
     use serde_json::Result;
-    use crate::inter::{IRawCaptures, InjectionMap, IRawRule};
+    use crate::inter::{IRawCaptures, InjectionMap, IRawRule, IRawRepository};
 
     #[derive(Serialize, Deserialize, Debug, Clone)]
     struct Captures {
@@ -211,7 +213,7 @@ mod tests {
         }"#;
 
         let p: InjectionMap = serde_json::from_str(data).unwrap();
-        let pattern = p.map.get("R:text.html - comment.block").unwrap().pattern.clone();
+        let pattern = p.map.get("R:text.html - comment.block").unwrap().patterns.clone();
         assert_eq!(1, pattern.clone().unwrap().len());
         assert_eq!("<", pattern.clone().unwrap().first().unwrap().match_s.clone().unwrap())
     }
@@ -249,5 +251,35 @@ mod tests {
         let p: IRawRule = serde_json::from_str(data).unwrap();
         let capture_map = p.end_captures.unwrap().map.capture_map;
         assert_eq!("punctuation.definition.string.end.coffee", capture_map.get("0").unwrap().name.clone().unwrap());
+    }
+
+    #[test]
+    fn should_convert_repository() {
+        let data = r#"
+        {
+            "repository": {
+                "function_names": {
+                    "patterns": [
+                        {
+                            "match": "(?x)\n\\b(isNaN|isFinite|eval|uneval|parseInt|parseFloat|decodeURI|\ndecodeURIComponent|encodeURI|encodeURIComponent|escape|unescape|\nrequire|set(Interval|Timeout)|clear(Interval|Timeout))\\b",
+                            "name": "support.function.coffee"
+                        },
+                        {
+                            "match": "[a-zA-Z_$][\\w$]*",
+                            "name": "entity.name.function.coffee"
+                        },
+                        {
+                            "match": "\\d[\\w$]*",
+                            "name": "invalid.illegal.identifier.coffee"
+                        }
+                    ]
+                }
+            }
+        }"#;
+
+        let p: IRawRule = serde_json::from_str(data).unwrap();
+        let repository_map = p.repository.unwrap().map.name_map.clone();
+        let pattern_len = repository_map.get("function_names").unwrap().patterns.clone().unwrap().len();
+        assert_eq!(3, pattern_len)
     }
 }
