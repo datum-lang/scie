@@ -87,7 +87,7 @@ pub struct IRawRule {
     pub include: Option<String>,
     pub name: Option<String>,
 
-    #[serde(alias = "contentName")]
+    #[serde(alias = "content_name")]
     pub content_name: Option<String>,
 
     #[serde(alias = "match")]
