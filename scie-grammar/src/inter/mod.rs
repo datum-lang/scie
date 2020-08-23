@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize, Deserializer, de};
+use serde::de::{Error, Unexpected};
+use serde::{de, Deserialize, Deserializer, Serialize};
 use std::collections::HashMap;
-use serde::de::{Unexpected, Error};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ILocation {
@@ -203,12 +203,12 @@ impl IRawGrammar {
 
 #[cfg(test)]
 mod tests {
-    use crate::inter::{IRawCaptures, IRawRule, InjectionMap, IRawGrammar};
+    use crate::inter::{IRawCaptures, IRawGrammar, IRawRule, InjectionMap};
     use serde::{Deserialize, Serialize};
     use std::fs;
-    use std::path::Path;
     use std::fs::File;
     use std::io::Read;
+    use std::path::Path;
 
     #[derive(Serialize, Deserialize, Debug, Clone)]
     struct Captures {
@@ -374,7 +374,7 @@ mod tests {
                     println!("{:?}", file);
                     println!("{:?}", err);
                     IRawGrammar::new()
-                },
+                }
             };
             assert_eq!(true, p.scope_name.len() > 0);
         }
