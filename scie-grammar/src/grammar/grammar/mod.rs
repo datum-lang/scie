@@ -99,8 +99,18 @@ impl Grammar {
         if self.root_id == -1 {
             let repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.base_s.unwrap();
-            RuleFactory::get_compiled_rule_id(based.clone(), self, repository.clone());
+            self.root_id = RuleFactory::get_compiled_rule_id(based.clone(), self, repository.clone());
         }
+
+        let is_first_line: bool;
+        if let None = prev_state {
+            is_first_line = true
+        } else {
+
+        }
+
+        let lineText = format!("{:?}\n", line_text);
+        let onigLineText = self.create_onig_string(lineText);
     }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
