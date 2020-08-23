@@ -1,5 +1,5 @@
-use crate::inter::IRawGrammar;
-use crate::rule::RuleFactory;
+use crate::inter::{IRawGrammar, IRawRepository, ILocation};
+use crate::rule::{RuleFactory, IRuleFactoryHelper, IGrammarRegistry, IRuleRegistry, Rule};
 use onig::*;
 
 pub struct StackElement {}
@@ -67,7 +67,7 @@ impl Grammar {
     ) {
         if self.root_id == -1 {
             let repository = self.grammar.repository.clone().unwrap();
-            RuleFactory::get_compiled_rule_id(repository);
+            RuleFactory::get_compiled_rule_id(repository, Box::new(self.clone()));
         }
     }
 
@@ -76,4 +76,40 @@ impl Grammar {
     }
 
     pub fn tokenize_line2(&self, line_text: String, prev_state: Option<StackElement>) {}
+}
+
+impl IRuleFactoryHelper for Grammar {}
+
+impl IGrammarRegistry for Grammar {
+    fn get_external_grammar(&self, scope_name: String, repository: IRawRepository) -> Option<IRawGrammar> {
+        None
+    }
+}
+
+impl IRuleRegistry for Grammar {
+    fn get_rule(&self, pattern_id: i32) -> Rule {
+        Rule::new(ILocation::new(), pattern_id, None, None)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::path::Path;
+    use std::fs::File;
+    use crate::inter::IRawGrammar;
+    use std::io::Read;
+    use crate::grammar::grammar::Grammar;
+
+    #[test]
+    fn should_enable_run_grammar() {
+        let path = Path::new("test-cases/first-mate/fixtures/c.json");
+        let mut file = File::open(path).unwrap();
+        let mut data = String::new();
+        file.read_to_string(&mut data).unwrap();
+
+        let g: IRawGrammar = serde_json::from_str(&data).unwrap();
+
+        let grammar = Grammar::new(g);
+        println!("{:?}", grammar.root_id);
+    }
 }

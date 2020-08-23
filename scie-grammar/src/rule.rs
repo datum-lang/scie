@@ -3,7 +3,7 @@ use crate::inter::{IRawRepository, IRawGrammar, ILocation};
 pub struct RuleFactory {}
 
 impl RuleFactory {
-    pub fn get_compiled_rule_id(repository: IRawRepository) {}
+    pub fn get_compiled_rule_id(repository: IRawRepository, helper: Box<&dyn IRuleFactoryHelper>) {}
 
     pub fn create_capture_rule() {}
 }
@@ -22,9 +22,7 @@ impl Rule {
     }
 }
 
-pub trait AbstractRule {
-
-}
+pub trait AbstractRule {}
 
 pub struct IncludeOnlyRule {
     pub rule: Rule
@@ -67,3 +65,5 @@ pub trait IRuleRegistry {
 pub trait IGrammarRegistry {
     fn get_external_grammar(&self, scope_name: String, repository: IRawRepository) -> Option<IRawGrammar>;
 }
+
+pub trait IRuleFactoryHelper: IGrammarRegistry + IRuleRegistry {}
