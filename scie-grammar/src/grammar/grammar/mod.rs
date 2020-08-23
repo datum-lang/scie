@@ -1,6 +1,8 @@
 use crate::inter::{IRawGrammar, IRawRepository, ILocation, IRawRule, IRawRepositoryMap};
 use crate::rule::{RuleFactory, IRuleFactoryHelper, IGrammarRegistry, IRuleRegistry, Rule, AbstractRule, BeginEndRule};
 use onig::*;
+use std::collections::HashMap;
+use std::borrow::Borrow;
 
 pub struct StackElement {}
 
@@ -39,6 +41,8 @@ pub trait IGrammar {
 pub struct Grammar {
     root_id: i32,
     grammar: IRawGrammar,
+    pub last_rule_id: i32,
+    pub rule_id2desc: HashMap<i32, Box<dyn AbstractRule>>,
 }
 
 pub fn init_grammar(grammar: IRawGrammar, base: Option<IRawRule>) -> IRawGrammar {
@@ -57,7 +61,7 @@ pub fn init_grammar(grammar: IRawGrammar, base: Option<IRawRule>) -> IRawGrammar
 
     _grammar.repository = Some(IRawRepository {
         map: Box::new(repository_map.clone()),
-        location: None
+        location: None,
     });
 
     _grammar
@@ -67,8 +71,10 @@ impl Grammar {
     pub fn new(grammar: IRawGrammar) -> Grammar {
         let _grammar = init_grammar(grammar.clone(), None);
         Grammar {
+            last_rule_id: 0,
             grammar: _grammar,
             root_id: -1,
+            rule_id2desc: Default::default(),
         }
     }
     // todo: refactor to callback ??
@@ -83,7 +89,7 @@ impl Grammar {
     }
 
     fn tokenize(
-        &self,
+        &mut self,
         line_text: String,
         prev_state: Option<StackElement>,
         emit_binary_tokens: bool,
@@ -91,11 +97,11 @@ impl Grammar {
         if self.root_id == -1 {
             let repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.base_s.unwrap();
-            RuleFactory::get_compiled_rule_id(based.clone(), Box::new(self.clone()), repository.clone());
+            RuleFactory::get_compiled_rule_id(based.clone(), self, repository.clone());
         }
     }
 
-    pub fn tokenize_line(&self, line_text: String, prev_state: Option<StackElement>) {
+    pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
         self.tokenize(line_text, prev_state, false)
     }
 
@@ -115,16 +121,12 @@ impl IRuleRegistry for Grammar {
         Rule::new(ILocation::new(), pattern_id, None, None)
     }
 
-    fn register_rule(&self, c: fn() -> Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
-        let rule = BeginEndRule {
-            rule: Rule {
-                location: ILocation::new(),
-                id: 0,
-                name: None,
-                content_name: None
-            }
-        };
-        Box::new(rule)
+    fn register_rule(&mut self, c: fn(id: i32) -> Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
+        self.last_rule_id = self.last_rule_id + 1;
+        let id = self.last_rule_id;
+        let result = c(id);
+        self.rule_id2desc.insert(id.clone(), result.clone());
+        result
     }
 }
 

@@ -1,12 +1,15 @@
 use crate::inter::{IRawRepository, IRawGrammar, ILocation, IRawRule};
+use dyn_clone::{clone_trait_object, DynClone};
+use std::borrow::Borrow;
+use crate::grammar::grammar::Grammar;
 
 pub struct RuleFactory {}
 
-fn create_rule() -> Box<dyn AbstractRule> {
+fn create_rule(id: i32) -> Box<dyn AbstractRule> {
     let rule = BeginEndRule {
         rule: Rule {
             location: ILocation::new(),
-            id: 0,
+            id: id,
             name: None,
             content_name: None
         }
@@ -16,7 +19,7 @@ fn create_rule() -> Box<dyn AbstractRule> {
 }
 
 impl RuleFactory {
-    pub fn get_compiled_rule_id(desc: IRawRule, helper: Box<&dyn IRuleFactoryHelper>, repository: IRawRepository) -> i32 {
+    pub fn get_compiled_rule_id(desc: IRawRule, helper: &mut Grammar, repository: IRawRepository) -> i32 {
         match desc.id {
             None => {
                 helper.register_rule(create_rule);
@@ -31,6 +34,7 @@ impl RuleFactory {
 }
 
 
+#[derive(Clone, Debug)]
 pub struct Rule {
     pub location: ILocation,
     pub id: i32,
@@ -44,32 +48,39 @@ impl Rule {
     }
 }
 
-pub trait AbstractRule {}
+pub trait AbstractRule: DynClone {}
 
+clone_trait_object!(AbstractRule);
+
+#[derive(Clone, Debug)]
 pub struct IncludeOnlyRule {
     pub rule: Rule
 }
 
 impl AbstractRule for IncludeOnlyRule {}
 
+#[derive(Clone, Debug)]
 pub struct BeginWhileRule {
     pub rule: Rule
 }
 
 impl AbstractRule for BeginWhileRule {}
 
+#[derive(Clone, Debug)]
 pub struct MatchRule {
     pub rule: Rule
 }
 
 impl AbstractRule for MatchRule {}
 
+#[derive(Clone, Debug)]
 pub struct BeginEndRule {
     pub rule: Rule
 }
 
 impl AbstractRule for BeginEndRule {}
 
+#[derive(Clone, Debug)]
 pub struct CaptureRule {
     pub rule: Rule
 }
@@ -84,7 +95,7 @@ pub trait IRuleRegistry {
     // fn method(&self) -> Self::Output;
 
     fn get_rule(&self, pattern_id: i32) -> Rule;
-    fn register_rule(&self, c: fn() -> Box<dyn AbstractRule>) -> Box<dyn AbstractRule>;
+    fn register_rule(&mut self, c: fn(id: i32) -> Box<dyn AbstractRule>) -> Box<dyn AbstractRule>;
 }
 
 pub trait IGrammarRegistry {
