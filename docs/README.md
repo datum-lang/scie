@@ -10,4 +10,3 @@
  - textmate 注册 TextmateRegistry，然后挂载不同语言的 grammarProvider 保存解析配置之类的
  - 使用 onigasm 注册语法解析器 grammarRegistry，然后创建不同语言实际的解析器 TextmateTokenizer
 
- 

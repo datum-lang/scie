@@ -38,6 +38,14 @@ pub trait IGrammar {
     fn tokenize_line2(line_text: String, prev_state: Option<StackElement>) -> ITokenizeLineResult2;
 }
 
+pub trait Matcher {
+
+}
+
+#[derive(Debug, Clone)]
+pub struct TokenTypeMatcher {
+
+}
 
 #[derive(Debug, Clone)]
 pub struct Grammar {
@@ -45,6 +53,7 @@ pub struct Grammar {
     grammar: IRawGrammar,
     pub last_rule_id: i32,
     pub rule_id2desc: HashMap<i32, Box<dyn AbstractRule>>,
+    pub _token_type_matchers: Vec<TokenTypeMatcher>,
 }
 
 pub fn init_grammar(grammar: IRawGrammar, base: Option<IRawRule>) -> IRawGrammar {
@@ -77,6 +86,7 @@ impl Grammar {
             grammar: _grammar,
             root_id: -1,
             rule_id2desc: Default::default(),
+            _token_type_matchers: vec![]
         }
     }
     // todo: refactor to callback ??
@@ -85,9 +95,8 @@ impl Grammar {
         Regex::new(sources.as_str()).unwrap()
     }
     // todo: refactor to callback ??
-    pub fn create_onig_string(&self, sources: String) -> Regex {
-        // regex.captures("hello").unwrap().iter_pos().enumerate()
-        Regex::new(sources.as_str()).unwrap()
+    pub fn create_onig_string(&self, sources: String) -> String {
+        sources
     }
 
     fn tokenize(
@@ -102,7 +111,7 @@ impl Grammar {
             self.root_id = RuleFactory::get_compiled_rule_id(based.clone(), self, repository.clone());
         }
 
-        let is_first_line: bool;
+        let mut is_first_line: bool = false;
         if let None = prev_state {
             is_first_line = true
         } else {
@@ -111,6 +120,19 @@ impl Grammar {
 
         let lineText = format!("{:?}\n", line_text);
         let onigLineText = self.create_onig_string(lineText);
+        self.tokenizeString(onigLineText.parse().unwrap(), is_first_line, 0)
+    }
+
+    pub fn tokenizeString(&mut self, line_text: String, is_first_line: bool, line_pos: i32) {
+        let line_length = line_text.len();
+
+        let mut stop = false;
+        let mut anchorPosition = -1;
+        self.match_rule_or_injections(line_text, is_first_line, line_pos, anchorPosition);
+    }
+
+    pub fn match_rule_or_injections(&mut self, line_text: String, is_first_line: bool, line_pos: i32, anchor_position: i32) {
+
     }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
