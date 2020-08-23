@@ -1,2 +1,2 @@
- extensions/
- scie-grammar/test-cases
+extensions/* linguist-vendored=true
+scie-grammar/test-cases/* linguist-vendored=true
