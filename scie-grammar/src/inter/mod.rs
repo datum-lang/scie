@@ -136,7 +136,7 @@ impl IRawRule {
             patterns: None,
             repository: None,
             information_for_contributors: None,
-            applyEndPatternLast: None
+            applyEndPatternLast: None,
         }
     }
 }
@@ -173,6 +173,7 @@ pub struct IRawGrammar {
     pub foldingStartMarker: Option<String>,
     pub foldingStopMarker: Option<String>,
     pub keyEquivalent: Option<String>,
+    pub hideFromUser: Option<bool>,
 }
 
 impl IRawGrammar {
@@ -187,10 +188,12 @@ impl IRawGrammar {
             file_types: None,
             name: None,
             first_line_match: None,
+
             comment: None,
             foldingStartMarker: None,
             foldingStopMarker: None,
-            keyEquivalent: None
+            keyEquivalent: None,
+            hideFromUser: None
         }
     }
 }
@@ -362,9 +365,13 @@ mod tests {
             let mut file = File::open(entry.path()).unwrap();
             let mut data = String::new();
             file.read_to_string(&mut data).unwrap();
-            let p: IRawGrammar = serde_json::from_str(&data).unwrap();
-
-            println!("{:?}", entry.path());
+            let p: IRawGrammar = match serde_json::from_str(&data) {
+                Ok(x) => x,
+                Err(err) => {
+                    println!("{:?}", err);
+                    IRawGrammar::new()
+                },
+            };
             assert_eq!(true, p.scope_name.len() > 0);
         }
     }
