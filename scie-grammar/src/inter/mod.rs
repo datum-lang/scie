@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ILocation {
     pub filename: String,
     pub line: String,
@@ -19,8 +19,9 @@ impl ILocation {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ILocatable {
+    #[serde(flatten)]
     pub textmate_location: Option<ILocation>,
 }
 
@@ -32,12 +33,13 @@ impl ILocatable {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawCapturesMap {
+    #[serde(flatten)]
     capture_map: HashMap<String, IRawRule>
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawRepositoryMap {
     name_map: HashMap<String, IRawRule>,
     self_s: IRawRule,
@@ -54,7 +56,7 @@ impl IRawRepositoryMap {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawRepository {
     pub map: Box<IRawRepositoryMap>,
     pub location: ILocatable,
@@ -69,19 +71,22 @@ impl IRawRepository {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawCaptures {
+    #[serde(flatten)]
     pub map: IRawCapturesMap,
-    pub location: ILocatable,
+    pub location: Option<ILocatable>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawRule {
     pub id: Option<i32>,
+    pub location: Option<ILocation>,
 
-    pub location: ILocation,
     pub include: Option<String>,
+    pub name: Option<String>,
     pub content_name: Option<String>,
+
     pub match_s: Option<String>,
     pub captures: Option<Box<IRawCaptures>>,
 
@@ -102,8 +107,9 @@ impl IRawRule {
     pub fn new() -> Self {
         IRawRule {
             id: None,
-            location: ILocation::new(),
+            location: None,
             include: None,
+            name: None,
             content_name: None,
             match_s: None,
             captures: None,
@@ -120,7 +126,7 @@ impl IRawRule {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct InjectionMap {
     // todo: readonly injections?: { [expression: string]: IRawRule };
     map: HashMap<String, IRawRule>
@@ -158,28 +164,26 @@ impl IRawGrammar {
 mod tests {
     use serde::{Deserialize, Serialize};
     use serde_json::Result;
+    use crate::inter::IRawCaptures;
 
-    #[derive(Serialize, Deserialize)]
-    struct Person {
-        name: String,
-        age: u8,
-        phones: Vec<String>,
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    struct Captures {
+        captures: Option<Box<IRawCaptures>>,
     }
 
     #[test]
     fn should_convert_json() {
         let data = r#"
         {
-            "name": "John Doe",
-            "age": 43,
-            "phones": [
-                "+44 1234567",
-                "+44 2345678"
-            ]
+            "captures": {
+				"1": {
+					"name": "punctuation.definition.item.text"
+				}
+			}
         }"#;
 
-        let p: Person = serde_json::from_str(data).unwrap();
-        assert_eq!(43, p.age)
-
+        let p: Captures = serde_json::from_str(data).unwrap();
+        let name = p.captures.unwrap().map.capture_map.get("1").unwrap().name.clone();
+        assert_eq!("punctuation.definition.item.text", name.unwrap())
     }
 }
