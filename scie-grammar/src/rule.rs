@@ -10,29 +10,28 @@ impl RuleFactory {
     fn _compile_captures(captures: Option<Box<IRawCaptures>>, helper: &mut Grammar, repository: IRawRepository) -> Vec<CaptureRule> {
         let mut r = vec![];
 
-        match captures.clone() {
-            None => {}
-            Some(capts) => {
-                let mut maximum_capture_id = 0;
-                for (id_str, value) in capts.clone().map.capture_map {
-                    let id: i32 = id_str.parse().unwrap_or(0);
-                    if id > maximum_capture_id {
-                        maximum_capture_id = id
-                    }
+        if let Some(capts) = captures.clone() {
+            let mut maximum_capture_id = 0;
+            for (id_str, value) in capts.clone().map.capture_map {
+                let id: i32 = id_str.parse().unwrap_or(0);
+                if id > maximum_capture_id {
+                    maximum_capture_id = id
                 }
-                for i in 0..maximum_capture_id {
-                    r.push(CaptureRule::new());
+            }
+            for i in 0..maximum_capture_id {
+                r.push(CaptureRule::new());
+            }
+
+            let cloned_capts = captures.clone().unwrap();
+            for (id_str, value) in capts.clone().map.capture_map {
+                let numeric_capture_id: i32 = id_str.parse().unwrap_or(0);
+                let mut retokenizeCapturedWithRuleId = 0;
+                println!("{:?}", numeric_capture_id.clone().to_string());
+                let options_patterns = cloned_capts.map.capture_map.get(&*numeric_capture_id.to_string());
+                if let None = options_patterns {
+                    // retokenizeCapturedWithRuleId = RuleFactory::get_compiled_rule_id(captures.clone[id_str], helper, repository.clone());
                 }
-                for (id_str, value)  in capts.clone().map.capture_map {
-                    let numeric_capture_id: i32 = id_str.parse().unwrap_or(0);
-                    let mut retokenizeCapturedWithRuleId = 0;
-                    println!("{:?}", numeric_capture_id.clone().to_string());
-                    let options_patterns = captures.clone().unwrap().map.capture_map.get(&*numeric_capture_id.to_string());
-                    if let None = options_patterns {
-                        // retokenizeCapturedWithRuleId = RuleFactory::get_compiled_rule_id(captures.clone[id_str], helper, repository.clone());
-                    }
-                    // r[numericCaptureId] = RuleFactory.createCaptureRule(helper, captures[captureId].$vscodeTextmateLocation, captures[captureId].name, captures[captureId].contentName, retokenizeCapturedWithRuleId);
-                }
+                // r[numericCaptureId] = RuleFactory.createCaptureRule(helper, captures[captureId].$vscodeTextmateLocation, captures[captureId].name, captures[captureId].contentName, retokenizeCapturedWithRuleId);
             }
         };
 
