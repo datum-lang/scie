@@ -1,6 +1,5 @@
-use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
-use serde_json::Result;
+use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ILocation {
@@ -36,7 +35,7 @@ impl ILocatable {
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawCapturesMap {
     #[serde(flatten)]
-    capture_map: HashMap<String, IRawRule>
+    capture_map: HashMap<String, IRawRule>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
@@ -111,6 +110,8 @@ pub struct IRawRule {
     pub patterns: Option<Vec<IRawRule>>,
     pub repository: Option<IRawRepository>,
     pub apply_end_pattern_last: Option<bool>,
+
+    pub information_for_contributors: Option<Vec<String>>,
 }
 
 impl IRawRule {
@@ -132,6 +133,7 @@ impl IRawRule {
             patterns: None,
             repository: None,
             apply_end_pattern_last: None,
+            information_for_contributors: None,
         }
     }
 }
@@ -139,7 +141,7 @@ impl IRawRule {
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct InjectionMap {
     #[serde(flatten)]
-    map: HashMap<String, IRawRule>
+    map: HashMap<String, IRawRule>,
 }
 
 pub struct IRawGrammar {
@@ -157,7 +159,9 @@ pub struct IRawGrammar {
 impl IRawGrammar {
     pub fn new() -> IRawGrammar {
         IRawGrammar {
-            location: ILocatable { textmate_location: None },
+            location: ILocatable {
+                textmate_location: None,
+            },
             repository: IRawRepository::new(),
             scope_name: "".to_string(),
             patterns: vec![],
@@ -172,9 +176,10 @@ impl IRawGrammar {
 
 #[cfg(test)]
 mod tests {
+    use crate::inter::{IRawCaptures, IRawRepository, IRawRule, InjectionMap};
     use serde::{Deserialize, Serialize};
-    use serde_json::Result;
-    use crate::inter::{IRawCaptures, InjectionMap, IRawRule, IRawRepository};
+    use std::fs;
+    use std::path::Path;
 
     #[derive(Serialize, Deserialize, Debug, Clone)]
     struct Captures {
@@ -193,7 +198,15 @@ mod tests {
         }"#;
 
         let p: Captures = serde_json::from_str(data).unwrap();
-        let name = p.captures.unwrap().map.capture_map.get("1").unwrap().name.clone();
+        let name = p
+            .captures
+            .unwrap()
+            .map
+            .capture_map
+            .get("1")
+            .unwrap()
+            .name
+            .clone();
         assert_eq!("punctuation.definition.item.text", name.unwrap())
     }
 
@@ -213,9 +226,24 @@ mod tests {
         }"#;
 
         let p: InjectionMap = serde_json::from_str(data).unwrap();
-        let pattern = p.map.get("R:text.html - comment.block").unwrap().patterns.clone();
+        let pattern = p
+            .map
+            .get("R:text.html - comment.block")
+            .unwrap()
+            .patterns
+            .clone();
         assert_eq!(1, pattern.clone().unwrap().len());
-        assert_eq!("<", pattern.clone().unwrap().first().unwrap().match_s.clone().unwrap())
+        assert_eq!(
+            "<",
+            pattern
+                .clone()
+                .unwrap()
+                .first()
+                .unwrap()
+                .match_s
+                .clone()
+                .unwrap()
+        )
     }
 
     #[test]
@@ -250,7 +278,10 @@ mod tests {
 
         let p: IRawRule = serde_json::from_str(data).unwrap();
         let capture_map = p.end_captures.unwrap().map.capture_map;
-        assert_eq!("punctuation.definition.string.end.coffee", capture_map.get("0").unwrap().name.clone().unwrap());
+        assert_eq!(
+            "punctuation.definition.string.end.coffee",
+            capture_map.get("0").unwrap().name.clone().unwrap()
+        );
     }
 
     #[test]
@@ -279,7 +310,22 @@ mod tests {
 
         let p: IRawRule = serde_json::from_str(data).unwrap();
         let repository_map = p.repository.unwrap().map.name_map.clone();
-        let pattern_len = repository_map.get("function_names").unwrap().patterns.clone().unwrap().len();
+        let pattern_len = repository_map
+            .get("function_names")
+            .unwrap()
+            .patterns
+            .clone()
+            .unwrap()
+            .len();
         assert_eq!(3, pattern_len)
     }
+    //
+    // #[test]
+    // fn should_convert_json_file() {
+    //     let path = Path::new("../../../../extensions/json/syntaxes/JSON.tmLanguage.json");
+    //     for entry in fs::read_dir(path).expect("Unable to list") {
+    //         let entry = entry.expect("unable to get entry");
+    //         println!("{}", entry.path().display());
+    //     }
+    // }
 }

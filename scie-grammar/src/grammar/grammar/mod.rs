@@ -1,6 +1,6 @@
-use onig::*;
 use crate::inter::IRawGrammar;
 use crate::rule::RuleFactory;
+use onig::*;
 
 pub struct StackElement {}
 
@@ -17,35 +17,35 @@ pub struct ITokenizeLineResult {
 
 pub struct ITokenizeLineResult2 {
     pub tokens: Vec<i32>,
-    pub rule_stack: Box<StackElement>
+    pub rule_stack: Box<StackElement>,
 }
 
 pub trait IGrammar {
     fn tokenize_line(line_text: String, prev_state: Option<StackElement>) -> ITokenizeLineResult;
 
     /**
-	 * Tokenize `lineText` using previous line state `prevState`.
-	 * The result contains the tokens in binary format, resolved with the following information:
-	 *  - language
-	 *  - token type (regex, string, comment, other)
-	 *  - font style
-	 *  - foreground color
-	 *  - background color
-	 * e.g. for getting the languageId: `(metadata & MetadataConsts.LANGUAGEID_MASK) >>> MetadataConsts.LANGUAGEID_OFFSET`
-	 */
+     * Tokenize `lineText` using previous line state `prevState`.
+     * The result contains the tokens in binary format, resolved with the following information:
+     *  - language
+     *  - token type (regex, string, comment, other)
+     *  - font style
+     *  - foreground color
+     *  - background color
+     * e.g. for getting the languageId: `(metadata & MetadataConsts.LANGUAGEID_MASK) >>> MetadataConsts.LANGUAGEID_OFFSET`
+     */
     fn tokenize_line2(line_text: String, prev_state: Option<StackElement>) -> ITokenizeLineResult2;
 }
 
 pub struct Grammar {
     root_id: i32,
-    grammar: IRawGrammar
+    grammar: IRawGrammar,
 }
 
 impl Grammar {
-    pub fn new (grammar: IRawGrammar) -> Grammar {
+    pub fn new(grammar: IRawGrammar) -> Grammar {
         Grammar {
             grammar,
-            root_id: -1
+            root_id: -1,
         }
     }
     // todo: refactor to callback ??
@@ -59,7 +59,12 @@ impl Grammar {
         Regex::new(sources.as_str()).unwrap()
     }
 
-    fn tokenize(&self, line_text: String, prev_state: Option<StackElement>, emit_binary_tokens: bool) {
+    fn tokenize(
+        &self,
+        line_text: String,
+        prev_state: Option<StackElement>,
+        emit_binary_tokens: bool,
+    ) {
         if self.root_id == -1 {
             RuleFactory::get_compiled_rule_id(self.grammar.repository.clone())
         }
@@ -69,7 +74,5 @@ impl Grammar {
         self.tokenize(line_text, prev_state, false)
     }
 
-    pub fn tokenize_line2(&self, line_text: String, prev_state: Option<StackElement>) {
-
-    }
+    pub fn tokenize_line2(&self, line_text: String, prev_state: Option<StackElement>) {}
 }
