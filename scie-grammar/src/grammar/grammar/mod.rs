@@ -66,7 +66,7 @@ impl Grammar {
         emit_binary_tokens: bool,
     ) {
         if self.root_id == -1 {
-            RuleFactory::get_compiled_rule_id(self.grammar.repository.clone())
+
         }
     }
 

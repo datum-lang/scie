@@ -148,9 +148,9 @@ pub struct InjectionMap {
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+// #[serde(deny_unknown_fields)]
 pub struct IRawGrammar {
-    #[serde(flatten)]
-    pub repository: IRawRepository,
+    pub repository: Option<IRawRepository>,
     pub location: Option<ILocatable>,
 
     #[serde(alias = "scopeName")]
@@ -170,17 +170,20 @@ pub struct IRawGrammar {
 
     // not in list
     pub comment: Option<String>,
-    pub foldingStartMarker: Option<String>,
-    pub foldingStopMarker: Option<String>,
-    pub keyEquivalent: Option<String>,
-    pub hideFromUser: Option<bool>,
+    // pub foldingStartMarker: Option<String>,
+    // pub foldingStopMarker: Option<String>,
+    // pub keyEquivalent: Option<String>,
+    // pub hideFromUser: Option<bool>,
+
+    // #[serde(skip_serializing)]
+    // ignored_field: serde::de::IgnoredAny,
 }
 
 impl IRawGrammar {
     pub fn new() -> IRawGrammar {
         IRawGrammar {
             location: None,
-            repository: IRawRepository::new(),
+            repository: None,
             scope_name: "".to_string(),
             patterns: vec![],
             injections: None,
@@ -190,10 +193,10 @@ impl IRawGrammar {
             first_line_match: None,
 
             comment: None,
-            foldingStartMarker: None,
-            foldingStopMarker: None,
-            keyEquivalent: None,
-            hideFromUser: None
+            // foldingStartMarker: None,
+            // foldingStopMarker: None,
+            // keyEquivalent: None,
+            // hideFromUser: None,
         }
     }
 }
@@ -368,6 +371,7 @@ mod tests {
             let p: IRawGrammar = match serde_json::from_str(&data) {
                 Ok(x) => x,
                 Err(err) => {
+                    println!("{:?}", file);
                     println!("{:?}", err);
                     IRawGrammar::new()
                 },

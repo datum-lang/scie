@@ -933,7 +933,7 @@
 			]
 		},
 		"variables": {
-			"applyEndPatternLast": 1,
+			"applyEndPatternLast": true,
 			"patterns": [
 				{
 					"begin": "(?x:(?=\n                        (?:\n                            (?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final) # visibility/modifier\n                                |\n                            (?:def)\n                                |\n                            (?:void|boolean|byte|char|short|int|float|long|double)\n                                |\n                            (?:(?:[a-z]\\w*\\.)*[A-Z]+\\w*) # object type\n                        )\n                        \\s+\n                        (?!private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final|def|void|boolean|byte|char|short|int|float|long|double)\n                        [\\w\\d_<>\\[\\],\\?][\\w\\d_<>\\[\\],\\? \\t]*\n                        (?:=|$)\n                        \n\t\t\t\t\t))",
