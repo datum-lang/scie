@@ -116,7 +116,7 @@ impl RuleFactory {
                     desc.location.clone(),
                     desc.id.unwrap().clone(),
                     desc.name.clone(),
-                    desc.content_name.unwrap().clone(),
+                    desc.content_name.clone(),
                     rule_factory,
                 );
                 helper.register_rule(Box::new(rule));
@@ -178,7 +178,7 @@ impl IncludeOnlyRule {
         location: Option<ILocation>,
         id: i32,
         name: Option<String>,
-        match_s: String,
+        content_name: Option<String>,
         captures: ICompilePatternsResult,
     ) -> Self {
         IncludeOnlyRule {
