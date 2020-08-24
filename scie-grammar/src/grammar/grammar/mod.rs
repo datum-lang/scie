@@ -93,7 +93,6 @@ impl Grammar {
         // reg.scan(to_match, scan_callback)
         Regex::new(sources.as_str()).unwrap()
     }
-    // todo: refactor to callback ??
     pub fn create_onig_string(&self, sources: String) -> String {
         sources
     }
@@ -178,7 +177,7 @@ mod tests {
 
     #[test]
     fn should_enable_run_grammar() {
-        let path = Path::new("test-cases/first-mate/fixtures/c.json");
+        let path = Path::new("test-cases/first-mate/fixtures/java.json");
         let mut file = File::open(path).unwrap();
         let mut data = String::new();
         file.read_to_string(&mut data).unwrap();
