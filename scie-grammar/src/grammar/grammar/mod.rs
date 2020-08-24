@@ -60,8 +60,6 @@ pub struct Grammar {
 pub fn init_grammar(grammar: IRawGrammar, base: Option<IRawRule>) -> IRawGrammar {
     let mut _grammar = grammar.clone();
 
-    // _grammar.repository = grammar.repository.clone();
-
     let mut new_based: IRawRule = IRawRule::new();
     new_based.location = grammar.clone().repository.unwrap().clone().location;
     new_based.patterns = Some(grammar.clone().patterns.clone());
