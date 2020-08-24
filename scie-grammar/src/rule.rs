@@ -3,9 +3,16 @@ use crate::inter::{ILocation, IRawCaptures, IRawGrammar, IRawRepository, IRawRul
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
 
+#[derive(Clone, Debug)]
+pub struct ICompilePatternsResult {
+    pub patterns: Vec<i32>,
+    pub has_missing_patterns: bool
+}
+
 pub struct RuleFactory {}
 
 impl RuleFactory {
+    // todo: add more rule builder
     fn compile_captures(
         captures: Option<Box<IRawCaptures>>,
         helper: &mut Grammar,
@@ -45,6 +52,22 @@ impl RuleFactory {
 
         r
     }
+
+    pub fn compile_patterns(
+        patterns: Option<Vec<IRawRule>>,
+        helper: Box<&mut dyn IRuleFactoryHelper>,
+        repository: IRawRepository
+    ) -> ICompilePatternsResult {
+        let mut r: Vec<i32> = vec![];
+
+        let result = ICompilePatternsResult {
+            patterns: r,
+            has_missing_patterns: false
+        };
+
+        result
+    }
+
     pub fn get_compiled_rule_id(
         mut desc: IRawRule,
         helper: &mut Grammar,
@@ -70,6 +93,34 @@ impl RuleFactory {
 
                 helper.register_rule(Box::new(rule));
             };
+
+            if let None = desc.begin {
+                if let Some(repo) = desc.repository {
+                    //todo: mergeObjects
+                }
+                let mut patterns = desc.patterns;
+                if let None = patterns {
+                    if let Some(include) = desc.include {
+                        let mut raw_rule = IRawRule::new();
+                        raw_rule.include = Some(include);
+                        patterns = Some(vec![raw_rule.clone()])
+                    }
+                }
+
+                let rule_factory = RuleFactory::compile_patterns(
+                    patterns.clone(),
+                    Box::new(helper),
+                    repository.clone(),
+                );
+                let rule = IncludeOnlyRule::new(
+                    desc.location.clone(),
+                    desc.id.unwrap().clone(),
+                    desc.name.clone(),
+                    desc.content_name.unwrap().clone(),
+                    rule_factory,
+                );
+                helper.register_rule(Box::new(rule));
+            }
         }
 
         desc.id.unwrap()
@@ -118,6 +169,29 @@ clone_trait_object!(AbstractRule);
 #[derive(Clone, Debug)]
 pub struct IncludeOnlyRule {
     pub rule: Rule,
+    pub _match: RegExpSource,
+    pub captures: ICompilePatternsResult,
+}
+
+impl IncludeOnlyRule {
+    pub fn new(
+        location: Option<ILocation>,
+        id: i32,
+        name: Option<String>,
+        match_s: String,
+        captures: ICompilePatternsResult,
+    ) -> Self {
+        IncludeOnlyRule {
+            rule: Rule {
+                location,
+                id,
+                name,
+                content_name: None,
+            },
+            _match: RegExpSource {},
+            captures,
+        }
+    }
 }
 
 impl AbstractRule for IncludeOnlyRule {}

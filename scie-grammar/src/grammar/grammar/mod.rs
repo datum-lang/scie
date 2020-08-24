@@ -155,6 +155,7 @@ impl Grammar {
         line_pos: i32,
         anchor_position: i32,
     ) {
+
     }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
