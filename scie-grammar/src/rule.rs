@@ -71,15 +71,21 @@ impl RuleFactory {
             for pattern in patterns {
                 let mut pattern_id = -1;
                 if let Some(include_s) = pattern.clone().include {
+                    let map = repository.clone().map.name_map.clone();
+
                     if include_s.starts_with("#") {
-                        let map = repository.clone().map.name_map.clone();
                         let first = remove_first(include_s.as_str());
                         let local_included_rule = map.get(first);
                         if let Some(rule) = local_included_rule {
-                            let copy_rule = *rule.clone();
-                            pattern_id = RuleFactory::get_compiled_rule_id(copy_rule, *helper, repository.clone());
+                            pattern_id = RuleFactory::get_compiled_rule_id(*rule.clone(), &mut (*helper).clone(), repository.clone());
                         } else {
                             println!("CANNOT find rule for scopeName: {:?}", pattern.clone().include);
+                        }
+                    } else if include_s == "$base" || include_s == "$self" {
+                        let option = pattern.include.unwrap();
+                        let local_included_rule = map.get(option.as_str());
+                        if let Some(rule) = local_included_rule {
+                            pattern_id = RuleFactory::get_compiled_rule_id(*(rule).clone(), &mut (*helper).clone(), repository.clone());
                         }
                     }
                 }
