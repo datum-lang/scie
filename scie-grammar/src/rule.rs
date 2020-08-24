@@ -88,10 +88,10 @@ impl RuleFactory {
                     id.clone(),
                     desc.name.clone(),
                     match_s.clone(),
-                    rule_factory,
-                );
+                    rule_factory, );
 
                 helper.register_rule(Box::new(rule));
+                return desc.id.unwrap();
             };
 
             if let None = desc.begin {
@@ -120,7 +120,10 @@ impl RuleFactory {
                     rule_factory,
                 );
                 helper.register_rule(Box::new(rule));
+                return desc.id.unwrap();
             }
+
+            
         }
 
         desc.id.unwrap()
