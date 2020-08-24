@@ -117,8 +117,8 @@ impl Grammar {
         }
 
         let lineText = format!("{:?}\n", line_text);
-        let onigLineText = self.create_onig_string(lineText);
-        self.tokenize_string(onigLineText.parse().unwrap(), is_first_line, 0, true)
+        let onig_line_text = self.create_onig_string(lineText);
+        self.tokenize_string(onig_line_text.parse().unwrap(), is_first_line, 0, true)
     }
 
     pub fn tokenize_string(
@@ -131,13 +131,13 @@ impl Grammar {
         let line_length = line_text.len();
 
         let mut stop = false;
-        let mut anchorPosition = -1;
+        let mut anchor_position = -1;
 
         if check_while_conditions {
             self.check_while_conditions(line_text.clone(), is_first_line, line_pos)
         }
 
-        self.match_rule_or_injections(line_text, is_first_line, line_pos, anchorPosition);
+        self.match_rule_or_injections(line_text, is_first_line, line_pos, anchor_position);
     }
 
     pub fn check_while_conditions(

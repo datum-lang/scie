@@ -6,7 +6,7 @@ use dyn_clone::{clone_trait_object, DynClone};
 pub struct RuleFactory {}
 
 impl RuleFactory {
-    fn _compile_captures(
+    fn compile_captures(
         captures: Option<Box<IRawCaptures>>,
         helper: &mut Grammar,
         repository: IRawRepository,
@@ -34,10 +34,12 @@ impl RuleFactory {
                     .map
                     .capture_map
                     .get(&*numeric_capture_id.to_string());
-                if let None = options_patterns {
-                    // retokenizeCapturedWithRuleId = RuleFactory::get_compiled_rule_id(captures.clone[id_str], helper, repository.clone());
+
+                let desc = captures.clone().unwrap().map.capture_map[&id_str].clone();
+                if let Some(rule) = options_patterns {
+                    retokenizeCapturedWithRuleId = RuleFactory::get_compiled_rule_id(desc, helper, repository.clone());
                 }
-                // r[numericCaptureId] = RuleFactory.createCaptureRule(helper, captures[captureId].$vscodeTextmateLocation, captures[captureId].name, captures[captureId].contentName, retokenizeCapturedWithRuleId);
+                // r[numericCaptureId] = RuleFactory::create_capture_rule(helper, desc.location, desc.name, desc.content_name, retokenizeCapturedWithRuleId);
             }
         };
 
@@ -53,20 +55,21 @@ impl RuleFactory {
             desc.id = Some(id.clone());
 
             if let Some(match_s) = desc.match_s {
-                let rule_factory = RuleFactory::_compile_captures(
+                let rule_factory = RuleFactory::compile_captures(
                     desc.captures.clone(),
                     helper,
                     repository.clone(),
                 );
-                MatchRule::new(
+                let rule = MatchRule::new(
                     desc.location.clone(),
                     id.clone(),
                     desc.name.clone(),
                     match_s.clone(),
                     rule_factory,
                 );
+
+                helper.register_rule(Box::new(rule));
             };
-            // helper.register_rule();
         }
 
         desc.id.unwrap()
