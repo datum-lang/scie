@@ -3,9 +3,9 @@ pub mod scope_metadata;
 pub mod stack_element;
 
 use crate::grammar::grammar::stack_element::StackElement;
-use crate::inter::{ILocation, IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
+use crate::inter::{ILocation, IRawGrammar, IRawRepository, IRawRule, IRawRepositoryMap};
 use crate::rule::{
-    AbstractRule, BeginEndRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule,
+    AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule,
     RuleFactory,
 };
 use onig::*;
@@ -61,16 +61,17 @@ pub struct Grammar {
 pub fn init_grammar(grammar: IRawGrammar, base: Option<IRawRule>) -> IRawGrammar {
     let mut _grammar = grammar.clone();
 
-    _grammar.repository = grammar.repository.clone();
+    // _grammar.repository = grammar.repository.clone();
 
     let mut new_based: IRawRule = IRawRule::new();
-    new_based.location = grammar.repository.unwrap().clone().location;
-    new_based.patterns = Some(grammar.patterns.clone());
-    new_based.name = grammar.name;
+    new_based.location = grammar.clone().repository.unwrap().clone().location;
+    new_based.patterns = Some(grammar.clone().patterns.clone());
+    new_based.name = grammar.clone().name;
 
     let mut repository_map = IRawRepositoryMap::new();
     repository_map.base_s = Some(new_based.clone());
     repository_map.self_s = Some(new_based.clone());
+    repository_map.name_map = grammar.clone().repository.unwrap().clone().map.name_map.clone();
 
     _grammar.repository = Some(IRawRepository {
         map: Box::new(repository_map.clone()),
@@ -93,7 +94,6 @@ impl Grammar {
     }
     // todo: refactor to callback ??
     pub fn create_onig_scanner(&self, sources: String) -> Regex {
-        // reg.scan(to_match, scan_callback)
         Regex::new(sources.as_str()).unwrap()
     }
     pub fn create_onig_string(&self, sources: String) -> String {
