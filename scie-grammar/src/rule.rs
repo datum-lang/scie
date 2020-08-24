@@ -10,6 +10,11 @@ pub struct ICompilePatternsResult {
     pub has_missing_patterns: bool,
 }
 
+fn remove_first(s: &str) -> &str {
+    let (first, last) = s.split_at(1);
+    last
+}
+
 pub struct RuleFactory {}
 
 impl RuleFactory {
@@ -56,11 +61,30 @@ impl RuleFactory {
     }
 
     pub fn compile_patterns(
-        patterns: Option<Vec<IRawRule>>,
-        helper: Box<&mut dyn IRuleFactoryHelper>,
+        origin_patterns: Option<Vec<IRawRule>>,
+        helper: Box<&mut Grammar>,
         repository: IRawRepository,
     ) -> ICompilePatternsResult {
         let mut r: Vec<i32> = vec![];
+
+        if let Some(patterns) = origin_patterns {
+            for pattern in patterns {
+                let mut pattern_id = -1;
+                if let Some(include_s) = pattern.clone().include {
+                    if include_s.starts_with("#") {
+                        let map = repository.clone().map.name_map.clone();
+                        let first = remove_first(include_s.as_str());
+                        let local_included_rule = map.get(first);
+                        if let Some(rule) = local_included_rule {
+                            let copy_rule = *rule.clone();
+                            pattern_id = RuleFactory::get_compiled_rule_id(copy_rule, *helper, repository.clone());
+                        } else {
+                            println!("CANNOT find rule for scopeName: {:?}", pattern.clone().include);
+                        }
+                    }
+                }
+            }
+        }
 
         let result = ICompilePatternsResult {
             patterns: r,
