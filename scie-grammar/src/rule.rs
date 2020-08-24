@@ -6,7 +6,7 @@ use dyn_clone::{clone_trait_object, DynClone};
 #[derive(Clone, Debug)]
 pub struct ICompilePatternsResult {
     pub patterns: Vec<i32>,
-    pub has_missing_patterns: bool
+    pub has_missing_patterns: bool,
 }
 
 pub struct RuleFactory {}
@@ -56,13 +56,13 @@ impl RuleFactory {
     pub fn compile_patterns(
         patterns: Option<Vec<IRawRule>>,
         helper: Box<&mut dyn IRuleFactoryHelper>,
-        repository: IRawRepository
+        repository: IRawRepository,
     ) -> ICompilePatternsResult {
         let mut r: Vec<i32> = vec![];
 
         let result = ICompilePatternsResult {
             patterns: r,
-            has_missing_patterns: false
+            has_missing_patterns: false,
         };
 
         result
@@ -123,7 +123,30 @@ impl RuleFactory {
                 return desc.id.unwrap();
             }
 
-            
+            if let Some(while_s) = desc.while_s {
+                let begin_rule_factory = RuleFactory::compile_captures(desc.begin_captures, helper, repository.clone());
+                let end_rule_factory = RuleFactory::compile_captures(desc.end_captures, helper, repository.clone());
+                let pattern_factory = RuleFactory::compile_patterns(
+                    desc.patterns.clone(),
+                    Box::new(helper),
+                    repository.clone(),
+                );
+
+                let rule = BeginWhileRule::new(
+                    desc.location.clone(),
+                    desc.id.unwrap(),
+                    desc.name.clone(),
+                    desc.content_name.clone(),
+                    desc.begin,
+                    begin_rule_factory,
+                    desc.end,
+                    end_rule_factory,
+                    pattern_factory,
+                );
+
+                helper.register_rule(Box::new(rule));
+                return desc.id.unwrap();
+            }
         }
 
         desc.id.unwrap()
@@ -202,6 +225,22 @@ impl AbstractRule for IncludeOnlyRule {}
 #[derive(Clone, Debug)]
 pub struct BeginWhileRule {
     pub rule: Rule,
+}
+
+impl BeginWhileRule {
+    pub fn new(location: Option<ILocation>, id: i32, name: Option<String>, content_name: Option<String>,
+               begin: Option<String>, begin_captures: Vec<CaptureRule>,
+               _while: Option<String>, while_captures: Vec<CaptureRule>,
+               patterns: ICompilePatternsResult) -> BeginEndRule {
+        BeginEndRule {
+            rule: Rule {
+                location,
+                id,
+                name,
+                content_name
+            }
+        }
+    }
 }
 
 impl AbstractRule for BeginWhileRule {}
