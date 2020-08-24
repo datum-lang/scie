@@ -340,8 +340,11 @@ mod tests {
         let p: IRawRule = serde_json::from_str(data).unwrap();
         let repository_map = p.repository.unwrap().map.name_map.clone();
         let pattern_len = repository_map
-            .get("function_names").unwrap()
-            .patterns.clone().unwrap()
+            .get("function_names")
+            .unwrap()
+            .patterns
+            .clone()
+            .unwrap()
             .len();
         assert_eq!(3, pattern_len)
     }
@@ -370,11 +373,19 @@ mod tests {
         }"#;
 
         let p: IRawGrammar = serde_json::from_str(data).unwrap();
-        let pattern = p
-            .patterns;
-        assert_eq!("meta.package.java", String::from(pattern[0].clone().name.unwrap()));
-        assert_eq!("^\\s*(package)\\b(?:\\s*([^ ;$]+)\\s*(;)?)?", String::from(pattern[0].clone().match_s.unwrap()));
-        assert_eq!(3, pattern[0].clone().captures.unwrap().map.capture_map.len());
+        let pattern = p.patterns;
+        assert_eq!(
+            "meta.package.java",
+            String::from(pattern[0].clone().name.unwrap())
+        );
+        assert_eq!(
+            "^\\s*(package)\\b(?:\\s*([^ ;$]+)\\s*(;)?)?",
+            String::from(pattern[0].clone().match_s.unwrap())
+        );
+        assert_eq!(
+            3,
+            pattern[0].clone().captures.unwrap().map.capture_map.len()
+        );
     }
 
     #[test]
@@ -417,9 +428,7 @@ mod tests {
         file.read_to_string(&mut data).unwrap();
         let p: IRawGrammar = match serde_json::from_str(&data) {
             Ok(x) => x,
-            Err(err) => {
-                IRawGrammar::new()
-            }
+            Err(err) => IRawGrammar::new(),
         };
         assert_eq!(25, p.repository.unwrap().map.name_map.len());
     }

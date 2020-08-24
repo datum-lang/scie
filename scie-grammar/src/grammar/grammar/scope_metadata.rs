@@ -3,7 +3,7 @@ pub enum TemporaryStandardTokenType {
     Comment,
     String,
     RegEx,
-    MetaEmbedded
+    MetaEmbedded,
 }
 
 pub struct ScopeMetadata {
@@ -12,7 +12,4 @@ pub struct ScopeMetadata {
     pub token_type: TemporaryStandardTokenType,
 }
 
-pub struct ScopeMetadataProvider {
-
-}
-
+pub struct ScopeMetadataProvider {}

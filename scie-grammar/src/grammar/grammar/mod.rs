@@ -1,13 +1,16 @@
-pub mod stack_element;
 pub mod scope_list_element;
 pub mod scope_metadata;
+pub mod stack_element;
 
-use crate::inter::{IRawGrammar, IRawRepository, ILocation, IRawRule, IRawRepositoryMap};
-use crate::rule::{RuleFactory, IRuleFactoryHelper, IGrammarRegistry, IRuleRegistry, Rule, AbstractRule, BeginEndRule};
-use onig::*;
-use std::collections::HashMap;
-use std::borrow::Borrow;
 use crate::grammar::grammar::stack_element::StackElement;
+use crate::inter::{ILocation, IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
+use crate::rule::{
+    AbstractRule, BeginEndRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule,
+    RuleFactory,
+};
+use onig::*;
+use std::borrow::Borrow;
+use std::collections::HashMap;
 
 pub struct IToken {
     pub start_index: i32,
@@ -106,20 +109,28 @@ impl Grammar {
         if self.root_id == -1 {
             let repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.base_s.unwrap();
-            self.root_id = RuleFactory::get_compiled_rule_id(based.clone(), self, repository.clone());
+            self.root_id =
+                RuleFactory::get_compiled_rule_id(based.clone(), self, repository.clone());
         }
 
         let mut is_first_line: bool = false;
         if let None = prev_state {
             is_first_line = true
-        } else {}
+        } else {
+        }
 
         let lineText = format!("{:?}\n", line_text);
         let onigLineText = self.create_onig_string(lineText);
         self.tokenize_string(onigLineText.parse().unwrap(), is_first_line, 0, true)
     }
 
-    pub fn tokenize_string(&mut self, line_text: String, is_first_line: bool, line_pos: i32, check_while_conditions: bool) {
+    pub fn tokenize_string(
+        &mut self,
+        line_text: String,
+        is_first_line: bool,
+        line_pos: i32,
+        check_while_conditions: bool,
+    ) {
         let line_length = line_text.len();
 
         let mut stop = false;
@@ -132,9 +143,22 @@ impl Grammar {
         self.match_rule_or_injections(line_text, is_first_line, line_pos, anchorPosition);
     }
 
-    pub fn check_while_conditions(&mut self, line_text: String, is_first_line: bool, line_pos: i32) {}
+    pub fn check_while_conditions(
+        &mut self,
+        line_text: String,
+        is_first_line: bool,
+        line_pos: i32,
+    ) {
+    }
 
-    pub fn match_rule_or_injections(&mut self, line_text: String, is_first_line: bool, line_pos: i32, anchor_position: i32) {}
+    pub fn match_rule_or_injections(
+        &mut self,
+        line_text: String,
+        is_first_line: bool,
+        line_pos: i32,
+        anchor_position: i32,
+    ) {
+    }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
         self.tokenize(line_text, prev_state, false)
@@ -146,7 +170,11 @@ impl Grammar {
 impl IRuleFactoryHelper for Grammar {}
 
 impl IGrammarRegistry for Grammar {
-    fn get_external_grammar(&self, scope_name: String, repository: IRawRepository) -> Option<IRawGrammar> {
+    fn get_external_grammar(
+        &self,
+        scope_name: String,
+        repository: IRawRepository,
+    ) -> Option<IRawGrammar> {
         None
     }
 }
@@ -162,18 +190,19 @@ impl IRuleRegistry for Grammar {
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
-        self.rule_id2desc.insert(self.last_rule_id.clone(), result.clone());
+        self.rule_id2desc
+            .insert(self.last_rule_id.clone(), result.clone());
         result
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use std::path::Path;
-    use std::fs::File;
-    use crate::inter::IRawGrammar;
-    use std::io::Read;
     use crate::grammar::grammar::Grammar;
+    use crate::inter::IRawGrammar;
+    use std::fs::File;
+    use std::io::Read;
+    use std::path::Path;
 
     #[test]
     fn should_enable_run_grammar() {
@@ -185,13 +214,15 @@ mod tests {
         let g: IRawGrammar = serde_json::from_str(&data).unwrap();
 
         let mut grammar = Grammar::new(g);
-        let c_code = String::from("
+        let c_code = String::from(
+            "
 #include <stdio.h>
 int main() {
    printf(\"Hello, World!\");
    return 0;
 }
-");
+",
+        );
         for line in c_code.lines() {
             grammar.tokenize_line(String::from(line), None)
         }

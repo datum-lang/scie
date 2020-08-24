@@ -1,13 +1,17 @@
-use crate::inter::{IRawRepository, IRawGrammar, ILocation, IRawRule, IRawCaptures};
+use crate::grammar::grammar::Grammar;
+use crate::inter::{ILocation, IRawCaptures, IRawGrammar, IRawRepository, IRawRule};
+use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
 use std::borrow::Borrow;
-use crate::grammar::grammar::Grammar;
-use core::fmt;
 
 pub struct RuleFactory {}
 
 impl RuleFactory {
-    fn _compile_captures(captures: Option<Box<IRawCaptures>>, helper: &mut Grammar, repository: IRawRepository) -> Vec<CaptureRule> {
+    fn _compile_captures(
+        captures: Option<Box<IRawCaptures>>,
+        helper: &mut Grammar,
+        repository: IRawRepository,
+    ) -> Vec<CaptureRule> {
         let mut r = vec![];
 
         if let Some(capts) = captures.clone() {
@@ -27,7 +31,10 @@ impl RuleFactory {
                 let numeric_capture_id: i32 = id_str.parse().unwrap_or(0);
                 let mut retokenizeCapturedWithRuleId = 0;
                 println!("{:?}", numeric_capture_id.clone().to_string());
-                let options_patterns = cloned_capts.map.capture_map.get(&*numeric_capture_id.to_string());
+                let options_patterns = cloned_capts
+                    .map
+                    .capture_map
+                    .get(&*numeric_capture_id.to_string());
                 if let None = options_patterns {
                     // retokenizeCapturedWithRuleId = RuleFactory::get_compiled_rule_id(captures.clone[id_str], helper, repository.clone());
                 }
@@ -37,7 +44,11 @@ impl RuleFactory {
 
         r
     }
-    pub fn get_compiled_rule_id(mut desc: IRawRule, helper: &mut Grammar, repository: IRawRepository) -> i32 {
+    pub fn get_compiled_rule_id(
+        mut desc: IRawRule,
+        helper: &mut Grammar,
+        repository: IRawRepository,
+    ) -> i32 {
         match desc.id {
             None => {
                 let id = helper.register_id();
@@ -49,7 +60,11 @@ impl RuleFactory {
                         id.clone(),
                         desc.name.clone(),
                         match_s.clone(),
-                        RuleFactory::_compile_captures(desc.captures.clone(), helper, repository.clone()),
+                        RuleFactory::_compile_captures(
+                            desc.captures.clone(),
+                            helper,
+                            repository.clone(),
+                        ),
                     );
                 };
                 // helper.register_rule();
@@ -63,7 +78,6 @@ impl RuleFactory {
     pub fn create_capture_rule() {}
 }
 
-
 #[derive(Clone, Debug)]
 pub struct Rule {
     pub location: Option<ILocation>,
@@ -73,8 +87,18 @@ pub struct Rule {
 }
 
 impl Rule {
-    pub fn new(location: ILocation, id: i32, name: Option<String>, content_name: Option<String>) -> Self {
-        Rule { location: Some(location), id, name, content_name }
+    pub fn new(
+        location: ILocation,
+        id: i32,
+        name: Option<String>,
+        content_name: Option<String>,
+    ) -> Self {
+        Rule {
+            location: Some(location),
+            id,
+            name,
+            content_name,
+        }
     }
 }
 
@@ -93,14 +117,14 @@ clone_trait_object!(AbstractRule);
 
 #[derive(Clone, Debug)]
 pub struct IncludeOnlyRule {
-    pub rule: Rule
+    pub rule: Rule,
 }
 
 impl AbstractRule for IncludeOnlyRule {}
 
 #[derive(Clone, Debug)]
 pub struct BeginWhileRule {
-    pub rule: Rule
+    pub rule: Rule,
 }
 
 impl AbstractRule for BeginWhileRule {}
@@ -113,7 +137,13 @@ pub struct MatchRule {
 }
 
 impl MatchRule {
-    pub fn new(location: Option<ILocation>, id: i32, name: Option<String>, match_s: String, captures: Vec<CaptureRule>) -> Self {
+    pub fn new(
+        location: Option<ILocation>,
+        id: i32,
+        name: Option<String>,
+        match_s: String,
+        captures: Vec<CaptureRule>,
+    ) -> Self {
         MatchRule {
             rule: Rule {
                 location,
@@ -131,26 +161,30 @@ impl AbstractRule for MatchRule {}
 
 #[derive(Clone, Debug)]
 pub struct BeginEndRule {
-    pub rule: Rule
+    pub rule: Rule,
 }
 
 impl AbstractRule for BeginEndRule {}
 
 #[derive(Clone, Debug)]
 pub struct CaptureRule {
-    pub rule: Rule
+    pub rule: Rule,
 }
 
 impl CaptureRule {
     pub fn new() -> Self {
         CaptureRule {
-            rule: Rule { location: None, id: 0, name: None, content_name: None }
+            rule: Rule {
+                location: None,
+                id: 0,
+                name: None,
+                content_name: None,
+            },
         }
     }
 }
 
 impl AbstractRule for CaptureRule {}
-
 
 // todo: trait with types
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2
@@ -164,7 +198,11 @@ pub trait IRuleRegistry {
 }
 
 pub trait IGrammarRegistry {
-    fn get_external_grammar(&self, scope_name: String, repository: IRawRepository) -> Option<IRawGrammar>;
+    fn get_external_grammar(
+        &self,
+        scope_name: String,
+        repository: IRawRepository,
+    ) -> Option<IRawGrammar>;
 }
 
 pub trait IRuleFactoryHelper: IGrammarRegistry + IRuleRegistry {}
