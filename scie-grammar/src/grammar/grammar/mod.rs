@@ -3,10 +3,9 @@ pub mod scope_metadata;
 pub mod stack_element;
 
 use crate::grammar::grammar::stack_element::StackElement;
-use crate::inter::{ILocation, IRawGrammar, IRawRepository, IRawRule, IRawRepositoryMap};
+use crate::inter::{ILocation, IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::{
-    AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule,
-    RuleFactory,
+    AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule, RuleFactory,
 };
 use onig::*;
 use std::collections::HashMap;
@@ -68,7 +67,14 @@ pub fn init_grammar(grammar: IRawGrammar, base: Option<IRawRule>) -> IRawGrammar
     let mut repository_map = IRawRepositoryMap::new();
     repository_map.base_s = Some(new_based.clone());
     repository_map.self_s = Some(new_based.clone());
-    repository_map.name_map = grammar.clone().repository.unwrap().clone().map.name_map.clone();
+    repository_map.name_map = grammar
+        .clone()
+        .repository
+        .unwrap()
+        .clone()
+        .map
+        .name_map
+        .clone();
 
     _grammar.repository = Some(IRawRepository {
         map: Box::new(repository_map.clone()),
@@ -155,7 +161,6 @@ impl Grammar {
         line_pos: i32,
         anchor_position: i32,
     ) {
-
     }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {

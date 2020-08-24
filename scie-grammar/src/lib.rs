@@ -4,6 +4,7 @@ pub mod grammar;
 pub mod grammar_registry;
 pub mod inter;
 pub mod rule;
+pub mod reg_exp_source;
 
 #[cfg(test)]
 mod tests {

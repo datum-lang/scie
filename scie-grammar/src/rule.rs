@@ -2,6 +2,7 @@ use crate::grammar::grammar::Grammar;
 use crate::inter::{ILocation, IRawCaptures, IRawGrammar, IRawRepository, IRawRule};
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
+use crate::reg_exp_source::{RegExpSource, RegExpSourceList};
 
 #[derive(Clone, Debug)]
 pub struct ICompilePatternsResult {
@@ -44,7 +45,8 @@ impl RuleFactory {
 
                 let desc = captures.clone().unwrap().map.capture_map[&id_str].clone();
                 if let Some(rule) = options_patterns {
-                    retokenizeCapturedWithRuleId = RuleFactory::get_compiled_rule_id(desc, helper, repository.clone());
+                    retokenizeCapturedWithRuleId =
+                        RuleFactory::get_compiled_rule_id(desc, helper, repository.clone());
                 }
                 // r[numericCaptureId] = RuleFactory::create_capture_rule(helper, desc.location, desc.name, desc.content_name, retokenizeCapturedWithRuleId);
             }
@@ -88,7 +90,8 @@ impl RuleFactory {
                     id.clone(),
                     desc.name.clone(),
                     match_s.clone(),
-                    rule_factory, );
+                    rule_factory,
+                );
 
                 helper.register_rule(Box::new(rule));
                 return desc.id.unwrap();
@@ -124,8 +127,10 @@ impl RuleFactory {
             }
 
             if let Some(while_s) = desc.while_s {
-                let begin_rule_factory = RuleFactory::compile_captures(desc.begin_captures, helper, repository.clone());
-                let end_rule_factory = RuleFactory::compile_captures(desc.end_captures, helper, repository.clone());
+                let begin_rule_factory =
+                    RuleFactory::compile_captures(desc.begin_captures, helper, repository.clone());
+                let end_rule_factory =
+                    RuleFactory::compile_captures(desc.end_captures, helper, repository.clone());
                 let pattern_factory = RuleFactory::compile_patterns(
                     desc.patterns.clone(),
                     Box::new(helper),
@@ -147,6 +152,32 @@ impl RuleFactory {
                 helper.register_rule(Box::new(rule));
                 return desc.id.unwrap();
             }
+
+            let begin_rule_factory =
+                RuleFactory::compile_captures(desc.begin_captures, helper, repository.clone());
+            let end_rule_factory =
+                RuleFactory::compile_captures(desc.end_captures, helper, repository.clone());
+            let pattern_factory = RuleFactory::compile_patterns(
+                desc.patterns.clone(),
+                Box::new(helper),
+                repository.clone(),
+            );
+
+            let rule = BeginEndRule::new(
+                desc.location.clone(),
+                desc.id.unwrap(),
+                desc.name.clone(),
+                desc.content_name.clone(),
+                desc.begin.unwrap().clone(),
+                begin_rule_factory,
+                desc.end,
+                end_rule_factory,
+                desc.apply_end_pattern_last,
+                pattern_factory,
+            );
+
+            helper.register_rule(Box::new(rule));
+            return desc.id.unwrap();
         }
 
         desc.id.unwrap()
@@ -179,9 +210,6 @@ impl Rule {
     }
 }
 
-#[derive(Clone, Debug)]
-pub struct RegExpSource {}
-
 pub trait AbstractRule: DynClone {}
 
 impl fmt::Debug for dyn AbstractRule {
@@ -195,7 +223,6 @@ clone_trait_object!(AbstractRule);
 #[derive(Clone, Debug)]
 pub struct IncludeOnlyRule {
     pub rule: Rule,
-    pub _match: RegExpSource,
     pub captures: ICompilePatternsResult,
 }
 
@@ -214,7 +241,6 @@ impl IncludeOnlyRule {
                 name,
                 content_name: None,
             },
-            _match: RegExpSource {},
             captures,
         }
     }
@@ -228,17 +254,26 @@ pub struct BeginWhileRule {
 }
 
 impl BeginWhileRule {
-    pub fn new(location: Option<ILocation>, id: i32, name: Option<String>, content_name: Option<String>,
-               begin: Option<String>, begin_captures: Vec<CaptureRule>,
-               _while: Option<String>, while_captures: Vec<CaptureRule>,
-               patterns: ICompilePatternsResult) -> BeginEndRule {
+    pub fn new(
+        location: Option<ILocation>,
+        id: i32,
+        name: Option<String>,
+        content_name: Option<String>,
+        begin: Option<String>,
+        begin_captures: Vec<CaptureRule>,
+        _while: Option<String>,
+        while_captures: Vec<CaptureRule>,
+        patterns: ICompilePatternsResult,
+    ) -> BeginEndRule {
         BeginEndRule {
-            rule: Rule {
-                location,
-                id,
-                name,
-                content_name
-            }
+            rule: Rule { location, id, name, content_name },
+            _begin: RegExpSource::new(begin.unwrap().clone(), id.clone()),
+            begin_captures: None,
+            _end: None,
+            end_captures: None,
+            apply_end_pattern_last: None,
+            patterns: None,
+            cached_compiled_patterns: None
         }
     }
 }
@@ -261,13 +296,8 @@ impl MatchRule {
         captures: Vec<CaptureRule>,
     ) -> Self {
         MatchRule {
-            rule: Rule {
-                location,
-                id,
-                name,
-                content_name: None,
-            },
-            _match: RegExpSource {},
+            rule: Rule { location, id, name, content_name: None },
+            _match: RegExpSource::new(match_s, id),
             captures,
         }
     }
@@ -278,6 +308,41 @@ impl AbstractRule for MatchRule {}
 #[derive(Clone, Debug)]
 pub struct BeginEndRule {
     pub rule: Rule,
+    pub _begin: RegExpSource,
+    pub begin_captures: Option<Vec<CaptureRule>>,
+    pub _end: Option<RegExpSource>,
+    // pub endHasBackReferences: Option<bool>,
+    pub end_captures: Option<Vec<CaptureRule>>,
+    pub apply_end_pattern_last: Option<bool>,
+    // pub hasMissingPatterns: Option<bool>,
+    pub patterns: Option<i32>,
+    pub cached_compiled_patterns: Option<RegExpSourceList>,
+}
+
+impl BeginEndRule {
+    pub fn new(
+        location: Option<ILocation>,
+        id: i32,
+        name: Option<String>,
+        content_name: Option<String>,
+        begin: String,
+        begin_captures: Vec<CaptureRule>,
+        _while: Option<String>,
+        while_captures: Vec<CaptureRule>,
+        apply_end_pattern_last: Option<bool>,
+        patterns: ICompilePatternsResult,
+    ) -> BeginEndRule {
+        BeginEndRule {
+            rule: Rule { location, id, name, content_name },
+            _begin: RegExpSource::new(begin.clone(), id.clone()),
+            begin_captures: None,
+            _end: None,
+            end_captures: None,
+            apply_end_pattern_last,
+            patterns: None,
+            cached_compiled_patterns: None
+        }
+    }
 }
 
 impl AbstractRule for BeginEndRule {}
