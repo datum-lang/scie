@@ -9,7 +9,6 @@ use crate::rule::{
     RuleFactory,
 };
 use onig::*;
-use std::borrow::Borrow;
 use std::collections::HashMap;
 
 pub struct IToken {

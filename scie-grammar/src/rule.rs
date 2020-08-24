@@ -2,7 +2,6 @@ use crate::grammar::grammar::Grammar;
 use crate::inter::{ILocation, IRawCaptures, IRawGrammar, IRawRepository, IRawRule};
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
-use std::borrow::Borrow;
 
 pub struct RuleFactory {}
 
@@ -49,27 +48,25 @@ impl RuleFactory {
         helper: &mut Grammar,
         repository: IRawRepository,
     ) -> i32 {
-        match desc.id {
-            None => {
-                let id = helper.register_id();
-                desc.id = Some(id.clone());
+        if let None = desc.id {
+            let id = helper.register_id();
+            desc.id = Some(id.clone());
 
-                if let Some(match_s) = desc.match_s {
-                    MatchRule::new(
-                        desc.location.clone(),
-                        id.clone(),
-                        desc.name.clone(),
-                        match_s.clone(),
-                        RuleFactory::_compile_captures(
-                            desc.captures.clone(),
-                            helper,
-                            repository.clone(),
-                        ),
-                    );
-                };
-                // helper.register_rule();
-            }
-            Some(_) => {}
+            if let Some(match_s) = desc.match_s {
+                let rule_factory = RuleFactory::_compile_captures(
+                    desc.captures.clone(),
+                    helper,
+                    repository.clone(),
+                );
+                MatchRule::new(
+                    desc.location.clone(),
+                    id.clone(),
+                    desc.name.clone(),
+                    match_s.clone(),
+                    rule_factory,
+                );
+            };
+            // helper.register_rule();
         }
 
         desc.id.unwrap()
