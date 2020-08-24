@@ -120,6 +120,7 @@ impl Grammar {
         if let None = prev_state {
             is_first_line = true
         } else {
+
         }
 
         let lineText = format!("{:?}\n", line_text);
@@ -209,7 +210,7 @@ mod tests {
 
     #[test]
     fn should_enable_run_grammar() {
-        let path = Path::new("test-cases/first-mate/fixtures/java.json");
+        let path = Path::new("test-cases/first-mate/fixtures/c.json");
         let mut file = File::open(path).unwrap();
         let mut data = String::new();
         file.read_to_string(&mut data).unwrap();

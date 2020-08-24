@@ -85,7 +85,7 @@ impl RuleFactory {
                     helper,
                     repository.clone(),
                 );
-                let rule = MatchRule::new(
+                let match_rule = MatchRule::new(
                     desc.location.clone(),
                     id.clone(),
                     desc.name.clone(),
@@ -93,7 +93,7 @@ impl RuleFactory {
                     rule_factory,
                 );
 
-                helper.register_rule(Box::new(rule));
+                helper.register_rule(Box::new(match_rule));
                 return desc.id.unwrap();
             };
 
@@ -115,14 +115,14 @@ impl RuleFactory {
                     Box::new(helper),
                     repository.clone(),
                 );
-                let rule = IncludeOnlyRule::new(
+                let include_only_rule = IncludeOnlyRule::new(
                     desc.location.clone(),
                     desc.id.unwrap().clone(),
                     desc.name.clone(),
                     desc.content_name.clone(),
                     rule_factory,
                 );
-                helper.register_rule(Box::new(rule));
+                helper.register_rule(Box::new(include_only_rule));
                 return desc.id.unwrap();
             }
 
@@ -137,7 +137,7 @@ impl RuleFactory {
                     repository.clone(),
                 );
 
-                let rule = BeginWhileRule::new(
+                let begin_while_rule = BeginWhileRule::new(
                     desc.location.clone(),
                     desc.id.unwrap(),
                     desc.name.clone(),
@@ -149,7 +149,7 @@ impl RuleFactory {
                     pattern_factory,
                 );
 
-                helper.register_rule(Box::new(rule));
+                helper.register_rule(Box::new(begin_while_rule));
                 return desc.id.unwrap();
             }
 
@@ -163,7 +163,7 @@ impl RuleFactory {
                 repository.clone(),
             );
 
-            let rule = BeginEndRule::new(
+            let begin_end_rule = BeginEndRule::new(
                 desc.location.clone(),
                 desc.id.unwrap(),
                 desc.name.clone(),
@@ -176,7 +176,7 @@ impl RuleFactory {
                 pattern_factory,
             );
 
-            helper.register_rule(Box::new(rule));
+            helper.register_rule(Box::new(begin_end_rule));
             return desc.id.unwrap();
         }
 
