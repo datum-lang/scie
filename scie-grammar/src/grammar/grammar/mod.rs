@@ -189,8 +189,8 @@ impl IRuleRegistry for Grammar {
         self.last_rule_id
     }
 
-    fn get_rule(&self, pattern_id: i32) -> Rule {
-        Rule::new(ILocation::new(), pattern_id, None, None)
+    fn get_rule(&self, pattern_id: i32) -> Box<dyn AbstractRule> {
+        self.rule_id2desc[&pattern_id].clone()
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
@@ -210,7 +210,7 @@ mod tests {
 
     #[test]
     fn should_enable_run_grammar() {
-        let path = Path::new("test-cases/first-mate/fixtures/java.json");
+        let path = Path::new("test-cases/first-mate/fixtures/c.json");
         let mut file = File::open(path).unwrap();
         let mut data = String::new();
         file.read_to_string(&mut data).unwrap();

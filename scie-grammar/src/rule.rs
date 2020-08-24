@@ -42,7 +42,7 @@ impl RuleFactory {
             for (id_str, value) in capts.clone().map.capture_map {
                 let numeric_capture_id: i32 = id_str.parse().unwrap_or(0);
                 let mut retokenizeCapturedWithRuleId = 0;
-                println!("{:?}", numeric_capture_id.clone().to_string());
+                // println!("{:?}", numeric_capture_id.clone().to_string());
                 let options_patterns = cloned_capts
                     .map
                     .capture_map
@@ -88,6 +88,7 @@ impl RuleFactory {
                             pattern_id = RuleFactory::get_compiled_rule_id(*(rule).clone(), &mut (*helper).clone(), repository.clone());
                         }
                     } else {
+                        println!("todo: {:?}", pattern.include);
                         let mut external_grammar_name: Option<String> = None;
                         let mut external_grammar_include: Option<String> = None;
                         let include_string = pattern.include.unwrap();
@@ -100,9 +101,16 @@ impl RuleFactory {
                             let (_, include_last) = include_string.split_at(index + 1);
                             external_grammar_include = Some(String::from(include_last));
 
-                            // println!("{:?}, {:?}", external_grammar_name, external_grammar_include);
+                            println!("{:?}, {:?}", external_grammar_name, external_grammar_include);
                         }
                     }
+                } else {
+                    pattern_id = RuleFactory::get_compiled_rule_id(pattern, &mut (*helper).clone(), repository.clone());
+                }
+
+                if pattern_id != -1 {
+                    let rule = helper.get_rule(pattern_id);
+                    println!("{:?}", rule)
                 }
             }
         }
@@ -202,12 +210,13 @@ impl RuleFactory {
                 RuleFactory::compile_captures(desc.begin_captures, helper, repository.clone());
             let end_rule_factory =
                 RuleFactory::compile_captures(desc.end_captures, helper, repository.clone());
-            let pattern_factory = RuleFactory::compile_patterns(
-                desc.patterns.clone(),
-                Box::new(helper),
-                repository.clone(),
-            );
+            // let pattern_factory = RuleFactory::compile_patterns(
+            //     desc.patterns.clone(),
+            //     Box::new(helper),
+            //     repository.clone(),
+            // );
 
+            // todo: register with compile patterns
             let begin_end_rule = BeginEndRule::new(
                 desc.location.clone(),
                 desc.id.unwrap(),
@@ -218,7 +227,7 @@ impl RuleFactory {
                 desc.end,
                 end_rule_factory,
                 desc.apply_end_pattern_last,
-                pattern_factory,
+                // pattern_factory,
             );
 
             helper.register_rule(Box::new(begin_end_rule));
@@ -375,7 +384,7 @@ impl BeginEndRule {
         _while: Option<String>,
         while_captures: Vec<CaptureRule>,
         apply_end_pattern_last: Option<bool>,
-        patterns: ICompilePatternsResult,
+        // patterns: ICompilePatternsResult,
     ) -> BeginEndRule {
         BeginEndRule {
             rule: Rule { location, id, name, content_name },
@@ -419,7 +428,7 @@ pub trait IRuleRegistry {
     // fn method(&self) -> Self::Output;
 
     fn register_id(&mut self) -> i32;
-    fn get_rule(&self, pattern_id: i32) -> Rule;
+    fn get_rule(&self, pattern_id: i32) -> Box<dyn AbstractRule>;
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule>;
 }
 
