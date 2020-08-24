@@ -13,5 +13,5 @@ pub struct StackElement {
 }
 
 impl StackElement {
-    pub fn NULL() {}
+    pub fn null() {}
 }

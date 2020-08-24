@@ -87,6 +87,21 @@ impl RuleFactory {
                         if let Some(rule) = local_included_rule {
                             pattern_id = RuleFactory::get_compiled_rule_id(*(rule).clone(), &mut (*helper).clone(), repository.clone());
                         }
+                    } else {
+                        let mut external_grammar_name: Option<String> = None;
+                        let mut external_grammar_include: Option<String> = None;
+                        let include_string = pattern.include.unwrap();
+                        let sharp_index = include_string.find("#");
+
+                        if let Some(index) = sharp_index {
+                            let (_, last) = include_string.split_at(index);
+                            external_grammar_name = Some(String::from(last));
+
+                            let (_, include_last) = include_string.split_at(index + 1);
+                            external_grammar_include = Some(String::from(include_last));
+
+                            // println!("{:?}, {:?}", external_grammar_name, external_grammar_include);
+                        }
                     }
                 }
             }

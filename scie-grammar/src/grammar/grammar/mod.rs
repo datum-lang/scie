@@ -123,8 +123,8 @@ impl Grammar {
 
         }
 
-        let lineText = format!("{:?}\n", line_text);
-        let onig_line_text = self.create_onig_string(lineText);
+        let format_line_text = format!("{:?}\n", line_text);
+        let onig_line_text = self.create_onig_string(format_line_text);
         self.tokenize_string(onig_line_text.parse().unwrap(), is_first_line, 0, true)
     }
 
@@ -210,7 +210,7 @@ mod tests {
 
     #[test]
     fn should_enable_run_grammar() {
-        let path = Path::new("test-cases/first-mate/fixtures/c.json");
+        let path = Path::new("test-cases/first-mate/fixtures/java.json");
         let mut file = File::open(path).unwrap();
         let mut data = String::new();
         file.read_to_string(&mut data).unwrap();
