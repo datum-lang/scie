@@ -153,7 +153,8 @@ pub struct IRawGrammar {
     pub location: Option<ILocatable>,
 
     #[serde(alias = "scopeName")]
-    pub scope_name: String,
+    pub scope_name: Option<String>,
+
     pub patterns: Vec<IRawRule>,
 
     pub injections: Option<InjectionMap>,
@@ -183,7 +184,7 @@ impl IRawGrammar {
         IRawGrammar {
             location: None,
             repository: None,
-            scope_name: "".to_string(),
+            scope_name: Some("".to_string()),
             patterns: vec![],
             injections: None,
             injection_selector: None,
@@ -339,13 +340,41 @@ mod tests {
         let p: IRawRule = serde_json::from_str(data).unwrap();
         let repository_map = p.repository.unwrap().map.name_map.clone();
         let pattern_len = repository_map
-            .get("function_names")
-            .unwrap()
-            .patterns
-            .clone()
-            .unwrap()
+            .get("function_names").unwrap()
+            .patterns.clone().unwrap()
             .len();
         assert_eq!(3, pattern_len)
+    }
+
+    #[test]
+    fn should_convert_patterns() {
+        let data = r#"
+        {
+        	"patterns": [
+                {
+                    "captures": {
+                        "1": {
+                            "name": "keyword.other.package.java"
+                        },
+                        "2": {
+                            "name": "storage.modifier.package.java"
+                        },
+                        "3": {
+                            "name": "punctuation.terminator.java"
+                        }
+                    },
+                    "match": "^\\s*(package)\\b(?:\\s*([^ ;$]+)\\s*(;)?)?",
+                    "name": "meta.package.java"
+                }
+            ]
+        }"#;
+
+        let p: IRawGrammar = serde_json::from_str(data).unwrap();
+        let pattern = p
+            .patterns;
+        assert_eq!("meta.package.java", String::from(pattern[0].clone().name.unwrap()));
+        assert_eq!("^\\s*(package)\\b(?:\\s*([^ ;$]+)\\s*(;)?)?", String::from(pattern[0].clone().match_s.unwrap()));
+        assert_eq!(3, pattern[0].clone().captures.unwrap().map.capture_map.len());
     }
 
     #[test]
@@ -375,13 +404,13 @@ mod tests {
                     IRawGrammar::new()
                 }
             };
-            assert_eq!(true, p.scope_name.len() > 0);
+            assert_eq!(true, p.scope_name.unwrap().len() > 0);
         }
     }
 
     #[test]
     fn should_read_java_repository() {
-        let path = Path::new("test-cases/first-mate/fixtures/json.json");
+        let path = Path::new("test-cases/first-mate/fixtures/java.json");
 
         let mut file = File::open(path).unwrap();
         let mut data = String::new();
@@ -392,6 +421,6 @@ mod tests {
                 IRawGrammar::new()
             }
         };
-        assert_eq!(6, p.repository.unwrap().map.name_map.len());
+        assert_eq!(25, p.repository.unwrap().map.name_map.len());
     }
 }
