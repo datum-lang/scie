@@ -87,7 +87,7 @@ pub struct IRawRule {
     pub include: Option<String>,
     pub name: Option<String>,
 
-    #[serde(alias = "content_name")]
+    #[serde(alias = "contentName")]
     pub content_name: Option<String>,
 
     #[serde(alias = "match")]
@@ -110,9 +110,9 @@ pub struct IRawRule {
     pub patterns: Option<Vec<IRawRule>>,
     pub repository: Option<IRawRepository>,
 
-    pub applyEndPatternLast: Option<bool>,
+    #[serde(alias = "applyEndPatternLast")]
+    pub apply_end_pattern_last: Option<bool>,
 
-    #[serde(alias = "information_for_contributors")]
     pub information_for_contributors: Option<Vec<String>>,
 }
 
@@ -135,7 +135,7 @@ impl IRawRule {
             patterns: None,
             repository: None,
             information_for_contributors: None,
-            applyEndPatternLast: None,
+            apply_end_pattern_last: None,
         }
     }
 }
@@ -377,5 +377,21 @@ mod tests {
             };
             assert_eq!(true, p.scope_name.len() > 0);
         }
+    }
+
+    #[test]
+    fn should_read_java_repository() {
+        let path = Path::new("test-cases/first-mate/fixtures/json.json");
+
+        let mut file = File::open(path).unwrap();
+        let mut data = String::new();
+        file.read_to_string(&mut data).unwrap();
+        let p: IRawGrammar = match serde_json::from_str(&data) {
+            Ok(x) => x,
+            Err(err) => {
+                IRawGrammar::new()
+            }
+        };
+        assert_eq!(6, p.repository.unwrap().map.name_map.len());
     }
 }
