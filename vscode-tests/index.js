@@ -17,7 +17,7 @@ const registry = new vsctm.Registry({
     loadGrammar: (scopeName) => {
         if (scopeName === 'source.c') {
             // https://github.com/textmate/javascript.tmbundle/blob/master/Syntaxes/JavaScript.plist
-            return readFile('./C.plist').then(data => vsctm.parseRawGrammar(data.toString()))
+            return readFile('./syntaxes/plist/C.plist').then(data => vsctm.parseRawGrammar(data.toString()))
         }
         console.log(`Unknown scope name: ${scopeName}`);
         return null;
