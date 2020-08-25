@@ -15,22 +15,23 @@ const registry = new vsctm.Registry({
         createOnigString: (str) => new oniguruma.OnigString(str)
     }),
     loadGrammar: (scopeName) => {
-        if (scopeName === 'source.js') {
+        if (scopeName === 'source.c') {
             // https://github.com/textmate/javascript.tmbundle/blob/master/Syntaxes/JavaScript.plist
-            return readFile('./JavaScript.plist').then(data => vsctm.parseRawGrammar(data.toString()))
+            return readFile('./C.plist').then(data => vsctm.parseRawGrammar(data.toString()))
         }
         console.log(`Unknown scope name: ${scopeName}`);
         return null;
     }
 });
 
-// Load the JavaScript grammar and any other grammars included by it async.
-registry.loadGrammar('source.js').then(grammar => {
-    const text = [
-        `function sayHello(name) {`,
-        `\treturn "Hello, " + name;`,
-        `}`
-    ];
+registry.loadGrammar('source.c').then(grammar => {
+    const text = `
+#include <stdio.h>
+int main() {
+   printf(\\"Hello, World!\\");
+   return 0;
+}
+`.split("\n");
     let ruleStack = vsctm.INITIAL;
     for (let i = 0; i < text.length; i++) {
         const line = text[i];
