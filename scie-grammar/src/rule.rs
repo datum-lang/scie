@@ -60,9 +60,9 @@ impl RuleFactory {
         r
     }
 
-    pub fn compile_patterns(
+    pub fn compile_patterns<'a>(
         origin_patterns: Option<Vec<IRawRule>>,
-        helper: Box<&mut Grammar>,
+        helper: &'a mut Grammar,
         repository: IRawRepository,
     ) -> ICompilePatternsResult {
         let mut r: Vec<i32> = vec![];
@@ -123,11 +123,7 @@ impl RuleFactory {
         result
     }
 
-    pub fn get_compiled_rule_id(
-        mut desc: IRawRule,
-        helper: &mut Grammar,
-        repository: IRawRepository,
-    ) -> i32 {
+    pub fn get_compiled_rule_id<'a>(mut desc: IRawRule, helper: &'a mut Grammar, repository: IRawRepository, ) -> i32 {
         if let None = desc.id {
             let id = helper.register_id();
             desc.id = Some(id.clone());
@@ -165,7 +161,7 @@ impl RuleFactory {
 
                 let rule_factory = RuleFactory::compile_patterns(
                     patterns.clone(),
-                    Box::new(helper),
+                    helper,
                     repository.clone(),
                 );
                 let include_only_rule = IncludeOnlyRule::new(
@@ -186,7 +182,7 @@ impl RuleFactory {
                     RuleFactory::compile_captures(desc.end_captures, helper, repository.clone());
                 let pattern_factory = RuleFactory::compile_patterns(
                     desc.patterns.clone(),
-                    Box::new(helper),
+                    helper,
                     repository.clone(),
                 );
 
@@ -212,7 +208,7 @@ impl RuleFactory {
                 RuleFactory::compile_captures(desc.end_captures, helper, repository.clone());
             // let pattern_factory = RuleFactory::compile_patterns(
             //     desc.patterns.clone(),
-            //     Box::new(helper),
+            //     helper,
             //     repository.clone(),
             // );
 
