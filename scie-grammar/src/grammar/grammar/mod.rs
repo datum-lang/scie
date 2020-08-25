@@ -109,11 +109,12 @@ impl Grammar {
         prev_state: Option<StackElement>,
         emit_binary_tokens: bool,
     ) {
+        let mut rule_factory = RuleFactory::new(self);
         if self.root_id == -1 {
             let repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.base_s.unwrap();
             self.root_id =
-                RuleFactory::get_compiled_rule_id(based.clone(), self, repository.clone());
+                rule_factory.get_compiled_rule_id(based.clone(), repository.clone());
         }
 
         let mut is_first_line: bool = false;
