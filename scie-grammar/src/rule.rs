@@ -1,8 +1,8 @@
 use crate::grammar::grammar::Grammar;
 use crate::inter::{ILocation, IRawCaptures, IRawGrammar, IRawRepository, IRawRule};
+use crate::reg_exp_source::{RegExpSource, RegExpSourceList};
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
-use crate::reg_exp_source::{RegExpSource, RegExpSourceList};
 
 #[derive(Clone, Debug)]
 pub struct ICompilePatternsResult {
@@ -77,15 +77,26 @@ impl RuleFactory {
                         let first = remove_first(include_s.as_str());
                         let local_included_rule = map.get(first);
                         if let Some(rule) = local_included_rule {
-                            pattern_id = RuleFactory::get_compiled_rule_id(*rule.clone(), helper, repository.clone());
+                            pattern_id = RuleFactory::get_compiled_rule_id(
+                                *rule.clone(),
+                                helper,
+                                repository.clone(),
+                            );
                         } else {
-                            println!("CANNOT find rule for scopeName: {:?}", pattern.clone().include);
+                            println!(
+                                "CANNOT find rule for scopeName: {:?}",
+                                pattern.clone().include
+                            );
                         }
                     } else if include_s == "$base" || include_s == "$self" {
                         let option = pattern.include.unwrap();
                         let local_included_rule = map.get(option.as_str());
                         if let Some(rule) = local_included_rule {
-                            pattern_id = RuleFactory::get_compiled_rule_id(*(rule).clone(), helper, repository.clone());
+                            pattern_id = RuleFactory::get_compiled_rule_id(
+                                *(rule).clone(),
+                                helper,
+                                repository.clone(),
+                            );
                         }
                     } else {
                         println!("todo: {:?}", pattern.include);
@@ -101,11 +112,15 @@ impl RuleFactory {
                             let (_, include_last) = include_string.split_at(index + 1);
                             external_grammar_include = Some(String::from(include_last));
 
-                            println!("{:?}, {:?}", external_grammar_name, external_grammar_include);
+                            println!(
+                                "{:?}, {:?}",
+                                external_grammar_name, external_grammar_include
+                            );
                         }
                     }
                 } else {
-                    pattern_id = RuleFactory::get_compiled_rule_id(pattern, helper, repository.clone());
+                    pattern_id =
+                        RuleFactory::get_compiled_rule_id(pattern, helper, repository.clone());
                 }
 
                 if pattern_id != -1 {
@@ -123,7 +138,11 @@ impl RuleFactory {
         result
     }
 
-    pub fn get_compiled_rule_id<'a>(mut desc: IRawRule, helper: &'a mut Grammar, repository: IRawRepository, ) -> i32 {
+    pub fn get_compiled_rule_id<'a>(
+        mut desc: IRawRule,
+        helper: &'a mut Grammar,
+        repository: IRawRepository,
+    ) -> i32 {
         if let None = desc.id {
             let id = helper.register_id();
             desc.id = Some(id.clone());
@@ -159,11 +178,8 @@ impl RuleFactory {
                     }
                 }
 
-                let rule_factory = RuleFactory::compile_patterns(
-                    patterns.clone(),
-                    helper,
-                    repository.clone(),
-                );
+                let rule_factory =
+                    RuleFactory::compile_patterns(patterns.clone(), helper, repository.clone());
                 let include_only_rule = IncludeOnlyRule::new(
                     desc.location.clone(),
                     desc.id.unwrap().clone(),
@@ -316,14 +332,19 @@ impl BeginWhileRule {
         patterns: ICompilePatternsResult,
     ) -> BeginEndRule {
         BeginEndRule {
-            rule: Rule { location, id, name, content_name },
+            rule: Rule {
+                location,
+                id,
+                name,
+                content_name,
+            },
             _begin: RegExpSource::new(begin.unwrap().clone(), id.clone()),
             begin_captures: None,
             _end: None,
             end_captures: None,
             apply_end_pattern_last: None,
             patterns: None,
-            cached_compiled_patterns: None
+            cached_compiled_patterns: None,
         }
     }
 }
@@ -346,7 +367,12 @@ impl MatchRule {
         captures: Vec<CaptureRule>,
     ) -> Self {
         MatchRule {
-            rule: Rule { location, id, name, content_name: None },
+            rule: Rule {
+                location,
+                id,
+                name,
+                content_name: None,
+            },
             _match: RegExpSource::new(match_s, id),
             captures,
         }
@@ -383,14 +409,19 @@ impl BeginEndRule {
         // patterns: ICompilePatternsResult,
     ) -> BeginEndRule {
         BeginEndRule {
-            rule: Rule { location, id, name, content_name },
+            rule: Rule {
+                location,
+                id,
+                name,
+                content_name,
+            },
             _begin: RegExpSource::new(begin.clone(), id.clone()),
             begin_captures: None,
             _end: None,
             end_captures: None,
             apply_end_pattern_last,
             patterns: None,
-            cached_compiled_patterns: None
+            cached_compiled_patterns: None,
         }
     }
 }
@@ -417,12 +448,8 @@ impl CaptureRule {
 
 impl AbstractRule for CaptureRule {}
 
-
-
 #[derive(Clone, Debug)]
-pub struct NoneRule {
-
-}
+pub struct NoneRule {}
 
 impl AbstractRule for NoneRule {}
 

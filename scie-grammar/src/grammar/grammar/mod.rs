@@ -4,7 +4,9 @@ pub mod stack_element;
 
 use crate::grammar::grammar::stack_element::StackElement;
 use crate::inter::{ILocation, IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
-use crate::rule::{AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule, RuleFactory, NoneRule};
+use crate::rule::{
+    AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, NoneRule, Rule, RuleFactory,
+};
 use onig::*;
 use std::collections::HashMap;
 
@@ -118,7 +120,6 @@ impl Grammar {
         if let None = prev_state {
             is_first_line = true
         } else {
-
         }
 
         let format_line_text = format!("{:?}\n", line_text);
@@ -189,10 +190,14 @@ impl IRuleRegistry for Grammar {
 
     fn get_rule(&self, pattern_id: i32) -> Box<dyn AbstractRule> {
         if let Some(rule) = self.rule_id2desc.get(&pattern_id) {
-            return rule.clone()
+            return rule.clone();
         }
         // todo: remove
-        println!("None: rule, {:?}, rule_id2: {:?}", pattern_id, self.rule_id2desc.clone());
+        println!(
+            "None: rule, {:?}, rule_id2: {:?}",
+            pattern_id,
+            self.rule_id2desc.clone()
+        );
         Box::from(NoneRule {})
     }
 
