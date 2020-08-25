@@ -4,9 +4,7 @@ pub mod stack_element;
 
 use crate::grammar::grammar::stack_element::StackElement;
 use crate::inter::{ILocation, IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
-use crate::rule::{
-    AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule, RuleFactory,
-};
+use crate::rule::{AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule, RuleFactory, NoneRule};
 use onig::*;
 use std::collections::HashMap;
 
@@ -190,7 +188,11 @@ impl IRuleRegistry for Grammar {
     }
 
     fn get_rule(&self, pattern_id: i32) -> Box<dyn AbstractRule> {
-        self.rule_id2desc[&pattern_id].clone()
+        if let Some(rule) = self.rule_id2desc.get(&pattern_id) {
+            return rule.clone()
+        }
+        // todo: remove
+        Box::from(NoneRule {})
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {

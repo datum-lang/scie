@@ -77,7 +77,7 @@ impl RuleFactory {
                         let first = remove_first(include_s.as_str());
                         let local_included_rule = map.get(first);
                         if let Some(rule) = local_included_rule {
-                            pattern_id = RuleFactory::get_compiled_rule_id(*rule.clone(), &mut (*helper).clone(), repository.clone());
+                            pattern_id = RuleFactory::get_compiled_rule_id(*rule.clone(), helper, repository.clone());
                         } else {
                             println!("CANNOT find rule for scopeName: {:?}", pattern.clone().include);
                         }
@@ -85,7 +85,7 @@ impl RuleFactory {
                         let option = pattern.include.unwrap();
                         let local_included_rule = map.get(option.as_str());
                         if let Some(rule) = local_included_rule {
-                            pattern_id = RuleFactory::get_compiled_rule_id(*(rule).clone(), &mut (*helper).clone(), repository.clone());
+                            pattern_id = RuleFactory::get_compiled_rule_id(*(rule).clone(), helper, repository.clone());
                         }
                     } else {
                         println!("todo: {:?}", pattern.include);
@@ -105,7 +105,7 @@ impl RuleFactory {
                         }
                     }
                 } else {
-                    pattern_id = RuleFactory::get_compiled_rule_id(pattern, &mut (*helper).clone(), repository.clone());
+                    pattern_id = RuleFactory::get_compiled_rule_id(pattern, helper, repository.clone());
                 }
 
                 if pattern_id != -1 {
@@ -416,6 +416,15 @@ impl CaptureRule {
 }
 
 impl AbstractRule for CaptureRule {}
+
+
+
+#[derive(Clone, Debug)]
+pub struct NoneRule {
+
+}
+
+impl AbstractRule for NoneRule {}
 
 // todo: trait with types
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2
