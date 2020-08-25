@@ -3,6 +3,7 @@ use crate::inter::{ILocation, IRawCaptures, IRawGrammar, IRawRepository, IRawRul
 use crate::reg_exp_source::{RegExpSource, RegExpSourceList};
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
+use crate::support::get_type_of;
 
 #[derive(Clone, Debug)]
 pub struct ICompilePatternsResult {
@@ -125,7 +126,7 @@ impl RuleFactory {
 
                 if pattern_id != -1 {
                     let rule = helper.get_rule(pattern_id);
-                    println!("{:?}", rule)
+                    println!("{:?}", rule.type_of())
                 }
             }
         }
@@ -276,7 +277,9 @@ impl Rule {
     }
 }
 
-pub trait AbstractRule: DynClone {}
+pub trait AbstractRule: DynClone {
+    fn type_of(&self) -> String;
+}
 
 impl fmt::Debug for dyn AbstractRule {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -312,7 +315,11 @@ impl IncludeOnlyRule {
     }
 }
 
-impl AbstractRule for IncludeOnlyRule {}
+impl AbstractRule for IncludeOnlyRule {
+    fn type_of(&self) -> String {
+        String::from("IncludeOnlyRule")
+    }
+}
 
 #[derive(Clone, Debug)]
 pub struct BeginWhileRule {
@@ -349,7 +356,11 @@ impl BeginWhileRule {
     }
 }
 
-impl AbstractRule for BeginWhileRule {}
+impl AbstractRule for BeginWhileRule {
+    fn type_of(&self) -> String {
+        String::from("BeginWhileRule")
+    }
+}
 
 #[derive(Clone, Debug)]
 pub struct MatchRule {
@@ -379,7 +390,11 @@ impl MatchRule {
     }
 }
 
-impl AbstractRule for MatchRule {}
+impl AbstractRule for MatchRule {
+    fn type_of(&self) -> String {
+        String::from("MatchRule")
+    }
+}
 
 #[derive(Clone, Debug)]
 pub struct BeginEndRule {
@@ -426,7 +441,11 @@ impl BeginEndRule {
     }
 }
 
-impl AbstractRule for BeginEndRule {}
+impl AbstractRule for BeginEndRule {
+    fn type_of(&self) -> String {
+        String::from("BeginEndRule")
+    }
+}
 
 #[derive(Clone, Debug)]
 pub struct CaptureRule {
@@ -446,12 +465,20 @@ impl CaptureRule {
     }
 }
 
-impl AbstractRule for CaptureRule {}
+impl AbstractRule for CaptureRule {
+    fn type_of(&self) -> String {
+        String::from("CaptureRule")
+    }
+}
 
 #[derive(Clone, Debug)]
 pub struct NoneRule {}
 
-impl AbstractRule for NoneRule {}
+impl AbstractRule for NoneRule {
+    fn type_of(&self) -> String {
+        String::from("NoneRule")
+    }
+}
 
 // todo: trait with types
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2
