@@ -126,7 +126,12 @@ impl RuleFactory {
 
                 if pattern_id != -1 {
                     let rule = helper.get_rule(pattern_id);
-                    println!("{:?}", rule.type_of())
+                    // let  mut skipRule = false;
+                    // if rule.type_of() == "IncludeOnlyRule" || rule.type_of() == "BeginEndRule" || rule.type_of() == "BeginWhileRule" {
+                    // skipRule = true;
+                    // }
+
+                    r.push(pattern_id);
                 }
             }
         }
