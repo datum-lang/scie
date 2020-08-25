@@ -54,7 +54,7 @@ impl RuleFactory {
                     retokenizeCapturedWithRuleId =
                         RuleFactory::get_compiled_rule_id(desc, helper, repository.clone());
                 }
-                // r[numericCaptureId] = RuleFactory::create_capture_rule(helper, desc.location, desc.name, desc.content_name, retokenizeCapturedWithRuleId);
+                // r[numericCaptureId] = self.create_capture_rule(helper, desc.location, desc.name, desc.content_name, retokenizeCapturedWithRuleId);
             }
         };
 
@@ -151,6 +151,7 @@ impl RuleFactory {
     ) -> i32 {
         if let None = desc.id {
             let id = helper.register_id();
+            println!("{:?}", id.clone());
             desc.id = Some(id.clone());
 
             if let Some(match_s) = desc.match_s {
@@ -188,7 +189,7 @@ impl RuleFactory {
                     RuleFactory::compile_patterns(patterns.clone(), helper, repository.clone());
                 let include_only_rule = IncludeOnlyRule::new(
                     desc.location.clone(),
-                    desc.id.unwrap().clone(),
+                    id.clone(),
                     desc.name.clone(),
                     desc.content_name.clone(),
                     rule_factory,
@@ -210,7 +211,7 @@ impl RuleFactory {
 
                 let begin_while_rule = BeginWhileRule::new(
                     desc.location.clone(),
-                    desc.id.unwrap(),
+                    id.clone(),
                     desc.name.clone(),
                     desc.content_name.clone(),
                     desc.begin,
@@ -237,7 +238,7 @@ impl RuleFactory {
             // todo: register with compile patterns
             let begin_end_rule = BeginEndRule::new(
                 desc.location.clone(),
-                desc.id.unwrap(),
+                id.clone(),
                 desc.name.clone(),
                 desc.content_name.clone(),
                 desc.begin.unwrap().clone(),
