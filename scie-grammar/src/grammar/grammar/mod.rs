@@ -192,6 +192,7 @@ impl IRuleRegistry for Grammar {
             return rule.clone()
         }
         // todo: remove
+        println!("None: rule, {:?}, rule_id2: {:?}", pattern_id, self.rule_id2desc.clone());
         Box::from(NoneRule {})
     }
 
