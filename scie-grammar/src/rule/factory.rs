@@ -58,9 +58,9 @@ impl RuleFactory {
         r
     }
 
-    pub fn compile_patterns<'a>(
+    pub fn compile_patterns(
         origin_patterns: Option<Vec<IRawRule>>,
-        helper: &'a mut Grammar,
+        helper: &mut Grammar,
         repository: IRawRepository,
     ) -> ICompilePatternsResult {
         let mut r: Vec<i32> = vec![];
@@ -141,9 +141,9 @@ impl RuleFactory {
         result
     }
 
-    pub fn get_compiled_rule_id<'a>(
+    pub fn get_compiled_rule_id(
         mut desc: IRawRule,
-        helper: &'a mut Grammar,
+        helper: &mut Grammar,
         repository: IRawRepository,
     ) -> i32 {
         if let None = desc.id {
