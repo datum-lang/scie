@@ -734,6 +734,9 @@ var Grammar = /** @class */ (function () {
         if (this._rootId === -1) {
             this._rootId = rule_1.RuleFactory.getCompiledRuleId(this._grammar.repository.$self, this, this._grammar.repository);
         }
+        // let fs = require('fs');
+        // let data = JSON.stringify(this._ruleId2desc, null, 2);
+        // fs.writeFileSync("ruleid2rule.json", data, 'utf8');
         var isFirstLine;
         if (!prevState || prevState === StackElement.NULL) {
             isFirstLine = true;
