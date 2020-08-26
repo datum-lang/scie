@@ -9,9 +9,12 @@ use serde::{Serialize, Serializer};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct Rule {
+    #[serde(skip_serializing_if="Option::is_none")]
     pub location: Option<ILocation>,
     pub id: i32,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub name: Option<String>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub content_name: Option<String>,
 }
 
@@ -47,6 +50,7 @@ clone_trait_object!(AbstractRule);
 
 #[derive(Clone, Debug, Serialize)]
 pub struct IncludeOnlyRule {
+    #[serde(flatten)]
     pub rule: Rule,
     pub captures: ICompilePatternsResult,
 }
@@ -101,9 +105,9 @@ impl BeginWhileRule {
                 name,
                 content_name,
             },
-            _begin: RegExpSource::new(begin.unwrap().clone(), id.clone()),
+            begin: RegExpSource::new(begin.unwrap().clone(), id.clone()),
             begin_captures: None,
-            _end: None,
+            end: None,
             end_captures: None,
             apply_end_pattern_last: None,
             patterns: None,
@@ -154,15 +158,24 @@ impl AbstractRule for MatchRule {
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
+    #[serde(flatten)]
     pub rule: Rule,
-    pub _begin: RegExpSource,
+    pub begin: RegExpSource,
+
+    #[serde(skip_serializing_if="Option::is_none")]
     pub begin_captures: Option<Vec<Box<dyn AbstractRule>>>,
-    pub _end: Option<RegExpSource>,
+
+    #[serde(skip_serializing_if="Option::is_none")]
+    pub end: Option<RegExpSource>,
     // pub endHasBackReferences: Option<bool>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub end_captures: Option<Vec<Box<dyn AbstractRule>>>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub apply_end_pattern_last: Option<bool>,
     // pub hasMissingPatterns: Option<bool>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub patterns: Option<i32>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub cached_compiled_patterns: Option<RegExpSourceList>,
 }
 
@@ -186,9 +199,9 @@ impl BeginEndRule {
                 name,
                 content_name,
             },
-            _begin: RegExpSource::new(begin.clone(), id.clone()),
+            begin: RegExpSource::new(begin.clone(), id.clone()),
             begin_captures: None,
-            _end: None,
+            end: None,
             end_captures: None,
             apply_end_pattern_last,
             patterns: None,

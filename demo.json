@@ -1,65 +1,28 @@
 {
   "2": {
-    "rule": {
-      "location": null,
-      "id": 2,
-      "name": null,
-      "content_name": null
-    },
+    "id": 2,
     "_begin": {
       "source": "^\\s*(#(if)\\s+(0*1)\\b)",
       "rule_id": 2
-    },
-    "begin_captures": null,
-    "_end": null,
-    "end_captures": null,
-    "apply_end_pattern_last": null,
-    "patterns": null,
-    "cached_compiled_patterns": null
+    }
   },
   "3": {
-    "rule": {
-      "location": null,
-      "id": 3,
-      "name": null,
-      "content_name": null
-    },
+    "id": 3,
     "_begin": {
       "source": "^\\s*(#(if)\\s+(0)\\b).*",
       "rule_id": 3
-    },
-    "begin_captures": null,
-    "_end": null,
-    "end_captures": null,
-    "apply_end_pattern_last": null,
-    "patterns": null,
-    "cached_compiled_patterns": null
+    }
   },
   "4": {
-    "rule": {
-      "location": null,
-      "id": 4,
-      "name": null,
-      "content_name": null
-    },
+    "id": 4,
     "_begin": {
       "source": "^\\s*(#\\s*(if(n?def)?)\\b.*?(?:(?=(?://|/\\*))|$))",
       "rule_id": 4
-    },
-    "begin_captures": null,
-    "_end": null,
-    "end_captures": null,
-    "apply_end_pattern_last": null,
-    "patterns": null,
-    "cached_compiled_patterns": null
+    }
   },
   "7": {
-    "rule": {
-      "location": null,
-      "id": 7,
-      "name": "meta.toc-list.banner.block.c",
-      "content_name": null
-    },
+    "id": 7,
+    "name": "meta.toc-list.banner.block.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -67,10 +30,8 @@
   },
   "8": {
     "rule": {
-      "location": null,
       "id": 6,
-      "name": "comment.block.c",
-      "content_name": null
+      "name": "comment.block.c"
     },
     "_match": {
       "source": "^/\\* =(\\s*.*?)\\s*= \\*/$\\n?",
@@ -79,29 +40,19 @@
     "captures": [
       {
         "rule": {
-          "location": null,
-          "id": 0,
-          "name": null,
-          "content_name": null
+          "id": 0
         }
       },
       {
         "rule": {
-          "location": null,
-          "id": 0,
-          "name": null,
-          "content_name": null
+          "id": 0
         }
       }
     ]
   },
   "10": {
-    "rule": {
-      "location": null,
-      "id": 10,
-      "name": "punctuation.definition.comment.begin.c",
-      "content_name": null
-    },
+    "id": 10,
+    "name": "punctuation.definition.comment.begin.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -109,48 +60,29 @@
   },
   "11": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "12": {
-    "rule": {
-      "location": null,
-      "id": 12,
-      "name": "punctuation.definition.comment.end.c",
-      "content_name": null
-    },
+    "id": 12,
+    "name": "punctuation.definition.comment.end.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
     }
   },
   "13": {
-    "rule": {
-      "location": null,
-      "id": 9,
-      "name": "comment.block.c",
-      "content_name": null
-    },
+    "id": 9,
+    "name": "comment.block.c",
     "_begin": {
       "source": "/\\*",
       "rule_id": 9
-    },
-    "begin_captures": null,
-    "_end": null,
-    "end_captures": null,
-    "apply_end_pattern_last": null,
-    "patterns": null,
-    "cached_compiled_patterns": null
+    }
   },
   "14": {
     "rule": {
-      "location": null,
       "id": 14,
-      "name": "invalid.illegal.stray-comment-end.c",
-      "content_name": null
+      "name": "invalid.illegal.stray-comment-end.c"
     },
     "_match": {
       "source": "\\*/.*\\n",
@@ -159,12 +91,8 @@
     "captures": []
   },
   "16": {
-    "rule": {
-      "location": null,
-      "id": 16,
-      "name": "meta.toc-list.banner.line.c",
-      "content_name": null
-    },
+    "id": 16,
+    "name": "meta.toc-list.banner.line.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -172,10 +100,8 @@
   },
   "17": {
     "rule": {
-      "location": null,
       "id": 15,
-      "name": "comment.line.banner.c++",
-      "content_name": null
+      "name": "comment.line.banner.c++"
     },
     "_match": {
       "source": "^// =(\\s*.*?)\\s*=\\s*$\\n?",
@@ -184,41 +110,26 @@
     "captures": [
       {
         "rule": {
-          "location": null,
-          "id": 0,
-          "name": null,
-          "content_name": null
+          "id": 0
         }
       },
       {
         "rule": {
-          "location": null,
-          "id": 0,
-          "name": null,
-          "content_name": null
+          "id": 0
         }
       }
     ]
   },
   "19": {
-    "rule": {
-      "location": null,
-      "id": 19,
-      "name": "punctuation.whitespace.comment.leading.c++",
-      "content_name": null
-    },
+    "id": 19,
+    "name": "punctuation.whitespace.comment.leading.c++",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
     }
   },
   "20": {
-    "rule": {
-      "location": null,
-      "id": 5,
-      "name": null,
-      "content_name": null
-    },
+    "id": 5,
     "captures": {
       "patterns": [
         6,
@@ -232,10 +143,8 @@
   },
   "21": {
     "rule": {
-      "location": null,
       "id": 21,
-      "name": "keyword.control.c",
-      "content_name": null
+      "name": "keyword.control.c"
     },
     "_match": {
       "source": "\\b(break|case|continue|default|do|else|for|goto|if|_Pragma|return|switch|while)\\b",
@@ -245,10 +154,8 @@
   },
   "22": {
     "rule": {
-      "location": null,
       "id": 22,
-      "name": "storage.type.c",
-      "content_name": null
+      "name": "storage.type.c"
     },
     "_match": {
       "source": "\\b(asm|__asm__|auto|bool|_Bool|char|_Complex|double|enum|float|_Imaginary|int|long|short|signed|struct|typedef|union|unsigned|void)\\b",
@@ -258,10 +165,8 @@
   },
   "23": {
     "rule": {
-      "location": null,
       "id": 23,
-      "name": "storage.modifier.c",
-      "content_name": null
+      "name": "storage.modifier.c"
     },
     "_match": {
       "source": "\\b(const|extern|register|restrict|static|volatile|inline)\\b",
@@ -271,10 +176,8 @@
   },
   "24": {
     "rule": {
-      "location": null,
       "id": 24,
-      "name": "constant.other.variable.mac-classic.c",
-      "content_name": null
+      "name": "constant.other.variable.mac-classic.c"
     },
     "_match": {
       "source": "\\bk[A-Z]\\w*\\b",
@@ -284,10 +187,8 @@
   },
   "25": {
     "rule": {
-      "location": null,
       "id": 25,
-      "name": "variable.other.readwrite.global.mac-classic.c",
-      "content_name": null
+      "name": "variable.other.readwrite.global.mac-classic.c"
     },
     "_match": {
       "source": "\\bg[A-Z]\\w*\\b",
@@ -297,10 +198,8 @@
   },
   "26": {
     "rule": {
-      "location": null,
       "id": 26,
-      "name": "variable.other.readwrite.static.mac-classic.c",
-      "content_name": null
+      "name": "variable.other.readwrite.static.mac-classic.c"
     },
     "_match": {
       "source": "\\bs[A-Z]\\w*\\b",
@@ -310,10 +209,8 @@
   },
   "27": {
     "rule": {
-      "location": null,
       "id": 27,
-      "name": "constant.language.c",
-      "content_name": null
+      "name": "constant.language.c"
     },
     "_match": {
       "source": "\\b(NULL|true|false|TRUE|FALSE)\\b",
@@ -323,10 +220,8 @@
   },
   "28": {
     "rule": {
-      "location": null,
       "id": 28,
-      "name": "keyword.operator.sizeof.c",
-      "content_name": null
+      "name": "keyword.operator.sizeof.c"
     },
     "_match": {
       "source": "\\b(sizeof)\\b",
@@ -336,10 +231,8 @@
   },
   "29": {
     "rule": {
-      "location": null,
       "id": 29,
-      "name": "constant.numeric.c",
-      "content_name": null
+      "name": "constant.numeric.c"
     },
     "_match": {
       "source": "\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\\b",
@@ -348,12 +241,8 @@
     "captures": []
   },
   "31": {
-    "rule": {
-      "location": null,
-      "id": 31,
-      "name": "punctuation.definition.string.begin.c",
-      "content_name": null
-    },
+    "id": 31,
+    "name": "punctuation.definition.string.begin.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -361,49 +250,28 @@
   },
   "32": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "33": {
-    "rule": {
-      "location": null,
-      "id": 33,
-      "name": "punctuation.definition.string.end.c",
-      "content_name": null
-    },
+    "id": 33,
+    "name": "punctuation.definition.string.end.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
     }
   },
   "34": {
-    "rule": {
-      "location": null,
-      "id": 30,
-      "name": "string.quoted.double.c",
-      "content_name": null
-    },
+    "id": 30,
+    "name": "string.quoted.double.c",
     "_begin": {
       "source": "\"",
       "rule_id": 30
-    },
-    "begin_captures": null,
-    "_end": null,
-    "end_captures": null,
-    "apply_end_pattern_last": null,
-    "patterns": null,
-    "cached_compiled_patterns": null
+    }
   },
   "36": {
-    "rule": {
-      "location": null,
-      "id": 36,
-      "name": "punctuation.definition.string.begin.c",
-      "content_name": null
-    },
+    "id": 36,
+    "name": "punctuation.definition.string.begin.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -411,49 +279,28 @@
   },
   "37": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "38": {
-    "rule": {
-      "location": null,
-      "id": 38,
-      "name": "punctuation.definition.string.end.c",
-      "content_name": null
-    },
+    "id": 38,
+    "name": "punctuation.definition.string.end.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
     }
   },
   "39": {
-    "rule": {
-      "location": null,
-      "id": 35,
-      "name": "string.quoted.single.c",
-      "content_name": null
-    },
+    "id": 35,
+    "name": "string.quoted.single.c",
     "_begin": {
       "source": "'",
       "rule_id": 35
-    },
-    "begin_captures": null,
-    "_end": null,
-    "end_captures": null,
-    "apply_end_pattern_last": null,
-    "patterns": null,
-    "cached_compiled_patterns": null
+    }
   },
   "41": {
-    "rule": {
-      "location": null,
-      "id": 41,
-      "name": "variable.parameter.preprocessor.c",
-      "content_name": null
-    },
+    "id": 41,
+    "name": "keyword.control.import.define.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -461,19 +308,12 @@
   },
   "42": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "43": {
-    "rule": {
-      "location": null,
-      "id": 43,
-      "name": "punctuation.separator.parameters.c",
-      "content_name": null
-    },
+    "id": 43,
+    "name": "punctuation.separator.parameters.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -481,19 +321,12 @@
   },
   "44": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "45": {
-    "rule": {
-      "location": null,
-      "id": 45,
-      "name": "punctuation.definition.parameters.end.c",
-      "content_name": null
-    },
+    "id": 45,
+    "name": "entity.name.function.preprocessor.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -501,19 +334,12 @@
   },
   "46": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "47": {
-    "rule": {
-      "location": null,
-      "id": 47,
-      "name": "entity.name.function.preprocessor.c",
-      "content_name": null
-    },
+    "id": 47,
+    "name": "punctuation.definition.parameters.end.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -521,19 +347,12 @@
   },
   "48": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "49": {
-    "rule": {
-      "location": null,
-      "id": 49,
-      "name": "keyword.control.import.define.c",
-      "content_name": null
-    },
+    "id": 49,
+    "name": "punctuation.definition.parameters.begin.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -541,85 +360,44 @@
   },
   "50": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "51": {
-    "rule": {
-      "location": null,
-      "id": 51,
-      "name": "punctuation.definition.parameters.begin.c",
-      "content_name": null
-    },
+    "id": 51,
+    "name": "variable.parameter.preprocessor.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
     }
   },
   "52": {
-    "rule": {
-      "location": null,
-      "id": 40,
-      "name": "meta.preprocessor.macro.c",
-      "content_name": null
-    },
+    "id": 40,
+    "name": "meta.preprocessor.macro.c",
     "_begin": {
       "source": "(?x)\n        \t\t^\\s*\\#\\s*(define)\\s+             # define\n        \t\t((?<id>[a-zA-Z_][a-zA-Z0-9_]*))  # macro name\n        \t\t(?:                              # and optionally:\n        \t\t    (\\()                         # an open parenthesis\n        \t\t        (\n        \t\t            \\s* \\g<id> \\s*       # first argument\n        \t\t            ((,) \\s* \\g<id> \\s*)*  # additional arguments\n        \t\t            (?:\\.\\.\\.)?          # varargs ellipsis?\n        \t\t        )\n        \t\t    (\\))                         # a close parenthesis\n        \t\t)?\n        \t",
       "rule_id": 40
-    },
-    "begin_captures": null,
-    "_end": null,
-    "end_captures": null,
-    "apply_end_pattern_last": null,
-    "patterns": null,
-    "cached_compiled_patterns": null
+    }
   },
   "53": {
-    "rule": {
-      "location": null,
-      "id": 53,
-      "name": "meta.preprocessor.diagnostic.c",
-      "content_name": null
-    },
+    "id": 53,
+    "name": "meta.preprocessor.diagnostic.c",
     "_begin": {
       "source": "^\\s*#\\s*(error|warning)\\b",
       "rule_id": 53
-    },
-    "begin_captures": null,
-    "_end": null,
-    "end_captures": null,
-    "apply_end_pattern_last": null,
-    "patterns": null,
-    "cached_compiled_patterns": null
+    }
   },
   "54": {
-    "rule": {
-      "location": null,
-      "id": 54,
-      "name": "meta.preprocessor.c.include",
-      "content_name": null
-    },
+    "id": 54,
+    "name": "meta.preprocessor.c.include",
     "_begin": {
       "source": "^\\s*#\\s*(include|import)\\b\\s+",
       "rule_id": 54
-    },
-    "begin_captures": null,
-    "_end": null,
-    "end_captures": null,
-    "apply_end_pattern_last": null,
-    "patterns": null,
-    "cached_compiled_patterns": null
+    }
   },
   "56": {
-    "rule": {
-      "location": null,
-      "id": 56,
-      "name": "meta.toc-list.pragma-mark.c",
-      "content_name": null
-    },
+    "id": 56,
+    "name": "keyword.control.import.pragma.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -627,19 +405,12 @@
   },
   "57": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "58": {
-    "rule": {
-      "location": null,
-      "id": 58,
-      "name": "meta.preprocessor.c",
-      "content_name": null
-    },
+    "id": 58,
+    "name": "meta.toc-list.pragma-mark.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -647,19 +418,12 @@
   },
   "59": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "60": {
-    "rule": {
-      "location": null,
-      "id": 60,
-      "name": "keyword.control.import.pragma.c",
-      "content_name": null
-    },
+    "id": 60,
+    "name": "meta.preprocessor.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -667,10 +431,8 @@
   },
   "61": {
     "rule": {
-      "location": null,
       "id": 55,
-      "name": "meta.section",
-      "content_name": null
+      "name": "meta.section"
     },
     "_match": {
       "source": "^\\s*(#\\s*(pragma\\s+mark)\\s+(.*))",
@@ -679,62 +441,38 @@
     "captures": [
       {
         "rule": {
-          "location": null,
-          "id": 0,
-          "name": null,
-          "content_name": null
+          "id": 0
         }
       },
       {
         "rule": {
-          "location": null,
-          "id": 0,
-          "name": null,
-          "content_name": null
+          "id": 0
         }
       },
       {
         "rule": {
-          "location": null,
-          "id": 0,
-          "name": null,
-          "content_name": null
+          "id": 0
         }
       },
       {
         "rule": {
-          "location": null,
-          "id": 0,
-          "name": null,
-          "content_name": null
+          "id": 0
         }
       }
     ]
   },
   "62": {
-    "rule": {
-      "location": null,
-      "id": 62,
-      "name": "meta.preprocessor.c",
-      "content_name": null
-    },
+    "id": 62,
+    "name": "meta.preprocessor.c",
     "_begin": {
       "source": "^\\s*#\\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef)\\b",
       "rule_id": 62
-    },
-    "begin_captures": null,
-    "_end": null,
-    "end_captures": null,
-    "apply_end_pattern_last": null,
-    "patterns": null,
-    "cached_compiled_patterns": null
+    }
   },
   "63": {
     "rule": {
-      "location": null,
       "id": 63,
-      "name": "support.type.sys-types.c",
-      "content_name": null
+      "name": "support.type.sys-types.c"
     },
     "_match": {
       "source": "\\b(u_char|u_short|u_int|u_long|ushort|uint|u_quad_t|quad_t|qaddr_t|caddr_t|daddr_t|dev_t|fixpt_t|blkcnt_t|blksize_t|gid_t|in_addr_t|in_port_t|ino_t|key_t|mode_t|nlink_t|id_t|pid_t|off_t|segsz_t|swblk_t|uid_t|id_t|clock_t|size_t|ssize_t|time_t|useconds_t|suseconds_t)\\b",
@@ -744,10 +482,8 @@
   },
   "64": {
     "rule": {
-      "location": null,
       "id": 64,
-      "name": "support.type.pthread.c",
-      "content_name": null
+      "name": "support.type.pthread.c"
     },
     "_match": {
       "source": "\\b(pthread_attr_t|pthread_cond_t|pthread_condattr_t|pthread_mutex_t|pthread_mutexattr_t|pthread_once_t|pthread_rwlock_t|pthread_rwlockattr_t|pthread_t|pthread_key_t)\\b",
@@ -757,10 +493,8 @@
   },
   "65": {
     "rule": {
-      "location": null,
       "id": 65,
-      "name": "support.type.stdint.c",
-      "content_name": null
+      "name": "support.type.stdint.c"
     },
     "_match": {
       "source": "\\b(int8_t|int16_t|int32_t|int64_t|uint8_t|uint16_t|uint32_t|uint64_t|int_least8_t|int_least16_t|int_least32_t|int_least64_t|uint_least8_t|uint_least16_t|uint_least32_t|uint_least64_t|int_fast8_t|int_fast16_t|int_fast32_t|int_fast64_t|uint_fast8_t|uint_fast16_t|uint_fast32_t|uint_fast64_t|intptr_t|uintptr_t|intmax_t|intmax_t|uintmax_t|uintmax_t)\\b",
@@ -770,10 +504,8 @@
   },
   "66": {
     "rule": {
-      "location": null,
       "id": 66,
-      "name": "support.constant.mac-classic.c",
-      "content_name": null
+      "name": "support.constant.mac-classic.c"
     },
     "_match": {
       "source": "\\b(noErr|kNilOptions|kInvalidID|kVariableLengthArray)\\b",
@@ -783,10 +515,8 @@
   },
   "67": {
     "rule": {
-      "location": null,
       "id": 67,
-      "name": "support.type.mac-classic.c",
-      "content_name": null
+      "name": "support.type.mac-classic.c"
     },
     "_match": {
       "source": "\\b(AbsoluteTime|Boolean|Byte|ByteCount|ByteOffset|BytePtr|CompTimeValue|ConstLogicalAddress|ConstStrFileNameParam|ConstStringPtr|Duration|Fixed|FixedPtr|Float32|Float32Point|Float64|Float80|Float96|FourCharCode|Fract|FractPtr|Handle|ItemCount|LogicalAddress|OptionBits|OSErr|OSStatus|OSType|OSTypePtr|PhysicalAddress|ProcessSerialNumber|ProcessSerialNumberPtr|ProcHandle|Ptr|ResType|ResTypePtr|ShortFixed|ShortFixedPtr|SignedByte|SInt16|SInt32|SInt64|SInt8|Size|StrFileName|StringHandle|StringPtr|TimeBase|TimeRecord|TimeScale|TimeValue|TimeValue64|UInt16|UInt32|UInt64|UInt8|UniChar|UniCharCount|UniCharCountPtr|UniCharPtr|UnicodeScalarValue|UniversalProcHandle|UniversalProcPtr|UnsignedFixed|UnsignedFixedPtr|UnsignedWide|UTF16Char|UTF32Char|UTF8Char)\\b",
@@ -796,10 +526,8 @@
   },
   "68": {
     "rule": {
-      "location": null,
       "id": 68,
-      "name": "support.type.posix-reserved.c",
-      "content_name": null
+      "name": "support.type.posix-reserved.c"
     },
     "_match": {
       "source": "\\b([a-z0-9_]+_t)\\b",
@@ -808,12 +536,8 @@
     "captures": []
   },
   "71": {
-    "rule": {
-      "location": null,
-      "id": 71,
-      "name": "punctuation.section.block.begin.c",
-      "content_name": null
-    },
+    "id": 71,
+    "name": "punctuation.section.block.begin.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -821,31 +545,19 @@
   },
   "72": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "73": {
-    "rule": {
-      "location": null,
-      "id": 73,
-      "name": "punctuation.section.block.end.c",
-      "content_name": null
-    },
+    "id": 73,
+    "name": "punctuation.section.block.end.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
     }
   },
   "74": {
-    "rule": {
-      "location": null,
-      "id": 69,
-      "name": null,
-      "content_name": null
-    },
+    "id": 69,
     "captures": {
       "patterns": [
         70
@@ -854,12 +566,8 @@
     }
   },
   "76": {
-    "rule": {
-      "location": null,
-      "id": 76,
-      "name": "punctuation.whitespace.function.leading.c",
-      "content_name": null
-    },
+    "id": 76,
+    "name": "punctuation.whitespace.function.leading.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -867,19 +575,12 @@
   },
   "77": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "78": {
-    "rule": {
-      "location": null,
-      "id": 78,
-      "name": "entity.name.function.c",
-      "content_name": null
-    },
+    "id": 78,
+    "name": "punctuation.definition.parameters.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
@@ -887,31 +588,20 @@
   },
   "79": {
     "rule": {
-      "location": null,
-      "id": 0,
-      "name": null,
-      "content_name": null
+      "id": 0
     }
   },
   "80": {
-    "rule": {
-      "location": null,
-      "id": 80,
-      "name": "punctuation.definition.parameters.c",
-      "content_name": null
-    },
+    "id": 80,
+    "name": "entity.name.function.c",
     "captures": {
       "patterns": [],
       "has_missing_patterns": false
     }
   },
   "81": {
-    "rule": {
-      "location": null,
-      "id": 1,
-      "name": "C",
-      "content_name": null
-    },
+    "id": 1,
+    "name": "C",
     "captures": {
       "patterns": [
         2,

@@ -20,7 +20,7 @@ impl ILocation {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ILocatable {
-    #[serde(flatten)]
+    #[serde(flatten, skip_serializing_if="Option::is_none")]
     pub textmate_location: Option<ILocation>,
 }
 
@@ -42,7 +42,9 @@ pub struct IRawCapturesMap {
 pub struct IRawRepositoryMap {
     #[serde(flatten)]
     pub name_map: HashMap<String, Box<IRawRule>>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub self_s: Option<IRawRule>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub base_s: Option<IRawRule>,
 }
 
@@ -60,6 +62,7 @@ impl IRawRepositoryMap {
 pub struct IRawRepository {
     #[serde(flatten)]
     pub map: Box<IRawRepositoryMap>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub location: Option<ILocation>,
 }
 
@@ -76,15 +79,19 @@ impl IRawRepository {
 pub struct IRawCaptures {
     #[serde(flatten)]
     pub map: IRawCapturesMap,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub location: Option<ILocatable>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawRule {
     pub id: Option<i32>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub location: Option<ILocation>,
 
+    #[serde(skip_serializing_if="Option::is_none")]
     pub include: Option<String>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub name: Option<String>,
 
     #[serde(alias = "contentName")]
@@ -92,27 +99,34 @@ pub struct IRawRule {
 
     #[serde(alias = "match")]
     pub match_s: Option<String>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub captures: Option<Box<IRawCaptures>>,
 
+    #[serde(skip_serializing_if="Option::is_none")]
     pub begin: Option<String>,
-    #[serde(alias = "beginCaptures")]
+
+    #[serde(alias = "beginCaptures", skip_serializing_if="Option::is_none")]
     pub begin_captures: Option<Box<IRawCaptures>>,
 
+    #[serde(skip_serializing_if="Option::is_none")]
     pub end: Option<String>,
-    #[serde(alias = "endCaptures")]
+    #[serde(alias = "endCaptures", skip_serializing_if="Option::is_none")]
     pub end_captures: Option<Box<IRawCaptures>>,
 
-    #[serde(alias = "while")]
+    #[serde(alias = "while", skip_serializing_if="Option::is_none")]
     pub while_s: Option<String>,
-    #[serde(alias = "whileCaptures")]
+    #[serde(alias = "whileCaptures", skip_serializing_if="Option::is_none")]
     pub while_captures: Option<Box<IRawCaptures>>,
 
+    #[serde(skip_serializing_if="Option::is_none")]
     pub patterns: Option<Vec<IRawRule>>,
+    #[serde(skip_serializing_if="Option::is_none")]
     pub repository: Option<IRawRepository>,
 
-    #[serde(alias = "applyEndPatternLast")]
+    #[serde(alias = "applyEndPatternLast", skip_serializing_if="Option::is_none")]
     pub apply_end_pattern_last: Option<bool>,
 
+    #[serde(skip_serializing_if="Option::is_none")]
     pub information_for_contributors: Option<Vec<String>>,
 }
 
