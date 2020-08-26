@@ -204,11 +204,21 @@ impl RuleFactory {
                 return id;
             }
 
+            let mut begin_captures= desc.begin_captures.clone();
+            if let None = desc.begin_captures.clone() {
+                begin_captures = desc.clone().captures
+            }
+
+            let end_captures = desc.end_captures.clone();
+            if let None = desc.end_captures.clone() {
+                begin_captures = desc.clone().captures
+            }
+
             if let Some(while_s) = desc.while_s {
                 let begin_rule_factory =
-                    RuleFactory::compile_captures(desc.begin_captures, helper, repository.clone());
+                    RuleFactory::compile_captures(begin_captures, helper, repository.clone());
                 let end_rule_factory =
-                    RuleFactory::compile_captures(desc.end_captures, helper, repository.clone());
+                    RuleFactory::compile_captures(end_captures, helper, repository.clone());
                 let pattern_factory = RuleFactory::compile_patterns(
                     desc.patterns.clone(),
                     helper,
@@ -232,9 +242,9 @@ impl RuleFactory {
             }
 
             let begin_rule_factory =
-                RuleFactory::compile_captures(desc.begin_captures, helper, repository.clone());
+                RuleFactory::compile_captures(begin_captures, helper, repository.clone());
             let end_rule_factory =
-                RuleFactory::compile_captures(desc.end_captures, helper, repository.clone());
+                RuleFactory::compile_captures(end_captures, helper, repository.clone());
             // let pattern_factory = RuleFactory::compile_patterns(
             //     desc.patterns.clone(),
             //     helper,
