@@ -8,6 +8,7 @@ use crate::rule::{
     AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, NoneRule,
 };
 use crate::rule::factory::RuleFactory;
+use std::collections::BTreeMap as Map;
 
 pub mod scope_list_element;
 pub mod scope_metadata;
@@ -55,7 +56,7 @@ pub struct Grammar {
     root_id: i32,
     grammar: IRawGrammar,
     pub last_rule_id: i32,
-    pub rule_id2desc: HashMap<i32, Box<dyn AbstractRule>>,
+    pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
     pub _token_type_matchers: Vec<TokenTypeMatcher>,
 }
 
@@ -94,7 +95,7 @@ impl Grammar {
             last_rule_id: 0,
             grammar: _grammar,
             root_id: -1,
-            rule_id2desc: Default::default(),
+            rule_id2desc: Map::new(),
             _token_type_matchers: vec![],
         }
     }
@@ -119,7 +120,9 @@ impl Grammar {
                 RuleFactory::get_compiled_rule_id(based.clone(), self, repository);
         }
 
-        println!("root_id: {:?}", self.root_id.clone());
+        // let j = serde_json::to_string(&self.rule_id2desc).unwrap();
+        // println!("{:?}", j);
+        // println!("{}", serde_json::to_string_pretty(&j).unwrap());
 
         let mut is_first_line: bool = false;
         if let None = prev_state {

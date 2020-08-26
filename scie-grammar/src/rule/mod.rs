@@ -5,6 +5,7 @@ use crate::reg_exp_source::{RegExpSource, RegExpSourceList};
 use crate::rule::factory::ICompilePatternsResult;
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
+use serde::{Serialize, Serializer};
 
 #[derive(Clone, Debug)]
 pub struct Rule {
@@ -33,6 +34,8 @@ impl Rule {
 pub trait AbstractRule: DynClone {
     fn type_of(&self) -> String;
 }
+
+serialize_trait_object!(AbstractRule);
 
 impl fmt::Debug for dyn AbstractRule {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
