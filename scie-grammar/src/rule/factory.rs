@@ -1,8 +1,6 @@
 use crate::grammar::grammar::Grammar;
 use crate::inter::{IRawCaptures, IRawRepository, IRawRule, ILocation};
-use crate::rule::{
-    BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule, MatchRule,
-};
+use crate::rule::{BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule, MatchRule, AbstractRule};
 
 #[derive(Clone, Debug)]
 pub struct ICompilePatternsResult {
@@ -23,8 +21,8 @@ impl RuleFactory {
         captures: Option<Box<IRawCaptures>>,
         helper: &mut Grammar,
         repository: IRawRepository,
-    ) -> Vec<CaptureRule> {
-        let mut r = vec![];
+    ) -> Vec<Box<dyn AbstractRule>> {
+        let mut r: Vec<Box<dyn AbstractRule>> = vec![];
 
         if let Some(capts) = captures.clone() {
             let mut maximum_capture_id = 0;
@@ -34,13 +32,13 @@ impl RuleFactory {
                     maximum_capture_id = id
                 }
             }
-            for i in 0..maximum_capture_id {
-                r.push(CaptureRule::new());
+            for i in 0..maximum_capture_id + 1 {
+                r.push(Box::new(CaptureRule::new()));
             }
 
             let cloned_capts = captures.clone().unwrap();
             for (id_str, value) in capts.clone().map.capture_map {
-                let numeric_capture_id: i32 = id_str.parse().unwrap_or(0);
+                let numeric_capture_id: usize = id_str.parse().unwrap_or(0);
                 let mut retokenize_captured_with_rule_id = 0;
                 // println!("{:?}", numeric_capture_id.clone().to_string());
                 let options_patterns = cloned_capts
@@ -51,17 +49,20 @@ impl RuleFactory {
                 let desc = captures.clone().unwrap().map.capture_map[&id_str].clone();
                 if let Some(rule) = options_patterns {
                     retokenize_captured_with_rule_id =
-                        RuleFactory::get_compiled_rule_id(desc, helper, repository.clone());
+                        RuleFactory::get_compiled_rule_id(desc.clone(), helper, repository.clone());
                 }
-                // r[numericCaptureId] = RuleFactory::create_capture_rule(helper, desc.clone().location, desc.clone().name, desc.clone().content_name, retokenize_captured_with_rule_id);
+                r[numeric_capture_id] = RuleFactory::create_capture_rule(helper, desc.clone().location, desc.clone().name, desc.clone().content_name, retokenize_captured_with_rule_id);
             }
         };
 
         r
     }
 
-    pub fn create_capture_rule(helper: &mut Grammar, location: Option<ILocation>, name: Option<String>, content_name: Option<String>, retokenizeCapturedWithRuleId: i32) {
-        println!("create_capture_rule id: {:?}", retokenizeCapturedWithRuleId);
+    pub fn create_capture_rule(helper: &mut Grammar, location: Option<ILocation>, name: Option<String>, content_name: Option<String>, retokenizeCapturedWithRuleId: i32) -> Box<dyn AbstractRule> {
+        let id = helper.register_id();
+        let rule = CaptureRule::new();
+        helper.register_rule(Box::from(rule));
+        return helper.get_rule(id)
     }
 
 

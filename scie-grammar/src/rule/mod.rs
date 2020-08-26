@@ -89,9 +89,9 @@ impl BeginWhileRule {
         name: Option<String>,
         content_name: Option<String>,
         begin: Option<String>,
-        begin_captures: Vec<CaptureRule>,
+        begin_captures: Vec<Box<dyn AbstractRule>>,
         _while: Option<String>,
-        while_captures: Vec<CaptureRule>,
+        while_captures: Vec<Box<dyn AbstractRule>>,
         patterns: ICompilePatternsResult,
     ) -> BeginEndRule {
         BeginEndRule {
@@ -122,7 +122,7 @@ impl AbstractRule for BeginWhileRule {
 pub struct MatchRule {
     pub rule: Rule,
     pub _match: RegExpSource,
-    pub captures: Vec<CaptureRule>,
+    pub captures: Vec<Box<dyn AbstractRule>>,
 }
 
 impl MatchRule {
@@ -131,7 +131,7 @@ impl MatchRule {
         id: i32,
         name: Option<String>,
         match_s: String,
-        captures: Vec<CaptureRule>,
+        captures: Vec<Box<dyn AbstractRule>>,
     ) -> Self {
         MatchRule {
             rule: Rule {
@@ -156,10 +156,10 @@ impl AbstractRule for MatchRule {
 pub struct BeginEndRule {
     pub rule: Rule,
     pub _begin: RegExpSource,
-    pub begin_captures: Option<Vec<CaptureRule>>,
+    pub begin_captures: Option<Vec<Box<dyn AbstractRule>>>,
     pub _end: Option<RegExpSource>,
     // pub endHasBackReferences: Option<bool>,
-    pub end_captures: Option<Vec<CaptureRule>>,
+    pub end_captures: Option<Vec<Box<dyn AbstractRule>>>,
     pub apply_end_pattern_last: Option<bool>,
     // pub hasMissingPatterns: Option<bool>,
     pub patterns: Option<i32>,
@@ -173,9 +173,9 @@ impl BeginEndRule {
         name: Option<String>,
         content_name: Option<String>,
         begin: String,
-        begin_captures: Vec<CaptureRule>,
+        begin_captures: Vec<Box<dyn AbstractRule>>,
         _while: Option<String>,
-        while_captures: Vec<CaptureRule>,
+        while_captures: Vec<Box<dyn AbstractRule>>,
         apply_end_pattern_last: Option<bool>,
         // patterns: ICompilePatternsResult,
     ) -> BeginEndRule {
