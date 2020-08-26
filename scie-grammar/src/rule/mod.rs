@@ -9,6 +9,7 @@ use serde::{Serialize, Serializer};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct Rule {
+    pub _type: String,
     #[serde(skip_serializing_if="Option::is_none")]
     pub location: Option<ILocation>,
     pub id: i32,
@@ -26,6 +27,7 @@ impl Rule {
         content_name: Option<String>,
     ) -> Self {
         Rule {
+            _type: "".to_string(),
             location: Some(location),
             id,
             name,
@@ -65,6 +67,7 @@ impl IncludeOnlyRule {
     ) -> Self {
         IncludeOnlyRule {
             rule: Rule {
+                _type: String::from("IncludeOnlyRule"),
                 location,
                 id,
                 name,
@@ -100,6 +103,7 @@ impl BeginWhileRule {
     ) -> BeginEndRule {
         BeginEndRule {
             rule: Rule {
+                _type: String::from("BeginEndRule"),
                 location,
                 id,
                 name,
@@ -139,6 +143,7 @@ impl MatchRule {
     ) -> Self {
         MatchRule {
             rule: Rule {
+                _type: String::from("MatchRule"),
                 location,
                 id,
                 name,
@@ -194,6 +199,7 @@ impl BeginEndRule {
     ) -> BeginEndRule {
         BeginEndRule {
             rule: Rule {
+                _type: String::from("BeginEndRule"),
                 location,
                 id,
                 name,
@@ -225,6 +231,7 @@ impl CaptureRule {
     pub fn new() -> Self {
         CaptureRule {
             rule: Rule {
+                _type: String::from("CaptureRule"),
                 location: None,
                 id: 0,
                 name: None,
