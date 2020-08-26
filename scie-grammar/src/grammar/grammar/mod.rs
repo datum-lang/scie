@@ -4,9 +4,10 @@ pub mod stack_element;
 
 use crate::grammar::grammar::stack_element::StackElement;
 use crate::inter::{ILocation, IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
-use crate::rule::{AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule, NoneRule, RuleFactory};
+use crate::rule::{AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule, NoneRule };
 use onig::*;
 use std::collections::HashMap;
+use crate::rule::factory::RuleFactory;
 
 pub struct IToken {
     pub start_index: i32,
