@@ -7,7 +7,9 @@ fn parse_raw_grammar(content: String, file_path: Option<String>) -> Result<IRawG
         }
     }
 
-    Err(String::from("only support json file, input file is not a json file"))
+    Err(String::from(
+        "only support json file, input file is not a json file",
+    ))
 }
 
 fn parse_json_grammar(content: String, file_path: String) -> IRawGrammar {

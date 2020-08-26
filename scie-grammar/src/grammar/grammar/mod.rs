@@ -4,10 +4,12 @@ pub mod stack_element;
 
 use crate::grammar::grammar::stack_element::StackElement;
 use crate::inter::{ILocation, IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
-use crate::rule::{AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule, NoneRule };
+use crate::rule::factory::RuleFactory;
+use crate::rule::{
+    AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, NoneRule, Rule,
+};
 use onig::*;
 use std::collections::HashMap;
-use crate::rule::factory::RuleFactory;
 
 pub struct IToken {
     pub start_index: i32,
@@ -118,7 +120,8 @@ impl Grammar {
         let mut is_first_line: bool = false;
         if let None = prev_state {
             is_first_line = true
-        } else {}
+        } else {
+        }
 
         let format_line_text = format!("{:?}\n", line_text);
         let onig_line_text = self.create_onig_string(format_line_text);
@@ -149,7 +152,8 @@ impl Grammar {
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
-    ) {}
+    ) {
+    }
 
     pub fn match_rule_or_injections(
         &mut self,
@@ -157,7 +161,8 @@ impl Grammar {
         is_first_line: bool,
         line_pos: i32,
         anchor_position: i32,
-    ) {}
+    ) {
+    }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
         self.tokenize(line_text, prev_state, false)
@@ -194,7 +199,11 @@ impl IRuleRegistry for Grammar {
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
-        println!("{:?}, {:?}", self.last_rule_id.clone(), result.type_of().clone());
+        println!(
+            "{:?}, {:?}",
+            self.last_rule_id.clone(),
+            result.type_of().clone()
+        );
         self.rule_id2desc
             .insert(self.last_rule_id.clone(), result.clone());
         result

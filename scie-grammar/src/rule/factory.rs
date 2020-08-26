@@ -1,6 +1,8 @@
-use crate::inter::{IRawCaptures, IRawRepository, IRawRule};
 use crate::grammar::grammar::Grammar;
-use crate::rule::{CaptureRule, IRuleRegistry, MatchRule, IncludeOnlyRule, BeginWhileRule, BeginEndRule};
+use crate::inter::{IRawCaptures, IRawRepository, IRawRule};
+use crate::rule::{
+    BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule, MatchRule,
+};
 
 #[derive(Clone, Debug)]
 pub struct ICompilePatternsResult {
@@ -255,4 +257,3 @@ impl RuleFactory {
 
     pub fn create_capture_rule() {}
 }
-
