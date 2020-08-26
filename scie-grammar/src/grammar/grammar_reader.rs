@@ -1,18 +1,13 @@
 use crate::inter::IRawGrammar;
 
-fn parse_raw_grammar(content: String, file_path: Option<String>) -> IRawGrammar {
+fn parse_raw_grammar(content: String, file_path: Option<String>) -> Result<IRawGrammar, String> {
     if let Some(path) = file_path.clone() {
         if path.ends_with(".json") {
-            return parse_json_grammar(content, path);
+            Ok(parse_json_grammar(content, path))
         }
     }
 
-    return parse_plist_grammar(content, file_path.clone());
-}
-
-// todo: in current, we don't need to impl it
-fn parse_plist_grammar(content: String, file_path: Option<String>) -> IRawGrammar {
-    IRawGrammar::new()
+    Err(String::from("only support json file, input file is not a json file"))
 }
 
 fn parse_json_grammar(content: String, file_path: String) -> IRawGrammar {
