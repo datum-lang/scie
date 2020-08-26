@@ -2,7 +2,7 @@ use crate::grammar::grammar::Grammar;
 use crate::inter::{IRawCaptures, IRawRepository, IRawRule, ILocation};
 use crate::rule::{BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule, MatchRule, AbstractRule};
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct ICompilePatternsResult {
     pub patterns: Vec<i32>,
     pub has_missing_patterns: bool,

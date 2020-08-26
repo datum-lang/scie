@@ -1,7 +1,7 @@
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct RegExpSourceList {}
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct RegExpSource {
     pub source: String,
     pub rule_id: i32,

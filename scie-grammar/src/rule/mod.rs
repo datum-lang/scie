@@ -7,7 +7,7 @@ use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
 use serde::{Serialize, Serializer};
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct Rule {
     pub location: Option<ILocation>,
     pub id: i32,
@@ -31,7 +31,7 @@ impl Rule {
     }
 }
 
-pub trait AbstractRule: DynClone {
+pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn type_of(&self) -> String;
 }
 
@@ -45,7 +45,7 @@ impl fmt::Debug for dyn AbstractRule {
 
 clone_trait_object!(AbstractRule);
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct IncludeOnlyRule {
     pub rule: Rule,
     pub captures: ICompilePatternsResult,
@@ -77,7 +77,7 @@ impl AbstractRule for IncludeOnlyRule {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct BeginWhileRule {
     pub rule: Rule,
 }
@@ -118,7 +118,7 @@ impl AbstractRule for BeginWhileRule {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct MatchRule {
     pub rule: Rule,
     pub _match: RegExpSource,
@@ -152,7 +152,7 @@ impl AbstractRule for MatchRule {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
     pub rule: Rule,
     pub _begin: RegExpSource,
@@ -203,7 +203,7 @@ impl AbstractRule for BeginEndRule {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct CaptureRule {
     pub rule: Rule,
 }
@@ -227,7 +227,7 @@ impl AbstractRule for CaptureRule {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct NoneRule {}
 
 impl AbstractRule for NoneRule {

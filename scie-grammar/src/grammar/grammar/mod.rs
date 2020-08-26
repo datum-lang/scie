@@ -120,9 +120,8 @@ impl Grammar {
                 RuleFactory::get_compiled_rule_id(based.clone(), self, repository);
         }
 
-        // let j = serde_json::to_string(&self.rule_id2desc).unwrap();
-        // println!("{:?}", j);
-        // println!("{}", serde_json::to_string_pretty(&j).unwrap());
+        let j = serde_json::to_string(&self.rule_id2desc).unwrap();
+        println!("{}", serde_json::to_string_pretty(&j).unwrap());
 
         let mut is_first_line: bool = false;
         if let None = prev_state {
