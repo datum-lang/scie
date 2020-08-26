@@ -4,7 +4,7 @@ pub mod stack_element;
 
 use crate::grammar::grammar::stack_element::StackElement;
 use crate::inter::{ILocation, IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
-use crate::rule::{AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule, RuleFactory, NoneRule};
+use crate::rule::{AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, Rule, NoneRule, RuleFactory};
 use onig::*;
 use std::collections::HashMap;
 
@@ -117,9 +117,7 @@ impl Grammar {
         let mut is_first_line: bool = false;
         if let None = prev_state {
             is_first_line = true
-        } else {
-
-        }
+        } else {}
 
         let format_line_text = format!("{:?}\n", line_text);
         let onig_line_text = self.create_onig_string(format_line_text);
@@ -150,8 +148,7 @@ impl Grammar {
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
-    ) {
-    }
+    ) {}
 
     pub fn match_rule_or_injections(
         &mut self,
@@ -159,8 +156,7 @@ impl Grammar {
         is_first_line: bool,
         line_pos: i32,
         anchor_position: i32,
-    ) {
-    }
+    ) {}
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
         self.tokenize(line_text, prev_state, false)
@@ -189,7 +185,7 @@ impl IRuleRegistry for Grammar {
 
     fn get_rule(&self, pattern_id: i32) -> Box<dyn AbstractRule> {
         if let Some(rule) = self.rule_id2desc.get(&pattern_id) {
-            return rule.clone()
+            return rule.clone();
         }
         // todo: remove
         // println!("None: rule, {:?}, rule_id2: {:?}", pattern_id, self.rule_id2desc.clone());

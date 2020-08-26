@@ -3,7 +3,7 @@ use crate::inter::IRawGrammar;
 fn parse_raw_grammar(content: String, file_path: Option<String>) -> Result<IRawGrammar, String> {
     if let Some(path) = file_path.clone() {
         if path.ends_with(".json") {
-            Ok(parse_json_grammar(content, path))
+            return Ok(parse_json_grammar(content, path));
         }
     }
 
@@ -22,7 +22,7 @@ mod tests {
     fn should_run() {
         let grammar = parse_raw_grammar(String::from("hello"), Some(String::from("world.json")));
         assert_eq!(
-            format!("{:?}", grammar.location),
+            format!("{:?}", grammar.unwrap().location),
             "ILocatable { textmate_location: None }"
         );
     }
