@@ -1,10 +1,8 @@
 pub mod factory;
 
-use crate::grammar::grammar::Grammar;
-use crate::inter::{ILocation, IRawCaptures, IRawGrammar, IRawRepository, IRawRule};
+use crate::inter::{ILocation, IRawGrammar, IRawRepository};
 use crate::reg_exp_source::{RegExpSource, RegExpSourceList};
 use crate::rule::factory::ICompilePatternsResult;
-use crate::support::get_type_of;
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
 

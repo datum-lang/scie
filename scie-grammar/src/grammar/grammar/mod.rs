@@ -1,15 +1,17 @@
+use std::collections::HashMap;
+
+use onig::*;
+
+use crate::grammar::grammar::stack_element::StackElement;
+use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
+use crate::rule::{
+    AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, NoneRule,
+};
+use crate::rule::factory::RuleFactory;
+
 pub mod scope_list_element;
 pub mod scope_metadata;
 pub mod stack_element;
-
-use crate::grammar::grammar::stack_element::StackElement;
-use crate::inter::{ILocation, IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
-use crate::rule::factory::RuleFactory;
-use crate::rule::{
-    AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, NoneRule, Rule,
-};
-use onig::*;
-use std::collections::HashMap;
 
 pub struct IToken {
     pub start_index: i32,
@@ -212,11 +214,12 @@ impl IRuleRegistry for Grammar {
 
 #[cfg(test)]
 mod tests {
-    use crate::grammar::grammar::Grammar;
-    use crate::inter::IRawGrammar;
     use std::fs::File;
     use std::io::Read;
     use std::path::Path;
+
+    use crate::grammar::grammar::Grammar;
+    use crate::inter::IRawGrammar;
 
     #[test]
     fn should_enable_run_grammar() {
