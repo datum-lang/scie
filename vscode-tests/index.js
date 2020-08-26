@@ -1,5 +1,5 @@
 const fs = require('fs');
-const vsctm = require('vscode-textmate');
+const vsctm = require('./vendor/main.js');
 const oniguruma = require('oniguruma');
 
 function readFile(path) {
