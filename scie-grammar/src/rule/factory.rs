@@ -40,7 +40,6 @@ impl RuleFactory {
             for (id_str, value) in capts.clone().map.capture_map {
                 let numeric_capture_id: usize = id_str.parse().unwrap_or(0);
                 let mut retokenize_captured_with_rule_id = 0;
-                // println!("{:?}", numeric_capture_id.clone().to_string());
                 let options_patterns = cloned_capts
                     .map
                     .capture_map
@@ -62,7 +61,7 @@ impl RuleFactory {
         let id = helper.register_id();
         let rule = CaptureRule::new();
         helper.register_rule(Box::from(rule));
-        return helper.get_rule(id)
+        return helper.get_rule(id);
     }
 
 
@@ -166,14 +165,14 @@ impl RuleFactory {
                 );
                 let match_rule = MatchRule::new(
                     desc.location.clone(),
-                    id.clone(),
+                    desc.id.unwrap().clone(),
                     desc.name.clone(),
                     match_s.clone(),
                     rule_factory,
                 );
 
                 helper.register_rule(Box::new(match_rule));
-                return id;
+                return desc.id.unwrap().clone();
             };
 
             if let None = desc.begin {
@@ -194,17 +193,17 @@ impl RuleFactory {
                     RuleFactory::compile_patterns(patterns.clone(), helper, repository.clone());
                 let include_only_rule = IncludeOnlyRule::new(
                     desc.location.clone(),
-                    id.clone(),
+                    desc.id.unwrap().clone(),
                     desc.name.clone(),
                     desc.content_name.clone(),
                     rule_factory,
                 );
 
                 helper.register_rule(Box::new(include_only_rule));
-                return id;
+                return desc.id.unwrap().clone();
             }
 
-            let mut begin_captures= desc.begin_captures.clone();
+            let mut begin_captures = desc.begin_captures.clone();
             if let None = desc.begin_captures.clone() {
                 begin_captures = desc.clone().captures
             }
@@ -227,7 +226,7 @@ impl RuleFactory {
 
                 let begin_while_rule = BeginWhileRule::new(
                     desc.location.clone(),
-                    id.clone(),
+                    desc.id.unwrap().clone(),
                     desc.name.clone(),
                     desc.content_name.clone(),
                     desc.begin,
@@ -238,7 +237,7 @@ impl RuleFactory {
                 );
 
                 helper.register_rule(Box::new(begin_while_rule));
-                return id;
+                return desc.id.unwrap().clone();
             }
 
             let begin_rule_factory =
@@ -254,7 +253,7 @@ impl RuleFactory {
             // todo: register with compile patterns
             let begin_end_rule = BeginEndRule::new(
                 desc.location.clone(),
-                id.clone(),
+                desc.id.unwrap().clone(),
                 desc.name.clone(),
                 desc.content_name.clone(),
                 desc.begin.unwrap().clone(),
@@ -266,7 +265,7 @@ impl RuleFactory {
             );
 
             helper.register_rule(Box::new(begin_end_rule));
-            return id;
+            return desc.id.unwrap().clone();
         }
 
         desc.id.unwrap()
