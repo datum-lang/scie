@@ -1,5 +1,5 @@
 use crate::grammar::grammar::Grammar;
-use crate::inter::{IRawCaptures, IRawRepository, IRawRule};
+use crate::inter::{IRawCaptures, IRawRepository, IRawRule, ILocation};
 use crate::rule::{
     BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule, MatchRule,
 };
@@ -41,7 +41,7 @@ impl RuleFactory {
             let cloned_capts = captures.clone().unwrap();
             for (id_str, value) in capts.clone().map.capture_map {
                 let numeric_capture_id: i32 = id_str.parse().unwrap_or(0);
-                let mut retokenizeCapturedWithRuleId = 0;
+                let mut retokenize_captured_with_rule_id = 0;
                 // println!("{:?}", numeric_capture_id.clone().to_string());
                 let options_patterns = cloned_capts
                     .map
@@ -50,15 +50,20 @@ impl RuleFactory {
 
                 let desc = captures.clone().unwrap().map.capture_map[&id_str].clone();
                 if let Some(rule) = options_patterns {
-                    retokenizeCapturedWithRuleId =
+                    retokenize_captured_with_rule_id =
                         RuleFactory::get_compiled_rule_id(desc, helper, repository.clone());
                 }
-                // r[numericCaptureId] = self.create_capture_rule(helper, desc.location, desc.name, desc.content_name, retokenizeCapturedWithRuleId);
+                // r[numericCaptureId] = RuleFactory::create_capture_rule(helper, desc.clone().location, desc.clone().name, desc.clone().content_name, retokenize_captured_with_rule_id);
             }
         };
 
         r
     }
+
+    pub fn create_capture_rule(helper: &mut Grammar, location: Option<ILocation>, name: Option<String>, content_name: Option<String>, retokenizeCapturedWithRuleId: i32) {
+        println!("create_capture_rule id: {:?}", retokenizeCapturedWithRuleId);
+    }
+
 
     pub fn compile_patterns(
         origin_patterns: Option<Vec<IRawRule>>,
@@ -254,6 +259,4 @@ impl RuleFactory {
 
         desc.id.unwrap()
     }
-
-    pub fn create_capture_rule() {}
 }
