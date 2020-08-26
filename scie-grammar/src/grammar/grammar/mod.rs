@@ -116,8 +116,10 @@ impl Grammar {
             let repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.base_s.unwrap();
             self.root_id =
-                RuleFactory::get_compiled_rule_id(based.clone(), self, repository.clone());
+                RuleFactory::get_compiled_rule_id(based.clone(), self, repository);
         }
+
+        println!("root_id: {:?}", self.root_id.clone());
 
         let mut is_first_line: bool = false;
         if let None = prev_state {
@@ -195,17 +197,11 @@ impl IRuleRegistry for Grammar {
         if let Some(rule) = self.rule_id2desc.get(&pattern_id) {
             return rule.clone();
         }
-        // todo: remove
         // println!("None: rule, {:?}, rule_id2: {:?}", pattern_id, self.rule_id2desc.clone());
         Box::from(NoneRule {})
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
-        println!(
-            "{:?}, {:?}",
-            self.last_rule_id.clone(),
-            result.type_of().clone()
-        );
         self.rule_id2desc
             .insert(self.last_rule_id.clone(), result.clone());
         result

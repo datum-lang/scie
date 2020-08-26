@@ -155,7 +155,6 @@ impl RuleFactory {
     ) -> i32 {
         if let None = desc.id {
             let id = helper.register_id();
-            println!("{:?}", id.clone());
             desc.id = Some(id.clone());
 
             if let Some(match_s) = desc.match_s {
@@ -173,12 +172,13 @@ impl RuleFactory {
                 );
 
                 helper.register_rule(Box::new(match_rule));
-                return desc.id.unwrap();
+                return id;
             };
 
             if let None = desc.begin {
-                if let Some(repo) = desc.repository {
+                if let Some(repo) = desc.repository.clone() {
                     //todo: mergeObjects
+                    desc.repository.unwrap().map.name_map.extend(repository.clone().map.name_map);
                 }
                 let mut patterns = desc.patterns;
                 if let None = patterns {
@@ -198,8 +198,9 @@ impl RuleFactory {
                     desc.content_name.clone(),
                     rule_factory,
                 );
+
                 helper.register_rule(Box::new(include_only_rule));
-                return desc.id.unwrap();
+                return id;
             }
 
             if let Some(while_s) = desc.while_s {
@@ -226,7 +227,7 @@ impl RuleFactory {
                 );
 
                 helper.register_rule(Box::new(begin_while_rule));
-                return desc.id.unwrap();
+                return id;
             }
 
             let begin_rule_factory =
@@ -254,7 +255,7 @@ impl RuleFactory {
             );
 
             helper.register_rule(Box::new(begin_end_rule));
-            return desc.id.unwrap();
+            return id;
         }
 
         desc.id.unwrap()
