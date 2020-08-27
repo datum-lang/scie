@@ -20,7 +20,7 @@ impl RuleFactory {
     fn compile_captures(
         captures: Option<Box<IRawCaptures>>,
         helper: &mut Grammar,
-        repository: IRawRepository,
+        repository: &mut IRawRepository,
     ) -> Vec<Box<dyn AbstractRule>> {
         let mut r: Vec<Box<dyn AbstractRule>> = vec![];
 
@@ -48,7 +48,7 @@ impl RuleFactory {
                 let desc = captures.clone().unwrap().map.capture_map[&id_str].clone();
                 if let Some(rule) = options_patterns {
                     retokenize_captured_with_rule_id =
-                        RuleFactory::get_compiled_rule_id(desc.clone(), helper, repository.clone());
+                        RuleFactory::get_compiled_rule_id(desc.clone(), helper, repository);
                 }
                 r[numeric_capture_id] = RuleFactory::create_capture_rule(helper, desc.clone().location, desc.clone().name, desc.clone().content_name, retokenize_captured_with_rule_id);
             }
@@ -73,7 +73,7 @@ impl RuleFactory {
     pub fn compile_patterns(
         origin_patterns: Option<Vec<IRawRule>>,
         helper: &mut Grammar,
-        repository: IRawRepository,
+        repository: &mut IRawRepository,
     ) -> ICompilePatternsResult {
         let mut r: Vec<i32> = vec![];
 
@@ -81,11 +81,11 @@ impl RuleFactory {
             for pattern in patterns {
                 let mut pattern_id = -1;
                 if let Some(include_s) = pattern.clone().include {
-                    let repository_map = repository.clone().map.name_map.clone();
+                    let mut repository_map = repository.map.name_map.clone();
 
                     if include_s.starts_with("#") {
                         let first = remove_first(include_s.as_str());
-                        let local_included_rule = repository_map.get(first);
+                        let local_included_rule = repository.map.name_map.get_mut(first);
                         if let Some(rule) = local_included_rule {
                             let parse = *rule.clone();
                             println!("{:?}", parse);
@@ -93,7 +93,7 @@ impl RuleFactory {
                                 // todo: replace cloned, id cannot not update
                                 parse.clone(),
                                 helper,
-                                repository.clone(),
+                                repository,
                             );
                         } else {
                             println!(
@@ -107,7 +107,7 @@ impl RuleFactory {
                             pattern_id = RuleFactory::get_compiled_rule_id(
                                 *(rule).clone(),
                                 helper,
-                                repository.clone(),
+                                repository,
                             );
                         }
                     } else {
@@ -132,7 +132,7 @@ impl RuleFactory {
                     }
                 } else {
                     pattern_id =
-                        RuleFactory::get_compiled_rule_id(pattern, helper, repository.clone());
+                        RuleFactory::get_compiled_rule_id(pattern, helper, repository);
                 }
 
                 if pattern_id != -1 {
@@ -158,7 +158,7 @@ impl RuleFactory {
     pub fn get_compiled_rule_id(
         mut desc: IRawRule,
         helper: &mut Grammar,
-        repository: IRawRepository,
+        repository: &mut IRawRepository,
     ) -> i32 {
         if let None = desc.id {
             let id = helper.register_id();
@@ -168,7 +168,7 @@ impl RuleFactory {
                 let rule_factory = RuleFactory::compile_captures(
                     desc.captures.clone(),
                     helper,
-                    repository.clone(),
+                    repository,
                 );
                 let match_rule = MatchRule::new(
                     desc.location.clone(),
@@ -197,7 +197,7 @@ impl RuleFactory {
                 }
 
                 let rule_factory =
-                    RuleFactory::compile_patterns(patterns.clone(), helper, repository.clone());
+                    RuleFactory::compile_patterns(patterns.clone(), helper, repository);
                 let include_only_rule = IncludeOnlyRule::new(
                     desc.location.clone(),
                     id.clone(),
@@ -222,13 +222,13 @@ impl RuleFactory {
 
             if let Some(while_s) = desc.while_s {
                 let begin_rule_factory =
-                    RuleFactory::compile_captures(begin_captures, helper, repository.clone());
+                    RuleFactory::compile_captures(begin_captures, helper, repository);
                 let end_rule_factory =
-                    RuleFactory::compile_captures(end_captures, helper, repository.clone());
+                    RuleFactory::compile_captures(end_captures, helper, repository);
                 let pattern_factory = RuleFactory::compile_patterns(
                     desc.patterns.clone(),
                     helper,
-                    repository.clone(),
+                    repository,
                 );
 
                 let begin_while_rule = BeginWhileRule::new(
@@ -248,13 +248,13 @@ impl RuleFactory {
             }
 
             let begin_rule_factory =
-                RuleFactory::compile_captures(begin_captures, helper, repository.clone());
+                RuleFactory::compile_captures(begin_captures, helper, repository);
             let end_rule_factory =
-                RuleFactory::compile_captures(end_captures, helper, repository.clone());
+                RuleFactory::compile_captures(end_captures, helper, repository);
             let pattern_factory = RuleFactory::compile_patterns(
                 desc.patterns.clone(),
                 helper,
-                repository.clone(),
+                repository,
             );
 
             // todo: register with compile patterns

@@ -112,11 +112,11 @@ impl Grammar {
         prev_state: Option<StackElement>,
         emit_binary_tokens: bool,
     ) {
-        if self.root_id == -1 {
-            let repository = self.grammar.repository.clone().unwrap();
+        if self.root_id.clone() == -1 {
+            let mut repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.base_s.unwrap();
-            self.root_id =
-                RuleFactory::get_compiled_rule_id(based.clone(), self, repository);
+            let some_id =
+                RuleFactory::get_compiled_rule_id(based.clone(), self, &mut repository.clone());
         }
 
         let mut is_first_line: bool = false;
