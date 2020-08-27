@@ -48,7 +48,7 @@ impl RuleFactory {
                 let desc = captures.clone().unwrap().map.capture_map[&id_str].clone();
                 if let Some(rule) = options_patterns {
                     retokenize_captured_with_rule_id =
-                        RuleFactory::get_compiled_rule_id(desc.clone(), helper, repository);
+                        RuleFactory::get_compiled_rule_id(desc.clone(), helper, repository, String::from(""));
                 }
                 r[numeric_capture_id] = RuleFactory::create_capture_rule(helper, desc.clone().location, desc.clone().name, desc.clone().content_name, retokenize_captured_with_rule_id);
             }
@@ -92,6 +92,7 @@ impl RuleFactory {
                                 *rule,
                                 helper,
                                 repository,
+                                String::from(first)
                             );
                         } else {
                             println!(
@@ -106,6 +107,7 @@ impl RuleFactory {
                                 *rule,
                                 helper,
                                 repository,
+                                String::from("")
                             );
                         }
                     } else {
@@ -130,7 +132,7 @@ impl RuleFactory {
                     }
                 } else {
                     pattern_id =
-                        RuleFactory::get_compiled_rule_id(pattern, helper, repository);
+                        RuleFactory::get_compiled_rule_id(pattern, helper, repository, String::from(""));
                 }
 
                 if pattern_id != -1 {
@@ -157,10 +159,17 @@ impl RuleFactory {
         mut desc: IRawRule,
         helper: &mut Grammar,
         repository: &mut IRawRepository,
+        desc_name: String,
     ) -> i32 {
         if let None = desc.id {
             let id = helper.register_id();
             desc.id = Some(id.clone());
+
+            if desc_name != "" {
+                if let Some(a) = repository.map.name_map.get(desc_name.as_str()).clone() {
+                    repository.map.name_map.get_mut(desc_name.as_str()).unwrap().id = Some(id);
+                }
+            }
 
             if let Some(match_s) = desc.match_s {
                 let rule_factory = RuleFactory::compile_captures(
@@ -209,13 +218,13 @@ impl RuleFactory {
             }
 
             let mut begin_captures = desc.begin_captures.clone();
-            if let None = desc.begin_captures.clone() {
-                begin_captures = desc.clone().captures
+            if let None = begin_captures {
+                desc.begin_captures = desc.clone().captures
             }
 
             let mut end_captures = desc.end_captures.clone();
-            if let None = desc.end_captures.clone() {
-                end_captures = desc.clone().captures
+            if let None = end_captures {
+                desc.end_captures = desc.clone().captures
             }
 
             if let Some(while_s) = desc.while_s {
