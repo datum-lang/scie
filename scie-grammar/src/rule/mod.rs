@@ -37,6 +37,7 @@ impl Rule {
 }
 
 pub trait AbstractRule: DynClone + erased_serde::Serialize {
+    fn id(&self) -> i32;
     fn type_of(&self) -> String;
 }
 
@@ -79,6 +80,7 @@ impl IncludeOnlyRule {
 }
 
 impl AbstractRule for IncludeOnlyRule {
+    fn id(&self) -> i32 { self.rule.id }
     fn type_of(&self) -> String {
         String::from("IncludeOnlyRule")
     }
@@ -134,6 +136,7 @@ impl BeginWhileRule {
 }
 
 impl AbstractRule for BeginWhileRule {
+    fn id(&self) -> i32 { self.rule.id }
     fn type_of(&self) -> String {
         String::from("BeginWhileRule")
     }
@@ -169,6 +172,7 @@ impl MatchRule {
 }
 
 impl AbstractRule for MatchRule {
+    fn id(&self) -> i32 { self.rule.id }
     fn type_of(&self) -> String {
         String::from("MatchRule")
     }
@@ -224,6 +228,7 @@ impl BeginEndRule {
 }
 
 impl AbstractRule for BeginEndRule {
+    fn id(&self) -> i32 { self.rule.id }
     fn type_of(&self) -> String {
         String::from("BeginEndRule")
     }
@@ -260,15 +265,15 @@ impl CaptureRule {
 }
 
 impl AbstractRule for CaptureRule {
-    fn type_of(&self) -> String {
-        String::from("CaptureRule")
-    }
+    fn id(&self) -> i32 { self.rule.id }
+    fn type_of(&self) -> String { String::from("CaptureRule") }
 }
 
 #[derive(Clone, Debug, Serialize)]
 pub struct NoneRule {}
 
 impl AbstractRule for NoneRule {
+    fn id(&self) -> i32 { 0 }
     fn type_of(&self) -> String {
         String::from("NoneRule")
     }

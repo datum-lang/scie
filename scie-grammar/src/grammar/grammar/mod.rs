@@ -195,7 +195,7 @@ impl IRuleRegistry for Grammar {
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
         self.rule_id2desc
-            .insert(self.last_rule_id.clone(), result.clone());
+            .insert(result.id().clone(), result.clone());
         result
     }
 }
