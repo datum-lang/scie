@@ -261,9 +261,9 @@ impl RuleFactory {
                 desc.name.clone(),
                 desc.content_name.clone(),
                 desc.begin.unwrap().clone(),
-                begin_rule_factory,
+                Some(begin_rule_factory),
                 desc.end,
-                end_rule_factory,
+                Some(end_rule_factory),
                 desc.apply_end_pattern_last,
                 // pattern_factory,
             );
