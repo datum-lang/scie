@@ -230,7 +230,7 @@ impl RuleFactory {
                 );
 
                 let begin_while_rule = BeginWhileRule::new(
-                    desc.location.clone(),
+                    desc.location,
                     id.clone(),
                     desc.name.clone(),
                     desc.content_name.clone(),
@@ -250,7 +250,7 @@ impl RuleFactory {
             let end_rule_factory =
                 RuleFactory::compile_captures(end_captures, helper, repository);
             let pattern_factory = RuleFactory::compile_patterns(
-                desc.patterns.clone(),
+                desc.patterns,
                 helper,
                 repository,
             );
