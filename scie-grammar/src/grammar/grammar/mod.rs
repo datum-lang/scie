@@ -112,7 +112,7 @@ impl Grammar {
         if self.root_id.clone() == -1 {
             let mut repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.base_s.unwrap();
-            let some_id =
+            self.root_id =
                 RuleFactory::get_compiled_rule_id(based.clone(), self, &mut repository.clone(), String::from(""));
         }
 
