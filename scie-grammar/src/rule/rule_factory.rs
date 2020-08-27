@@ -85,13 +85,11 @@ impl RuleFactory {
 
                     if include_s.starts_with("#") {
                         let first = remove_first(include_s.as_str());
-                        let local_included_rule = repository.map.name_map.get_mut(first);
-                        if let Some(rule) = local_included_rule {
-                            let parse = *rule.clone();
-                            println!("{:?}", parse);
+                        let mut local_included_rule = repository.map.name_map.get_mut(first);
+                        if let Some(mut rule) = local_included_rule.cloned() {
                             pattern_id = RuleFactory::get_compiled_rule_id(
                                 // todo: replace cloned, id cannot not update
-                                parse.clone(),
+                                *rule,
                                 helper,
                                 repository,
                             );
@@ -102,10 +100,10 @@ impl RuleFactory {
                             );
                         }
                     } else if include_s == "$base" || include_s == "$self" {
-                        let local_included_rule = repository_map.get(&*include_s);
-                        if let Some(rule) = local_included_rule {
+                        let local_included_rule = repository.map.name_map.get_mut(include_s.as_str());
+                        if let Some(mut rule) = local_included_rule.cloned() {
                             pattern_id = RuleFactory::get_compiled_rule_id(
-                                *(rule).clone(),
+                                *rule,
                                 helper,
                                 repository,
                             );
