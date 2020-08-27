@@ -122,8 +122,7 @@ impl Grammar {
         let mut is_first_line: bool = false;
         if let None = prev_state {
             is_first_line = true
-        } else {
-        }
+        } else {}
 
         let format_line_text = format!("{:?}\n", line_text);
         let onig_line_text = self.create_onig_string(format_line_text);
@@ -154,8 +153,7 @@ impl Grammar {
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
-    ) {
-    }
+    ) {}
 
     pub fn match_rule_or_injections(
         &mut self,
@@ -163,8 +161,7 @@ impl Grammar {
         is_first_line: bool,
         line_pos: i32,
         anchor_position: i32,
-    ) {
-    }
+    ) {}
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
         self.tokenize(line_text, prev_state, false)
@@ -217,7 +214,22 @@ mod tests {
 
     #[test]
     fn should_enable_run_grammar() {
-        let path = Path::new("test-cases/first-mate/fixtures/c.json");
+        let code = "
+#include <stdio.h>
+int main() {
+printf(\"Hello, World!\");
+return 0;
+}
+";
+        let grammar = to_grammar("test-cases/first-mate/fixtures/c.json", code);
+
+        let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
+        let mut file = File::create("program.json").unwrap();
+        file.write_all(j.as_bytes());
+    }
+
+    fn to_grammar(grammar_path: &str, code: &str) -> Grammar {
+        let path = Path::new(grammar_path);
         let mut file = File::open(path).unwrap();
         let mut data = String::new();
         file.read_to_string(&mut data).unwrap();
@@ -225,21 +237,10 @@ mod tests {
         let g: IRawGrammar = serde_json::from_str(&data).unwrap();
 
         let mut grammar = Grammar::new(g);
-        let c_code = String::from(
-            "
-#include <stdio.h>
-int main() {
-   printf(\"Hello, World!\");
-   return 0;
-}
-",
-        );
+        let c_code = String::from(code);
         for line in c_code.lines() {
             grammar.tokenize_line(String::from(line), None)
         }
-
-        let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
-        let mut file = File::create("program.json").unwrap();
-        file.write_all(j.as_bytes());
+        grammar
     }
 }
