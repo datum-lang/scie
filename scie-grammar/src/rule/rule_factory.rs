@@ -36,16 +36,12 @@ impl RuleFactory {
                 r.push(Box::new(CaptureRule::empty()));
             }
 
-            let cloned_capts = captures.clone().unwrap();
-            for (id_str, value) in capts.clone().map.capture_map {
+            for (id_str, desc) in capts.clone().map.capture_map {
                 let numeric_capture_id: usize = id_str.parse().unwrap_or(0);
                 let mut retokenize_captured_with_rule_id = 0;
-                let options_patterns = cloned_capts
-                    .map
-                    .capture_map
+                let options_patterns = capts.map.capture_map
                     .get(&*numeric_capture_id.to_string());
 
-                let desc = captures.clone().unwrap().map.capture_map[&id_str].clone();
                 if let Some(rule) = options_patterns {
                     retokenize_captured_with_rule_id =
                         RuleFactory::get_compiled_rule_id(desc.clone(), helper, repository, String::from(""));
