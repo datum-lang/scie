@@ -87,6 +87,19 @@ impl AbstractRule for IncludeOnlyRule {
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginWhileRule {
     pub rule: Rule,
+
+    pub begin: RegExpSource,
+    pub begin_captures: Vec<Box<dyn AbstractRule>>,
+
+    pub while_s: Option<String>,
+    pub while_captures: Vec<Box<dyn AbstractRule>>,
+
+    #[serde(skip_serializing_if="Option::is_none")]
+    pub apply_end_pattern_last: Option<bool>,
+
+    pub patterns: ICompilePatternsResult,
+    #[serde(skip_serializing_if="Option::is_none")]
+    pub cached_compiled_patterns: Option<RegExpSourceList>,
 }
 
 impl BeginWhileRule {
@@ -100,8 +113,8 @@ impl BeginWhileRule {
         _while: Option<String>,
         while_captures: Vec<Box<dyn AbstractRule>>,
         patterns: ICompilePatternsResult,
-    ) -> BeginEndRule {
-        BeginEndRule {
+    ) -> BeginWhileRule {
+        BeginWhileRule {
             rule: Rule {
                 _type: String::from("BeginEndRule"),
                 location,
@@ -110,11 +123,11 @@ impl BeginWhileRule {
                 content_name,
             },
             begin: RegExpSource::new(begin.unwrap().clone(), id.clone()),
-            begin_captures: None,
-            end: None,
-            end_captures: None,
+            begin_captures,
+            while_s: _while,
+            while_captures,
             apply_end_pattern_last: None,
-            patterns: None,
+            patterns,
             cached_compiled_patterns: None,
         }
     }
