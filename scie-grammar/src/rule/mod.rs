@@ -1,8 +1,8 @@
-pub mod factory;
+pub mod rule_factory;
 
 use crate::inter::{ILocation, IRawGrammar, IRawRepository};
 use crate::reg_exp_source::{RegExpSource, RegExpSourceList};
-use crate::rule::factory::ICompilePatternsResult;
+use crate::rule::rule_factory::ICompilePatternsResult;
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
 use serde::{Serialize, Serializer};

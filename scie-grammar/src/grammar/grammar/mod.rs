@@ -7,7 +7,7 @@ use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::{
     AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, NoneRule,
 };
-use crate::rule::factory::RuleFactory;
+use crate::rule::rule_factory::RuleFactory;
 
 pub mod scope_list_element;
 pub mod scope_metadata;
