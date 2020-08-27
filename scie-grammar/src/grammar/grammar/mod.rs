@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap as Map;
 
 use onig::*;
 
@@ -8,7 +8,6 @@ use crate::rule::{
     AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, NoneRule,
 };
 use crate::rule::factory::RuleFactory;
-use std::collections::BTreeMap as Map;
 
 pub mod scope_list_element;
 pub mod scope_metadata;

@@ -76,11 +76,11 @@ impl RuleFactory {
             for pattern in patterns {
                 let mut pattern_id = -1;
                 if let Some(include_s) = pattern.clone().include {
-                    let map = repository.clone().map.name_map.clone();
+                    let repository_map = repository.clone().map.name_map.clone();
 
                     if include_s.starts_with("#") {
                         let first = remove_first(include_s.as_str());
-                        let local_included_rule = map.get(first);
+                        let local_included_rule = repository_map.get(first);
                         if let Some(rule) = local_included_rule {
                             pattern_id = RuleFactory::get_compiled_rule_id(
                                 *rule.clone(),
@@ -94,8 +94,7 @@ impl RuleFactory {
                             );
                         }
                     } else if include_s == "$base" || include_s == "$self" {
-                        let option = pattern.include.unwrap();
-                        let local_included_rule = map.get(option.as_str());
+                        let local_included_rule = repository_map.get(&*include_s);
                         if let Some(rule) = local_included_rule {
                             pattern_id = RuleFactory::get_compiled_rule_id(
                                 *(rule).clone(),
