@@ -212,9 +212,9 @@ impl RuleFactory {
                 begin_captures = desc.clone().captures
             }
 
-            let end_captures = desc.end_captures.clone();
+            let mut end_captures = desc.end_captures.clone();
             if let None = desc.end_captures.clone() {
-                begin_captures = desc.clone().captures
+                end_captures = desc.clone().captures
             }
 
             if let Some(while_s) = desc.while_s {
@@ -261,9 +261,9 @@ impl RuleFactory {
                 desc.name.clone(),
                 desc.content_name.clone(),
                 desc.begin.unwrap().clone(),
-                Some(begin_rule_factory),
-                desc.end,
-                Some(end_rule_factory),
+                begin_rule_factory,
+                desc.end.unwrap().clone(),
+                end_rule_factory,
                 desc.apply_end_pattern_last,
                 // pattern_factory,
             );

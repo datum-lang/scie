@@ -179,15 +179,10 @@ pub struct BeginEndRule {
     #[serde(flatten)]
     pub rule: Rule,
     pub begin: RegExpSource,
-
-    #[serde(skip_serializing_if="Option::is_none")]
-    pub begin_captures: Option<Vec<Box<dyn AbstractRule>>>,
-
-    #[serde(skip_serializing_if="Option::is_none")]
-    pub end: Option<RegExpSource>,
+    pub begin_captures: Vec<Box<dyn AbstractRule>>,
+    pub end: RegExpSource,
     // pub endHasBackReferences: Option<bool>,
-    #[serde(skip_serializing_if="Option::is_none")]
-    pub end_captures: Option<Vec<Box<dyn AbstractRule>>>,
+    pub end_captures: Vec<Box<dyn AbstractRule>>,
     #[serde(skip_serializing_if="Option::is_none")]
     pub apply_end_pattern_last: Option<bool>,
     // pub hasMissingPatterns: Option<bool>,
@@ -204,9 +199,9 @@ impl BeginEndRule {
         name: Option<String>,
         content_name: Option<String>,
         begin: String,
-        begin_captures: Option<Vec<Box<dyn AbstractRule>>>,
-        _end: Option<String>,
-        end_captures: Option<Vec<Box<dyn AbstractRule>>>,
+        begin_captures: Vec<Box<dyn AbstractRule>>,
+        _end: String,
+        end_captures: Vec<Box<dyn AbstractRule>>,
         apply_end_pattern_last: Option<bool>,
         // patterns: ICompilePatternsResult,
     ) -> BeginEndRule {
@@ -220,7 +215,7 @@ impl BeginEndRule {
             },
             begin: RegExpSource::new(begin.clone(), id.clone()),
             begin_captures,
-            end: None,
+            end: RegExpSource::new(_end.clone(), id.clone()),
             end_captures,
             apply_end_pattern_last,
             patterns: None,
