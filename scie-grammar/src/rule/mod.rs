@@ -72,7 +72,7 @@ impl IncludeOnlyRule {
                 location,
                 id,
                 name,
-                content_name: None,
+                content_name,
             },
             patterns: captures.patterns,
         }

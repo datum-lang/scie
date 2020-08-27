@@ -32,6 +32,7 @@ impl RuleFactory {
                     maximum_capture_id = id
                 }
             }
+
             for i in 0..maximum_capture_id + 1 {
                 r.push(Box::new(CaptureRule::empty()));
             }
