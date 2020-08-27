@@ -248,11 +248,11 @@ impl RuleFactory {
                 RuleFactory::compile_captures(begin_captures, helper, repository.clone());
             let end_rule_factory =
                 RuleFactory::compile_captures(end_captures, helper, repository.clone());
-            // let pattern_factory = RuleFactory::compile_patterns(
-            //     desc.patterns.clone(),
-            //     helper,
-            //     repository.clone(),
-            // );
+            let pattern_factory = RuleFactory::compile_patterns(
+                desc.patterns.clone(),
+                helper,
+                repository.clone(),
+            );
 
             // todo: register with compile patterns
             let begin_end_rule = BeginEndRule::new(
@@ -265,7 +265,7 @@ impl RuleFactory {
                 desc.end.unwrap().clone(),
                 end_rule_factory,
                 desc.apply_end_pattern_last,
-                // pattern_factory,
+                pattern_factory.patterns,
             );
 
             helper.register_rule(Box::new(begin_end_rule));

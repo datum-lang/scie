@@ -187,9 +187,9 @@ pub struct BeginEndRule {
     pub apply_end_pattern_last: Option<bool>,
     // pub hasMissingPatterns: Option<bool>,
     #[serde(skip_serializing_if="Option::is_none")]
-    pub patterns: Option<i32>,
-    #[serde(skip_serializing_if="Option::is_none")]
     pub cached_compiled_patterns: Option<RegExpSourceList>,
+
+    pub patterns: Vec<i32>,
 }
 
 impl BeginEndRule {
@@ -203,7 +203,7 @@ impl BeginEndRule {
         _end: String,
         end_captures: Vec<Box<dyn AbstractRule>>,
         apply_end_pattern_last: Option<bool>,
-        // patterns: ICompilePatternsResult,
+        patterns: Vec<i32>,
     ) -> BeginEndRule {
         BeginEndRule {
             rule: Rule {
@@ -218,7 +218,7 @@ impl BeginEndRule {
             end: RegExpSource::new(_end.clone(), id.clone()),
             end_captures,
             apply_end_pattern_last,
-            patterns: None,
+            patterns,
             cached_compiled_patterns: None,
         }
     }
