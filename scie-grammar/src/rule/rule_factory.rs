@@ -90,7 +90,7 @@ impl RuleFactory {
                             let parse = *rule.clone();
                             println!("{:?}", parse);
                             pattern_id = RuleFactory::get_compiled_rule_id(
-                                // todo: replace cloned
+                                // todo: replace cloned, id cannot not update
                                 parse.clone(),
                                 helper,
                                 repository.clone(),
