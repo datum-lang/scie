@@ -119,9 +119,6 @@ impl Grammar {
                 RuleFactory::get_compiled_rule_id(based.clone(), self, repository);
         }
 
-        let j = serde_json::to_string(&self.rule_id2desc).unwrap();
-        println!("{}", serde_json::to_string_pretty(&j).unwrap());
-
         let mut is_first_line: bool = false;
         if let None = prev_state {
             is_first_line = true
@@ -212,7 +209,7 @@ impl IRuleRegistry for Grammar {
 #[cfg(test)]
 mod tests {
     use std::fs::File;
-    use std::io::Read;
+    use std::io::{Read, Write};
     use std::path::Path;
 
     use crate::grammar::grammar::Grammar;
@@ -240,5 +237,9 @@ int main() {
         for line in c_code.lines() {
             grammar.tokenize_line(String::from(line), None)
         }
+
+        let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
+        let mut file = File::create("program.json").unwrap();
+        file.write_all(j.as_bytes());
     }
 }
