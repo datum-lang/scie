@@ -15,33 +15,25 @@ const registry = new vsctm.Registry({
         createOnigString: (str) => new oniguruma.OnigString(str)
     }),
     loadGrammar: (scopeName) => {
-        if (scopeName === 'source.c') {
-            // https://github.com/textmate/javascript.tmbundle/blob/master/Syntaxes/JavaScript.plist
-            return readFile('./syntaxes/json/c.json').then(data => vsctm.parseRawGrammar(data.toString(), "c.json"))
-        }
-        console.log(`Unknown scope name: ${scopeName}`);
-        return null;
+        return readFile('./syntaxes/json/text.json').then(data => vsctm.parseRawGrammar(data.toString(), "hello.json"))
     }
 });
 
-registry.loadGrammar('source.c').then(grammar => {
+registry.loadGrammar('text.plain').then(grammar => {
     const text = `
-#include <stdio.h>
-int main() {
-   printf(\\"Hello, World!\\");
-   return 0;
-}
+GitHub 漫游指南- a Chinese ebook on how to build a good project on Github. Explore the users' behavior. Find some thing interest.
+
+
 `.split("\n");
     let ruleStack = vsctm.INITIAL;
     for (let i = 0; i < text.length; i++) {
         const line = text[i];
         const lineTokens = grammar.tokenizeLine(line, ruleStack);
-        console.log(`\nTokenizing line: ${line}`);
         for (let j = 0; j < lineTokens.tokens.length; j++) {
             const token = lineTokens.tokens[j];
             console.log(` - token from ${token.startIndex} to ${token.endIndex} ` +
-              `(${line.substring(token.startIndex, token.endIndex)}) ` +
-              `with scopes ${token.scopes.join(', ')}`
+                `(${line.substring(token.startIndex, token.endIndex)}) ` +
+                `with scopes ${token.scopes.join(', ')}`
             );
         }
         ruleStack = lineTokens.ruleStack;

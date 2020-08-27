@@ -107,10 +107,11 @@ impl RuleFactory {
                                 *rule,
                                 helper,
                                 repository,
-                                String::from("")
+                                String::from(include_s.as_str())
                             );
                         }
                     } else {
+                        // todo: find the cases
                         println!("todo: {:?}", pattern.include);
                         let mut external_grammar_name: Option<String> = None;
                         let mut external_grammar_include: Option<String> = None;
