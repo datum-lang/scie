@@ -54,7 +54,7 @@ clone_trait_object!(AbstractRule);
 pub struct IncludeOnlyRule {
     #[serde(flatten)]
     pub rule: Rule,
-    pub captures: ICompilePatternsResult,
+    pub patterns: Vec<i32>,
 }
 
 impl IncludeOnlyRule {
@@ -73,7 +73,7 @@ impl IncludeOnlyRule {
                 name,
                 content_name: None,
             },
-            captures,
+            patterns: captures.patterns,
         }
     }
 }

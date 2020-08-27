@@ -208,6 +208,7 @@ mod tests {
 
     use crate::grammar::grammar::Grammar;
     use crate::inter::IRawGrammar;
+    use crate::rule::AbstractRule;
 
     #[test]
     fn should_build_json_code() {
