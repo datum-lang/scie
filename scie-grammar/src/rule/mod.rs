@@ -188,7 +188,6 @@ pub struct BeginEndRule {
     // pub hasMissingPatterns: Option<bool>,
     #[serde(skip_serializing_if="Option::is_none")]
     pub cached_compiled_patterns: Option<RegExpSourceList>,
-
     pub patterns: Vec<i32>,
 }
 

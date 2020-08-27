@@ -3585,7 +3585,9 @@ var RuleFactory = /** @class */ (function () {
                     return new BeginWhileRule(desc.$vscodeTextmateLocation, desc.id, desc.name, desc.contentName, desc.begin, RuleFactory._compileCaptures(desc.beginCaptures || desc.captures, helper, repository), desc.while, RuleFactory._compileCaptures(desc.whileCaptures || desc.captures, helper, repository), RuleFactory._compilePatterns(desc.patterns, helper, repository));
                 }
                 let begin_captures = RuleFactory._compileCaptures(desc.beginCaptures || desc.captures, helper, repository);
-                return new BeginEndRule(desc.$vscodeTextmateLocation, desc.id, desc.name, desc.contentName, desc.begin, begin_captures, desc.end, RuleFactory._compileCaptures(desc.endCaptures || desc.captures, helper, repository), desc.applyEndPatternLast, RuleFactory._compilePatterns(desc.patterns, helper, repository));
+                let end_captures = RuleFactory._compileCaptures(desc.endCaptures || desc.captures, helper, repository);
+                let compilePatterns = RuleFactory._compilePatterns(desc.patterns, helper, repository);
+                return new BeginEndRule(desc.$vscodeTextmateLocation, desc.id, desc.name, desc.contentName, desc.begin, begin_captures, desc.end, end_captures, desc.applyEndPatternLast, compilePatterns);
             });
         }
         return desc.id;
@@ -3637,7 +3639,7 @@ var RuleFactory = /** @class */ (function () {
                             patternId = RuleFactory.getCompiledRuleId(localIncludedRule, helper, repository);
                         }
                         else {
-                            // console.warn('CANNOT find rule for scopeName: ' + pattern.include + ', I am: ', repository['$base'].name);
+                            console.warn('CANNOT find rule for scopeName: ' + pattern.include + ', I am: ', repository['$base'].name);
                         }
                     }
                     else if (pattern.include === '$base' || pattern.include === '$self') {

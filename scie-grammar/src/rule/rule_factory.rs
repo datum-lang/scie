@@ -87,8 +87,11 @@ impl RuleFactory {
                         let first = remove_first(include_s.as_str());
                         let local_included_rule = repository_map.get(first);
                         if let Some(rule) = local_included_rule {
+                            let parse = *rule.clone();
+                            println!("{:?}", parse);
                             pattern_id = RuleFactory::get_compiled_rule_id(
-                                *rule.clone(),
+                                // todo: replace cloned
+                                parse.clone(),
                                 helper,
                                 repository.clone(),
                             );
