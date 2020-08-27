@@ -228,14 +228,25 @@ pub struct CaptureRule {
 }
 
 impl CaptureRule {
-    pub fn new() -> Self {
+    pub fn empty() -> Self {
         CaptureRule {
             rule: Rule {
-                _type: String::from("CaptureRule"),
+                _type: "".to_string(),
                 location: None,
                 id: 0,
                 name: None,
-                content_name: None,
+                content_name: None
+            }
+        }
+    }
+    pub fn new(location: Option<ILocation>, id: i32, name: Option<String>, content_name: Option<String>) -> Self {
+        CaptureRule {
+            rule: Rule {
+                _type: String::from("CaptureRule"),
+                location,
+                id,
+                name,
+                content_name,
             },
         }
     }

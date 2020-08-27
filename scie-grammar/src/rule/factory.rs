@@ -1,6 +1,6 @@
 use crate::grammar::grammar::Grammar;
 use crate::inter::{IRawCaptures, IRawRepository, IRawRule, ILocation};
-use crate::rule::{BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule, MatchRule, AbstractRule};
+use crate::rule::{BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule, MatchRule, AbstractRule, Rule};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ICompilePatternsResult {
@@ -33,7 +33,7 @@ impl RuleFactory {
                 }
             }
             for i in 0..maximum_capture_id + 1 {
-                r.push(Box::new(CaptureRule::new()));
+                r.push(Box::new(CaptureRule::empty()));
             }
 
             let cloned_capts = captures.clone().unwrap();
@@ -59,7 +59,12 @@ impl RuleFactory {
 
     pub fn create_capture_rule(helper: &mut Grammar, location: Option<ILocation>, name: Option<String>, content_name: Option<String>, retokenizeCapturedWithRuleId: i32) -> Box<dyn AbstractRule> {
         let id = helper.register_id();
-        let rule = CaptureRule::new();
+        let rule = CaptureRule::new(
+            location,
+            id,
+            name,
+            content_name,
+        );
         helper.register_rule(Box::from(rule));
         return helper.get_rule(id);
     }
@@ -164,14 +169,14 @@ impl RuleFactory {
                 );
                 let match_rule = MatchRule::new(
                     desc.location.clone(),
-                    desc.id.unwrap().clone(),
+                    id.clone(),
                     desc.name.clone(),
                     match_s.clone(),
                     rule_factory,
                 );
 
                 helper.register_rule(Box::new(match_rule));
-                return desc.id.unwrap().clone();
+                return id.clone();
             };
 
             if let None = desc.begin {
@@ -192,14 +197,14 @@ impl RuleFactory {
                     RuleFactory::compile_patterns(patterns.clone(), helper, repository.clone());
                 let include_only_rule = IncludeOnlyRule::new(
                     desc.location.clone(),
-                    desc.id.unwrap().clone(),
+                    id.clone(),
                     desc.name.clone(),
                     desc.content_name.clone(),
                     rule_factory,
                 );
 
                 helper.register_rule(Box::new(include_only_rule));
-                return desc.id.unwrap().clone();
+                return id.clone();
             }
 
             let mut begin_captures = desc.begin_captures.clone();
@@ -225,7 +230,7 @@ impl RuleFactory {
 
                 let begin_while_rule = BeginWhileRule::new(
                     desc.location.clone(),
-                    desc.id.unwrap().clone(),
+                    id.clone(),
                     desc.name.clone(),
                     desc.content_name.clone(),
                     desc.begin,
@@ -236,7 +241,7 @@ impl RuleFactory {
                 );
 
                 helper.register_rule(Box::new(begin_while_rule));
-                return desc.id.unwrap().clone();
+                return id.clone();
             }
 
             let begin_rule_factory =
@@ -252,7 +257,7 @@ impl RuleFactory {
             // todo: register with compile patterns
             let begin_end_rule = BeginEndRule::new(
                 desc.location.clone(),
-                desc.id.unwrap().clone(),
+                id.clone(),
                 desc.name.clone(),
                 desc.content_name.clone(),
                 desc.begin.unwrap().clone(),
@@ -264,7 +269,7 @@ impl RuleFactory {
             );
 
             helper.register_rule(Box::new(begin_end_rule));
-            return desc.id.unwrap().clone();
+            return id.clone();
         }
 
         desc.id.unwrap()
