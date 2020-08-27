@@ -63,21 +63,18 @@ pub fn init_grammar(grammar: IRawGrammar, base: Option<IRawRule>) -> IRawGrammar
     let mut _grammar = grammar.clone();
 
     let mut new_based: IRawRule = IRawRule::new();
-    new_based.location = grammar.clone().repository.unwrap().clone().location;
+    if let Some(repo) = grammar.clone().repository {
+        new_based.location = repo.clone().location;
+    }
     new_based.patterns = Some(grammar.clone().patterns.clone());
     new_based.name = grammar.clone().name;
 
     let mut repository_map = IRawRepositoryMap::new();
     repository_map.base_s = Some(new_based.clone());
     repository_map.self_s = Some(new_based.clone());
-    repository_map.name_map = grammar
-        .clone()
-        .repository
-        .unwrap()
-        .clone()
-        .map
-        .name_map
-        .clone();
+    if let Some(repo) = grammar.clone().repository {
+        repository_map.name_map = repo.clone().map.name_map.clone();
+    }
 
     _grammar.repository = Some(IRawRepository {
         map: Box::new(repository_map.clone()),
@@ -213,7 +210,7 @@ mod tests {
     use crate::inter::IRawGrammar;
 
     #[test]
-    fn should_enable_run_grammar() {
+    fn should_build_json_code() {
         let code = "
 #include <stdio.h>
 int main() {
@@ -222,6 +219,20 @@ return 0;
 }
 ";
         let grammar = to_grammar("test-cases/first-mate/fixtures/c.json", code);
+
+        let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
+        let mut file = File::create("program.json").unwrap();
+        file.write_all(j.as_bytes());
+    }
+
+    #[test]
+    fn should_build_text_grammar() {
+        let code = "
+GitHub 漫游指南- a Chinese ebook on how to build a good project on Github. Explore the users' behavior. Find some thing interest.
+
+
+";
+        let grammar = to_grammar("test-cases/first-mate/fixtures/text.json", code);
 
         let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
         let mut file = File::create("program.json").unwrap();
