@@ -78,14 +78,11 @@ impl RuleFactory {
             for pattern in patterns {
                 let mut pattern_id = -1;
                 if let Some(include_s) = pattern.clone().include {
-                    let mut repository_map = repository.map.name_map.clone();
-
                     if include_s.starts_with("#") {
                         let first = remove_first(include_s.as_str());
                         let mut local_included_rule = repository.map.name_map.get_mut(first);
                         if let Some(mut rule) = local_included_rule.cloned() {
                             pattern_id = RuleFactory::get_compiled_rule_id(
-                                // todo: replace cloned, id cannot not update
                                 *rule,
                                 helper,
                                 repository,
@@ -189,9 +186,9 @@ impl RuleFactory {
 
             if let None = desc.begin {
                 if let Some(repo) = desc.repository.clone() {
-                    //todo: mergeObjects
                     desc.repository.unwrap().map.name_map.extend(repository.clone().map.name_map);
                 }
+
                 let mut patterns = desc.patterns;
                 if let None = patterns {
                     if let Some(include) = desc.include {

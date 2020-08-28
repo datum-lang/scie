@@ -17,7 +17,7 @@ pub struct ITokenTypeMap {
 
 pub struct IGrammarConfiguration {
     pub embedded_languages: IEmbeddedLanguagesMap,
-    pub tokenTypes: ITokenTypeMap,
+    pub token_types: ITokenTypeMap,
 }
 
 pub struct GrammarRegistry {}
