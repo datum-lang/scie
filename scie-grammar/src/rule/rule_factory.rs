@@ -168,7 +168,7 @@ impl RuleFactory {
 
             if let Some(match_s) = desc.match_s {
                 let rule_factory = RuleFactory::compile_captures(
-                    desc.captures.clone(),
+                    desc.captures,
                     helper,
                     repository,
                 );
@@ -199,7 +199,7 @@ impl RuleFactory {
                 }
 
                 let rule_factory =
-                    RuleFactory::compile_patterns(patterns.clone(), helper, repository);
+                    RuleFactory::compile_patterns(patterns, helper, repository);
                 let include_only_rule = IncludeOnlyRule::new(
                     desc.location.clone(),
                     id.clone(),
@@ -228,7 +228,7 @@ impl RuleFactory {
                 let end_rule_factory =
                     RuleFactory::compile_captures(end_captures, helper, repository);
                 let pattern_factory = RuleFactory::compile_patterns(
-                    desc.patterns.clone(),
+                    desc.patterns,
                     helper,
                     repository,
                 );
