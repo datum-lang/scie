@@ -223,9 +223,7 @@ return 0;
 
         // todo: fixed it
         // assert_eq!(grammar.rule_id2desc.len(), 162);
-        let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
-        let mut file = File::create("program.json").unwrap();
-        file.write_all(j.as_bytes());
+        // debug_output(&grammar, String::from("program.json"));
     }
 
     #[test]
@@ -238,9 +236,20 @@ GitHub 漫游指南- a Chinese ebook on how to build a good project on Github. E
         let grammar = to_grammar("test-cases/first-mate/fixtures/text.json", code);
 
         assert_eq!(grammar.rule_id2desc.len(), 8);
+    }
+
+    fn debug_output(grammar: &Grammar, path: String) {
         let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
-        let mut file = File::create("program.json").unwrap();
+        let mut file = File::create(path).unwrap();
         file.write_all(j.as_bytes());
+    }
+
+    #[test]
+    fn should_build_json_grammar() {
+        let code = "{}";
+        let grammar = to_grammar("test-cases/first-mate/fixtures/json.json", code);
+        assert_eq!(grammar.rule_id2desc.len(), 22);
+        debug_output(&grammar, String::from("program.json"));
     }
 
     fn to_grammar(grammar_path: &str, code: &str) -> Grammar {

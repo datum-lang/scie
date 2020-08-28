@@ -57,12 +57,7 @@ impl RuleFactory {
 
     pub fn create_capture_rule(helper: &mut Grammar, location: Option<ILocation>, name: Option<String>, content_name: Option<String>, retokenizeCapturedWithRuleId: i32) -> Box<dyn AbstractRule> {
         let id = helper.register_id();
-        let rule = CaptureRule::new(
-            location,
-            id,
-            name,
-            content_name,
-        );
+        let rule = CaptureRule::new(location, id, name, content_name, retokenizeCapturedWithRuleId);
         helper.register_rule(Box::from(rule));
         return helper.get_rule(id);
     }

@@ -237,6 +237,7 @@ impl AbstractRule for BeginEndRule {
 #[derive(Clone, Debug, Serialize)]
 pub struct CaptureRule {
     pub rule: Rule,
+    pub retokenize_captured_with_rule_id: i32
 }
 
 impl CaptureRule {
@@ -248,10 +249,11 @@ impl CaptureRule {
                 id: 0,
                 name: None,
                 content_name: None
-            }
+            },
+            retokenize_captured_with_rule_id: 0
         }
     }
-    pub fn new(location: Option<ILocation>, id: i32, name: Option<String>, content_name: Option<String>) -> Self {
+    pub fn new(location: Option<ILocation>, id: i32, name: Option<String>, content_name: Option<String>, retokenize_captured_with_rule_id: i32) -> Self {
         CaptureRule {
             rule: Rule {
                 _type: String::from("CaptureRule"),
@@ -260,6 +262,7 @@ impl CaptureRule {
                 name,
                 content_name,
             },
+            retokenize_captured_with_rule_id
         }
     }
 }
