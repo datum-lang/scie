@@ -1,4 +1,5 @@
 pub mod rule_factory;
+pub mod rule_convert;
 
 use crate::inter::{ILocation, IRawGrammar, IRawRepository};
 use crate::reg_exp_source::{RegExpSource, RegExpSourceList};
