@@ -3345,6 +3345,7 @@ var MatchRule = /** @class */ (function (_super) {
         _this._match = new RegExpSource(match, _this.id);
         _this.captures = captures;
         _this._cachedCompiledPatterns = null;
+        _this._type = "MatchRule";
         return _this;
     }
     MatchRule.prototype.dispose = function () {
@@ -3380,6 +3381,7 @@ var IncludeOnlyRule = /** @class */ (function (_super) {
         _this.patterns = patterns.patterns;
         _this.hasMissingPatterns = patterns.hasMissingPatterns;
         _this._cachedCompiledPatterns = null;
+        _this._type = "IncludeOnlyRule";
         return _this;
     }
     IncludeOnlyRule.prototype.dispose = function () {
@@ -3421,6 +3423,7 @@ var BeginEndRule = /** @class */ (function (_super) {
         _this.patterns = patterns.patterns;
         _this.hasMissingPatterns = patterns.hasMissingPatterns;
         _this._cachedCompiledPatterns = null;
+        _this._type = "BeginEndRule";
         return _this;
     }
     BeginEndRule.prototype.dispose = function () {
@@ -3495,6 +3498,7 @@ var BeginWhileRule = /** @class */ (function (_super) {
         _this.hasMissingPatterns = patterns.hasMissingPatterns;
         _this._cachedCompiledPatterns = null;
         _this._cachedCompiledWhilePatterns = null;
+        _this._type = "BeginWhileRule";
         return _this;
     }
     BeginWhileRule.prototype.dispose = function () {
