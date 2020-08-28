@@ -12,12 +12,12 @@ use serde::{Serialize, Serializer};
 pub struct Rule {
     pub _type: String,
     #[serde(skip_serializing_if="Option::is_none")]
-    pub location: Option<ILocation>,
+    pub _location: Option<ILocation>,
     pub id: i32,
     #[serde(skip_serializing_if="Option::is_none")]
-    pub name: Option<String>,
+    pub _name: Option<String>,
     #[serde(skip_serializing_if="Option::is_none")]
-    pub content_name: Option<String>,
+    pub _content_name: Option<String>,
 }
 
 impl Rule {
@@ -29,10 +29,10 @@ impl Rule {
     ) -> Self {
         Rule {
             _type: "".to_string(),
-            location: Some(location),
+            _location: Some(location),
             id,
-            name,
-            content_name,
+            _name: name,
+            _content_name: content_name,
         }
     }
 }
@@ -70,10 +70,10 @@ impl IncludeOnlyRule {
         IncludeOnlyRule {
             rule: Rule {
                 _type: String::from("IncludeOnlyRule"),
-                location,
+                _location: location,
                 id,
-                name,
-                content_name,
+                _name: name,
+                _content_name: content_name,
             },
             patterns: captures.patterns,
         }
@@ -91,10 +91,10 @@ impl AbstractRule for IncludeOnlyRule {
 pub struct BeginWhileRule {
     pub rule: Rule,
 
-    pub begin: RegExpSource,
+    pub _begin: RegExpSource,
     pub begin_captures: Vec<Box<dyn AbstractRule>>,
 
-    pub while_s: Option<String>,
+    pub _while: Option<String>,
     pub while_captures: Vec<Box<dyn AbstractRule>>,
 
     #[serde(skip_serializing_if="Option::is_none")]
@@ -111,7 +111,7 @@ impl BeginWhileRule {
         id: i32,
         name: Option<String>,
         content_name: Option<String>,
-        begin: Option<String>,
+        _begin: Option<String>,
         begin_captures: Vec<Box<dyn AbstractRule>>,
         _while: Option<String>,
         while_captures: Vec<Box<dyn AbstractRule>>,
@@ -120,14 +120,14 @@ impl BeginWhileRule {
         BeginWhileRule {
             rule: Rule {
                 _type: String::from("BeginEndRule"),
-                location,
+                _location: location,
                 id,
-                name,
-                content_name,
+                _name: name,
+                _content_name: content_name,
             },
-            begin: RegExpSource::new(begin.unwrap().clone(), id.clone()),
+            _begin: RegExpSource::new(_begin.unwrap().clone(), id.clone()),
             begin_captures,
-            while_s: _while,
+            _while,
             while_captures,
             apply_end_pattern_last: None,
             patterns,
@@ -155,18 +155,18 @@ impl MatchRule {
         location: Option<ILocation>,
         id: i32,
         name: Option<String>,
-        match_s: String,
+        _match: String,
         captures: Vec<Box<dyn AbstractRule>>,
     ) -> Self {
         MatchRule {
             rule: Rule {
                 _type: String::from("MatchRule"),
-                location,
+                _location: location,
                 id,
-                name,
-                content_name: None,
+                _name: name,
+                _content_name: None,
             },
-            _match: RegExpSource::new(match_s, id),
+            _match: RegExpSource::new(_match, id),
             captures,
         }
     }
@@ -212,10 +212,10 @@ impl BeginEndRule {
         BeginEndRule {
             rule: Rule {
                 _type: String::from("BeginEndRule"),
-                location,
+                _location: location,
                 id,
-                name,
-                content_name,
+                _name: name,
+                _content_name: content_name,
             },
             begin: RegExpSource::new(begin.clone(), id.clone()),
             begin_captures,
@@ -246,10 +246,10 @@ impl CaptureRule {
         CaptureRule {
             rule: Rule {
                 _type: "".to_string(),
-                location: None,
+                _location: None,
                 id: 0,
-                name: None,
-                content_name: None
+                _name: None,
+                _content_name: None
             },
             retokenize_captured_with_rule_id: 0
         }
@@ -258,10 +258,10 @@ impl CaptureRule {
         CaptureRule {
             rule: Rule {
                 _type: String::from("CaptureRule"),
-                location,
+                _location: location,
                 id,
-                name,
-                content_name,
+                _name: name,
+                _content_name: content_name,
             },
             retokenize_captured_with_rule_id
         }
