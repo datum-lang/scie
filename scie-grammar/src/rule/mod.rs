@@ -97,8 +97,7 @@ pub struct BeginWhileRule {
     pub _while: Option<String>,
     pub while_captures: Vec<Box<dyn AbstractRule>>,
 
-    #[serde(skip_serializing_if="Option::is_none")]
-    pub apply_end_pattern_last: Option<bool>,
+    pub apply_end_pattern_last: bool,
 
     pub patterns: ICompilePatternsResult,
     #[serde(skip_serializing_if="Option::is_none")]
@@ -129,7 +128,7 @@ impl BeginWhileRule {
             begin_captures,
             _while,
             while_captures,
-            apply_end_pattern_last: None,
+            apply_end_pattern_last: false,
             patterns,
             cached_compiled_patterns: None,
         }
@@ -183,16 +182,16 @@ impl AbstractRule for MatchRule {
 pub struct BeginEndRule {
     #[serde(flatten)]
     pub rule: Rule,
-    pub begin: RegExpSource,
+    pub _begin: RegExpSource,
     pub begin_captures: Vec<Box<dyn AbstractRule>>,
-    pub end: RegExpSource,
+    pub _end: RegExpSource,
     // pub endHasBackReferences: Option<bool>,
     pub end_captures: Vec<Box<dyn AbstractRule>>,
     #[serde(skip_serializing_if="Option::is_none")]
     pub apply_end_pattern_last: Option<bool>,
     // pub hasMissingPatterns: Option<bool>,
     #[serde(skip_serializing_if="Option::is_none")]
-    pub cached_compiled_patterns: Option<RegExpSourceList>,
+    pub _cached_compiled_patterns: Option<RegExpSourceList>,
     pub patterns: Vec<i32>,
 }
 
@@ -217,13 +216,13 @@ impl BeginEndRule {
                 _name: name,
                 _content_name: content_name,
             },
-            begin: RegExpSource::new(begin.clone(), id.clone()),
+            _begin: RegExpSource::new(begin.clone(), id.clone()),
             begin_captures,
-            end: RegExpSource::new(_end.clone(), id.clone()),
+            _end: RegExpSource::new(_end.clone(), id.clone()),
             end_captures,
             apply_end_pattern_last,
             patterns,
-            cached_compiled_patterns: None,
+            _cached_compiled_patterns: None,
         }
     }
 }
