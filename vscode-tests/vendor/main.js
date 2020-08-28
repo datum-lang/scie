@@ -3674,7 +3674,7 @@ var RuleFactory = /** @class */ (function () {
                                     patternId = RuleFactory.getCompiledRuleId(externalIncludedRule, helper, externalGrammar.repository);
                                 }
                                 else {
-                                    // console.warn('CANNOT find rule for scopeName: ' + pattern.include + ', I am: ', repository['$base'].name);
+                                    console.warn('CANNOT find rule for scopeName: ' + pattern.include + ', I am: ', repository['$base'].name);
                                 }
                             }
                             else {
@@ -3682,7 +3682,7 @@ var RuleFactory = /** @class */ (function () {
                             }
                         }
                         else {
-                            // console.warn('CANNOT find grammar for scopeName: ' + pattern.include + ', I am: ', repository['$base'].name);
+                            console.warn('CANNOT find grammar for scopeName: ' + pattern.include + ', I am: ', repository['$base'].name);
                         }
                     }
                 }
