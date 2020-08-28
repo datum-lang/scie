@@ -734,9 +734,11 @@ var Grammar = /** @class */ (function () {
         if (this._rootId === -1) {
             this._rootId = rule_1.RuleFactory.getCompiledRuleId(this._grammar.repository.$self, this, this._grammar.repository);
         }
+
         // let fs = require('fs');
         // let data = JSON.stringify(this._ruleId2desc, null, 2);
         // fs.writeFileSync("ruleid2rule.json", data, 'utf8');
+
         var isFirstLine;
         if (!prevState || prevState === StackElement.NULL) {
             isFirstLine = true;
@@ -3079,6 +3081,7 @@ var CaptureRule = /** @class */ (function (_super) {
     function CaptureRule($location, id, name, contentName, retokenizeCapturedWithRuleId) {
         var _this = _super.call(this, $location, id, name, contentName) || this;
         _this.retokenizeCapturedWithRuleId = retokenizeCapturedWithRuleId;
+        _this._type = "CaptureRule";
         return _this;
     }
     CaptureRule.prototype.dispose = function () {

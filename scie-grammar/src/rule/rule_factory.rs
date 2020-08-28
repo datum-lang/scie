@@ -33,19 +33,20 @@ impl RuleFactory {
                 }
             }
 
-            for i in 0..maximum_capture_id + 1 {
-                r.push(Box::new(CaptureRule::empty()));
-            }
+            r.resize((maximum_capture_id + 1) as usize, Box::new(CaptureRule::empty()));
 
             for (id_str, desc) in capts.clone().map.capture_map {
+                // todo: figure captureId === '$vscodeTextmateLocation'
                 let numeric_capture_id: usize = id_str.parse().unwrap_or(0);
                 let mut retokenize_captured_with_rule_id = 0;
                 let options_patterns = capts.map.capture_map
                     .get(&*numeric_capture_id.to_string());
 
                 if let Some(rule) = options_patterns {
-                    retokenize_captured_with_rule_id =
-                        RuleFactory::get_compiled_rule_id(desc.clone(), helper, repository, String::from(""));
+                    if let Some(patterns) = rule.clone().patterns {
+                        retokenize_captured_with_rule_id =
+                            RuleFactory::get_compiled_rule_id(desc.clone(), helper, repository, String::from(""));
+                    }
                 }
                 r[numeric_capture_id] = RuleFactory::create_capture_rule(helper, desc.clone().location, desc.clone().name, desc.clone().content_name, retokenize_captured_with_rule_id);
             }
@@ -86,7 +87,7 @@ impl RuleFactory {
                                 *rule,
                                 helper,
                                 repository,
-                                String::from(first)
+                                String::from(first),
                             );
                         } else {
                             println!(
@@ -101,7 +102,7 @@ impl RuleFactory {
                                 *rule,
                                 helper,
                                 repository,
-                                String::from(include_s.as_str())
+                                String::from(include_s.as_str()),
                             );
                         }
                     } else {

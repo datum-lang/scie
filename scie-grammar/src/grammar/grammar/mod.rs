@@ -221,6 +221,8 @@ return 0;
 ";
         let grammar = to_grammar("test-cases/first-mate/fixtures/c.json", code);
 
+        // todo: fixed it
+        // assert_eq!(grammar.rule_id2desc.len(), 162);
         let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
         let mut file = File::create("program.json").unwrap();
         file.write_all(j.as_bytes());
@@ -235,6 +237,7 @@ GitHub 漫游指南- a Chinese ebook on how to build a good project on Github. E
 ";
         let grammar = to_grammar("test-cases/first-mate/fixtures/text.json", code);
 
+        assert_eq!(grammar.rule_id2desc.len(), 8);
         let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
         let mut file = File::create("program.json").unwrap();
         file.write_all(j.as_bytes());
