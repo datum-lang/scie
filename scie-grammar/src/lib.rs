@@ -7,7 +7,6 @@ extern crate serde_derive;
 extern crate erased_serde;
 
 pub mod grammar;
-pub mod grammar_registry;
 pub mod inter;
 pub mod rule;
 pub mod matcher;
