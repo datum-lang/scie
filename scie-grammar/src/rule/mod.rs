@@ -2,14 +2,18 @@ pub mod rule_factory;
 pub mod rule_convert;
 pub mod reg_exp_source;
 pub mod compiled_rule;
-pub(crate) mod abstract_rule;
+pub mod abstract_rule;
+pub mod begin_end_rule;
+
+pub use self::abstract_rule::AbstractRule;
+pub use self::compiled_rule::CompiledRule;
+// pub use self::begin_end_rule::AbstractRule;
 
 use crate::inter::{ILocation, IRawGrammar, IRawRepository};
 use reg_exp_source::{RegExpSource, RegExpSourceList};
 use crate::rule::rule_factory::ICompilePatternsResult;
 use core::fmt;
 use serde::{Serialize, Serializer};
-use abstract_rule::AbstractRule;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct Rule {

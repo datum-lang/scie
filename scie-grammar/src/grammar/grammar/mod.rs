@@ -4,13 +4,10 @@ use onig::*;
 
 use crate::grammar::grammar::stack_element::StackElement;
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
-use crate::rule::{
-    IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, NoneRule,
-};
+use crate::rule::{IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, NoneRule, AbstractRule};
 use crate::rule::rule_factory::RuleFactory;
 use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher};
 use crate::grammar::grammar::scope_list_element::ScopeListElement;
-use crate::rule::abstract_rule::AbstractRule;
 
 pub mod scope_list_element;
 pub mod scope_metadata;
