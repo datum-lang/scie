@@ -189,7 +189,7 @@ impl IRuleRegistry for Grammar {
         if let Some(rule) = self.rule_id2desc.get(&pattern_id) {
             return rule.clone();
         }
-        // println!("None: rule, {:?}, rule_id2: {:?}", pattern_id, self.rule_id2desc.clone());
+        // println!("None: rule: {:?}, rule_id2: {:?}", pattern_id, self.rule_id2desc.clone());
         Box::from(NoneRule {})
     }
 
@@ -208,7 +208,6 @@ mod tests {
 
     use crate::grammar::grammar::Grammar;
     use crate::inter::IRawGrammar;
-    use crate::rule::AbstractRule;
 
     #[test]
     fn should_build_json_code() {
@@ -261,7 +260,7 @@ GitHub 漫游指南
     fn should_build_makefile_grammar() {
         let code = "{}";
         let grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
-        // assert_eq!(grammar.rule_id2desc.len(), 104);
+        // assert_eq!(grammar.rule_id2desc.len(), 82);
         assert_eq!(grammar.rule_id2desc.len(), 64);
         debug_output(&grammar, String::from("program.json"));
     }

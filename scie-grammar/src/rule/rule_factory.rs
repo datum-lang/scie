@@ -146,7 +146,6 @@ impl RuleFactory {
         }
 
         let mut has_missing_patterns = false;
-
         match origin_patterns.clone() {
             None => {
                 if 0 != r.len() {
@@ -162,7 +161,7 @@ impl RuleFactory {
 
         let result = ICompilePatternsResult {
             patterns: r,
-            has_missing_patterns: false,
+            has_missing_patterns,
         };
 
         result
