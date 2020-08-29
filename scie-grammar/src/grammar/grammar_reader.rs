@@ -23,9 +23,6 @@ mod tests {
     #[test]
     fn should_run() {
         let grammar = parse_raw_grammar(String::from("hello"), Some(String::from("world.json")));
-        assert_eq!(
-            format!("{:?}", grammar.unwrap().location),
-            "ILocatable { textmate_location: None }"
-        );
+        assert_eq!(format!("{:?}", grammar.unwrap().location), "None");
     }
 }

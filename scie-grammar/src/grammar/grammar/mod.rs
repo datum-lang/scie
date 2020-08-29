@@ -9,6 +9,7 @@ use crate::rule::{
 };
 use crate::rule::rule_factory::RuleFactory;
 use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher};
+use crate::grammar::grammar::scope_list_element::ScopeListElement;
 
 pub mod scope_list_element;
 pub mod scope_metadata;
@@ -103,7 +104,7 @@ impl Grammar {
     fn tokenize(
         &mut self,
         line_text: String,
-        prev_state: Option<StackElement>,
+        mut prev_state: Option<StackElement>,
         emit_binary_tokens: bool,
     ) {
         if self.root_id.clone() == -1 {
@@ -125,13 +126,18 @@ impl Grammar {
             }
         }
 
+        if is_first_line {
+            let scope_list = ScopeListElement::default();
+            prev_state = Some(StackElement::new(None, self.root_id.clone(), -1, -1, false, None, scope_list.clone(), scope_list.clone()))
+        }
+
         let format_line_text = format!("{:?}\n", line_text);
         let line_tokens = LineTokens::new(emit_binary_tokens, line_text, self._token_type_matchers.clone());
         self.tokenize_string(
             format_line_text.parse().unwrap(),
             is_first_line,
             0,
-            prev_state,
+            prev_state.unwrap(),
             line_tokens,
             true,
         )
@@ -142,7 +148,7 @@ impl Grammar {
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
-        prev_state: Option<StackElement>,
+        prev_state: StackElement,
         line_tokens: LineTokens,
         check_while_conditions: bool,
     ) {
@@ -161,9 +167,8 @@ impl Grammar {
             );
         }
 
-        if let Some(stack) = prev_state {
-            self.match_rule_or_injections(line_text, is_first_line, line_pos, stack.clone(), anchor_position);
-        }
+
+        self.match_rule_or_injections(line_text, is_first_line, line_pos, prev_state, anchor_position);
     }
 
     pub fn check_while_conditions(
@@ -171,13 +176,11 @@ impl Grammar {
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
-        _stack: Option<StackElement>,
+        _stack: StackElement,
         line_tokens: LineTokens,
     ) {
         let mut anchor_position = -1;
-        if let Some(stack) = _stack {
-            if stack.begin_rule_captured_eol { anchor_position = 0 }
-        };
+        if _stack.begin_rule_captured_eol { anchor_position = 0 }
         // let while_rules = vec![];
     }
 
