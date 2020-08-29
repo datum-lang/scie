@@ -1,8 +1,9 @@
 pub mod rule_factory;
 pub mod rule_convert;
+pub mod reg_exp_source;
 
 use crate::inter::{ILocation, IRawGrammar, IRawRepository};
-use crate::reg_exp_source::{RegExpSource, RegExpSourceList};
+use reg_exp_source::{RegExpSource, RegExpSourceList};
 use crate::rule::rule_factory::ICompilePatternsResult;
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};

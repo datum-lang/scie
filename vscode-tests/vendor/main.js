@@ -1509,7 +1509,7 @@ var LineTokens = /** @class */ (function () {
         this._tokens.push({
             startIndex: this._lastTokenEndIndex,
             endIndex: endIndex,
-            // value: lineText.substring(lastTokenEndIndex, endIndex),
+            // value: lineText.substring(lastTokenEndIndex, end_index),
             scopes: scopes
         });
         this._lastTokenEndIndex = endIndex;
