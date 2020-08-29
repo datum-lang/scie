@@ -128,11 +128,12 @@ impl RuleFactory {
                 }
 
                 if pattern_id != -1 {
-                    // todo: as missing to true
                     let rule = helper.get_rule(pattern_id);
                     let mut skip_rule = false;
                     if rule.type_of() == "IncludeOnlyRule" || rule.type_of() == "BeginEndRule" || rule.type_of() == "BeginWhileRule" {
-                        skip_rule = true;
+                        if rule.has_missing_pattern()  {
+                            skip_rule = true;
+                        }
                     }
 
                     if skip_rule {
@@ -145,11 +146,20 @@ impl RuleFactory {
         }
 
         let mut has_missing_patterns = false;
-        if let Some(patterns) = origin_patterns.clone() {
-            if patterns.len() != r.len() {
-                has_missing_patterns = true
-            }
+
+        match origin_patterns.clone() {
+            None => {
+                if 0 != r.len() {
+                    has_missing_patterns = true
+                }
+            },
+            Some(patterns) => {
+                if patterns.len() != r.len() {
+                    has_missing_patterns = true
+                }
+            },
         }
+
         let result = ICompilePatternsResult {
             patterns: r,
             has_missing_patterns: false,

@@ -88,7 +88,7 @@ impl IncludeOnlyRule {
 impl AbstractRule for IncludeOnlyRule {
     fn id(&self) -> i32 { self.rule.id }
     fn type_of(&self) -> String {
-        String::from("IncludeOnlyRule")
+        String::from(self.rule.clone()._type)
     }
 
     fn has_missing_pattern(&self) -> bool {
@@ -149,7 +149,7 @@ impl BeginWhileRule {
 impl AbstractRule for BeginWhileRule {
     fn id(&self) -> i32 { self.rule.id }
     fn type_of(&self) -> String {
-        String::from("BeginWhileRule")
+        String::from(self.rule.clone()._type)
     }
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns
@@ -188,7 +188,7 @@ impl MatchRule {
 impl AbstractRule for MatchRule {
     fn id(&self) -> i32 { self.rule.id }
     fn type_of(&self) -> String {
-        String::from("MatchRule")
+        String::from(self.rule.clone()._type)
     }
 }
 
@@ -245,7 +245,7 @@ impl BeginEndRule {
 impl AbstractRule for BeginEndRule {
     fn id(&self) -> i32 { self.rule.id }
     fn type_of(&self) -> String {
-        String::from("BeginEndRule")
+        String::from(self.rule.clone()._type)
     }
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns
@@ -287,7 +287,7 @@ impl CaptureRule {
 
 impl AbstractRule for CaptureRule {
     fn id(&self) -> i32 { self.rule.id }
-    fn type_of(&self) -> String { String::from("CaptureRule") }
+    fn type_of(&self) -> String { String::from(self.rule.clone()._type) }
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -305,7 +305,6 @@ impl AbstractRule for NoneRule {
 pub trait IRuleRegistry {
     // type Output;
     // fn method(&self) -> Self::Output;
-
     fn register_id(&mut self) -> i32;
     fn get_rule(&self, pattern_id: i32) -> Box<dyn AbstractRule>;
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule>;
