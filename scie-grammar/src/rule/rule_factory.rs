@@ -177,6 +177,9 @@ impl RuleFactory {
             let id = helper.register_id();
             desc.id = Some(id.clone());
 
+            // since we fork logic from vscode-textmate, vscode-textmate will had duplicate some
+            // rules. it will cause stackoverflow in our version, so I decide change repository id
+            // by name.
             if desc_name != "" {
                 if let Some(a) = repository.map.name_map.get(desc_name.as_str()).clone() {
                     repository.map.name_map.get_mut(desc_name.as_str()).unwrap().id = Some(id);

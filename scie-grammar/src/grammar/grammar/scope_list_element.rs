@@ -1,3 +1,4 @@
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ScopeListElement {
     pub parent: Option<Box<ScopeListElement>>,
     pub scope: String,

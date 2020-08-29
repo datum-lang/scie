@@ -1,5 +1,7 @@
 use crate::grammar::grammar::scope_list_element::ScopeListElement;
+use core::ptr;
 
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct StackElement {
     pub parent: Option<Box<StackElement>>,
     pub depth: i32,
@@ -13,5 +15,18 @@ pub struct StackElement {
 }
 
 impl StackElement {
-    pub fn null() {}
+    pub fn null() -> StackElement {
+        StackElement {
+            parent: None,
+            depth: 0,
+            rule_id: 0,
+            enter_pos: 0,
+            anchor_pos: 0,
+            begin_rule_captured_eol: false,
+            end_rule: None,
+            name_scopes_list: Default::default(),
+            content_name_scopes_list: Default::default()
+
+        }
+    }
 }

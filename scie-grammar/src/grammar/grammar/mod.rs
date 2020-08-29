@@ -116,9 +116,16 @@ impl Grammar {
         }
 
         let mut is_first_line: bool = false;
-        if let None = prev_state {
-            is_first_line = true
-        } else {}
+        match prev_state {
+            None => {
+                is_first_line = true
+            },
+            Some(state) => {
+                if state == StackElement::null() {
+                    is_first_line = true
+                }
+            },
+        }
 
         let format_line_text = format!("{:?}\n", line_text);
         let onig_line_text = self.create_onig_string(format_line_text);
