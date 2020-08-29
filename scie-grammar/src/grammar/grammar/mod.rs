@@ -4,7 +4,7 @@ use onig::*;
 
 use crate::grammar::grammar::stack_element::StackElement;
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
-use crate::rule::{IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, NoneRule, AbstractRule};
+use crate::rule::{IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, EmptyRule, AbstractRule};
 use crate::rule::rule_factory::RuleFactory;
 use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher};
 use crate::grammar::grammar::scope_list_element::ScopeListElement;
@@ -235,7 +235,7 @@ impl IRuleRegistry for Grammar {
             return rule.clone();
         }
         // println!("None: rule: {:?}, rule_id2: {:?}", pattern_id, self.rule_id2desc.clone());
-        Box::from(NoneRule {})
+        Box::from(EmptyRule {})
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
