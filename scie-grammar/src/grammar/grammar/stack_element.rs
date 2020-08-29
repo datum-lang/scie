@@ -1,5 +1,8 @@
 use crate::grammar::grammar::scope_list_element::ScopeListElement;
 use core::ptr;
+use crate::grammar::grammar::Grammar;
+use crate::grammar::grammar_registry::GrammarRegistry;
+use crate::rule::{IRuleRegistry, AbstractRule};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct StackElement {
@@ -28,5 +31,11 @@ impl StackElement {
             content_name_scopes_list: Default::default()
 
         }
+    }
+    pub fn pop(&self) -> Option<Box<StackElement>> {
+        self.clone().parent
+    }
+    pub fn get_rule(&self, grammar: &mut Grammar) -> Box<dyn AbstractRule> {
+        grammar.get_rule(self.rule_id)
     }
 }

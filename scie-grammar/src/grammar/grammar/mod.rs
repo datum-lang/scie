@@ -8,6 +8,7 @@ use crate::rule::{
     AbstractRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, NoneRule,
 };
 use crate::rule::rule_factory::RuleFactory;
+use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher};
 
 pub mod scope_list_element;
 pub mod scope_metadata;
@@ -45,9 +46,6 @@ pub trait IGrammar {
 }
 
 pub trait Matcher {}
-
-#[derive(Debug, Clone)]
-pub struct TokenTypeMatcher {}
 
 #[derive(Debug, Clone)]
 pub struct Grammar {
@@ -116,20 +114,27 @@ impl Grammar {
         }
 
         let mut is_first_line: bool = false;
-        match prev_state {
+        match prev_state.clone() {
             None => {
                 is_first_line = true
-            },
+            }
             Some(state) => {
                 if state == StackElement::null() {
                     is_first_line = true
                 }
-            },
+            }
         }
 
         let format_line_text = format!("{:?}\n", line_text);
-        let onig_line_text = self.create_onig_string(format_line_text);
-        self.tokenize_string(onig_line_text.parse().unwrap(), is_first_line, 0, true)
+        let line_tokens = LineTokens::new(emit_binary_tokens, line_text, self._token_type_matchers.clone());
+        self.tokenize_string(
+            format_line_text.parse().unwrap(),
+            is_first_line,
+            0,
+            prev_state,
+            line_tokens,
+            true,
+        )
     }
 
     pub fn tokenize_string(
@@ -137,6 +142,8 @@ impl Grammar {
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
+        prev_state: Option<StackElement>,
+        line_tokens: LineTokens,
         check_while_conditions: bool,
     ) {
         let line_length = line_text.len();
@@ -144,10 +151,19 @@ impl Grammar {
         let mut anchor_position = -1;
 
         if check_while_conditions {
-            self.check_while_conditions(line_text.clone(), is_first_line, line_pos)
+            // todo: add realy logic
+            self.check_while_conditions(
+                line_text.clone(),
+                is_first_line.clone(),
+                line_pos.clone(),
+                prev_state.clone(),
+                line_tokens.clone(),
+            );
         }
 
-        self.match_rule_or_injections(line_text, is_first_line, line_pos, anchor_position);
+        if let Some(stack) = prev_state {
+            self.match_rule_or_injections(line_text, is_first_line, line_pos, stack.clone(), anchor_position);
+        }
     }
 
     pub fn check_while_conditions(
@@ -155,15 +171,38 @@ impl Grammar {
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
-    ) {}
+        _stack: Option<StackElement>,
+        line_tokens: LineTokens,
+    ) {
+        let mut anchor_position = -1;
+        if let Some(stack) = _stack {
+            if stack.begin_rule_captured_eol { anchor_position = 0 }
+        };
+        // let while_rules = vec![];
+    }
 
     pub fn match_rule_or_injections(
         &mut self,
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
+        stack: StackElement,
         anchor_position: i32,
-    ) {}
+    ) {
+        self.match_rule(line_text, is_first_line, line_pos, stack.clone(), anchor_position);
+    }
+
+    pub fn match_rule(
+        &mut self,
+        line_text: String,
+        is_first_line: bool,
+        line_pos: i32,
+        stack: StackElement,
+        anchor_position: i32,
+    ) {
+        let rule = stack.get_rule(self);
+        println!("{:?}", rule);
+    }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
         self.tokenize(line_text, prev_state, false)
