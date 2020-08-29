@@ -50,6 +50,7 @@ impl RuleFactory {
                 }
                 r[numeric_capture_id] = RuleFactory::create_capture_rule(helper, desc.clone().location, desc.clone().name, desc.clone().content_name, retokenize_captured_with_rule_id);
             }
+            // todo: remove first element, because it's filled & empty.
         };
 
         r
@@ -102,7 +103,7 @@ impl RuleFactory {
                         }
                     } else {
                         // todo: find the cases
-                        println!("todo: {:?}", pattern.include);
+                        println!("todo: external grammar {:?}", pattern.include);
                         let mut external_grammar_name: Option<String> = None;
                         let mut external_grammar_include: Option<String> = None;
                         let include_string = pattern.include.unwrap();
