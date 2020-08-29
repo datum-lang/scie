@@ -1,6 +1,6 @@
 use crate::rule::{AbstractRule, Rule};
 use crate::inter::ILocation;
-use crate::rule::reg_exp_source::RegExpSource;
+use crate::rule::RegExpSource;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct MatchRule {

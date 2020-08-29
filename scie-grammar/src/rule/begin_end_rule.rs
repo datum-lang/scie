@@ -1,4 +1,4 @@
-use crate::rule::reg_exp_source::{RegExpSource, RegExpSourceList};
+use crate::rule::{RegExpSource, RegExpSourceList};
 use crate::rule::{Rule, AbstractRule};
 use crate::inter::ILocation;
 use crate::rule::rule_factory::ICompilePatternsResult;

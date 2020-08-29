@@ -1,6 +1,5 @@
 pub mod rule_factory;
 pub mod rule_convert;
-pub mod reg_exp_source;
 
 pub mod abstract_rule;
 pub mod begin_end_rule;
@@ -19,7 +18,6 @@ pub use self::match_rule::MatchRule;
 pub use self::capture_rule::CaptureRule;
 
 use crate::inter::{ILocation, IRawGrammar, IRawRepository};
-use reg_exp_source::{RegExpSource, RegExpSourceList};
 use crate::rule::rule_factory::ICompilePatternsResult;
 use core::fmt;
 use serde::{Serialize, Serializer};
@@ -82,3 +80,21 @@ pub trait IGrammarRegistry {
 }
 
 pub trait IRuleFactoryHelper: IGrammarRegistry + IRuleRegistry {}
+
+#[derive(Clone, Debug, Serialize)]
+pub struct RegExpSourceList {}
+
+#[derive(Clone, Debug, Serialize)]
+pub struct RegExpSource {
+    pub source: String,
+    pub rule_id: i32,
+}
+
+impl RegExpSource {
+    pub fn new(reg_exp_source: String, rule_id: i32) -> RegExpSource {
+        RegExpSource {
+            source: reg_exp_source,
+            rule_id,
+        }
+    }
+}

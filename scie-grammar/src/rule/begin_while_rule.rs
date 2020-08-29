@@ -1,5 +1,5 @@
 use crate::rule::{AbstractRule, Rule};
-use crate::rule::reg_exp_source::{RegExpSource, RegExpSourceList};
+use crate::rule::{RegExpSource, RegExpSourceList};
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::inter::ILocation;
 
