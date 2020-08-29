@@ -71,7 +71,7 @@ impl RuleFactory {
     ) -> ICompilePatternsResult {
         let mut r: Vec<i32> = vec![];
 
-        if let Some(patterns) = origin_patterns {
+        if let Some(patterns) = origin_patterns.clone() {
             for pattern in patterns {
                 let mut pattern_id = -1;
                 if let Some(include_s) = pattern.clone().include {
@@ -130,16 +130,26 @@ impl RuleFactory {
                 if pattern_id != -1 {
                     // todo: as missing to true
                     let rule = helper.get_rule(pattern_id);
-                    // let  mut skipRule = false;
-                    // if rule.type_of() == "IncludeOnlyRule" || rule.type_of() == "BeginEndRule" || rule.type_of() == "BeginWhileRule" {
-                    // skipRule = true;
-                    // }
+                    let mut skip_rule = false;
+                    if rule.type_of() == "IncludeOnlyRule" || rule.type_of() == "BeginEndRule" || rule.type_of() == "BeginWhileRule" {
+                        skip_rule = true;
+                    }
+
+                    if skip_rule {
+                        continue;
+                    }
 
                     r.push(pattern_id);
                 }
             }
         }
 
+        let mut has_missing_patterns = false;
+        if let Some(patterns) = origin_patterns.clone() {
+            if patterns.len() != r.len() {
+                has_missing_patterns = true
+            }
+        }
         let result = ICompilePatternsResult {
             patterns: r,
             has_missing_patterns: false,
@@ -268,7 +278,7 @@ impl RuleFactory {
                 desc.end.unwrap().clone(),
                 end_rule_factory,
                 desc.apply_end_pattern_last,
-                pattern_factory.patterns,
+                pattern_factory,
             );
 
             helper.register_rule(Box::new(begin_end_rule));

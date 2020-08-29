@@ -40,6 +40,9 @@ impl Rule {
 pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn id(&self) -> i32;
     fn type_of(&self) -> String;
+    fn has_missing_pattern(&self) -> bool {
+        false
+    }
 }
 
 serialize_trait_object!(AbstractRule);
@@ -57,6 +60,7 @@ pub struct IncludeOnlyRule {
     #[serde(flatten)]
     pub rule: Rule,
     pub patterns: Vec<i32>,
+    pub has_missing_patterns: bool
 }
 
 impl IncludeOnlyRule {
@@ -76,6 +80,7 @@ impl IncludeOnlyRule {
                 _content_name: content_name,
             },
             patterns: captures.patterns,
+            has_missing_patterns: captures.has_missing_patterns
         }
     }
 }
@@ -84,6 +89,10 @@ impl AbstractRule for IncludeOnlyRule {
     fn id(&self) -> i32 { self.rule.id }
     fn type_of(&self) -> String {
         String::from("IncludeOnlyRule")
+    }
+
+    fn has_missing_pattern(&self) -> bool {
+        self.has_missing_patterns
     }
 }
 
@@ -100,6 +109,7 @@ pub struct BeginWhileRule {
     pub apply_end_pattern_last: bool,
 
     pub patterns: ICompilePatternsResult,
+    pub has_missing_patterns: bool,
     #[serde(skip_serializing_if="Option::is_none")]
     pub cached_compiled_patterns: Option<RegExpSourceList>,
 }
@@ -118,7 +128,7 @@ impl BeginWhileRule {
     ) -> BeginWhileRule {
         BeginWhileRule {
             rule: Rule {
-                _type: String::from("BeginEndRule"),
+                _type: String::from("BeginWhileRule"),
                 _location: location,
                 id,
                 _name: name,
@@ -129,6 +139,7 @@ impl BeginWhileRule {
             _while,
             while_captures,
             apply_end_pattern_last: false,
+            has_missing_patterns: patterns.clone().has_missing_patterns,
             patterns,
             cached_compiled_patterns: None,
         }
@@ -139,6 +150,9 @@ impl AbstractRule for BeginWhileRule {
     fn id(&self) -> i32 { self.rule.id }
     fn type_of(&self) -> String {
         String::from("BeginWhileRule")
+    }
+    fn has_missing_pattern(&self) -> bool {
+        self.has_missing_patterns
     }
 }
 
@@ -189,10 +203,10 @@ pub struct BeginEndRule {
     pub end_captures: Vec<Box<dyn AbstractRule>>,
     #[serde(skip_serializing_if="Option::is_none")]
     pub apply_end_pattern_last: Option<bool>,
-    // pub hasMissingPatterns: Option<bool>,
     #[serde(skip_serializing_if="Option::is_none")]
     pub _cached_compiled_patterns: Option<RegExpSourceList>,
     pub patterns: Vec<i32>,
+    pub has_missing_patterns: bool,
 }
 
 impl BeginEndRule {
@@ -206,7 +220,7 @@ impl BeginEndRule {
         _end: String,
         end_captures: Vec<Box<dyn AbstractRule>>,
         apply_end_pattern_last: Option<bool>,
-        patterns: Vec<i32>,
+        patterns: ICompilePatternsResult,
     ) -> BeginEndRule {
         BeginEndRule {
             rule: Rule {
@@ -221,8 +235,9 @@ impl BeginEndRule {
             _end: RegExpSource::new(_end.clone(), id.clone()),
             end_captures,
             apply_end_pattern_last,
-            patterns,
-            _cached_compiled_patterns: None,
+            has_missing_patterns: patterns.clone().has_missing_patterns,
+            patterns: patterns.patterns,
+            _cached_compiled_patterns: None
         }
     }
 }
@@ -231,6 +246,9 @@ impl AbstractRule for BeginEndRule {
     fn id(&self) -> i32 { self.rule.id }
     fn type_of(&self) -> String {
         String::from("BeginEndRule")
+    }
+    fn has_missing_pattern(&self) -> bool {
+        self.has_missing_patterns
     }
 }
 
