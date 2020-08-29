@@ -735,10 +735,10 @@ var Grammar = /** @class */ (function () {
             this._rootId = rule_1.RuleFactory.getCompiledRuleId(this._grammar.repository.$self, this, this._grammar.repository);
         }
 
-        // console.log(this._ruleId2desc.length);
-        // let fs = require('fs');
-        // let data = JSON.stringify(this._ruleId2desc, null, 2);
-        // fs.writeFileSync("ruleid2rule.json", data, 'utf8');
+        console.log(this._ruleId2desc.length);
+        let fs = require('fs');
+        let data = JSON.stringify(this._ruleId2desc, null, 2);
+        fs.writeFileSync("testdata/makefile.out.json", data, 'utf8');
 
         var isFirstLine;
         if (!prevState || prevState === StackElement.NULL) {

@@ -1,0 +1,2015 @@
+[
+  null,
+  {
+    "id": 1,
+    "_name": "source.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "patterns": [
+      2,
+      7,
+      28,
+      44
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": {
+      "_items": [
+        {
+          "hasAnchor": false,
+          "source": "(^[ \\t]+)?(?=#)",
+          "_anchorCache": null,
+          "ruleId": 2,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": true,
+          "source": "(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+          "_anchorCache": {
+            "A0_G0": "(^[ ]*|\\￿\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+            "A0_G1": "(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+            "A1_G0": "(^[ ]*|\\￿\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+            "A1_G1": "(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)"
+          },
+          "ruleId": 7,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "^(?!\\t)([^:]*)(:)(?!\\=)",
+          "_anchorCache": null,
+          "ruleId": 28,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "^[ ]*([s\\-]?include)\\b",
+          "_anchorCache": null,
+          "ruleId": 45,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "^[ ]*(vpath)\\b",
+          "_anchorCache": null,
+          "ruleId": 48,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "^(?:(override)\\s*)?(define)\\s*([^\\s]+)\\s*(=|\\?=|:=|\\+=)?(?=\\s)",
+          "_anchorCache": null,
+          "ruleId": 51,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "^[ ]*(export)\\b",
+          "_anchorCache": null,
+          "ruleId": 61,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "^[ ]*(override|private)\\b",
+          "_anchorCache": null,
+          "ruleId": 64,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "^[ ]*(unexport|undefine)\\b",
+          "_anchorCache": null,
+          "ruleId": 66,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "^(ifdef|ifndef)\\s*([^\\s]+)(?=\\s)",
+          "_anchorCache": null,
+          "ruleId": 69,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "^(ifeq|ifneq)(?=\\s)",
+          "_anchorCache": null,
+          "ruleId": 77,
+          "hasBackReferences": false
+        }
+      ],
+      "_hasAnchors": true,
+      "_cached": null,
+      "_anchorCache": {
+        "A0_G0": null,
+        "A0_G1": null,
+        "A1_G0": {
+          "debugRegExps": [
+            "(^[ \\t]+)?(?=#)",
+            "(^[ ]*|\\￿\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+            "^(?!\\t)([^:]*)(:)(?!\\=)",
+            "^[ ]*([s\\-]?include)\\b",
+            "^[ ]*(vpath)\\b",
+            "^(?:(override)\\s*)?(define)\\s*([^\\s]+)\\s*(=|\\?=|:=|\\+=)?(?=\\s)",
+            "^[ ]*(export)\\b",
+            "^[ ]*(override|private)\\b",
+            "^[ ]*(unexport|undefine)\\b",
+            "^(ifdef|ifndef)\\s*([^\\s]+)(?=\\s)",
+            "^(ifeq|ifneq)(?=\\s)"
+          ],
+          "rules": [
+            2,
+            7,
+            28,
+            45,
+            48,
+            51,
+            61,
+            64,
+            66,
+            69,
+            77
+          ],
+          "scanner": {}
+        },
+        "A1_G1": null
+      }
+    },
+    "_type": "IncludeOnlyRule"
+  },
+  {
+    "id": 2,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "(^[ \\t]+)?(?=#)",
+      "_anchorCache": null,
+      "ruleId": 2,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 3,
+        "_name": "punctuation.whitespace.comment.leading.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": true,
+      "source": "(?!\\G)",
+      "_anchorCache": {
+        "A0_G0": "(?!\\￿)",
+        "A0_G1": "(?!\\G)",
+        "A1_G0": "(?!\\￿)",
+        "A1_G1": "(?!\\G)"
+      },
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      4
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 3,
+    "_name": "punctuation.whitespace.comment.leading.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 4,
+    "_name": "comment.line.number-sign.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "#",
+      "_anchorCache": null,
+      "ruleId": 4,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 5,
+        "_name": "punctuation.definition.comment.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "\\n",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      6
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 5,
+    "_name": "punctuation.definition.comment.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 6,
+    "_name": "constant.character.escape.continuation.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\\\\\n",
+      "_anchorCache": null,
+      "ruleId": 6,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 7,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": true,
+      "source": "(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+      "_anchorCache": {
+        "A0_G0": "(^[ ]*|\\￿\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+        "A0_G1": "(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+        "A1_G0": "(^[ ]*|\\￿\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+        "A1_G1": "(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)"
+      },
+      "ruleId": 7,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      null,
+      {
+        "id": 8,
+        "_name": "variable.other.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 9,
+        "_name": "punctuation.separator.key-value.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "\\n",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      10,
+      2,
+      11
+    ],
+    "hasMissingPatterns": true,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 8,
+    "_name": "variable.other.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 9,
+    "_name": "punctuation.separator.key-value.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 10,
+    "_name": "constant.character.escape.continuation.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\\\\\n",
+      "_anchorCache": null,
+      "ruleId": 10,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 11,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "patterns": [
+      12,
+      14
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "IncludeOnlyRule"
+  },
+  {
+    "id": 12,
+    "_name": "variable.language.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "(\\$?\\$)[@%<?^+*]",
+      "_anchorCache": null,
+      "ruleId": 12,
+      "hasBackReferences": false
+    },
+    "captures": [
+      null,
+      {
+        "id": 13,
+        "_name": "punctuation.definition.variable.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 13,
+    "_name": "punctuation.definition.variable.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 14,
+    "_name": "string.interpolated.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "\\$?\\$\\(",
+      "_anchorCache": null,
+      "ruleId": 14,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 15,
+        "_name": "punctuation.definition.variable.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "\\)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      {
+        "id": 16,
+        "_name": "punctuation.definition.variable.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      11,
+      17,
+      18,
+      21,
+      22
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 15,
+    "_name": "punctuation.definition.variable.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 16,
+    "_name": "punctuation.definition.variable.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 17,
+    "_name": "variable.language.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": true,
+      "source": "\\G(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))",
+      "_anchorCache": {
+        "A0_G0": "\\￿(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))",
+        "A0_G1": "\\G(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))",
+        "A1_G0": "\\￿(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))",
+        "A1_G1": "\\G(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))"
+      },
+      "ruleId": 17,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 18,
+    "_name": "meta.scope.function-call.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": true,
+      "source": "\\G(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s",
+      "_anchorCache": {
+        "A0_G0": "\\￿(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s",
+        "A0_G1": "\\G(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s",
+        "A1_G0": "\\￿(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s",
+        "A1_G1": "\\G(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s"
+      },
+      "ruleId": 18,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 19,
+        "_name": "support.function.$1.makefile",
+        "_nameIsCapturing": true,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=\\))",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      11,
+      20
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 19,
+    "_name": "support.function.$1.makefile",
+    "_nameIsCapturing": true,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 20,
+    "_name": "constant.other.placeholder.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "%|\\*",
+      "_anchorCache": null,
+      "ruleId": 20,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 21,
+    "_name": "meta.scope.function-call.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": "variable.other.makefile",
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": true,
+      "source": "\\G(origin|flavor)\\s(?=[^\\s)]+\\s*\\))",
+      "_anchorCache": {
+        "A0_G0": "\\￿(origin|flavor)\\s(?=[^\\s)]+\\s*\\))",
+        "A0_G1": "\\G(origin|flavor)\\s(?=[^\\s)]+\\s*\\))",
+        "A1_G0": "\\￿(origin|flavor)\\s(?=[^\\s)]+\\s*\\))",
+        "A1_G1": "\\G(origin|flavor)\\s(?=[^\\s)]+\\s*\\))"
+      },
+      "ruleId": 21,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "\\)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      11
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 22,
+    "_name": "variable.other.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": true,
+      "source": "\\G(?!\\))",
+      "_anchorCache": {
+        "A0_G0": "\\￿(?!\\))",
+        "A0_G1": "\\G(?!\\))",
+        "A1_G0": "\\￿(?!\\))",
+        "A1_G1": "\\G(?!\\))"
+      },
+      "ruleId": 22,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=\\))",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      11
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 23,
+    "_name": "meta.embedded.line.shell",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "(?=`)",
+      "_anchorCache": null,
+      "ruleId": 23,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": true,
+      "source": "(?!\\G)",
+      "_anchorCache": {
+        "A0_G0": "(?!\\￿)",
+        "A0_G1": "(?!\\G)",
+        "A1_G0": "(?!\\￿)",
+        "A1_G1": "(?!\\G)"
+      },
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [],
+    "hasMissingPatterns": true,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 24,
+    "_name": "string.interpolated.backtick.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": "source.shell",
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "`",
+      "_anchorCache": null,
+      "ruleId": 24,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 25,
+        "_name": "punctuation.definition.string.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(`)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      {
+        "id": 26,
+        "_name": "punctuation.definition.string.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 27,
+        "_name": "source.shell",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [],
+    "hasMissingPatterns": true,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 25,
+    "_name": "punctuation.definition.string.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 26,
+    "_name": "punctuation.definition.string.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 27,
+    "_name": "source.shell",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 28,
+    "_name": "meta.scope.target.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^(?!\\t)([^:]*)(:)(?!\\=)",
+      "_anchorCache": null,
+      "ruleId": 28,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 34,
+        "_name": null,
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 29,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 35,
+        "_name": "punctuation.separator.key-value.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^(?!\\t)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      36,
+      39
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 29,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "patterns": [
+      30,
+      32
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "IncludeOnlyRule"
+  },
+  {
+    "id": 30,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "^\\s*(\\.(PHONY|SUFFIXES|DEFAULT|PRECIOUS|INTERMEDIATE|SECONDARY|SECONDEXPANSION|DELETE_ON_ERROR|IGNORE|LOW_RESOLUTION_TIME|SILENT|EXPORT_ALL_VARIABLES|NOTPARALLEL|ONESHELL|POSIX))\\s*$",
+      "_anchorCache": null,
+      "ruleId": 30,
+      "hasBackReferences": false
+    },
+    "captures": [
+      null,
+      {
+        "id": 31,
+        "_name": "support.function.target.$1.makefile",
+        "_nameIsCapturing": true,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 31,
+    "_name": "support.function.target.$1.makefile",
+    "_nameIsCapturing": true,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 32,
+    "_name": "entity.name.function.target.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "(?=\\S)",
+      "_anchorCache": null,
+      "ruleId": 32,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=\\s|$)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      11,
+      33
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 33,
+    "_name": "constant.other.placeholder.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "%",
+      "_anchorCache": null,
+      "ruleId": 33,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 34,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 29,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 35,
+    "_name": "punctuation.separator.key-value.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 36,
+    "_name": "meta.scope.prerequisites.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": true,
+      "source": "\\G",
+      "_anchorCache": {
+        "A0_G0": "\\￿",
+        "A0_G1": "\\G",
+        "A1_G0": "\\￿",
+        "A1_G1": "\\G"
+      },
+      "ruleId": 36,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      37,
+      38,
+      2,
+      11
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 37,
+    "_name": "constant.character.escape.continuation.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\\\\\n",
+      "_anchorCache": null,
+      "ruleId": 37,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 38,
+    "_name": "constant.other.placeholder.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "%|\\*",
+      "_anchorCache": null,
+      "ruleId": 38,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 39,
+    "_name": "meta.scope.recipe.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\t",
+      "_anchorCache": null,
+      "ruleId": 39,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "whileCaptures": [],
+    "_while": {
+      "hasAnchor": false,
+      "source": "^\\t",
+      "_anchorCache": null,
+      "ruleId": -2,
+      "hasBackReferences": false
+    },
+    "whileHasBackReferences": false,
+    "patterns": [
+      40
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_cachedCompiledWhilePatterns": null,
+    "_type": "BeginWhileRule"
+  },
+  {
+    "id": 40,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": ".+\\n?",
+      "_anchorCache": null,
+      "ruleId": 40,
+      "hasBackReferences": false
+    },
+    "captures": [
+      {
+        "id": 43,
+        "_name": null,
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 41,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 41,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "patterns": [
+      42,
+      11
+    ],
+    "hasMissingPatterns": true,
+    "_cachedCompiledPatterns": null,
+    "_type": "IncludeOnlyRule"
+  },
+  {
+    "id": 42,
+    "_name": "constant.character.escape.continuation.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\\\\\n",
+      "_anchorCache": null,
+      "ruleId": 42,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 43,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 41,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 44,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "patterns": [
+      45,
+      48,
+      51,
+      61,
+      64,
+      66,
+      69,
+      77
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "IncludeOnlyRule"
+  },
+  {
+    "id": 45,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^[ ]*([s\\-]?include)\\b",
+      "_anchorCache": null,
+      "ruleId": 45,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 46,
+        "_name": "keyword.control.include.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      2,
+      11,
+      47
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 46,
+    "_name": "keyword.control.include.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 47,
+    "_name": "constant.other.placeholder.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "%",
+      "_anchorCache": null,
+      "ruleId": 47,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 48,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^[ ]*(vpath)\\b",
+      "_anchorCache": null,
+      "ruleId": 48,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 49,
+        "_name": "keyword.control.vpath.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      2,
+      11,
+      50
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 49,
+    "_name": "keyword.control.vpath.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 50,
+    "_name": "constant.other.placeholder.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "%",
+      "_anchorCache": null,
+      "ruleId": 50,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 51,
+    "_name": "meta.scope.conditional.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^(?:(override)\\s*)?(define)\\s*([^\\s]+)\\s*(=|\\?=|:=|\\+=)?(?=\\s)",
+      "_anchorCache": null,
+      "ruleId": 51,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 52,
+        "_name": "keyword.control.override.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 53,
+        "_name": "keyword.control.define.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 54,
+        "_name": "variable.other.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 55,
+        "_name": "punctuation.separator.key-value.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^(endef)\\b",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 56,
+        "_name": "keyword.control.override.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 57,
+        "_name": "keyword.control.define.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 58,
+        "_name": "variable.other.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 59,
+        "_name": "punctuation.separator.key-value.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      60,
+      11,
+      2
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 52,
+    "_name": "keyword.control.override.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 53,
+    "_name": "keyword.control.define.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 54,
+    "_name": "variable.other.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 55,
+    "_name": "punctuation.separator.key-value.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 56,
+    "_name": "keyword.control.override.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 57,
+    "_name": "keyword.control.define.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 58,
+    "_name": "variable.other.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 59,
+    "_name": "punctuation.separator.key-value.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 60,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": true,
+      "source": "\\G(?!\\n)",
+      "_anchorCache": {
+        "A0_G0": "\\￿(?!\\n)",
+        "A0_G1": "\\G(?!\\n)",
+        "A1_G0": "\\￿(?!\\n)",
+        "A1_G1": "\\G(?!\\n)"
+      },
+      "ruleId": 60,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      2
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 61,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^[ ]*(export)\\b",
+      "_anchorCache": null,
+      "ruleId": 61,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 62,
+        "_name": "keyword.control.$1.makefile",
+        "_nameIsCapturing": true,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      2,
+      7,
+      63
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 62,
+    "_name": "keyword.control.$1.makefile",
+    "_nameIsCapturing": true,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 63,
+    "_name": "variable.other.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "[^\\s]+",
+      "_anchorCache": null,
+      "ruleId": 63,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 64,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^[ ]*(override|private)\\b",
+      "_anchorCache": null,
+      "ruleId": 64,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 65,
+        "_name": "keyword.control.$1.makefile",
+        "_nameIsCapturing": true,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      2,
+      7
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 65,
+    "_name": "keyword.control.$1.makefile",
+    "_nameIsCapturing": true,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 66,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^[ ]*(unexport|undefine)\\b",
+      "_anchorCache": null,
+      "ruleId": 66,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 67,
+        "_name": "keyword.control.$1.makefile",
+        "_nameIsCapturing": true,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      2,
+      68
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 67,
+    "_name": "keyword.control.$1.makefile",
+    "_nameIsCapturing": true,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 68,
+    "_name": "variable.other.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "[^\\s]+",
+      "_anchorCache": null,
+      "ruleId": 68,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 69,
+    "_name": "meta.scope.conditional.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^(ifdef|ifndef)\\s*([^\\s]+)(?=\\s)",
+      "_anchorCache": null,
+      "ruleId": 69,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 70,
+        "_name": "keyword.control.$1.makefile",
+        "_nameIsCapturing": true,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 71,
+        "_name": "variable.other.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 72,
+        "_name": "punctuation.separator.key-value.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^(endif)\\b",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 73,
+        "_name": "keyword.control.$1.makefile",
+        "_nameIsCapturing": true,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 74,
+        "_name": "variable.other.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 75,
+        "_name": "punctuation.separator.key-value.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      76,
+      1
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 70,
+    "_name": "keyword.control.$1.makefile",
+    "_nameIsCapturing": true,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 71,
+    "_name": "variable.other.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 72,
+    "_name": "punctuation.separator.key-value.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 73,
+    "_name": "keyword.control.$1.makefile",
+    "_nameIsCapturing": true,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 74,
+    "_name": "variable.other.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 75,
+    "_name": "punctuation.separator.key-value.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 76,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": true,
+      "source": "\\G(?!\\n)",
+      "_anchorCache": {
+        "A0_G0": "\\￿(?!\\n)",
+        "A0_G1": "\\G(?!\\n)",
+        "A1_G0": "\\￿(?!\\n)",
+        "A1_G1": "\\G(?!\\n)"
+      },
+      "ruleId": 76,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      2
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 77,
+    "_name": "meta.scope.conditional.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^(ifeq|ifneq)(?=\\s)",
+      "_anchorCache": null,
+      "ruleId": 77,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 78,
+        "_name": "keyword.control.$1.makefile",
+        "_nameIsCapturing": true,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^(endif)\\b",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 79,
+        "_name": "keyword.control.$1.makefile",
+        "_nameIsCapturing": true,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      80,
+      81,
+      1
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 78,
+    "_name": "keyword.control.$1.makefile",
+    "_nameIsCapturing": true,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 79,
+    "_name": "keyword.control.$1.makefile",
+    "_nameIsCapturing": true,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 80,
+    "_name": "meta.scope.condition.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": true,
+      "source": "\\G",
+      "_anchorCache": {
+        "A0_G0": "\\￿",
+        "A0_G1": "\\G",
+        "A1_G0": "\\￿",
+        "A1_G1": "\\G"
+      },
+      "ruleId": 80,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      11,
+      2
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 81,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^else(?=\\s)",
+      "_anchorCache": null,
+      "ruleId": 81,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 82,
+        "_name": "keyword.control.else.makefile",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 82,
+    "_name": "keyword.control.else.makefile",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  }
+]

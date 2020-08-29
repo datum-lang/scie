@@ -15,11 +15,11 @@ const registry = new vsctm.Registry({
         createOnigString: (str) => new oniguruma.OnigString(str)
     }),
     loadGrammar: (scopeName) => {
-        return readFile('./syntaxes/json/html.json').then(data => vsctm.parseRawGrammar(data.toString(), "hello.json"))
+        return readFile('./syntaxes/json/makefile.json').then(data => vsctm.parseRawGrammar(data.toString(), "makefile.json"))
     }
 });
 
-registry.loadGrammar('text.html.basic').then(grammar => {
+registry.loadGrammar('source.makefile').then(grammar => {
     const text = `{}
 `.split("\n");
     let ruleStack = vsctm.INITIAL;

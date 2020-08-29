@@ -128,6 +128,7 @@ impl RuleFactory {
                 }
 
                 if pattern_id != -1 {
+                    // todo: as missing to true
                     let rule = helper.get_rule(pattern_id);
                     // let  mut skipRule = false;
                     // if rule.type_of() == "IncludeOnlyRule" || rule.type_of() == "BeginEndRule" || rule.type_of() == "BeginWhileRule" {

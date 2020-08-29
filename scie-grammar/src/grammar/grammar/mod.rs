@@ -111,7 +111,7 @@ impl Grammar {
     ) {
         if self.root_id.clone() == -1 {
             let mut repository = self.grammar.repository.clone().unwrap();
-            let based = repository.clone().map.base_s.unwrap();
+            let based = repository.clone().map.self_s.unwrap();
             self.root_id =
                 RuleFactory::get_compiled_rule_id(based.clone(), self, &mut repository.clone(), String::from(""));
         }
@@ -254,6 +254,15 @@ GitHub 漫游指南
         let grammar = to_grammar("test-cases/first-mate/fixtures/html.json", code);
         // assert_eq!(grammar.rule_id2desc.len(), 104);
         assert_eq!(grammar.rule_id2desc.len(), 67);
+        debug_output(&grammar, String::from("program.json"));
+    }
+
+    #[test]
+    fn should_build_makefile_grammar() {
+        let code = "{}";
+        let grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
+        // assert_eq!(grammar.rule_id2desc.len(), 104);
+        assert_eq!(grammar.rule_id2desc.len(), 64);
         debug_output(&grammar, String::from("program.json"));
     }
 
