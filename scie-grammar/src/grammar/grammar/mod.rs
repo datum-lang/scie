@@ -31,7 +31,6 @@ pub struct ITokenizeLineResult2 {
 
 pub trait IGrammar {
     fn tokenize_line(line_text: String, prev_state: Option<StackElement>) -> ITokenizeLineResult;
-
     /**
      * Tokenize `lineText` using previous line state `prevState`.
      * The result contains the tokens in binary format, resolved with the following information:
@@ -134,7 +133,6 @@ impl Grammar {
         check_while_conditions: bool,
     ) {
         let line_length = line_text.len();
-
         let mut stop = false;
         let mut anchor_position = -1;
 
