@@ -1,6 +1,6 @@
 use crate::inter::ILocation;
 use crate::rule::rule_factory::ICompilePatternsResult;
-use crate::rule::{AbstractRule, Rule, RegExpSourceList};
+use crate::rule::{AbstractRule, Rule, RegExpSourceList, IRuleRegistry};
 use crate::grammar::Grammar;
 
 #[derive(Clone, Debug, Serialize)]
@@ -46,11 +46,20 @@ impl AbstractRule for IncludeOnlyRule {
         self.has_missing_patterns
     }
 
+    fn collect_patterns_recursive(&mut self, grammar: &mut Grammar, out: Option<RegExpSourceList>, is_first: bool) {
+        for x in self.patterns.clone() {
+            let mut rule = grammar.get_rule(x);
+            rule.collect_patterns_recursive(grammar, out.clone(), is_first);
+        }
+    }
+
+
     fn compile(&mut self, grammar: &mut Grammar, end_regex_source: Option<String>, allow_a: bool, allow_g: bool) {
         if let None = self._cached_compiled_patterns {
             self._cached_compiled_patterns = Some(RegExpSourceList::new());
             self.collect_patterns_recursive(grammar, self._cached_compiled_patterns.clone(), true);
         }
-        // return self._cached_compiled_patterns.unwrap().compile(grammar, allow_a, allow_g);
+
+        return self._cached_compiled_patterns.as_ref().unwrap().compile(grammar, allow_a, allow_g);
     }
 }

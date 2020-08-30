@@ -46,11 +46,38 @@ pub trait IGrammarRegistry {
 pub trait IRuleFactoryHelper: IGrammarRegistry + IRuleRegistry {}
 
 #[derive(Clone, Debug, Serialize)]
-pub struct RegExpSourceList {}
+pub struct AnchorCache {
+    A0_G0: Option<String>,
+    A0_G1: Option<String>,
+    A1_G0: Option<String>,
+    A1_G1: Option<String>,
+}
+
+impl Default for AnchorCache {
+    fn default() -> Self {
+        AnchorCache {
+            A0_G0: None,
+            A0_G1: None,
+            A1_G0: None,
+            A1_G1: None
+        }
+    }
+}
+
+#[derive(Clone, Debug, Serialize)]
+pub struct RegExpSourceList {
+    pub _has_anchors: bool,
+    pub _cached: Option<CompiledRule>,
+    pub _anchor_cache: AnchorCache
+}
 
 impl RegExpSourceList {
     pub fn new() -> Self {
-        RegExpSourceList {}
+        RegExpSourceList {
+            _has_anchors: false,
+            _cached: None,
+            _anchor_cache: Default::default()
+        }
     }
 
     pub fn compile(&self, grammar: &mut Grammar, allow_a: bool, allow_g: bool) {

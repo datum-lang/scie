@@ -1,3 +1,4 @@
+#[derive(Clone, Debug, Serialize)]
 pub struct CompiledRule {
     pub debug_reg_exps: Vec<String>,
     pub rules: Vec<i32>,
