@@ -21,9 +21,9 @@ pub use self::include_only_rule::IncludeOnlyRule;
 pub use self::match_rule::MatchRule;
 pub use self::rule::Rule;
 
-use crate::inter::{IRawGrammar, IRawRepository};
-use serde::{Serialize};
 use crate::grammar::Grammar;
+use crate::inter::{IRawGrammar, IRawRepository};
+use serde::Serialize;
 
 // todo: trait with types
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2
@@ -69,7 +69,7 @@ pub struct RegExpSourceList {
     pub _has_anchors: bool,
     pub _cached: Option<CompiledRule>,
     pub _anchor_cache: AnchorCache,
-    pub _items: Vec<RegExpSource>
+    pub _items: Vec<RegExpSource>,
 }
 
 impl RegExpSourceList {
@@ -78,7 +78,7 @@ impl RegExpSourceList {
             _has_anchors: false,
             _cached: None,
             _anchor_cache: Default::default(),
-            _items: vec![]
+            _items: vec![],
         }
     }
 
@@ -96,7 +96,7 @@ impl RegExpSourceList {
 pub struct RegExpSource {
     pub source: String,
     pub rule_id: i32,
-    pub has_anchor: bool
+    pub has_anchor: bool,
 }
 
 impl RegExpSource {
@@ -104,7 +104,7 @@ impl RegExpSource {
         RegExpSource {
             source: reg_exp_source,
             rule_id,
-            has_anchor: false
+            has_anchor: false,
         }
     }
 }

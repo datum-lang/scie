@@ -1,4 +1,4 @@
-use crate::inter::{IRawRepository, ILocatable, IRawRule, InjectionMap};
+use crate::inter::{ILocatable, IRawRepository, IRawRule, InjectionMap};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 // #[serde(deny_unknown_fields)]

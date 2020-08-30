@@ -1,4 +1,4 @@
-use crate::inter::{IRawCaptures, ILocation, IRawRepository};
+use crate::inter::{ILocation, IRawCaptures, IRawRepository};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawRule {

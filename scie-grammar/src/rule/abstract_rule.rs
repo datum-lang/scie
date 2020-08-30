@@ -1,7 +1,7 @@
+use crate::grammar::Grammar;
 use crate::rule::{IRuleRegistry, RegExpSourceList};
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
-use crate::grammar::Grammar;
 
 pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn id(&self) -> i32;
@@ -9,7 +9,12 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn has_missing_pattern(&self) -> bool {
         false
     }
-    fn collect_patterns_recursive(&mut self, grammar: &mut Grammar, out: &mut RegExpSourceList, is_first: bool) {
+    fn collect_patterns_recursive(
+        &mut self,
+        grammar: &mut Grammar,
+        out: &mut RegExpSourceList,
+        is_first: bool,
+    ) {
     }
     fn compile(
         &mut self,
@@ -17,7 +22,8 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
         end_regex_source: Option<String>,
         allow_a: bool,
         allow_g: bool,
-    ) {}
+    ) {
+    }
 }
 
 impl fmt::Debug for dyn AbstractRule {

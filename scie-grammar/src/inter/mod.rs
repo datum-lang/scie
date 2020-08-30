@@ -1,16 +1,16 @@
-pub mod raw_rule;
-pub mod raw_repository;
 pub mod location;
 pub mod raw_grammar;
+pub mod raw_repository;
+pub mod raw_rule;
 
-pub use self::raw_rule::IRawRule;
+pub use self::location::ILocatable;
+pub use self::location::ILocation;
+pub use self::raw_grammar::IRawGrammar;
 pub use self::raw_repository::IRawRepository;
 pub use self::raw_repository::IRawRepositoryMap;
-pub use self::location::ILocation;
-pub use self::location::ILocatable;
-pub use self::raw_grammar::IRawGrammar;
+pub use self::raw_rule::IRawRule;
 
-use serde::{Serialize};
+use serde::Serialize;
 use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]

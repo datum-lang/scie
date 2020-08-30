@@ -225,7 +225,12 @@ impl Grammar {
         anchor_position: i32,
     ) {
         let mut rule = stack.get_rule(self);
-        rule.compile(self, stack.end_rule, is_first_line, line_pos == anchor_position);
+        rule.compile(
+            self,
+            stack.end_rule,
+            is_first_line,
+            line_pos == anchor_position,
+        );
         println!("{:?}", rule.type_of());
     }
 
@@ -305,8 +310,8 @@ GitHub 漫游指南
         let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
         let mut file = File::create(path).unwrap();
         match file.write_all(j.as_bytes()) {
-            Ok(_) => {},
-            Err(_) => {},
+            Ok(_) => {}
+            Err(_) => {}
         };
     }
 
