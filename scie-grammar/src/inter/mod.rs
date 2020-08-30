@@ -2,36 +2,18 @@ pub mod location;
 pub mod raw_grammar;
 pub mod raw_repository;
 pub mod raw_rule;
+pub mod raw_captures;
+pub mod injections;
 
 pub use self::location::ILocatable;
 pub use self::location::ILocation;
 pub use self::raw_grammar::IRawGrammar;
 pub use self::raw_repository::IRawRepository;
 pub use self::raw_repository::IRawRepositoryMap;
+pub use self::raw_captures::IRawCapturesMap;
+pub use self::raw_captures::IRawCaptures;
 pub use self::raw_rule::IRawRule;
-
-use serde::Serialize;
-use std::collections::HashMap;
-
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub struct IRawCapturesMap {
-    #[serde(flatten)]
-    pub capture_map: HashMap<String, IRawRule>,
-}
-
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub struct IRawCaptures {
-    #[serde(flatten)]
-    pub map: IRawCapturesMap,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub location: Option<ILocatable>,
-}
-
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub struct InjectionMap {
-    #[serde(flatten)]
-    map: HashMap<String, IRawRule>,
-}
+pub use self::injections::InjectionMap;
 
 #[cfg(test)]
 mod tests {
