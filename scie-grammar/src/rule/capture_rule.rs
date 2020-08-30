@@ -1,5 +1,5 @@
-use crate::rule::{Rule, AbstractRule};
 use crate::inter::ILocation;
+use crate::rule::{AbstractRule, Rule};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct CaptureRule {
@@ -20,7 +20,13 @@ impl CaptureRule {
             retokenize_captured_with_rule_id: 0,
         }
     }
-    pub fn new(location: Option<ILocation>, id: i32, name: Option<String>, content_name: Option<String>, retokenize_captured_with_rule_id: i32) -> Self {
+    pub fn new(
+        location: Option<ILocation>,
+        id: i32,
+        name: Option<String>,
+        content_name: Option<String>,
+        retokenize_captured_with_rule_id: i32,
+    ) -> Self {
         CaptureRule {
             rule: Rule {
                 _type: String::from("CaptureRule"),
@@ -35,6 +41,10 @@ impl CaptureRule {
 }
 
 impl AbstractRule for CaptureRule {
-    fn id(&self) -> i32 { self.rule.id }
-    fn type_of(&self) -> String { String::from(self.rule.clone()._type) }
+    fn id(&self) -> i32 {
+        self.rule.id
+    }
+    fn type_of(&self) -> String {
+        String::from(self.rule.clone()._type)
+    }
 }

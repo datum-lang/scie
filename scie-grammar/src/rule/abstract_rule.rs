@@ -1,6 +1,6 @@
-use dyn_clone::{clone_trait_object, DynClone};
-use core::fmt;
 use crate::rule::{IRuleRegistry, RegExpSourceList};
+use core::fmt;
+use dyn_clone::{clone_trait_object, DynClone};
 
 pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn id(&self) -> i32;
@@ -8,8 +8,21 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn has_missing_pattern(&self) -> bool {
         false
     }
-    fn collect_patterns_recursive(&self, grammar: Box<dyn IRuleRegistry>, out: RegExpSourceList, is_first: bool) {}
-    fn compile(&self, grammar: Box<dyn IRuleRegistry>, end_regex_source: Option<String>, allow_a: bool, allow_g: bool) {}
+    fn collect_patterns_recursive(
+        &self,
+        grammar: Box<dyn IRuleRegistry>,
+        out: RegExpSourceList,
+        is_first: bool,
+    ) {
+    }
+    fn compile(
+        &self,
+        grammar: Box<dyn IRuleRegistry>,
+        end_regex_source: Option<String>,
+        allow_a: bool,
+        allow_g: bool,
+    ) {
+    }
 }
 
 impl fmt::Debug for dyn AbstractRule {
@@ -21,4 +34,3 @@ impl fmt::Debug for dyn AbstractRule {
 serialize_trait_object!(AbstractRule);
 
 clone_trait_object!(AbstractRule);
-

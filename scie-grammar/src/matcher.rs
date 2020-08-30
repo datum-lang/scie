@@ -9,6 +9,4 @@ pub struct MatcherWithPriority {
     priority: MatchPriority,
 }
 
-pub struct Matcher {
-
-}
+pub struct Matcher {}

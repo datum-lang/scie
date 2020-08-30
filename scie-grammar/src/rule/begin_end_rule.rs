@@ -1,7 +1,7 @@
-use crate::rule::{RegExpSource, RegExpSourceList};
-use crate::rule::{Rule, AbstractRule};
 use crate::inter::ILocation;
 use crate::rule::rule_factory::ICompilePatternsResult;
+use crate::rule::{AbstractRule, Rule};
+use crate::rule::{RegExpSource, RegExpSourceList};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
@@ -54,7 +54,9 @@ impl BeginEndRule {
 }
 
 impl AbstractRule for BeginEndRule {
-    fn id(&self) -> i32 { self.rule.id }
+    fn id(&self) -> i32 {
+        self.rule.id
+    }
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }
@@ -62,4 +64,3 @@ impl AbstractRule for BeginEndRule {
         self.has_missing_patterns
     }
 }
-

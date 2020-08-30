@@ -1,6 +1,6 @@
-use crate::rule::rule_factory::ICompilePatternsResult;
-use crate::rule::{Rule, AbstractRule};
 use crate::inter::ILocation;
+use crate::rule::rule_factory::ICompilePatternsResult;
+use crate::rule::{AbstractRule, Rule};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct IncludeOnlyRule {
@@ -33,7 +33,9 @@ impl IncludeOnlyRule {
 }
 
 impl AbstractRule for IncludeOnlyRule {
-    fn id(&self) -> i32 { self.rule.id }
+    fn id(&self) -> i32 {
+        self.rule.id
+    }
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }

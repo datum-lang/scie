@@ -1,6 +1,9 @@
 use crate::grammar::Grammar;
-use crate::inter::{IRawCaptures, IRawRepository, IRawRule, ILocation};
-use crate::rule::{BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule, MatchRule, AbstractRule, Rule};
+use crate::inter::{ILocation, IRawCaptures, IRawRepository, IRawRule};
+use crate::rule::{
+    AbstractRule, BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule,
+    MatchRule, Rule,
+};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ICompilePatternsResult {
@@ -33,22 +36,34 @@ impl RuleFactory {
                 }
             }
 
-            r.resize((maximum_capture_id + 1) as usize, Box::new(CaptureRule::empty()));
+            r.resize(
+                (maximum_capture_id + 1) as usize,
+                Box::new(CaptureRule::empty()),
+            );
 
             for (id_str, desc) in capts.clone().map.capture_map {
                 // todo: figure captureId === '$vscodeTextmateLocation'
                 let numeric_capture_id: usize = id_str.parse().unwrap_or(0);
                 let mut retokenize_captured_with_rule_id = 0;
-                let options_patterns = capts.map.capture_map
-                    .get(&*numeric_capture_id.to_string());
+                let options_patterns = capts.map.capture_map.get(&*numeric_capture_id.to_string());
 
                 if let Some(rule) = options_patterns {
                     if let Some(patterns) = rule.clone().patterns {
-                        retokenize_captured_with_rule_id =
-                            RuleFactory::get_compiled_rule_id(desc.clone(), helper, repository, String::from(""));
+                        retokenize_captured_with_rule_id = RuleFactory::get_compiled_rule_id(
+                            desc.clone(),
+                            helper,
+                            repository,
+                            String::from(""),
+                        );
                     }
                 }
-                r[numeric_capture_id] = RuleFactory::create_capture_rule(helper, desc.clone().location, desc.clone().name, desc.clone().content_name, retokenize_captured_with_rule_id);
+                r[numeric_capture_id] = RuleFactory::create_capture_rule(
+                    helper,
+                    desc.clone().location,
+                    desc.clone().name,
+                    desc.clone().content_name,
+                    retokenize_captured_with_rule_id,
+                );
             }
             // todo: remove first element, because it's filled & empty.
         };
@@ -56,13 +71,24 @@ impl RuleFactory {
         r
     }
 
-    pub fn create_capture_rule(helper: &mut Grammar, location: Option<ILocation>, name: Option<String>, content_name: Option<String>, retokenizeCapturedWithRuleId: i32) -> Box<dyn AbstractRule> {
+    pub fn create_capture_rule(
+        helper: &mut Grammar,
+        location: Option<ILocation>,
+        name: Option<String>,
+        content_name: Option<String>,
+        retokenizeCapturedWithRuleId: i32,
+    ) -> Box<dyn AbstractRule> {
         let id = helper.register_id();
-        let rule = CaptureRule::new(location, id, name, content_name, retokenizeCapturedWithRuleId);
+        let rule = CaptureRule::new(
+            location,
+            id,
+            name,
+            content_name,
+            retokenizeCapturedWithRuleId,
+        );
         helper.register_rule(Box::from(rule));
         return helper.get_rule(id);
     }
-
 
     pub fn compile_patterns(
         origin_patterns: Option<Vec<IRawRule>>,
@@ -92,7 +118,8 @@ impl RuleFactory {
                             );
                         }
                     } else if include_s == "$base" || include_s == "$self" {
-                        let local_included_rule = repository.map.name_map.get_mut(include_s.as_str());
+                        let local_included_rule =
+                            repository.map.name_map.get_mut(include_s.as_str());
                         if let Some(mut rule) = local_included_rule.cloned() {
                             pattern_id = RuleFactory::get_compiled_rule_id(
                                 *rule,
@@ -123,15 +150,22 @@ impl RuleFactory {
                         }
                     }
                 } else {
-                    pattern_id =
-                        RuleFactory::get_compiled_rule_id(pattern, helper, repository, String::from(""));
+                    pattern_id = RuleFactory::get_compiled_rule_id(
+                        pattern,
+                        helper,
+                        repository,
+                        String::from(""),
+                    );
                 }
 
                 if pattern_id != -1 {
                     let rule = helper.get_rule(pattern_id);
                     let mut skip_rule = false;
-                    if rule.type_of() == "IncludeOnlyRule" || rule.type_of() == "BeginEndRule" || rule.type_of() == "BeginWhileRule" {
-                        if rule.has_missing_pattern()  {
+                    if rule.type_of() == "IncludeOnlyRule"
+                        || rule.type_of() == "BeginEndRule"
+                        || rule.type_of() == "BeginWhileRule"
+                    {
+                        if rule.has_missing_pattern() {
                             skip_rule = true;
                         }
                     }
@@ -151,12 +185,12 @@ impl RuleFactory {
                 if 0 != r.len() {
                     has_missing_patterns = true
                 }
-            },
+            }
             Some(patterns) => {
                 if patterns.len() != r.len() {
                     has_missing_patterns = true
                 }
-            },
+            }
         }
 
         let result = ICompilePatternsResult {
@@ -182,16 +216,17 @@ impl RuleFactory {
             // by name.
             if desc_name != "" {
                 if let Some(a) = repository.map.name_map.get(desc_name.as_str()).clone() {
-                    repository.map.name_map.get_mut(desc_name.as_str()).unwrap().id = Some(id);
+                    repository
+                        .map
+                        .name_map
+                        .get_mut(desc_name.as_str())
+                        .unwrap()
+                        .id = Some(id);
                 }
             }
 
             if let Some(match_s) = desc.match_s {
-                let rule_factory = RuleFactory::compile_captures(
-                    desc.captures,
-                    helper,
-                    repository,
-                );
+                let rule_factory = RuleFactory::compile_captures(desc.captures, helper, repository);
                 let match_rule = MatchRule::new(
                     desc.location.clone(),
                     id.clone(),
@@ -206,7 +241,11 @@ impl RuleFactory {
 
             if let None = desc.begin {
                 if let Some(repo) = desc.repository.clone() {
-                    desc.repository.unwrap().map.name_map.extend(repository.clone().map.name_map);
+                    desc.repository
+                        .unwrap()
+                        .map
+                        .name_map
+                        .extend(repository.clone().map.name_map);
                 }
 
                 let mut patterns = desc.patterns;
@@ -218,8 +257,7 @@ impl RuleFactory {
                     }
                 }
 
-                let rule_factory =
-                    RuleFactory::compile_patterns(patterns, helper, repository);
+                let rule_factory = RuleFactory::compile_patterns(patterns, helper, repository);
                 let include_only_rule = IncludeOnlyRule::new(
                     desc.location.clone(),
                     id.clone(),
@@ -247,11 +285,8 @@ impl RuleFactory {
                     RuleFactory::compile_captures(begin_captures, helper, repository);
                 let end_rule_factory =
                     RuleFactory::compile_captures(end_captures, helper, repository);
-                let pattern_factory = RuleFactory::compile_patterns(
-                    desc.patterns,
-                    helper,
-                    repository,
-                );
+                let pattern_factory =
+                    RuleFactory::compile_patterns(desc.patterns, helper, repository);
 
                 let begin_while_rule = BeginWhileRule::new(
                     desc.location,
@@ -271,13 +306,8 @@ impl RuleFactory {
 
             let begin_rule_factory =
                 RuleFactory::compile_captures(begin_captures, helper, repository);
-            let end_rule_factory =
-                RuleFactory::compile_captures(end_captures, helper, repository);
-            let pattern_factory = RuleFactory::compile_patterns(
-                desc.patterns,
-                helper,
-                repository,
-            );
+            let end_rule_factory = RuleFactory::compile_captures(end_captures, helper, repository);
+            let pattern_factory = RuleFactory::compile_patterns(desc.patterns, helper, repository);
 
             // todo: register with compile patterns
             let begin_end_rule = BeginEndRule::new(

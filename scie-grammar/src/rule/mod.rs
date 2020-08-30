@@ -1,25 +1,25 @@
-pub mod rule_factory;
 pub mod rule_convert;
+pub mod rule_factory;
 
 pub mod abstract_rule;
 pub mod begin_end_rule;
 pub mod begin_while_rule;
+pub mod capture_rule;
 pub mod compiled_rule;
+pub mod empty_rule;
 pub mod include_only_rule;
 pub mod match_rule;
-pub mod capture_rule;
-pub mod empty_rule;
 pub mod rule;
 
-pub use self::rule::Rule;
 pub use self::abstract_rule::AbstractRule;
-pub use self::compiled_rule::CompiledRule;
 pub use self::begin_end_rule::BeginEndRule;
 pub use self::begin_while_rule::BeginWhileRule;
+pub use self::capture_rule::CaptureRule;
+pub use self::compiled_rule::CompiledRule;
+pub use self::empty_rule::EmptyRule;
 pub use self::include_only_rule::IncludeOnlyRule;
 pub use self::match_rule::MatchRule;
-pub use self::capture_rule::CaptureRule;
-pub use self::empty_rule::EmptyRule;
+pub use self::rule::Rule;
 
 use crate::inter::{ILocation, IRawGrammar, IRawRepository};
 use crate::rule::rule_factory::ICompilePatternsResult;

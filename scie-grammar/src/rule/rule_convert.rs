@@ -1,5 +1,7 @@
+use crate::rule::{
+    AbstractRule, BeginEndRule, BeginWhileRule, CaptureRule, IncludeOnlyRule, MatchRule,
+};
 use std::collections::BTreeMap as Map;
-use crate::rule::{AbstractRule, MatchRule, IncludeOnlyRule, CaptureRule, BeginWhileRule, BeginEndRule};
 
 #[derive(Serialize, Debug)]
 pub struct RuleList {
@@ -47,15 +49,14 @@ fn abstract_rule_to_json(map: Map<i32, Box<dyn AbstractRule>>) {
     println!("{:?}", j);
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::grammar::Grammar;
-    use std::path::Path;
-    use std::fs::File;
     use crate::inter::IRawGrammar;
-    use std::io::Read;
     use crate::rule::rule_convert::abstract_rule_to_json;
+    use std::fs::File;
+    use std::io::Read;
+    use std::path::Path;
 
     #[test]
     fn should_build_text_grammar() {

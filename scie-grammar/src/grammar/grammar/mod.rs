@@ -5,8 +5,8 @@ use onig::*;
 use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher};
 use crate::grammar::{ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
-use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry};
 use crate::rule::rule_factory::RuleFactory;
+use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry};
 
 pub mod scope_list_element;
 pub mod scope_metadata;
@@ -107,15 +107,17 @@ impl Grammar {
         if self.root_id.clone() == -1 {
             let mut repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.self_s.unwrap();
-            self.root_id =
-                RuleFactory::get_compiled_rule_id(based.clone(), self, &mut repository.clone(), String::from(""));
+            self.root_id = RuleFactory::get_compiled_rule_id(
+                based.clone(),
+                self,
+                &mut repository.clone(),
+                String::from(""),
+            );
         }
 
         let mut is_first_line: bool = false;
         match prev_state.clone() {
-            None => {
-                is_first_line = true
-            }
+            None => is_first_line = true,
             Some(state) => {
                 if state == StackElement::null() {
                     is_first_line = true
@@ -125,11 +127,24 @@ impl Grammar {
 
         if is_first_line {
             let scope_list = ScopeListElement::default();
-            prev_state = Some(StackElement::new(None, self.root_id.clone(), -1, -1, false, None, scope_list.clone(), scope_list.clone()))
+            prev_state = Some(StackElement::new(
+                None,
+                self.root_id.clone(),
+                -1,
+                -1,
+                false,
+                None,
+                scope_list.clone(),
+                scope_list.clone(),
+            ))
         }
 
         let format_line_text = format!("{:?}\n", line_text);
-        let line_tokens = LineTokens::new(emit_binary_tokens, line_text, self._token_type_matchers.clone());
+        let line_tokens = LineTokens::new(
+            emit_binary_tokens,
+            line_text,
+            self._token_type_matchers.clone(),
+        );
         self.tokenize_string(
             format_line_text.parse().unwrap(),
             is_first_line,
@@ -164,8 +179,13 @@ impl Grammar {
             );
         }
 
-
-        self.match_rule_or_injections(line_text, is_first_line, line_pos, prev_state, anchor_position);
+        self.match_rule_or_injections(
+            line_text,
+            is_first_line,
+            line_pos,
+            prev_state,
+            anchor_position,
+        );
     }
 
     pub fn check_while_conditions(
@@ -177,7 +197,9 @@ impl Grammar {
         line_tokens: LineTokens,
     ) {
         let mut anchor_position = -1;
-        if _stack.begin_rule_captured_eol { anchor_position = 0 }
+        if _stack.begin_rule_captured_eol {
+            anchor_position = 0
+        }
         // let while_rules = vec![];
     }
 
@@ -189,7 +211,13 @@ impl Grammar {
         stack: StackElement,
         anchor_position: i32,
     ) {
-        self.match_rule(line_text, is_first_line, line_pos, stack.clone(), anchor_position);
+        self.match_rule(
+            line_text,
+            is_first_line,
+            line_pos,
+            stack.clone(),
+            anchor_position,
+        );
     }
 
     pub fn match_rule(

@@ -8,5 +8,5 @@ extern crate erased_serde;
 
 pub mod grammar;
 pub mod inter;
-pub mod rule;
 pub mod matcher;
+pub mod rule;

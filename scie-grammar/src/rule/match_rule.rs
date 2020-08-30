@@ -1,6 +1,6 @@
-use crate::rule::{AbstractRule, Rule};
 use crate::inter::ILocation;
 use crate::rule::RegExpSource;
+use crate::rule::{AbstractRule, Rule};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct MatchRule {
@@ -32,7 +32,9 @@ impl MatchRule {
 }
 
 impl AbstractRule for MatchRule {
-    fn id(&self) -> i32 { self.rule.id }
+    fn id(&self) -> i32 {
+        self.rule.id
+    }
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }
