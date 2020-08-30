@@ -1,6 +1,5 @@
-use crate::grammar::grammar::scope_list_element::ScopeListElement;
 use core::ptr;
-use crate::grammar::grammar::Grammar;
+use crate::grammar::{Grammar, ScopeListElement};
 use crate::grammar::grammar_registry::GrammarRegistry;
 use crate::rule::{IRuleRegistry, AbstractRule};
 

@@ -50,7 +50,7 @@ fn abstract_rule_to_json(map: Map<i32, Box<dyn AbstractRule>>) {
 
 #[cfg(test)]
 mod tests {
-    use crate::grammar::grammar::Grammar;
+    use crate::grammar::Grammar;
     use std::path::Path;
     use std::fs::File;
     use crate::inter::IRawGrammar;

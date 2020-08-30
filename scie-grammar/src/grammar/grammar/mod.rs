@@ -2,12 +2,11 @@ use std::collections::BTreeMap as Map;
 
 use onig::*;
 
-use crate::grammar::grammar::stack_element::StackElement;
-use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
-use crate::rule::{IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, EmptyRule, AbstractRule};
-use crate::rule::rule_factory::RuleFactory;
 use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher};
-use crate::grammar::grammar::scope_list_element::ScopeListElement;
+use crate::grammar::{ScopeListElement, StackElement};
+use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
+use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry};
+use crate::rule::rule_factory::RuleFactory;
 
 pub mod scope_list_element;
 pub mod scope_metadata;
@@ -251,7 +250,7 @@ mod tests {
     use std::io::{Read, Write};
     use std::path::Path;
 
-    use crate::grammar::grammar::Grammar;
+    use crate::grammar::Grammar;
     use crate::inter::IRawGrammar;
 
     #[test]

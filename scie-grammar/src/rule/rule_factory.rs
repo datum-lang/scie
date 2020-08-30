@@ -1,4 +1,4 @@
-use crate::grammar::grammar::Grammar;
+use crate::grammar::Grammar;
 use crate::inter::{IRawCaptures, IRawRepository, IRawRule, ILocation};
 use crate::rule::{BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule, MatchRule, AbstractRule, Rule};
 
