@@ -23,6 +23,7 @@ pub use self::rule::Rule;
 
 use crate::inter::{IRawGrammar, IRawRepository};
 use serde::{Serialize};
+use crate::grammar::Grammar;
 
 // todo: trait with types
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2
@@ -46,6 +47,16 @@ pub trait IRuleFactoryHelper: IGrammarRegistry + IRuleRegistry {}
 
 #[derive(Clone, Debug, Serialize)]
 pub struct RegExpSourceList {}
+
+impl RegExpSourceList {
+    pub fn new() -> Self {
+        RegExpSourceList {}
+    }
+
+    pub fn compile(&self, grammar: &mut Grammar, allow_a: bool, allow_g: bool) {
+
+    }
+}
 
 #[derive(Clone, Debug, Serialize)]
 pub struct RegExpSource {

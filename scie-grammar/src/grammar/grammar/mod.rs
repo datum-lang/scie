@@ -228,8 +228,9 @@ impl Grammar {
         stack: StackElement,
         anchor_position: i32,
     ) {
-        let rule = stack.get_rule(self);
-        println!("{:?}", rule);
+        let mut rule = stack.get_rule(self);
+        rule.compile(self, stack.end_rule, is_first_line, line_pos == anchor_position);
+        println!("{:?}", rule.type_of());
     }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
@@ -261,7 +262,6 @@ impl IRuleRegistry for Grammar {
         if let Some(rule) = self.rule_id2desc.get(&pattern_id) {
             return rule.clone();
         }
-        // println!("None: rule: {:?}, rule_id2: {:?}", pattern_id, self.rule_id2desc.clone());
         Box::from(EmptyRule {})
     }
 
