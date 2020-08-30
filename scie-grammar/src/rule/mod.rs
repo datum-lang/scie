@@ -21,10 +21,8 @@ pub use self::include_only_rule::IncludeOnlyRule;
 pub use self::match_rule::MatchRule;
 pub use self::rule::Rule;
 
-use crate::inter::{ILocation, IRawGrammar, IRawRepository};
-use crate::rule::rule_factory::ICompilePatternsResult;
-use core::fmt;
-use serde::{Serialize, Serializer};
+use crate::inter::{IRawGrammar, IRawRepository};
+use serde::{Serialize};
 
 // todo: trait with types
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2

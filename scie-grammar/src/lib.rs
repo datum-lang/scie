@@ -1,3 +1,6 @@
+// todo: remove after finish
+#![allow(dead_code)]
+
 extern crate onig;
 
 #[macro_use]

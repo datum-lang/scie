@@ -1,7 +1,5 @@
-use crate::grammar::grammar_registry::GrammarRegistry;
 use crate::grammar::{Grammar, ScopeListElement};
 use crate::rule::{AbstractRule, IRuleRegistry};
-use core::ptr;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct StackElement {

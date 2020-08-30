@@ -17,7 +17,7 @@ In currently, the [VSCode-textmate](https://github.com/microsoft/vscode-textmate
     "_nameIsCapturing": false,
     "_contentName": null,
     "_contentNameIsCapturing": false,
-    "retokenizeCapturedWithRuleId": 0,
+    "retokenize_captured_with_rule_id": 0,
     "_type": "CaptureRule"
   },
   {
@@ -26,7 +26,7 @@ In currently, the [VSCode-textmate](https://github.com/microsoft/vscode-textmate
     "_nameIsCapturing": false,
     "_contentName": null,
     "_contentNameIsCapturing": false,
-    "retokenizeCapturedWithRuleId": 0,
+    "retokenize_captured_with_rule_id": 0,
     "_type": "CaptureRule"
   }
 ```

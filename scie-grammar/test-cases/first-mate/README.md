@@ -1,1 +1,1 @@
-These testcases have been generated from the test cases of first-mate at https://github.com/atom/first-mate
+These testcases have been generated from the test cases of _first-mate at https://github.com/atom/_first-mate

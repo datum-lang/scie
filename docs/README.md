@@ -21,7 +21,7 @@
 
 
 ```bash
-ls -al scie-grammar/test-cases/first-mate/fixtures | grep ^\- | sort -nrk 5
+ls -al scie-grammar/test-cases/_first-mate/fixtures | grep ^\- | sort -nrk 5
 ```
 
 so sizes:

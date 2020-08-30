@@ -2,7 +2,7 @@ use crate::grammar::Grammar;
 use crate::inter::{ILocation, IRawCaptures, IRawRepository, IRawRule};
 use crate::rule::{
     AbstractRule, BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule,
-    MatchRule, Rule,
+    MatchRule,
 };
 
 #[derive(Clone, Debug, Serialize)]
@@ -12,7 +12,7 @@ pub struct ICompilePatternsResult {
 }
 
 fn remove_first(s: &str) -> &str {
-    let (first, last) = s.split_at(1);
+    let (_first, last) = s.split_at(1);
     last
 }
 
@@ -48,7 +48,7 @@ impl RuleFactory {
                 let options_patterns = capts.map.capture_map.get(&*numeric_capture_id.to_string());
 
                 if let Some(rule) = options_patterns {
-                    if let Some(patterns) = rule.clone().patterns {
+                    if let Some(_patterns) = rule.clone().patterns {
                         retokenize_captured_with_rule_id = RuleFactory::get_compiled_rule_id(
                             desc.clone(),
                             helper,
@@ -76,7 +76,7 @@ impl RuleFactory {
         location: Option<ILocation>,
         name: Option<String>,
         content_name: Option<String>,
-        retokenizeCapturedWithRuleId: i32,
+        retokenize_captured_with_rule_id: i32,
     ) -> Box<dyn AbstractRule> {
         let id = helper.register_id();
         let rule = CaptureRule::new(
@@ -84,7 +84,7 @@ impl RuleFactory {
             id,
             name,
             content_name,
-            retokenizeCapturedWithRuleId,
+            retokenize_captured_with_rule_id,
         );
         helper.register_rule(Box::from(rule));
         return helper.get_rule(id);
@@ -215,7 +215,7 @@ impl RuleFactory {
             // rules. it will cause stackoverflow in our version, so I decide change repository id
             // by name.
             if desc_name != "" {
-                if let Some(a) = repository.map.name_map.get(desc_name.as_str()).clone() {
+                if let Some(_) = repository.map.name_map.get(desc_name.as_str()).clone() {
                     repository
                         .map
                         .name_map
@@ -240,7 +240,7 @@ impl RuleFactory {
             };
 
             if let None = desc.begin {
-                if let Some(repo) = desc.repository.clone() {
+                if let Some(_) = desc.repository.clone() {
                     desc.repository
                         .unwrap()
                         .map
@@ -275,12 +275,12 @@ impl RuleFactory {
                 desc.begin_captures = desc.clone().captures
             }
 
-            let mut end_captures = desc.end_captures.clone();
+            let end_captures = desc.end_captures.clone();
             if let None = end_captures {
                 desc.end_captures = desc.clone().captures
             }
 
-            if let Some(while_s) = desc.while_s {
+            if let Some(_) = desc.while_s {
                 let begin_rule_factory =
                     RuleFactory::compile_captures(begin_captures, helper, repository);
                 let end_rule_factory =

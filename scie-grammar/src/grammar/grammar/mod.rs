@@ -54,7 +54,7 @@ pub struct Grammar {
     pub _token_type_matchers: Vec<TokenTypeMatcher>,
 }
 
-pub fn init_grammar(grammar: IRawGrammar, base: Option<IRawRule>) -> IRawGrammar {
+pub fn init_grammar(grammar: IRawGrammar, _base: Option<IRawRule>) -> IRawGrammar {
     let mut _grammar = grammar.clone();
 
     let mut new_based: IRawRule = IRawRule::new();
@@ -164,8 +164,8 @@ impl Grammar {
         line_tokens: LineTokens,
         check_while_conditions: bool,
     ) {
-        let line_length = line_text.len();
-        let mut stop = false;
+        let _line_length = line_text.len();
+        let _stop = false;
         let mut anchor_position = -1;
 
         if check_while_conditions {
@@ -308,7 +308,10 @@ GitHub 漫游指南
     fn debug_output(grammar: &Grammar, path: String) {
         let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
         let mut file = File::create(path).unwrap();
-        file.write_all(j.as_bytes());
+        match file.write_all(j.as_bytes()) {
+            Ok(_) => {},
+            Err(_) => {},
+        };
     }
 
     #[test]

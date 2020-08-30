@@ -186,7 +186,7 @@
         		(?:                              # and optionally:
         		    (\()                         # an open parenthesis
         		        (
-        		            \s* \g&lt;id&gt; \s*       # first argument
+        		            \s* \g&lt;id&gt; \s*       # _first argument
         		            ((,) \s* \g&lt;id&gt; \s*)*  # additional arguments
         		            (?:\.\.\.)?          # varargs ellipsis?
         		        )
@@ -240,7 +240,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>$base</string>
+					<string>$_base</string>
 				</dict>
 			</array>
 		</dict>
@@ -574,7 +574,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>$base</string>
+					<string>$_base</string>
 				</dict>
 			</array>
 		</dict>
@@ -761,7 +761,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$base</string>
+					<string>$_base</string>
 				</dict>
 			</array>
 		</dict>
@@ -838,7 +838,7 @@
 					<array>
 						<dict>
 							<key>include</key>
-							<string>$base</string>
+							<string>$_base</string>
 						</dict>
 					</array>
 				</dict>
@@ -1003,7 +1003,7 @@
 					<array>
 						<dict>
 							<key>include</key>
-							<string>$base</string>
+							<string>$_base</string>
 						</dict>
 					</array>
 				</dict>
@@ -1105,7 +1105,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$base</string>
+					<string>$_base</string>
 				</dict>
 			</array>
 		</dict>
