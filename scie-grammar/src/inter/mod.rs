@@ -1,82 +1,22 @@
 pub mod raw_rule;
+pub mod raw_repository;
+pub mod location;
+pub mod raw_grammar;
 
 pub use self::raw_rule::IRawRule;
+pub use self::raw_repository::IRawRepository;
+pub use self::raw_repository::IRawRepositoryMap;
+pub use self::location::ILocation;
+pub use self::location::ILocatable;
+pub use self::raw_grammar::IRawGrammar;
 
 use serde::{Serialize};
 use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub struct ILocation {
-    pub filename: String,
-    pub line: String,
-    pub chart: String,
-}
-
-impl ILocation {
-    pub fn new() -> Self {
-        ILocation {
-            filename: "".to_string(),
-            line: "".to_string(),
-            chart: "".to_string(),
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub struct ILocatable {
-    #[serde(flatten, skip_serializing_if = "Option::is_none")]
-    pub textmate_location: Option<ILocation>,
-}
-
-impl ILocatable {
-    pub fn new() -> Self {
-        ILocatable {
-            textmate_location: None,
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawCapturesMap {
     #[serde(flatten)]
     pub capture_map: HashMap<String, IRawRule>,
-}
-
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub struct IRawRepositoryMap {
-    #[serde(flatten)]
-    pub name_map: HashMap<String, Box<IRawRule>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub self_s: Option<IRawRule>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub base_s: Option<IRawRule>,
-}
-
-impl IRawRepositoryMap {
-    pub fn new() -> Self {
-        IRawRepositoryMap {
-            name_map: Default::default(),
-            self_s: None,
-            base_s: None,
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub struct IRawRepository {
-    #[serde(flatten)]
-    pub map: Box<IRawRepositoryMap>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub location: Option<ILocation>,
-}
-
-impl IRawRepository {
-    pub fn new() -> Self {
-        IRawRepository {
-            map: Box::new(IRawRepositoryMap::new()),
-            location: None,
-        }
-    }
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
@@ -91,61 +31,6 @@ pub struct IRawCaptures {
 pub struct InjectionMap {
     #[serde(flatten)]
     map: HashMap<String, IRawRule>,
-}
-
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-// #[serde(deny_unknown_fields)]
-pub struct IRawGrammar {
-    pub repository: Option<IRawRepository>,
-    pub location: Option<ILocatable>,
-
-    #[serde(alias = "scopeName")]
-    pub scope_name: Option<String>,
-
-    pub patterns: Vec<IRawRule>,
-
-    pub injections: Option<InjectionMap>,
-    #[serde(alias = "injectionSelector")]
-    pub injection_selector: Option<String>,
-
-    #[serde(alias = "fileTypes")]
-    pub file_types: Option<Vec<String>>,
-    pub name: Option<String>,
-
-    #[serde(alias = "firstLineMatch")]
-    pub first_line_match: Option<String>,
-
-    // not in list
-    pub comment: Option<String>,
-    // pub foldingStartMarker: Option<String>,
-    // pub foldingStopMarker: Option<String>,
-    // pub keyEquivalent: Option<String>,
-    // pub hideFromUser: Option<bool>,
-
-    // #[serde(skip_serializing)]
-    // ignored_field: serde::de::IgnoredAny,
-}
-
-impl IRawGrammar {
-    pub fn new() -> IRawGrammar {
-        IRawGrammar {
-            location: None,
-            repository: None,
-            scope_name: Some("".to_string()),
-            patterns: vec![],
-            injections: None,
-            injection_selector: None,
-            file_types: None,
-            name: None,
-            first_line_match: None,
-
-            comment: None,
-            // foldingStartMarker: None,
-            // foldingStopMarker: None,
-            // keyEquivalent: None,
-            // hideFromUser: None,
-        }
-    }
 }
 
 #[cfg(test)]
