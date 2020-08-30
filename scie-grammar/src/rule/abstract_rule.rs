@@ -9,7 +9,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn has_missing_pattern(&self) -> bool {
         false
     }
-    fn collect_patterns_recursive(&mut self, grammar: &mut Grammar, out: Option<RegExpSourceList>, is_first: bool) {
+    fn collect_patterns_recursive(&mut self, grammar: &mut Grammar, out: &mut RegExpSourceList, is_first: bool) {
     }
     fn compile(
         &mut self,

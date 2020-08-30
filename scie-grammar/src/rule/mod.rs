@@ -59,7 +59,7 @@ impl Default for AnchorCache {
             A0_G0: None,
             A0_G1: None,
             A1_G0: None,
-            A1_G1: None
+            A1_G1: None,
         }
     }
 }
@@ -68,7 +68,8 @@ impl Default for AnchorCache {
 pub struct RegExpSourceList {
     pub _has_anchors: bool,
     pub _cached: Option<CompiledRule>,
-    pub _anchor_cache: AnchorCache
+    pub _anchor_cache: AnchorCache,
+    pub _items: Vec<RegExpSource>
 }
 
 impl RegExpSourceList {
@@ -76,19 +77,26 @@ impl RegExpSourceList {
         RegExpSourceList {
             _has_anchors: false,
             _cached: None,
-            _anchor_cache: Default::default()
+            _anchor_cache: Default::default(),
+            _items: vec![]
         }
     }
 
-    pub fn compile(&self, grammar: &mut Grammar, allow_a: bool, allow_g: bool) {
-
+    pub fn push(&mut self, item: RegExpSource) {
+        self._items.push(item.clone());
+        if item.has_anchor {
+            self._has_anchors = true;
+        }
     }
+
+    pub fn compile(&self, grammar: &mut Grammar, allow_a: bool, allow_g: bool) {}
 }
 
 #[derive(Clone, Debug, Serialize)]
 pub struct RegExpSource {
     pub source: String,
     pub rule_id: i32,
+    pub has_anchor: bool
 }
 
 impl RegExpSource {
@@ -96,6 +104,7 @@ impl RegExpSource {
         RegExpSource {
             source: reg_exp_source,
             rule_id,
+            has_anchor: false
         }
     }
 }

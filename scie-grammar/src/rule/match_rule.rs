@@ -1,6 +1,7 @@
 use crate::inter::ILocation;
-use crate::rule::RegExpSource;
+use crate::rule::{RegExpSource, RegExpSourceList};
 use crate::rule::{AbstractRule, Rule};
+use crate::grammar::Grammar;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct MatchRule {
@@ -37,5 +38,8 @@ impl AbstractRule for MatchRule {
     }
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
+    }
+    fn collect_patterns_recursive(&mut self, grammar: &mut Grammar, out: &mut RegExpSourceList, is_first: bool) {
+        out.push(self._match.clone());
     }
 }

@@ -46,18 +46,19 @@ impl AbstractRule for IncludeOnlyRule {
         self.has_missing_patterns
     }
 
-    fn collect_patterns_recursive(&mut self, grammar: &mut Grammar, out: Option<RegExpSourceList>, is_first: bool) {
+    fn collect_patterns_recursive(&mut self, grammar: &mut Grammar, out: &mut RegExpSourceList, is_first: bool) {
         for x in self.patterns.clone() {
             let mut rule = grammar.get_rule(x);
-            rule.collect_patterns_recursive(grammar, out.clone(), is_first);
+            rule.collect_patterns_recursive(grammar, out, is_first);
         }
     }
 
 
     fn compile(&mut self, grammar: &mut Grammar, end_regex_source: Option<String>, allow_a: bool, allow_g: bool) {
         if let None = self._cached_compiled_patterns {
-            self._cached_compiled_patterns = Some(RegExpSourceList::new());
-            self.collect_patterns_recursive(grammar, self._cached_compiled_patterns.clone(), true);
+            let mut cached_compiled_patterns = RegExpSourceList::new();
+            self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
+            self._cached_compiled_patterns = Some(cached_compiled_patterns);
         }
 
         return self._cached_compiled_patterns.as_ref().unwrap().compile(grammar, allow_a, allow_g);
