@@ -8,10 +8,6 @@ use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry};
 
-pub mod scope_list_element;
-pub mod scope_metadata;
-pub mod stack_element;
-
 pub struct IToken {
     pub start_index: i32,
     pub end_index: i32,
