@@ -282,6 +282,7 @@ mod tests {
 
     use crate::grammar::Grammar;
     use crate::inter::IRawGrammar;
+    use crate::rule::IRuleRegistry;
 
     #[test]
     fn should_build_json_code() {
@@ -336,9 +337,9 @@ GitHub 漫游指南
     #[test]
     fn should_build_makefile_grammar() {
         let code = "{}";
-        let grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
-        // assert_eq!(grammar.rule_id2desc.len(), 82);
+        let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 64);
+        assert_eq!(grammar.get_rule(1).patterns_length(), 4);
         debug_output(&grammar, String::from("program.json"));
     }
 
