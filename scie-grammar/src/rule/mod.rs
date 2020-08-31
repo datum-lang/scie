@@ -89,7 +89,13 @@ impl RegExpSourceList {
         }
     }
 
-    pub fn compile(&self, grammar: &mut Grammar, allow_a: bool, allow_g: bool) {}
+    pub fn compile(&self, grammar: &mut Grammar, allow_a: bool, allow_g: bool) -> CompiledRule {
+        let rules = self._items.clone().into_iter().map(|x| {
+            x.source.parse().unwrap_or(0)
+        }).collect::<Vec<i32>>();
+        let rule = CompiledRule::new(rules);
+        rule
+    }
 }
 
 #[derive(Clone, Debug, Serialize)]

@@ -1,6 +1,6 @@
 use crate::grammar::Grammar;
 use crate::inter::ILocation;
-use crate::rule::{AbstractRule, Rule};
+use crate::rule::{AbstractRule, Rule, CompiledRule};
 use crate::rule::{RegExpSource, RegExpSourceList};
 
 #[derive(Clone, Debug, Serialize)]
@@ -8,6 +8,7 @@ pub struct MatchRule {
     pub rule: Rule,
     pub _match: RegExpSource,
     pub captures: Vec<Box<dyn AbstractRule>>,
+    pub _cached_compiled_patterns: Option<RegExpSourceList>
 }
 
 impl MatchRule {
@@ -28,6 +29,7 @@ impl MatchRule {
             },
             _match: RegExpSource::new(_match, id),
             captures,
+            _cached_compiled_patterns: None
         }
     }
 }
@@ -46,5 +48,19 @@ impl AbstractRule for MatchRule {
         is_first: bool,
     ) {
         out.push(self._match.clone());
+    }
+
+    fn compile(&mut self, grammar: &mut Grammar, end_regex_source: Option<String>, allow_a: bool, allow_g: bool) -> CompiledRule {
+        if let None = self._cached_compiled_patterns {
+            let mut cached_compiled_patterns = RegExpSourceList::new();
+            self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
+            self._cached_compiled_patterns = Some(cached_compiled_patterns);
+        }
+
+        return self
+            ._cached_compiled_patterns
+            .as_ref()
+            .unwrap()
+            .compile(grammar, allow_a, allow_g);
     }
 }

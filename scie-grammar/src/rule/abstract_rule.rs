@@ -1,5 +1,5 @@
 use crate::grammar::Grammar;
-use crate::rule::{IRuleRegistry, RegExpSourceList};
+use crate::rule::{IRuleRegistry, RegExpSourceList, CompiledRule};
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
 
@@ -22,8 +22,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
         end_regex_source: Option<String>,
         allow_a: bool,
         allow_g: bool,
-    ) {
-    }
+    )  -> CompiledRule;
 }
 
 impl fmt::Debug for dyn AbstractRule {

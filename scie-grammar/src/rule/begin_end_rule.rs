@@ -1,7 +1,8 @@
 use crate::inter::ILocation;
 use crate::rule::rule_factory::ICompilePatternsResult;
-use crate::rule::{AbstractRule, Rule};
+use crate::rule::{AbstractRule, Rule, IRuleRegistry, CompiledRule};
 use crate::rule::{RegExpSource, RegExpSourceList};
+use crate::grammar::Grammar;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
@@ -62,5 +63,21 @@ impl AbstractRule for BeginEndRule {
     }
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns
+    }
+
+    fn collect_patterns_recursive(&mut self, grammar: &mut Grammar, out: &mut RegExpSourceList, is_first: bool) {
+        if is_first {
+            for x in self.patterns.clone() {
+                let mut rule = grammar.get_rule(x);
+                rule.collect_patterns_recursive(grammar, out, is_first);
+            }
+        } else {
+            out.push(self._begin.clone());
+        }
+    }
+
+    fn compile(&mut self, grammar: &mut Grammar, end_regex_source: Option<String>, allow_a: bool, allow_g: bool) -> CompiledRule {
+        // todo:
+        self._cached_compiled_patterns.as_ref().unwrap().compile(grammar, allow_a, allow_g)
     }
 }

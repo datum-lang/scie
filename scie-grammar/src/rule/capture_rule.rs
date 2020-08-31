@@ -1,5 +1,6 @@
 use crate::inter::ILocation;
-use crate::rule::{AbstractRule, Rule};
+use crate::rule::{AbstractRule, Rule, RegExpSourceList, CompiledRule};
+use crate::grammar::Grammar;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct CaptureRule {
@@ -46,5 +47,13 @@ impl AbstractRule for CaptureRule {
     }
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
+    }
+
+    fn collect_patterns_recursive(&mut self, grammar: &mut Grammar, out: &mut RegExpSourceList, is_first: bool) {
+        unimplemented!()
+    }
+
+    fn compile(&mut self, grammar: &mut Grammar, end_regex_source: Option<String>, allow_a: bool, allow_g: bool) -> CompiledRule {
+        unimplemented!()
     }
 }

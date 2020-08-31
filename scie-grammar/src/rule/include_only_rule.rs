@@ -1,7 +1,7 @@
 use crate::grammar::Grammar;
 use crate::inter::ILocation;
 use crate::rule::rule_factory::ICompilePatternsResult;
-use crate::rule::{AbstractRule, IRuleRegistry, RegExpSourceList, Rule};
+use crate::rule::{AbstractRule, IRuleRegistry, RegExpSourceList, Rule, CompiledRule};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct IncludeOnlyRule {
@@ -64,7 +64,7 @@ impl AbstractRule for IncludeOnlyRule {
         end_regex_source: Option<String>,
         allow_a: bool,
         allow_g: bool,
-    ) {
+    ) -> CompiledRule {
         if let None = self._cached_compiled_patterns {
             let mut cached_compiled_patterns = RegExpSourceList::new();
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);

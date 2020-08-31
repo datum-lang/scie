@@ -5,9 +5,9 @@ pub struct CompiledRule {
 }
 
 impl CompiledRule {
-    pub fn new(debug_reg_exps: Vec<String>, rules: Vec<i32>) -> Self {
+    pub fn new(rules: Vec<i32>) -> Self {
         CompiledRule {
-            debug_reg_exps,
+            debug_reg_exps: vec![],
             rules,
         }
     }
