@@ -58,8 +58,7 @@ impl AbstractRule for IncludeOnlyRule {
     ) {
         for x in self.patterns.clone() {
             let mut rule = grammar.get_rule(x);
-            println!("{:?}, patterns: {:?}", rule, out.clone());
-            // rule.collect_patterns_recursive(grammar, out, is_first);
+            rule.collect_patterns_recursive(grammar, out, false);
         }
     }
 
