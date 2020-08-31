@@ -231,7 +231,21 @@ impl Grammar {
             is_first_line,
             line_pos == anchor_position,
         );
-        println!("{:?}", rule_scanner);
+        // todo: refactor to scanner
+        let rules = rule_scanner.debug_reg_exps;
+        for rule in rules {
+            let regex = Regex::new(rule.as_str()).unwrap();
+            if let Some(captures) = regex.captures(line_text.as_str()) {
+                for (i, pos) in captures.iter_pos().enumerate() {
+                    match pos {
+                        Some((beg, end)) =>
+                            println!("Group {} line:{}, pos: {}:{}", i, line_pos, beg, end),
+                        None =>
+                            println!("Group {} is not captured", i)
+                    }
+                }
+            }
+        }
     }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
@@ -333,7 +347,10 @@ GitHub 漫游指南
 
     #[test]
     fn should_build_makefile_grammar() {
-        let code = "{}";
+        let code = "objects=main.o test.o
+clean:
+	rm -f *.o demo
+";
         let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 64);
         assert_eq!(grammar.get_rule(1).patterns_length(), 4);
