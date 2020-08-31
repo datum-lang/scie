@@ -3,20 +3,20 @@ use onig::Regex;
 
 #[derive(Debug, Clone)]
 pub struct IOnigCaptureIndex {
-    pub start: i32,
-    pub end: i32,
-    pub length: i32,
+    pub start: usize,
+    pub end: usize,
+    pub length: usize,
 }
 
 #[derive(Debug, Clone)]
 pub struct IOnigMatch {
-    pub index: i32,
+    pub index: usize,
     pub capture_indices: Vec<IOnigCaptureIndex>,
 }
 
 #[derive(Debug, Clone, Serialize)]
 pub struct Scanner {
-    pub index: i32,
+    pub index: usize,
     pub patterns: Vec<String>,
 }
 
@@ -28,19 +28,33 @@ impl Scanner {
         }
     }
 
-    pub fn find_next_match_sync(self, str: String, start_position: i32) {
-        if self.index >= self.patterns.clone().len() as i32 {}
+    pub fn find_next_match_sync(&mut self, str: String, start_position: i32) -> IOnigMatch {
+        if self.index >= self.patterns.clone().len() {}
 
-        for pattern in self.patterns {
-            let regex = Regex::new(pattern.as_str()).unwrap();
-            for (i, pos) in regex.captures(str.as_str()).unwrap().iter_pos().enumerate() {
-                match pos {
-                    Some((beg, end)) =>
-                        println!("Group {} captured in position {}:{}", i, beg, end),
-                    None =>
-                        println!("Group {} is not captured", i)
+        let pattern = self.patterns[self.index].clone();
+
+        let regex = Regex::new(pattern.as_str()).unwrap();
+        let mut capture_indices = vec![];
+        for (i, pos) in regex.captures(str.as_str()).unwrap().iter_pos().enumerate() {
+            match pos {
+                Some((start, end)) => {
+                    let capture = IOnigCaptureIndex {
+                        start,
+                        end,
+                        length: end - start
+                    };
+                    capture_indices.push(capture)
                 }
+                None => {}
             }
+        }
+
+        let index = self.index.clone();
+
+        self.index = self.index + 1;
+        IOnigMatch {
+            index,
+            capture_indices,
         }
     }
 }
@@ -53,7 +67,16 @@ mod tests {
     #[test]
     fn should_handle_simple_regex() {
         let regex = vec![String::from("ell"), String::from("wo")];
-        let scanner = Scanner::new(regex);
-        scanner.find_next_match_sync(String::from("Hello world!"), 0);
+        let mut scanner = Scanner::new(regex);
+        let s = String::from("Hello world!");
+        let result = scanner.find_next_match_sync(s.clone(), 0);
+        assert_eq!(result.index, 0);
+        assert_eq!(result.capture_indices[0].start, 1);
+        assert_eq!(result.capture_indices[0].end, 4);
+
+        let second_result = scanner.find_next_match_sync(s, 2);
+        assert_eq!(second_result.index, 1);
+        assert_eq!(second_result.capture_indices[0].start, 6);
+        assert_eq!(second_result.capture_indices[0].end, 8);
     }
 }
