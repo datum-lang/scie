@@ -28,8 +28,6 @@ use serde::Serialize;
 // todo: trait with types
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2
 pub trait IRuleRegistry {
-    // type Output;
-    // fn method(&self) -> Self::Output;
     fn register_id(&mut self) -> i32;
     fn get_rule(&mut self, pattern_id: i32) -> Box<dyn AbstractRule>;
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule>;
@@ -84,6 +82,14 @@ impl RegExpSourceList {
 
     pub fn push(&mut self, item: RegExpSource) {
         self._items.push(item.clone());
+        if item.has_anchor {
+            self._has_anchors = true;
+        }
+    }
+
+    pub fn unshift(&mut self, item: RegExpSource) {
+        self._items.push(item.clone());
+        self._items.rotate_right(1);
         if item.has_anchor {
             self._has_anchors = true;
         }

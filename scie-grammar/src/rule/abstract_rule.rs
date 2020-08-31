@@ -1,5 +1,5 @@
 use crate::grammar::Grammar;
-use crate::rule::{IRuleRegistry, RegExpSourceList, CompiledRule};
+use crate::rule::{RegExpSourceList, CompiledRule};
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
 

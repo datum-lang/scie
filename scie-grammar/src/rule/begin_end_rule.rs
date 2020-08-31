@@ -81,11 +81,21 @@ impl AbstractRule for BeginEndRule {
             // todo: figured cached issues
             let mut cached_compiled_patterns = RegExpSourceList::new();
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
+
+            if let Some(apply_end) = self.apply_end_pattern_last {
+                if apply_end {
+                    cached_compiled_patterns.push(self._end.clone());
+                } else {
+                    cached_compiled_patterns.unshift(self._end.clone());
+                }
+            } else {
+                cached_compiled_patterns.unshift(self._end.clone());
+            }
+
             self._cached_compiled_patterns = Some(cached_compiled_patterns);
         }
 
         // todo: support for hasBackReferences
-
         self._cached_compiled_patterns.as_ref().unwrap().compile(grammar, allow_a, allow_g)
     }
 }
