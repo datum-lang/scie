@@ -14,8 +14,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
         grammar: &mut Grammar,
         out: &mut RegExpSourceList,
         is_first: bool,
-    ) {
-    }
+    );
     fn compile(
         &mut self,
         grammar: &mut Grammar,
