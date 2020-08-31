@@ -1,5 +1,5 @@
+use crate::inter::{ILocatable, IRawRule};
 use std::collections::HashMap;
-use crate::inter::{IRawRule, ILocatable};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawCapturesMap {

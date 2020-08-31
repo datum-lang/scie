@@ -1,8 +1,8 @@
+use crate::grammar::Grammar;
 use crate::inter::ILocation;
 use crate::rule::rule_factory::ICompilePatternsResult;
-use crate::rule::{AbstractRule, Rule, IRuleRegistry, CompiledRule};
+use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
-use crate::grammar::Grammar;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
@@ -61,11 +61,19 @@ impl AbstractRule for BeginEndRule {
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }
+    fn display(&self) -> String {
+        serde_json::to_string(&self).unwrap()
+    }
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns
     }
 
-    fn collect_patterns_recursive(&mut self, grammar: &mut Grammar, out: &mut RegExpSourceList, is_first: bool) {
+    fn collect_patterns_recursive(
+        &mut self,
+        grammar: &mut Grammar,
+        out: &mut RegExpSourceList,
+        is_first: bool,
+    ) {
         if is_first {
             for x in self.patterns.clone() {
                 let mut rule = grammar.get_rule(x);
@@ -76,7 +84,13 @@ impl AbstractRule for BeginEndRule {
         }
     }
 
-    fn compile(&mut self, grammar: &mut Grammar, end_regex_source: Option<String>, allow_a: bool, allow_g: bool) -> CompiledRule {
+    fn compile(
+        &mut self,
+        grammar: &mut Grammar,
+        end_regex_source: Option<String>,
+        allow_a: bool,
+        allow_g: bool,
+    ) -> CompiledRule {
         if let None = self._cached_compiled_patterns {
             // todo: figured cached issues
             let mut cached_compiled_patterns = RegExpSourceList::new();
@@ -96,6 +110,9 @@ impl AbstractRule for BeginEndRule {
         }
 
         // todo: support for hasBackReferences
-        self._cached_compiled_patterns.as_ref().unwrap().compile(grammar, allow_a, allow_g)
+        self._cached_compiled_patterns
+            .as_ref()
+            .unwrap()
+            .compile(grammar, allow_a, allow_g)
     }
 }

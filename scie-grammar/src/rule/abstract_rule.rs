@@ -1,11 +1,14 @@
 use crate::grammar::Grammar;
-use crate::rule::{RegExpSourceList, CompiledRule};
+use crate::rule::{CompiledRule, RegExpSourceList};
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
 
 pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn id(&self) -> i32;
     fn type_of(&self) -> String;
+    fn display(&self) -> String {
+        String::from("AbstractRule")
+    }
     fn has_missing_pattern(&self) -> bool {
         false
     }
@@ -21,12 +24,12 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
         end_regex_source: Option<String>,
         allow_a: bool,
         allow_g: bool,
-    )  -> CompiledRule;
+    ) -> CompiledRule;
 }
 
 impl fmt::Debug for dyn AbstractRule {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "AbstractRule")
+        write!(f, "{}", self.display())
     }
 }
 

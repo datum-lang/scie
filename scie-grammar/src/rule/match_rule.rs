@@ -1,6 +1,6 @@
 use crate::grammar::Grammar;
 use crate::inter::ILocation;
-use crate::rule::{AbstractRule, Rule, CompiledRule};
+use crate::rule::{AbstractRule, CompiledRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
 
 #[derive(Clone, Debug, Serialize)]
@@ -8,7 +8,7 @@ pub struct MatchRule {
     pub rule: Rule,
     pub _match: RegExpSource,
     pub captures: Vec<Box<dyn AbstractRule>>,
-    pub _cached_compiled_patterns: Option<RegExpSourceList>
+    pub _cached_compiled_patterns: Option<RegExpSourceList>,
 }
 
 impl MatchRule {
@@ -29,7 +29,7 @@ impl MatchRule {
             },
             _match: RegExpSource::new(_match, id),
             captures,
-            _cached_compiled_patterns: None
+            _cached_compiled_patterns: None,
         }
     }
 }
@@ -41,6 +41,10 @@ impl AbstractRule for MatchRule {
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }
+    fn display(&self) -> String {
+        serde_json::to_string(&self).unwrap()
+    }
+
     fn collect_patterns_recursive(
         &mut self,
         grammar: &mut Grammar,
@@ -50,7 +54,13 @@ impl AbstractRule for MatchRule {
         out.push(self._match.clone());
     }
 
-    fn compile(&mut self, grammar: &mut Grammar, end_regex_source: Option<String>, allow_a: bool, allow_g: bool) -> CompiledRule {
+    fn compile(
+        &mut self,
+        grammar: &mut Grammar,
+        end_regex_source: Option<String>,
+        allow_a: bool,
+        allow_g: bool,
+    ) -> CompiledRule {
         if let None = self._cached_compiled_patterns {
             let mut cached_compiled_patterns = RegExpSourceList::new();
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);

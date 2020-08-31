@@ -1,19 +1,19 @@
+pub mod injections;
 pub mod location;
+pub mod raw_captures;
 pub mod raw_grammar;
 pub mod raw_repository;
 pub mod raw_rule;
-pub mod raw_captures;
-pub mod injections;
 
+pub use self::injections::InjectionMap;
 pub use self::location::ILocatable;
 pub use self::location::ILocation;
+pub use self::raw_captures::IRawCaptures;
+pub use self::raw_captures::IRawCapturesMap;
 pub use self::raw_grammar::IRawGrammar;
 pub use self::raw_repository::IRawRepository;
 pub use self::raw_repository::IRawRepositoryMap;
-pub use self::raw_captures::IRawCapturesMap;
-pub use self::raw_captures::IRawCaptures;
 pub use self::raw_rule::IRawRule;
-pub use self::injections::InjectionMap;
 
 #[cfg(test)]
 mod tests {
