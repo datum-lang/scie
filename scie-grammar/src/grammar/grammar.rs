@@ -293,7 +293,6 @@ return 0;
 }
 ";
         let grammar = to_grammar("test-cases/first-mate/fixtures/c.json", code);
-        // todo: fixed it
         // assert_eq!(grammar.rule_id2desc.len(), 162);
         // debug_output(&grammar, String::from("program.json"));
     }
@@ -328,7 +327,6 @@ GitHub 漫游指南
     fn should_build_html_grammar() {
         let code = "{}";
         let grammar = to_grammar("test-cases/first-mate/fixtures/html.json", code);
-        // assert_eq!(grammar.rule_id2desc.len(), 104);
         assert_eq!(grammar.rule_id2desc.len(), 67);
         debug_output(&grammar, String::from("program.json"));
     }

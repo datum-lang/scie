@@ -56,19 +56,27 @@ impl RegExpSourceList {
     pub fn compile(&mut self, grammar: &mut Grammar, allow_a: bool, allow_g: bool) -> CompiledRule {
         if !self._has_anchors {
             if let None = self._cached {
+                let reg_exps = self
+                    ._items
+                    .clone()
+                    .into_iter()
+                    .map(|x| x.source)
+                    .collect::<Vec<String>>();
                 let rules = self
                     ._items
                     .clone()
                     .into_iter()
-                    .map(|x| x.source.parse().unwrap_or(0))
+                    .map(|x| x.rule_id)
                     .collect::<Vec<i32>>();
-                let compiled_rule = CompiledRule::new(rules);
+                let compiled_rule = CompiledRule::new(reg_exps, rules);
                 self._cached = Some(compiled_rule.clone());
                 return compiled_rule
             }
+        } else {
+            println!("// todo: cached {:?}", self._items);
         }
 
-        CompiledRule::new(vec![])
+        CompiledRule::new(vec![], vec![])
     }
 }
 
