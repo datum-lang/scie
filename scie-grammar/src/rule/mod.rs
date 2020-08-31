@@ -67,7 +67,7 @@ pub struct RegExpSourceList {
     pub _has_anchors: bool,
     pub _cached: Option<CompiledRule>,
     pub _anchor_cache: AnchorCache,
-    pub _items: Vec<RegExpSource>,
+    pub _items: Vec<Box<RegExpSource>>,
 }
 
 impl RegExpSourceList {
@@ -80,17 +80,17 @@ impl RegExpSourceList {
         }
     }
 
-    pub fn push(&mut self, item: RegExpSource) {
+    pub fn push(&mut self, item: Box<RegExpSource>) {
         self._items.push(item.clone());
-        if item.has_anchor {
+        if item.clone().has_anchor {
             self._has_anchors = true;
         }
     }
 
-    pub fn unshift(&mut self, item: RegExpSource) {
+    pub fn unshift(&mut self, item: Box<RegExpSource>) {
         self._items.push(item.clone());
         self._items.rotate_right(1);
-        if item.has_anchor {
+        if item.clone().has_anchor {
             self._has_anchors = true;
         }
     }

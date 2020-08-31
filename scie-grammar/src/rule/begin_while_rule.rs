@@ -74,10 +74,10 @@ impl AbstractRule for BeginWhileRule {
         if is_first {
             for x in self.patterns.clone() {
                 let mut rule = grammar.get_rule(x);
-                rule.collect_patterns_recursive(grammar, out, is_first);
+                rule.collect_patterns_recursive(grammar, out, false);
             }
         } else {
-            out.push(self._begin.clone());
+            out.push(Box::new(self._begin.clone()));
         }
     }
 

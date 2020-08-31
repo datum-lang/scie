@@ -225,6 +225,7 @@ impl Grammar {
         anchor_position: i32,
     ) {
         let mut rule = stack.get_rule(self);
+        println!("start compile: {:?}", rule.clone().type_of());
         rule.compile(
             self,
             stack.end_rule,

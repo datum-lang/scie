@@ -101,7 +101,35 @@
       "_hasAnchors": true,
       "_cached": null,
       "_anchorCache": {
-        "A0_G0": null,
+        "A0_G0": {
+          "debugRegExps": [
+            "(^[ \\t]+)?(?=#)",
+            "(^[ ]*|\\￿\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+            "^(?!\\t)([^:]*)(:)(?!\\=)",
+            "^[ ]*([s\\-]?include)\\b",
+            "^[ ]*(vpath)\\b",
+            "^(?:(override)\\s*)?(define)\\s*([^\\s]+)\\s*(=|\\?=|:=|\\+=)?(?=\\s)",
+            "^[ ]*(export)\\b",
+            "^[ ]*(override|private)\\b",
+            "^[ ]*(unexport|undefine)\\b",
+            "^(ifdef|ifndef)\\s*([^\\s]+)(?=\\s)",
+            "^(ifeq|ifneq)(?=\\s)"
+          ],
+          "rules": [
+            2,
+            7,
+            28,
+            45,
+            48,
+            51,
+            61,
+            64,
+            66,
+            69,
+            77
+          ],
+          "scanner": {}
+        },
         "A0_G1": null,
         "A1_G0": {
           "debugRegExps": [
@@ -316,7 +344,69 @@
       11
     ],
     "hasMissingPatterns": true,
-    "_cachedCompiledPatterns": null,
+    "_cachedCompiledPatterns": {
+      "_items": [
+        {
+          "hasAnchor": false,
+          "source": "\\n",
+          "_anchorCache": null,
+          "ruleId": -1,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "\\\\\\n",
+          "_anchorCache": null,
+          "ruleId": 10,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "(^[ \\t]+)?(?=#)",
+          "_anchorCache": null,
+          "ruleId": 2,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "(\\$?\\$)[@%<?^+*]",
+          "_anchorCache": null,
+          "ruleId": 12,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "\\$?\\$\\(",
+          "_anchorCache": null,
+          "ruleId": 14,
+          "hasBackReferences": false
+        }
+      ],
+      "_hasAnchors": false,
+      "_cached": {
+        "debugRegExps": [
+          "\\n",
+          "\\\\\\n",
+          "(^[ \\t]+)?(?=#)",
+          "(\\$?\\$)[@%<?^+*]",
+          "\\$?\\$\\("
+        ],
+        "rules": [
+          -1,
+          10,
+          2,
+          12,
+          14
+        ],
+        "scanner": {}
+      },
+      "_anchorCache": {
+        "A0_G0": null,
+        "A0_G1": null,
+        "A1_G0": null,
+        "A1_G1": null
+      }
+    },
     "_type": "BeginEndRule"
   },
   {
@@ -457,7 +547,127 @@
       22
     ],
     "hasMissingPatterns": false,
-    "_cachedCompiledPatterns": null,
+    "_cachedCompiledPatterns": {
+      "_items": [
+        {
+          "hasAnchor": false,
+          "source": "\\)",
+          "_anchorCache": null,
+          "ruleId": -1,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "(\\$?\\$)[@%<?^+*]",
+          "_anchorCache": null,
+          "ruleId": 12,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "\\$?\\$\\(",
+          "_anchorCache": null,
+          "ruleId": 14,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": true,
+          "source": "\\G(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))",
+          "_anchorCache": {
+            "A0_G0": "\\￿(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))",
+            "A0_G1": "\\G(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))",
+            "A1_G0": "\\￿(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))",
+            "A1_G1": "\\G(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))"
+          },
+          "ruleId": 17,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": true,
+          "source": "\\G(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s",
+          "_anchorCache": {
+            "A0_G0": "\\￿(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s",
+            "A0_G1": "\\G(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s",
+            "A1_G0": "\\￿(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s",
+            "A1_G1": "\\G(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s"
+          },
+          "ruleId": 18,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": true,
+          "source": "\\G(origin|flavor)\\s(?=[^\\s)]+\\s*\\))",
+          "_anchorCache": {
+            "A0_G0": "\\￿(origin|flavor)\\s(?=[^\\s)]+\\s*\\))",
+            "A0_G1": "\\G(origin|flavor)\\s(?=[^\\s)]+\\s*\\))",
+            "A1_G0": "\\￿(origin|flavor)\\s(?=[^\\s)]+\\s*\\))",
+            "A1_G1": "\\G(origin|flavor)\\s(?=[^\\s)]+\\s*\\))"
+          },
+          "ruleId": 21,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": true,
+          "source": "\\G(?!\\))",
+          "_anchorCache": {
+            "A0_G0": "\\￿(?!\\))",
+            "A0_G1": "\\G(?!\\))",
+            "A1_G0": "\\￿(?!\\))",
+            "A1_G1": "\\G(?!\\))"
+          },
+          "ruleId": 22,
+          "hasBackReferences": false
+        }
+      ],
+      "_hasAnchors": true,
+      "_cached": null,
+      "_anchorCache": {
+        "A0_G0": {
+          "debugRegExps": [
+            "\\)",
+            "(\\$?\\$)[@%<?^+*]",
+            "\\$?\\$\\(",
+            "\\￿(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))",
+            "\\￿(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s",
+            "\\￿(origin|flavor)\\s(?=[^\\s)]+\\s*\\))",
+            "\\￿(?!\\))"
+          ],
+          "rules": [
+            -1,
+            12,
+            14,
+            17,
+            18,
+            21,
+            22
+          ],
+          "scanner": {}
+        },
+        "A0_G1": {
+          "debugRegExps": [
+            "\\)",
+            "(\\$?\\$)[@%<?^+*]",
+            "\\$?\\$\\(",
+            "\\G(MAKEFILES|VPATH|SHELL|MAKESHELL|MAKE|MAKELEVEL|MAKEFLAGS|MAKECMDGOALS|CURDIR|SUFFIXES|\\.LIBPATTERNS)(?=\\s*\\))",
+            "\\G(subst|patsubst|strip|findstring|filter(-out)?|sort|word(list)?|firstword|lastword|dir|notdir|suffix|basename|addprefix|join|wildcard|realpath|abspath|info|error|warning|shell|foreach|if|or|and|call|eval|value)\\s",
+            "\\G(origin|flavor)\\s(?=[^\\s)]+\\s*\\))",
+            "\\G(?!\\))"
+          ],
+          "rules": [
+            -1,
+            12,
+            14,
+            17,
+            18,
+            21,
+            22
+          ],
+          "scanner": {}
+        },
+        "A1_G0": null,
+        "A1_G1": null
+      }
+    },
     "_type": "BeginEndRule"
   },
   {
@@ -643,7 +853,51 @@
       11
     ],
     "hasMissingPatterns": false,
-    "_cachedCompiledPatterns": null,
+    "_cachedCompiledPatterns": {
+      "_items": [
+        {
+          "hasAnchor": false,
+          "source": "(?=\\))",
+          "_anchorCache": null,
+          "ruleId": -1,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "(\\$?\\$)[@%<?^+*]",
+          "_anchorCache": null,
+          "ruleId": 12,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "\\$?\\$\\(",
+          "_anchorCache": null,
+          "ruleId": 14,
+          "hasBackReferences": false
+        }
+      ],
+      "_hasAnchors": false,
+      "_cached": {
+        "debugRegExps": [
+          "(?=\\))",
+          "(\\$?\\$)[@%<?^+*]",
+          "\\$?\\$\\("
+        ],
+        "rules": [
+          -1,
+          12,
+          14
+        ],
+        "scanner": {}
+      },
+      "_anchorCache": {
+        "A0_G0": null,
+        "A0_G1": null,
+        "A1_G0": null,
+        "A1_G1": null
+      }
+    },
     "_type": "BeginEndRule"
   },
   {
@@ -814,7 +1068,68 @@
       39
     ],
     "hasMissingPatterns": false,
-    "_cachedCompiledPatterns": null,
+    "_cachedCompiledPatterns": {
+      "_items": [
+        {
+          "hasAnchor": false,
+          "source": "^(?!\\t)",
+          "_anchorCache": null,
+          "ruleId": -1,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": true,
+          "source": "\\G",
+          "_anchorCache": {
+            "A0_G0": "\\￿",
+            "A0_G1": "\\G",
+            "A1_G0": "\\￿",
+            "A1_G1": "\\G"
+          },
+          "ruleId": 36,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "^\\t",
+          "_anchorCache": null,
+          "ruleId": 39,
+          "hasBackReferences": false
+        }
+      ],
+      "_hasAnchors": true,
+      "_cached": null,
+      "_anchorCache": {
+        "A0_G0": {
+          "debugRegExps": [
+            "^(?!\\t)",
+            "\\￿",
+            "^\\t"
+          ],
+          "rules": [
+            -1,
+            36,
+            39
+          ],
+          "scanner": {}
+        },
+        "A0_G1": {
+          "debugRegExps": [
+            "^(?!\\t)",
+            "\\G",
+            "^\\t"
+          ],
+          "rules": [
+            -1,
+            36,
+            39
+          ],
+          "scanner": {}
+        },
+        "A1_G0": null,
+        "A1_G1": null
+      }
+    },
     "_type": "BeginEndRule"
   },
   {
@@ -828,7 +1143,42 @@
       32
     ],
     "hasMissingPatterns": false,
-    "_cachedCompiledPatterns": null,
+    "_cachedCompiledPatterns": {
+      "_items": [
+        {
+          "hasAnchor": false,
+          "source": "^\\s*(\\.(PHONY|SUFFIXES|DEFAULT|PRECIOUS|INTERMEDIATE|SECONDARY|SECONDEXPANSION|DELETE_ON_ERROR|IGNORE|LOW_RESOLUTION_TIME|SILENT|EXPORT_ALL_VARIABLES|NOTPARALLEL|ONESHELL|POSIX))\\s*$",
+          "_anchorCache": null,
+          "ruleId": 30,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "(?=\\S)",
+          "_anchorCache": null,
+          "ruleId": 32,
+          "hasBackReferences": false
+        }
+      ],
+      "_hasAnchors": false,
+      "_cached": {
+        "debugRegExps": [
+          "^\\s*(\\.(PHONY|SUFFIXES|DEFAULT|PRECIOUS|INTERMEDIATE|SECONDARY|SECONDEXPANSION|DELETE_ON_ERROR|IGNORE|LOW_RESOLUTION_TIME|SILENT|EXPORT_ALL_VARIABLES|NOTPARALLEL|ONESHELL|POSIX))\\s*$",
+          "(?=\\S)"
+        ],
+        "rules": [
+          30,
+          32
+        ],
+        "scanner": {}
+      },
+      "_anchorCache": {
+        "A0_G0": null,
+        "A0_G1": null,
+        "A1_G0": null,
+        "A1_G1": null
+      }
+    },
     "_type": "IncludeOnlyRule"
   },
   {
@@ -897,7 +1247,60 @@
       33
     ],
     "hasMissingPatterns": false,
-    "_cachedCompiledPatterns": null,
+    "_cachedCompiledPatterns": {
+      "_items": [
+        {
+          "hasAnchor": false,
+          "source": "(?=\\s|$)",
+          "_anchorCache": null,
+          "ruleId": -1,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "(\\$?\\$)[@%<?^+*]",
+          "_anchorCache": null,
+          "ruleId": 12,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "\\$?\\$\\(",
+          "_anchorCache": null,
+          "ruleId": 14,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "%",
+          "_anchorCache": null,
+          "ruleId": 33,
+          "hasBackReferences": false
+        }
+      ],
+      "_hasAnchors": false,
+      "_cached": {
+        "debugRegExps": [
+          "(?=\\s|$)",
+          "(\\$?\\$)[@%<?^+*]",
+          "\\$?\\$\\(",
+          "%"
+        ],
+        "rules": [
+          -1,
+          12,
+          14,
+          33
+        ],
+        "scanner": {}
+      },
+      "_anchorCache": {
+        "A0_G0": null,
+        "A0_G1": null,
+        "A1_G0": null,
+        "A1_G1": null
+      }
+    },
     "_type": "BeginEndRule"
   },
   {
@@ -971,7 +1374,78 @@
       11
     ],
     "hasMissingPatterns": false,
-    "_cachedCompiledPatterns": null,
+    "_cachedCompiledPatterns": {
+      "_items": [
+        {
+          "hasAnchor": false,
+          "source": "^",
+          "_anchorCache": null,
+          "ruleId": -1,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "\\\\\\n",
+          "_anchorCache": null,
+          "ruleId": 37,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "%|\\*",
+          "_anchorCache": null,
+          "ruleId": 38,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "(^[ \\t]+)?(?=#)",
+          "_anchorCache": null,
+          "ruleId": 2,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "(\\$?\\$)[@%<?^+*]",
+          "_anchorCache": null,
+          "ruleId": 12,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "\\$?\\$\\(",
+          "_anchorCache": null,
+          "ruleId": 14,
+          "hasBackReferences": false
+        }
+      ],
+      "_hasAnchors": false,
+      "_cached": {
+        "debugRegExps": [
+          "^",
+          "\\\\\\n",
+          "%|\\*",
+          "(^[ \\t]+)?(?=#)",
+          "(\\$?\\$)[@%<?^+*]",
+          "\\$?\\$\\("
+        ],
+        "rules": [
+          -1,
+          37,
+          38,
+          2,
+          12,
+          14
+        ],
+        "scanner": {}
+      },
+      "_anchorCache": {
+        "A0_G0": null,
+        "A0_G1": null,
+        "A1_G0": null,
+        "A1_G1": null
+      }
+    },
     "_type": "BeginEndRule"
   },
   {
@@ -1035,8 +1509,60 @@
       40
     ],
     "hasMissingPatterns": false,
-    "_cachedCompiledPatterns": null,
-    "_cachedCompiledWhilePatterns": null,
+    "_cachedCompiledPatterns": {
+      "_items": [
+        {
+          "hasAnchor": false,
+          "source": ".+\\n?",
+          "_anchorCache": null,
+          "ruleId": 40,
+          "hasBackReferences": false
+        }
+      ],
+      "_hasAnchors": false,
+      "_cached": {
+        "debugRegExps": [
+          ".+\\n?"
+        ],
+        "rules": [
+          40
+        ],
+        "scanner": {}
+      },
+      "_anchorCache": {
+        "A0_G0": null,
+        "A0_G1": null,
+        "A1_G0": null,
+        "A1_G1": null
+      }
+    },
+    "_cachedCompiledWhilePatterns": {
+      "_items": [
+        {
+          "hasAnchor": false,
+          "source": "^\\t",
+          "_anchorCache": null,
+          "ruleId": -2,
+          "hasBackReferences": false
+        }
+      ],
+      "_hasAnchors": false,
+      "_cached": {
+        "debugRegExps": [
+          "^\\t"
+        ],
+        "rules": [
+          -2
+        ],
+        "scanner": {}
+      },
+      "_anchorCache": {
+        "A0_G0": null,
+        "A0_G1": null,
+        "A1_G0": null,
+        "A1_G1": null
+      }
+    },
     "_type": "BeginWhileRule"
   },
   {
@@ -1077,7 +1603,51 @@
       11
     ],
     "hasMissingPatterns": true,
-    "_cachedCompiledPatterns": null,
+    "_cachedCompiledPatterns": {
+      "_items": [
+        {
+          "hasAnchor": false,
+          "source": "\\\\\\n",
+          "_anchorCache": null,
+          "ruleId": 42,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "(\\$?\\$)[@%<?^+*]",
+          "_anchorCache": null,
+          "ruleId": 12,
+          "hasBackReferences": false
+        },
+        {
+          "hasAnchor": false,
+          "source": "\\$?\\$\\(",
+          "_anchorCache": null,
+          "ruleId": 14,
+          "hasBackReferences": false
+        }
+      ],
+      "_hasAnchors": false,
+      "_cached": {
+        "debugRegExps": [
+          "\\\\\\n",
+          "(\\$?\\$)[@%<?^+*]",
+          "\\$?\\$\\("
+        ],
+        "rules": [
+          42,
+          12,
+          14
+        ],
+        "scanner": {}
+      },
+      "_anchorCache": {
+        "A0_G0": null,
+        "A0_G1": null,
+        "A1_G0": null,
+        "A1_G1": null
+      }
+    },
     "_type": "IncludeOnlyRule"
   },
   {
@@ -1622,7 +2192,7 @@
       null,
       {
         "id": 67,
-          "_name": "keyword.control.$1.makefile",
+        "_name": "keyword.control.$1.makefile",
         "_nameIsCapturing": true,
         "_contentName": null,
         "_contentNameIsCapturing": false,

@@ -51,7 +51,7 @@ impl AbstractRule for MatchRule {
         out: &mut RegExpSourceList,
         is_first: bool,
     ) {
-        out.push(self._match.clone());
+        out.push(Box::new(self._match.clone()));
     }
 
     fn compile(

@@ -77,7 +77,7 @@ impl AbstractRule for BeginEndRule {
                 rule.collect_patterns_recursive(grammar, out, is_first);
             }
         } else {
-            out.push(self._begin.clone());
+            out.push(Box::from(self._begin.clone()));
         }
     }
 
@@ -95,12 +95,12 @@ impl AbstractRule for BeginEndRule {
 
             if let Some(apply_end) = self.apply_end_pattern_last {
                 if apply_end {
-                    cached_compiled_patterns.push(self._end.clone());
+                    cached_compiled_patterns.push(Box::new(self._end.clone()));
                 } else {
-                    cached_compiled_patterns.unshift(self._end.clone());
+                    cached_compiled_patterns.unshift(Box::new(self._end.clone()));
                 }
             } else {
-                cached_compiled_patterns.unshift(self._end.clone());
+                cached_compiled_patterns.unshift(Box::new(self._end.clone()));
             }
 
             self._cached_compiled_patterns = Some(cached_compiled_patterns);
