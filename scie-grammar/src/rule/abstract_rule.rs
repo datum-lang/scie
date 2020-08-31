@@ -29,7 +29,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
 
 impl fmt::Debug for dyn AbstractRule {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.display())
+        write!(f, "{}", serde_json::to_string(&self).unwrap())
     }
 }
 

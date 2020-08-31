@@ -48,9 +48,6 @@ impl AbstractRule for CaptureRule {
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }
-    fn display(&self) -> String {
-        serde_json::to_string(&self).unwrap()
-    }
 
     fn collect_patterns_recursive(
         &mut self,

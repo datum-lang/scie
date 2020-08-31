@@ -61,9 +61,6 @@ impl AbstractRule for BeginEndRule {
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }
-    fn display(&self) -> String {
-        serde_json::to_string(&self).unwrap()
-    }
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns
     }
