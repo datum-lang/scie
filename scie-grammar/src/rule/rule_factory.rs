@@ -165,7 +165,7 @@ impl RuleFactory {
                         || rule.type_of() == "BeginEndRule"
                         || rule.type_of() == "BeginWhileRule"
                     {
-                        if rule.has_missing_pattern() {
+                        if rule.has_missing_pattern() && rule.patterns_length() == 0 {
                             skip_rule = true;
                         }
                     }

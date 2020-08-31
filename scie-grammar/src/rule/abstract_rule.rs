@@ -12,6 +12,9 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn has_missing_pattern(&self) -> bool {
         false
     }
+    fn patterns_length(&self) -> i32 {
+        -1
+    }
     fn collect_patterns_recursive(
         &mut self,
         grammar: &mut Grammar,

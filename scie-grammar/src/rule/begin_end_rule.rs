@@ -64,6 +64,9 @@ impl AbstractRule for BeginEndRule {
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns
     }
+    fn patterns_length(&self) -> i32 {
+        self.patterns.clone().len() as i32
+    }
 
     fn collect_patterns_recursive(
         &mut self,

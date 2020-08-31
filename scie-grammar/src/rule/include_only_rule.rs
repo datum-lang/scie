@@ -2,7 +2,6 @@ use crate::grammar::Grammar;
 use crate::inter::ILocation;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, RegExpSourceList, Rule};
-use core::fmt;
 use std::any::Any;
 
 #[derive(Clone, Debug, Serialize)]
@@ -47,6 +46,9 @@ impl AbstractRule for IncludeOnlyRule {
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns
     }
+    fn patterns_length(&self) -> i32 {
+        self.patterns.clone().len() as i32
+    }
 
     fn collect_patterns_recursive(
         &mut self,
@@ -57,7 +59,7 @@ impl AbstractRule for IncludeOnlyRule {
         for x in self.patterns.clone() {
             let mut rule = grammar.get_rule(x);
             println!("{:?}, patterns: {:?}", rule, out.clone());
-            rule.collect_patterns_recursive(grammar, out, is_first);
+            // rule.collect_patterns_recursive(grammar, out, is_first);
         }
     }
 
