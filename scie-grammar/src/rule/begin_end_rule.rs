@@ -77,7 +77,15 @@ impl AbstractRule for BeginEndRule {
     }
 
     fn compile(&mut self, grammar: &mut Grammar, end_regex_source: Option<String>, allow_a: bool, allow_g: bool) -> CompiledRule {
-        // todo:
+        if let None = self._cached_compiled_patterns {
+            // todo: figured cached issues
+            let mut cached_compiled_patterns = RegExpSourceList::new();
+            self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
+            self._cached_compiled_patterns = Some(cached_compiled_patterns);
+        }
+
+        // todo: support for hasBackReferences
+
         self._cached_compiled_patterns.as_ref().unwrap().compile(grammar, allow_a, allow_g)
     }
 }

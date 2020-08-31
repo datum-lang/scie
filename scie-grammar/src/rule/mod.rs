@@ -31,7 +31,7 @@ pub trait IRuleRegistry {
     // type Output;
     // fn method(&self) -> Self::Output;
     fn register_id(&mut self) -> i32;
-    fn get_rule(&self, pattern_id: i32) -> Box<dyn AbstractRule>;
+    fn get_rule(&mut self, pattern_id: i32) -> Box<dyn AbstractRule>;
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule>;
 }
 

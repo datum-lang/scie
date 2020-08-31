@@ -259,9 +259,9 @@ impl IRuleRegistry for Grammar {
         self.last_rule_id.clone()
     }
 
-    fn get_rule(&self, pattern_id: i32) -> Box<dyn AbstractRule> {
-        if let Some(rule) = self.rule_id2desc.get(&pattern_id) {
-            return rule.clone();
+    fn get_rule(&mut self, pattern_id: i32) -> Box<dyn AbstractRule> {
+        if let Some(rule) = self.rule_id2desc.get_mut(&pattern_id) {
+            return rule.to_owned();
         }
         Box::from(EmptyRule {})
     }
