@@ -13,3 +13,4 @@ pub mod grammar;
 pub mod inter;
 pub mod matcher;
 pub mod rule;
+pub mod scanner;
