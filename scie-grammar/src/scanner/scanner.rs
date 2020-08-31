@@ -1,7 +1,7 @@
 use onig::Regex;
 
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct IOnigCaptureIndex {
     pub start: usize,
     pub end: usize,
@@ -79,4 +79,11 @@ mod tests {
         assert_eq!(second_result.capture_indices[0].start, 6);
         assert_eq!(second_result.capture_indices[0].end, 8);
     }
+
+    #[test]
+    fn should_handle_simple2() {
+        let regex = vec![String::from("a"), String::from("b"), String::from("c")];
+        let mut scanner = Scanner::new(regex);
+    }
+
 }
