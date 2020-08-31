@@ -69,16 +69,17 @@ impl AbstractRule for IncludeOnlyRule {
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
+        let mut cached_compiled_patterns = RegExpSourceList::new();
+
         if let None = self._cached_compiled_patterns {
-            let mut cached_compiled_patterns = RegExpSourceList::new();
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
-            self._cached_compiled_patterns = Some(cached_compiled_patterns);
+            self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
+        } else {
+            cached_compiled_patterns = self._cached_compiled_patterns.as_ref().unwrap().clone();
         }
 
-        return self
-            ._cached_compiled_patterns
-            .as_ref()
-            .unwrap()
-            .compile(grammar, allow_a, allow_g);
+        return cached_compiled_patterns
+            .compile(grammar, allow_a, allow_g)
+            .clone();
     }
 }
