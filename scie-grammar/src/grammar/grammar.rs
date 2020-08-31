@@ -225,14 +225,13 @@ impl Grammar {
         anchor_position: i32,
     ) {
         let mut rule = stack.get_rule(self);
-        println!("start compile: {:?}", rule.clone().type_of());
-        rule.compile(
+        let compiled_rule = rule.compile(
             self,
             stack.end_rule,
             is_first_line,
             line_pos == anchor_position,
         );
-        println!("{:?}", rule.type_of());
+        println!("{:?}", compiled_rule);
     }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
