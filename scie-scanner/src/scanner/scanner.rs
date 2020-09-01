@@ -1,7 +1,7 @@
-use onig::Regex;
+use onig::{Regex, EncodedBytes, SearchOptions, MatchParam, Error};
 
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone)]
 pub struct IOnigCaptureIndex {
     pub start: usize,
     pub end: usize,
@@ -14,7 +14,7 @@ pub struct IOnigMatch {
     pub capture_indices: Vec<IOnigCaptureIndex>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone)]
 pub struct Scanner {
     pub index: usize,
     pub patterns: Vec<String>,

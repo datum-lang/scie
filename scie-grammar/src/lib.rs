@@ -1,8 +1,6 @@
 // todo: remove after finish
 #![allow(dead_code)]
 
-extern crate onig;
-
 #[macro_use]
 extern crate serde_derive;
 
@@ -13,4 +11,3 @@ pub mod grammar;
 pub mod inter;
 pub mod matcher;
 pub mod rule;
-pub mod scanner;

@@ -1,7 +1,5 @@
 use std::collections::BTreeMap as Map;
 
-use onig::*;
-
 use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher};
 use crate::grammar::{ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
@@ -85,13 +83,6 @@ impl Grammar {
             rule_id2desc: Map::new(),
             _token_type_matchers: vec![],
         }
-    }
-    // todo: refactor to callback ??
-    pub fn create_onig_scanner(&self, sources: String) -> Regex {
-        Regex::new(sources.as_str()).unwrap()
-    }
-    pub fn create_onig_string(&self, sources: String) -> String {
-        sources
     }
 
     fn tokenize(
@@ -231,21 +222,6 @@ impl Grammar {
             is_first_line,
             line_pos == anchor_position,
         );
-        // todo: refactor to scanner
-        let rules = rule_scanner.debug_reg_exps;
-        for rule in rules {
-            let regex = Regex::new(rule.as_str()).unwrap();
-            if let Some(captures) = regex.captures(line_text.as_str()) {
-                for (i, pos) in captures.iter_pos().enumerate() {
-                    match pos {
-                        Some((beg, end)) =>
-                            println!("Group {} line:{}, pos: {}:{}", i, line_pos, beg, end),
-                        None =>
-                            println!("Group {} is not captured", i)
-                    }
-                }
-            }
-        }
     }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
