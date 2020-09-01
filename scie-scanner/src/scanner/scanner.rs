@@ -1,14 +1,14 @@
 use onig::{Regex};
 
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct IOnigCaptureIndex {
     pub start: usize,
     pub end: usize,
     pub length: usize,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct IOnigMatch {
     pub index: usize,
     pub capture_indices: Vec<IOnigCaptureIndex>,
@@ -33,7 +33,9 @@ impl Scanner {
     }
 
     pub fn find_next_match_sync(&mut self, str: String, start_position: usize) -> Option<IOnigMatch> {
-        if self.index >= self.patterns.clone().len() {}
+        if self.index >= self.patterns.clone().len() {
+            return None
+        }
 
         let pattern = self.patterns[self.index].clone();
 
@@ -41,37 +43,30 @@ impl Scanner {
         let mut capture_indices = vec![];
         let _captures = regex.captures(str.as_str());
 
-        match _captures {
-            None => {},
-            Some(captures) => {
-                for (_, pos) in captures.iter_pos().enumerate() {
-                    match pos {
-                        Some((start, end)) => {
-                            if start > start_position {
-                                let capture = IOnigCaptureIndex {
-                                    start,
-                                    end,
-                                    length: end - start,
-                                };
-                                capture_indices.push(capture)
-                            }
-                        }
-                        None => {}
+        if let Some(captures) = _captures {
+            for (_, pos) in captures.iter_pos().enumerate() {
+                if let Some((start, end)) = pos {
+                    if start > start_position {
+                        let capture = IOnigCaptureIndex {
+                            start,
+                            end,
+                            length: end - start,
+                        };
+                        capture_indices.push(capture)
                     }
                 }
-            },
+            }
         }
 
-        let index = self.index.clone();
-
-        self.index = self.index + 1;
-        if capture_indices.len() > 0 {
+        if capture_indices.len() <= 0 {
+            None
+        } else {
+            let index = self.index.clone();
+            self.index = self.index + 1;
             Some(IOnigMatch {
                 index,
                 capture_indices,
             })
-        } else {
-            None
         }
     }
 }
@@ -103,6 +98,21 @@ mod tests {
         let mut scanner = Scanner::new(regex);
 
         if let None = scanner.find_next_match_sync(String::from("x"), 0) {
+            assert_eq!(true, true);
+        } else {
+            assert_eq!(true, false);
+        }
+
+        let result = scanner.find_next_match_sync(String::from("xxaxxbxxc"), 0).unwrap();
+        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":2,\"end\":3,\"length\":1}]}"));
+
+        let result2 = scanner.find_next_match_sync(String::from("xxaxxbxxc"), 4).unwrap();
+        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":5,\"end\":6,\"length\":1}]}"));
+
+        let result3 = scanner.find_next_match_sync(String::from("xxaxxbxxc"), 7).unwrap();
+        assert_eq!(serde_json::to_string(&result3).unwrap(), String::from("{\"index\":2,\"capture_indices\":[{\"start\":8,\"end\":9,\"length\":1}]}"));
+
+        if let None = scanner.find_next_match_sync(String::from("xxaxxbxxc"), 9) {
             assert_eq!(true, true);
         } else {
             assert_eq!(true, false);
