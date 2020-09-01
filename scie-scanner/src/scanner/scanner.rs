@@ -67,8 +67,8 @@ impl Scanner {
             for (_, pos) in captures.iter_pos().enumerate() {
                 if let Some((start, end)) = pos {
                     let capture = IOnigCaptureIndex {
-                        start: start_pos as usize + start + 1,
-                        end: start_pos as usize + end + 1,
+                        start: start_pos as usize + start,
+                        end: start_pos as usize + end,
                         length: end - start,
                     };
                     capture_indices.push(capture)
@@ -144,7 +144,7 @@ mod tests {
         let mut scanner = Scanner::new(regex);
 
         let result = scanner.find_next_match_sync(String::from("ab…cde21"), 5).unwrap();
-        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":9,\"end\":10,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":7,\"end\":8,\"length\":1}]}"));
     }
 
     #[test]
@@ -159,7 +159,7 @@ mod tests {
         let regex = vec![String::from("Y"), String::from("X")];
         let mut scanner = Scanner::new(regex);
         let result = scanner.find_next_match_sync(String::from("a💻bYX"), 0).unwrap();
-        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":3,\"end\":4,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"));
         //
         // let result1 = scanner.find_next_match_sync(String::from("a💻bYX"), 1).unwrap();
         // assert_eq!(serde_json::to_string(&result1).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":3,\"end\":4,\"length\":1}]}"));
