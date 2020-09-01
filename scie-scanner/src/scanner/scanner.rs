@@ -52,14 +52,13 @@ impl Scanner {
             return None;
         }
 
-        if start_pos >= 0 {
-            match_vec = match_vec[start_pos as usize..].to_owned();
-            for x in match_vec {
-                match_str = match_str + x
-            }
-        } else {
-            match_str = origin_str.clone();
+        if start_pos < 0 {
             start_pos = 0
+        }
+
+        match_vec = match_vec[start_pos as usize..].to_owned();
+        for x in match_vec {
+            match_str = match_str + x
         }
 
         let pattern = self.patterns[self.index].clone();
@@ -79,13 +78,15 @@ impl Scanner {
 
                     if has_utf8 {
                         let length = end - start;
-                        let x1 = origin_str.split_at(start).0;
-                        let utf8_start = x1.graphemes(true).collect::<Vec<&str>>().len();
+                        // todo: revert utf8
+                        let x1 = origin_str.split_at(start_pos as usize + start).0;
+                        let utf8_start = x1.graphemes(true).collect::<Vec<&str>>().len() + 1;
                         let utf8_end = utf8_start + length;
+                        println!("{:?}, start: {:?} , pos: {:?}", x1, utf8_start, start_pos);
 
                         capture = IOnigCaptureIndex {
-                            start: start_pos as usize + utf8_start,
-                            end: start_pos as usize + utf8_end,
+                            start: utf8_start,
+                            end: utf8_end,
                             length,
                         };
                     }
@@ -163,14 +164,14 @@ mod tests {
         let mut scanner = Scanner::new(regex);
 
         let result = scanner.find_next_match_sync(String::from("ab…cde21"), 5).unwrap();
-        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":7,\"end\":8,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"));
     }
 
     #[test]
     fn should_handle_unicode2() {
         let mut scanner2 = Scanner::new(vec![String::from("\"")]);
         let result2 = scanner2.find_next_match_sync(String::from("{\"…\": 1}"), 1).unwrap();
-        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":1,\"end\":2,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":2,\"end\":3,\"length\":1}]}"));
     }
 
     #[test]
@@ -178,29 +179,29 @@ mod tests {
         let regex = vec![String::from("Y"), String::from("X")];
         let mut scanner = Scanner::new(regex);
         let result = scanner.find_next_match_sync(String::from("a💻bYX"), 0).unwrap();
-        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":3,\"end\":4,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
 
         let result1 = scanner.find_next_match_sync(String::from("a💻bYX"), 1).unwrap();
-        assert_eq!(serde_json::to_string(&result1).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":3,\"end\":4,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result1).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
 
         let result2 = scanner.find_next_match_sync(String::from("a💻bYX"), 2).unwrap();
-        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":3,\"end\":4,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
 
         let result3 = scanner.find_next_match_sync(String::from("a💻bYX"), 3).unwrap();
-        assert_eq!(serde_json::to_string(&result3).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":3,\"end\":4,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result3).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
 
         let result4 = scanner.find_next_match_sync(String::from("a💻bYX"), 4).unwrap();
-        assert_eq!(serde_json::to_string(&result4).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result4).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
 
-        // let result5 = scanner.find_next_match_sync(String::from("a💻bYX"), 5).unwrap();
-        // assert_eq!(serde_json::to_string(&result5).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
+        let result5 = scanner.find_next_match_sync(String::from("a💻bYX"), 5).unwrap();
+        assert_eq!(serde_json::to_string(&result5).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
     }
 
     #[test]
     fn should_out_of_bounds() {
         let mut scanner = Scanner::new(vec![String::from("X")]);
         let result = scanner.find_next_match_sync(String::from("X💻X"), -10000).unwrap();
-        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":0,\"end\":1,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":1,\"end\":2,\"length\":1}]}"));
 
         let result2 = scanner.find_next_match_sync(String::from("X💻X"), 10000);
         assert_eq!(format!("{:?}", result2), "None");
