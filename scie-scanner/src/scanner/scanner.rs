@@ -32,7 +32,7 @@ impl Scanner {
         self.index = 0
     }
 
-    pub fn find_next_match_sync(&mut self, str: String, start_position: usize) -> Option<IOnigMatch> {
+    pub fn find_next_match_sync(&mut self, str: String, start_position: i32) -> Option<IOnigMatch> {
         if self.index >= self.patterns.clone().len() {
             self.index = 0;
             return None
@@ -47,7 +47,7 @@ impl Scanner {
         if let Some(captures) = _captures {
             for (_, pos) in captures.iter_pos().enumerate() {
                 if let Some((start, end)) = pos {
-                    if start >= start_position {
+                    if start as i32 >= start_position {
                         let capture = IOnigCaptureIndex {
                             start,
                             end,
@@ -166,4 +166,13 @@ mod tests {
         assert_eq!(serde_json::to_string(&result7).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":7,\"end\":8,\"length\":1}]}"));
     }
 
+    #[test]
+    fn should_out_of_bounds() {
+        let mut scanner = Scanner::new(vec![String::from("X")]);
+        let result = scanner.find_next_match_sync(String::from("X💻X"), -10000).unwrap();
+        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":0,\"end\":1,\"length\":1}]}"));
+
+        let result = scanner.find_next_match_sync(String::from("X💻X"), 10000);
+        assert_eq!(format!("{:?}", result), "None");
+    }
 }
