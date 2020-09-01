@@ -46,7 +46,7 @@ impl Scanner {
         if let Some(captures) = _captures {
             for (_, pos) in captures.iter_pos().enumerate() {
                 if let Some((start, end)) = pos {
-                    if start > start_position {
+                    if start >= start_position {
                         let capture = IOnigCaptureIndex {
                             start,
                             end,
@@ -74,7 +74,7 @@ impl Scanner {
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::scanner::{Scanner};
+    use crate::scanner::scanner::{Scanner, IOnigMatch};
 
     #[test]
     fn should_handle_simple_regex() {
@@ -117,5 +117,21 @@ mod tests {
         } else {
             assert_eq!(true, false);
         }
+    }
+
+    #[test]
+    fn should_handle_unicode1() {
+        let regex = vec![String::from("1"), String::from("2")];
+        let mut scanner = Scanner::new(regex);
+
+        let result = scanner.find_next_match_sync(String::from("ab…cde21"), 5).unwrap();
+        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":9,\"end\":10,\"length\":1}]}"));
+    }
+
+    #[test]
+    fn should_handle_unicode2() {
+        let mut scanner2 = Scanner::new(vec![String::from("\"")]);
+        let result2 = scanner2.find_next_match_sync(String::from("{\"…\": 1}"), 1).unwrap();
+        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":1,\"end\":2,\"length\":1}]}"));
     }
 }
