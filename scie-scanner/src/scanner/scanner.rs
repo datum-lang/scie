@@ -34,6 +34,7 @@ impl Scanner {
 
     pub fn find_next_match_sync(&mut self, str: String, start_position: usize) -> Option<IOnigMatch> {
         if self.index >= self.patterns.clone().len() {
+            self.index = 0;
             return None
         }
 
@@ -59,10 +60,11 @@ impl Scanner {
         }
 
         if capture_indices.len() <= 0 {
-            None
+            self.index = self.index + 1;
+            self.find_next_match_sync(str.clone(), start_position)
         } else {
             let index = self.index.clone();
-            self.index = self.index + 1;
+            self.index = 0;
             Some(IOnigMatch {
                 index,
                 capture_indices,
@@ -134,4 +136,5 @@ mod tests {
         let result2 = scanner2.find_next_match_sync(String::from("{\"…\": 1}"), 1).unwrap();
         assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":1,\"end\":2,\"length\":1}]}"));
     }
+
 }
