@@ -137,4 +137,33 @@ mod tests {
         assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":1,\"end\":2,\"length\":1}]}"));
     }
 
+    #[test]
+    fn should_handle_unicode3() {
+        let regex = vec![String::from("Y"), String::from("X")];
+        let mut scanner = Scanner::new(regex);
+        let result = scanner.find_next_match_sync(String::from("a💻bYX"), 0).unwrap();
+        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"));
+
+        let result1 = scanner.find_next_match_sync(String::from("a💻bYX"), 1).unwrap();
+        assert_eq!(serde_json::to_string(&result1).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"));
+
+        let result2 = scanner.find_next_match_sync(String::from("a💻bYX"), 2).unwrap();
+        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"));
+
+        let result3 = scanner.find_next_match_sync(String::from("a💻bYX"), 3).unwrap();
+        assert_eq!(serde_json::to_string(&result3).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"));
+
+        let result4 = scanner.find_next_match_sync(String::from("a💻bYX"), 4).unwrap();
+        assert_eq!(serde_json::to_string(&result4).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"));
+
+        let result5 = scanner.find_next_match_sync(String::from("a💻bYX"), 5).unwrap();
+        assert_eq!(serde_json::to_string(&result5).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"));
+
+        let result6 = scanner.find_next_match_sync(String::from("a💻bYX"), 6).unwrap();
+        assert_eq!(serde_json::to_string(&result6).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"));
+
+        let result7 = scanner.find_next_match_sync(String::from("a💻bYX"), 7).unwrap();
+        assert_eq!(serde_json::to_string(&result7).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":7,\"end\":8,\"length\":1}]}"));
+    }
+
 }
