@@ -59,7 +59,7 @@ impl Scanner {
         let before_vec = string_vec[..start_pos as usize].to_owned();
         let after_vec = string_vec[start_pos as usize..].to_owned();
 
-        println!("before: {:?}, after_vec: {:?}", before_vec, after_vec);
+        // println!("before: {:?}, after_vec: {:?}", before_vec, after_vec);
         for x in after_vec {
             after_pos_str = after_pos_str + x
         }
@@ -82,9 +82,7 @@ impl Scanner {
                     };
 
                     if has_utf8 {
-                        // todo: revert utf8
                         let x1 = after_pos_str.split_at(end).0;
-                        println!("{:?}, len: {:?}", x1, x1.graphemes(true).collect::<Vec<&str>>().len());
                         let utf8_end = before_vec.len() + x1.graphemes(true).collect::<Vec<&str>>().len() + 1;
                         let utf8_start = utf8_end - length;
 
@@ -163,20 +161,19 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
     fn should_handle_unicode1() {
         let regex = vec![String::from("1"), String::from("2")];
         let mut scanner = Scanner::new(regex);
 
         let result = scanner.find_next_match_sync(String::from("ab…cde21"), 5).unwrap();
-        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":8,\"end\":9,\"length\":1}]}"));
     }
 
     #[test]
     fn should_handle_unicode2() {
         let mut scanner2 = Scanner::new(vec![String::from("\"")]);
         let result2 = scanner2.find_next_match_sync(String::from("{\"…\": 1}"), 1).unwrap();
-        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":1,\"end\":2,\"length\":1}]}"));
+        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":2,\"end\":3,\"length\":1}]}"));
     }
 
     #[test]
@@ -185,19 +182,19 @@ mod tests {
         let mut scanner = Scanner::new(regex);
         let result = scanner.find_next_match_sync(String::from("a💻bYX"), 0).unwrap();
         assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
-        //
-        // let result1 = scanner.find_next_match_sync(String::from("a💻bYX"), 1).unwrap();
-        // assert_eq!(serde_json::to_string(&result1).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
-        //
-        // let result2 = scanner.find_next_match_sync(String::from("a💻bYX"), 2).unwrap();
-        // assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
-        //
-        // let result3 = scanner.find_next_match_sync(String::from("a💻bYX"), 3).unwrap();
-        // assert_eq!(serde_json::to_string(&result3).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
-        //
-        // let result4 = scanner.find_next_match_sync(String::from("a💻bYX"), 4).unwrap();
-        // assert_eq!(serde_json::to_string(&result4).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
-        //
+
+        let result1 = scanner.find_next_match_sync(String::from("a💻bYX"), 1).unwrap();
+        assert_eq!(serde_json::to_string(&result1).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
+
+        let result2 = scanner.find_next_match_sync(String::from("a💻bYX"), 2).unwrap();
+        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
+
+        let result3 = scanner.find_next_match_sync(String::from("a💻bYX"), 3).unwrap();
+        assert_eq!(serde_json::to_string(&result3).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
+
+        let result4 = scanner.find_next_match_sync(String::from("a💻bYX"), 4).unwrap();
+        assert_eq!(serde_json::to_string(&result4).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":5,\"end\":6,\"length\":1}]}"));
+
         // let result5 = scanner.find_next_match_sync(String::from("a💻bYX"), 5).unwrap();
         // assert_eq!(serde_json::to_string(&result5).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
     }
