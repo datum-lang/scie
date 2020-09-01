@@ -102,6 +102,6 @@ impl AbstractRule for BeginWhileRule {
 
         return cached_compiled_patterns
             .compile(grammar, allow_a, allow_g)
-            .clone()
+            .clone();
     }
 }

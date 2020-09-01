@@ -113,7 +113,6 @@ impl AbstractRule for BeginEndRule {
         }
 
         // todo: support for hasBackReferences
-        cached_compiled_patterns
-            .compile(grammar, allow_a, allow_g)
+        cached_compiled_patterns.compile(grammar, allow_a, allow_g)
     }
 }

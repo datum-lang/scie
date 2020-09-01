@@ -8,8 +8,8 @@ pub mod compiled_rule;
 pub mod empty_rule;
 pub mod include_only_rule;
 pub mod match_rule;
-pub mod rule;
 pub mod reg_exp_source;
+pub mod rule;
 
 pub use self::abstract_rule::AbstractRule;
 pub use self::begin_end_rule::BeginEndRule;
@@ -19,9 +19,9 @@ pub use self::compiled_rule::CompiledRule;
 pub use self::empty_rule::EmptyRule;
 pub use self::include_only_rule::IncludeOnlyRule;
 pub use self::match_rule::MatchRule;
-pub use self::rule::Rule;
 pub use self::reg_exp_source::RegExpSource;
 pub use self::reg_exp_source::RegExpSourceList;
+pub use self::rule::Rule;
 
 use crate::grammar::Grammar;
 use crate::inter::{IRawGrammar, IRawRepository};
@@ -44,4 +44,3 @@ pub trait IGrammarRegistry {
 }
 
 pub trait IRuleFactoryHelper: IGrammarRegistry + IRuleRegistry {}
-

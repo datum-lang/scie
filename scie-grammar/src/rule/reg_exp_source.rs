@@ -1,5 +1,5 @@
-use crate::rule::CompiledRule;
 use crate::grammar::Grammar;
+use crate::rule::CompiledRule;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct AnchorCache {
@@ -70,7 +70,7 @@ impl RegExpSourceList {
                     .collect::<Vec<i32>>();
                 let compiled_rule = CompiledRule::new(reg_exps, rules);
                 self._cached = Some(compiled_rule.clone());
-                return compiled_rule
+                return compiled_rule;
             }
         } else {
             println!("// todo: cached {:?}", self._items);

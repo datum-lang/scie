@@ -1,6 +1,5 @@
-use onig::{Regex};
+use onig::Regex;
 use unicode_segmentation::UnicodeSegmentation;
-
 
 #[derive(Debug, Clone, Serialize)]
 pub struct IOnigCaptureIndex {
@@ -23,17 +22,18 @@ pub struct Scanner {
 
 impl Scanner {
     pub fn new(patterns: Vec<String>) -> Self {
-        Scanner {
-            index: 0,
-            patterns,
-        }
+        Scanner { index: 0, patterns }
     }
 
     pub fn dispose(&mut self) {
         self.index = 0
     }
 
-    pub fn find_next_match_sync(&mut self, origin_str: String, start_position: i32) -> Option<IOnigMatch> {
+    pub fn find_next_match_sync(
+        &mut self,
+        origin_str: String,
+        start_position: i32,
+    ) -> Option<IOnigMatch> {
         if self.index >= self.patterns.clone().len() {
             self.index = 0;
             return None;
@@ -41,7 +41,7 @@ impl Scanner {
 
         let mut after_pos_str = String::from("");
         let mut start_pos = start_position;
-        let mut string_vec = origin_str.graphemes(true).collect::<Vec<&str>>();
+        let string_vec = origin_str.graphemes(true).collect::<Vec<&str>>();
 
         let mut has_utf8 = false;
         if string_vec.len() != origin_str.len() {
@@ -83,7 +83,8 @@ impl Scanner {
 
                     if has_utf8 {
                         let x1 = after_pos_str.split_at(end).0;
-                        let utf8_end = before_vec.len() + x1.graphemes(true).collect::<Vec<&str>>().len() + 1;
+                        let utf8_end =
+                            before_vec.len() + x1.graphemes(true).collect::<Vec<&str>>().len() + 1;
                         let utf8_start = utf8_end - length;
 
                         capture = IOnigCaptureIndex {
@@ -112,10 +113,9 @@ impl Scanner {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
-    use crate::scanner::scanner::{Scanner, IOnigMatch};
+    use crate::scanner::scanner::Scanner;
 
     #[test]
     fn should_handle_simple_regex() {
@@ -144,14 +144,35 @@ mod tests {
             assert_eq!(true, false);
         }
 
-        let result = scanner.find_next_match_sync(String::from("xxaxxbxxc"), 0).unwrap();
-        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":2,\"end\":3,\"length\":1}]}"));
+        let result = scanner
+            .find_next_match_sync(String::from("xxaxxbxxc"), 0)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":2,\"end\":3,\"length\":1}]}"
+            )
+        );
 
-        let result2 = scanner.find_next_match_sync(String::from("xxaxxbxxc"), 4).unwrap();
-        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":5,\"end\":6,\"length\":1}]}"));
+        let result2 = scanner
+            .find_next_match_sync(String::from("xxaxxbxxc"), 4)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result2).unwrap(),
+            String::from(
+                "{\"index\":1,\"capture_indices\":[{\"start\":5,\"end\":6,\"length\":1}]}"
+            )
+        );
 
-        let result3 = scanner.find_next_match_sync(String::from("xxaxxbxxc"), 7).unwrap();
-        assert_eq!(serde_json::to_string(&result3).unwrap(), String::from("{\"index\":2,\"capture_indices\":[{\"start\":8,\"end\":9,\"length\":1}]}"));
+        let result3 = scanner
+            .find_next_match_sync(String::from("xxaxxbxxc"), 7)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result3).unwrap(),
+            String::from(
+                "{\"index\":2,\"capture_indices\":[{\"start\":8,\"end\":9,\"length\":1}]}"
+            )
+        );
 
         if let None = scanner.find_next_match_sync(String::from("xxaxxbxxc"), 9) {
             assert_eq!(true, true);
@@ -165,35 +186,84 @@ mod tests {
         let regex = vec![String::from("1"), String::from("2")];
         let mut scanner = Scanner::new(regex);
 
-        let result = scanner.find_next_match_sync(String::from("ab…cde21"), 5).unwrap();
-        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":8,\"end\":9,\"length\":1}]}"));
+        let result = scanner
+            .find_next_match_sync(String::from("ab…cde21"), 5)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":8,\"end\":9,\"length\":1}]}"
+            )
+        );
     }
 
     #[test]
     fn should_handle_unicode2() {
         let mut scanner2 = Scanner::new(vec![String::from("\"")]);
-        let result2 = scanner2.find_next_match_sync(String::from("{\"…\": 1}"), 1).unwrap();
-        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":2,\"end\":3,\"length\":1}]}"));
+        let result2 = scanner2
+            .find_next_match_sync(String::from("{\"…\": 1}"), 1)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result2).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":2,\"end\":3,\"length\":1}]}"
+            )
+        );
     }
 
     #[test]
     fn should_handle_unicode3() {
         let regex = vec![String::from("Y"), String::from("X")];
         let mut scanner = Scanner::new(regex);
-        let result = scanner.find_next_match_sync(String::from("a💻bYX"), 0).unwrap();
-        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
+        let result = scanner
+            .find_next_match_sync(String::from("a💻bYX"), 0)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"
+            )
+        );
 
-        let result1 = scanner.find_next_match_sync(String::from("a💻bYX"), 1).unwrap();
-        assert_eq!(serde_json::to_string(&result1).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
+        let result1 = scanner
+            .find_next_match_sync(String::from("a💻bYX"), 1)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result1).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"
+            )
+        );
 
-        let result2 = scanner.find_next_match_sync(String::from("a💻bYX"), 2).unwrap();
-        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
+        let result2 = scanner
+            .find_next_match_sync(String::from("a💻bYX"), 2)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result2).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"
+            )
+        );
 
-        let result3 = scanner.find_next_match_sync(String::from("a💻bYX"), 3).unwrap();
-        assert_eq!(serde_json::to_string(&result3).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
+        let result3 = scanner
+            .find_next_match_sync(String::from("a💻bYX"), 3)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result3).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"
+            )
+        );
 
-        let result4 = scanner.find_next_match_sync(String::from("a💻bYX"), 4).unwrap();
-        assert_eq!(serde_json::to_string(&result4).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":5,\"end\":6,\"length\":1}]}"));
+        let result4 = scanner
+            .find_next_match_sync(String::from("a💻bYX"), 4)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result4).unwrap(),
+            String::from(
+                "{\"index\":1,\"capture_indices\":[{\"start\":5,\"end\":6,\"length\":1}]}"
+            )
+        );
 
         // let result5 = scanner.find_next_match_sync(String::from("a💻bYX"), 5).unwrap();
         // assert_eq!(serde_json::to_string(&result5).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
@@ -202,8 +272,15 @@ mod tests {
     #[test]
     fn should_out_of_bounds() {
         let mut scanner = Scanner::new(vec![String::from("X")]);
-        let result = scanner.find_next_match_sync(String::from("X💻X"), -10000).unwrap();
-        assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":1,\"end\":2,\"length\":1}]}"));
+        let result = scanner
+            .find_next_match_sync(String::from("X💻X"), -10000)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":1,\"end\":2,\"length\":1}]}"
+            )
+        );
 
         let result2 = scanner.find_next_match_sync(String::from("X💻X"), 10000);
         assert_eq!(format!("{:?}", result2), "None");
@@ -215,7 +292,14 @@ mod tests {
         let result = scanner.find_next_match_sync(String::from("first-and-second"), 0);
         assert_eq!(format!("{:?}", result), "None");
 
-        let result2 = scanner.find_next_match_sync(String::from("first-and-second"), 5).unwrap();
-        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":5,\"end\":9,\"length\":4}]}"));
+        let result2 = scanner
+            .find_next_match_sync(String::from("first-and-second"), 5)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result2).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":5,\"end\":9,\"length\":4}]}"
+            )
+        );
     }
 }
