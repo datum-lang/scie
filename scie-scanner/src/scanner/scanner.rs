@@ -14,7 +14,7 @@ pub struct IOnigMatch {
     pub capture_indices: Vec<IOnigCaptureIndex>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct Scanner {
     pub index: usize,
     pub patterns: Vec<String>,

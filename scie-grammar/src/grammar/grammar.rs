@@ -5,6 +5,7 @@ use crate::grammar::{ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry};
+use scie_scanner::scanner::scanner::IOnigMatch;
 
 pub struct IToken {
     pub start_index: i32,
@@ -214,14 +215,22 @@ impl Grammar {
         line_pos: i32,
         stack: StackElement,
         anchor_position: i32,
-    ) {
+    ) -> Option<IOnigMatch> {
         let mut rule = stack.get_rule(self);
-        let rule_scanner = rule.compile(
+        let mut rule_scanner = rule.compile(
             self,
             stack.end_rule,
             is_first_line,
             line_pos == anchor_position,
         );
+        // rule_scanner.scanner
+        let r = rule_scanner.scanner.find_next_match_sync(line_text, line_pos);
+        if let Some(result) = r {
+            println!("{:?}", result);
+            Some(result)
+        } else {
+            None
+        }
     }
 
     pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
