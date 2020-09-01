@@ -32,36 +32,48 @@ impl Scanner {
         self.index = 0
     }
 
-    pub fn find_next_match_sync(&mut self, str: String, start_position: i32) -> Option<IOnigMatch> {
+    pub fn find_next_match_sync(&mut self, origin_str: String, start_position: i32) -> Option<IOnigMatch> {
         if self.index >= self.patterns.clone().len() {
             self.index = 0;
-            return None
+            return None;
+        }
+
+        let mut match_str = origin_str.clone();
+        let mut start_pos = start_position;
+
+        if start_pos > match_str.len() as i32 {
+            return None;
+        }
+        if start_pos >= 0 {
+            match_str = origin_str.split_at(start_pos as usize).1.to_string();
+        } else {
+            start_pos = 0
         }
 
         let pattern = self.patterns[self.index].clone();
 
         let regex = Regex::new(pattern.as_str()).unwrap();
         let mut capture_indices = vec![];
-        let _captures = regex.captures(str.as_str());
+        let _captures = regex.captures(match_str.as_str());
 
         if let Some(captures) = _captures {
             for (_, pos) in captures.iter_pos().enumerate() {
                 if let Some((start, end)) = pos {
-                    if start as i32 >= start_position {
+                    // if start as i32 >= start_position {
                         let capture = IOnigCaptureIndex {
-                            start,
-                            end,
+                            start: start_pos as usize + start,
+                            end: start_pos as usize + end,
                             length: end - start,
                         };
                         capture_indices.push(capture)
-                    }
+                    // }
                 }
             }
         }
 
         if capture_indices.len() <= 0 {
             self.index = self.index + 1;
-            self.find_next_match_sync(str.clone(), start_position)
+            self.find_next_match_sync(origin_str.clone(), start_pos)
         } else {
             let index = self.index.clone();
             self.index = 0;
@@ -172,7 +184,17 @@ mod tests {
         let result = scanner.find_next_match_sync(String::from("X💻X"), -10000).unwrap();
         assert_eq!(serde_json::to_string(&result).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":0,\"end\":1,\"length\":1}]}"));
 
-        let result = scanner.find_next_match_sync(String::from("X💻X"), 10000);
+        let result2 = scanner.find_next_match_sync(String::from("X💻X"), 10000);
+        assert_eq!(format!("{:?}", result2), "None");
+    }
+
+    #[test]
+    fn should_handle_regex_g() {
+        let mut scanner = Scanner::new(vec![String::from("\\G-and")]);
+        let result = scanner.find_next_match_sync(String::from("first-and-second"), 0);
         assert_eq!(format!("{:?}", result), "None");
+
+        let result2 = scanner.find_next_match_sync(String::from("first-and-second"), 5).unwrap();
+        assert_eq!(serde_json::to_string(&result2).unwrap(), String::from("{\"index\":0,\"capture_indices\":[{\"start\":5,\"end\":9,\"length\":4}]}"));
     }
 }
