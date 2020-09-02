@@ -89,7 +89,7 @@ impl Grammar {
     fn tokenize(
         &mut self,
         line_text: String,
-        mut prev_state: Option<StackElement>,
+        prev_state: Option<StackElement>,
         emit_binary_tokens: bool,
     ) {
         if self.root_id.clone() == -1 {
@@ -104,18 +104,23 @@ impl Grammar {
         }
 
         let mut is_first_line: bool = false;
+
+        let mut current_state = StackElement::null();
+
         match prev_state.clone() {
             None => is_first_line = true,
             Some(state) => {
                 if state == StackElement::null() {
                     is_first_line = true
                 }
+
+                current_state = state;
             }
         }
 
         if is_first_line {
             let scope_list = ScopeListElement::default();
-            prev_state = Some(StackElement::new(
+            let mut state = StackElement::new(
                 None,
                 self.root_id.clone(),
                 -1,
@@ -124,7 +129,9 @@ impl Grammar {
                 None,
                 scope_list.clone(),
                 scope_list.clone(),
-            ))
+            );
+
+            current_state = state;
         }
 
         let format_line_text = format!("{:?}\n", line_text);
@@ -137,43 +144,54 @@ impl Grammar {
             format_line_text.parse().unwrap(),
             is_first_line,
             0,
-            prev_state.unwrap(),
+            &mut current_state,
             line_tokens,
             true,
-        )
+        );
     }
 
     pub fn tokenize_string(
         &mut self,
         line_text: String,
-        is_first_line: bool,
-        line_pos: i32,
-        prev_state: StackElement,
+        origin_is_first: bool,
+        origin_line_pos: i32,
+        prev_state: &mut StackElement,
         line_tokens: LineTokens,
         check_while_conditions: bool,
-    ) {
+    ) -> Option<StackElement> {
         let _line_length = line_text.len();
-        let _stop = false;
+        let mut _stop = false;
         let mut anchor_position = -1;
+
 
         if check_while_conditions {
             // todo: add realy logic
             self.check_while_conditions(
                 line_text.clone(),
-                is_first_line.clone(),
-                line_pos.clone(),
+                origin_is_first.clone(),
+                origin_line_pos.clone(),
                 prev_state.clone(),
                 line_tokens.clone(),
             );
         }
 
-        self.match_rule_or_injections(
-            line_text,
-            is_first_line,
-            line_pos,
-            prev_state,
-            anchor_position,
-        );
+
+        let mut line_pos = origin_line_pos.clone();
+        let mut is_first_line = origin_is_first.clone();
+        while !_stop {
+            let r = self.match_rule(line_text.clone(), is_first_line, line_pos, prev_state.clone(), anchor_position);
+            if let None = r {
+                _stop = true;
+                return None
+            }
+
+            let capture_indices = r.unwrap().capture_indices;
+            if capture_indices[0].end > line_pos as usize {
+                line_pos = capture_indices[0].end as i32;
+                is_first_line = false;
+            }
+        }
+        Some(prev_state.clone())
     }
 
     pub fn check_while_conditions(
@@ -206,9 +224,10 @@ impl Grammar {
             stack.clone(),
             anchor_position,
         );
-        if let Some(result) = match_result {
-            println!("{:?}", result);
-        }
+        if let Some(result) = match_result {} else {
+            // None
+        };
+        // todo: get injections logic
     }
 
     pub fn match_rule(
@@ -231,7 +250,7 @@ impl Grammar {
         if let Some(result) = r {
             let match_rule_result = MatchRuleResult {
                 capture_indices: result.capture_indices,
-                matched_rule_id: rule_scanner.rules[result.index]
+                matched_rule_id: rule_scanner.rules[result.index],
             };
 
             println!("{:?}", match_rule_result.clone());
