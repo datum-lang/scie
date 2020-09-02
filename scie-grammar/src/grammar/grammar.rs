@@ -6,6 +6,7 @@ use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, BeginWhileRule, CaptureRule};
 use scie_scanner::scanner::scanner::{IOnigMatch, IOnigCaptureIndex};
+use crate::rule::abstract_rule::RuleEnum;
 
 pub struct IToken {
     pub start_index: i32,
@@ -223,10 +224,13 @@ impl Grammar {
                     name_scopes_list.clone(),
                 );
 
-                if rule.type_of() == "BeginEndRule" {} else if rule.type_of() == "BeginWhileRule" {
-                    // let pushed = rule.clone() as BeginWhileRule;
-                    // Grammar::handle_captures(self, line_text.clone(), is_first_line, new_stack, line_tokens.clone(), pushed.begin_captures, capture_indices.clone());
-                } else {}
+                match rule.get_rule_instance() {
+                    RuleEnum::BeginEndRule(begin_rule) => {
+                        Grammar::handle_captures(self, line_text.clone(), is_first_line, new_stack, line_tokens.clone(), begin_rule.begin_captures, capture_indices.clone());
+                    }
+                    RuleEnum::BeginWhileRule(while_rule) => {}
+                    _ => {}
+                }
             }
 
             if capture_indices[0].end > line_pos as usize {
@@ -237,9 +241,7 @@ impl Grammar {
         Some(stack.clone())
     }
 
-    pub fn handle_captures(grammar: &mut Grammar, line_text: String, is_first_line: bool, stack: StackElement, line_tokens: LineTokens, captures: Vec<Box<dyn AbstractRule>>, captureIndices: Vec<IOnigCaptureIndex>) {
-
-    }
+    pub fn handle_captures(grammar: &mut Grammar, line_text: String, is_first_line: bool, stack: StackElement, line_tokens: LineTokens, captures: Vec<Box<dyn AbstractRule>>, captureIndices: Vec<IOnigCaptureIndex>) {}
 
     pub fn check_while_conditions(
         &mut self,
