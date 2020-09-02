@@ -6,6 +6,7 @@ pub mod line_tokens;
 pub mod scope_list_element;
 pub mod scope_metadata;
 pub mod stack_element;
+pub mod local_stack_element;
 
 pub use self::grammar::Grammar;
 pub use self::scope_list_element::ScopeListElement;

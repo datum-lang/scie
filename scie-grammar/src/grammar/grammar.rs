@@ -7,6 +7,9 @@ use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, BeginWhileRule, CaptureRule};
 use scie_scanner::scanner::scanner::{IOnigMatch, IOnigCaptureIndex};
 use crate::rule::abstract_rule::RuleEnum;
+use core::cmp;
+use std::cmp::max;
+use crate::grammar::local_stack_element::LocalStackElement;
 
 pub struct IToken {
     pub start_index: i32,
@@ -241,7 +244,40 @@ impl Grammar {
         Some(stack.clone())
     }
 
-    pub fn handle_captures(grammar: &mut Grammar, line_text: String, is_first_line: bool, stack: StackElement, line_tokens: LineTokens, captures: Vec<Box<dyn AbstractRule>>, captureIndices: Vec<IOnigCaptureIndex>) {}
+    pub fn handle_captures(grammar: &mut Grammar, line_text: String, is_first_line: bool, stack: StackElement, mut line_tokens: LineTokens, captures: Vec<Box<dyn AbstractRule>>, capture_indices: Vec<IOnigCaptureIndex>) {
+        let captures_len = captures.clone().len();
+        if captures_len == 0 {
+            return;
+        }
+
+        let len = cmp::min(captures_len, capture_indices.len());
+        let mut local_stack: Vec<LocalStackElement> = vec![];
+        let max_end = capture_indices[0].end;
+        for i in 0..len {
+            let capture_rule = captures[i].clone();
+            // if let None = capture_rule {
+            //     continue
+            // }
+
+            let capture_index = capture_indices[i].clone();
+            if capture_index.length == 0 {
+                continue;
+            }
+
+            if capture_index.start > max_end {
+                continue;
+            }
+
+            while local_stack.len() > 0 && local_stack[local_stack.len() - 1].end_pos <= capture_index.start as i32 {
+                let mut local_stack_element = local_stack[local_stack.len() - 1].clone();
+                line_tokens.produce_from_scopes(
+                    &mut local_stack_element.scopes,
+                    local_stack_element.end_pos
+                );
+                local_stack.pop();
+            }
+        }
+    }
 
     pub fn check_while_conditions(
         &mut self,
