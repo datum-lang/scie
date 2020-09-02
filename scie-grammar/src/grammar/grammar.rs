@@ -119,10 +119,18 @@ impl Grammar {
         }
 
         if is_first_line {
-            let scope_list = ScopeListElement::default();
-            // self.get_rule(self.root_id.clone());
-            // let scope_list = ScopeListElement::new(
-            //     None, );
+            // let scope_list = ScopeListElement::default();
+            let _root_scope_name = self.get_rule(self.root_id.clone())
+                .get_name(None, None);
+            let mut root_scope_name = String::from("unknown");
+            if let Some(name) = _root_scope_name {
+                root_scope_name = name
+            }
+
+            let scope_list = ScopeListElement::new(
+                None,
+                root_scope_name
+            );
             let mut state = StackElement::new(
                 None,
                 self.root_id.clone(),
@@ -135,6 +143,8 @@ impl Grammar {
             );
 
             current_state = state;
+        } else {
+            is_first_line = false;
         }
 
         let format_line_text = format!("{:?}\n", line_text);
@@ -185,7 +195,7 @@ impl Grammar {
             let r = self.match_rule(line_text.clone(), is_first_line, line_pos, prev_state, anchor_position);
             if let None = r {
                 _stop = true;
-                return None
+                return None;
             }
 
             let capture_result = r.unwrap();

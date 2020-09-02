@@ -1,4 +1,5 @@
 use regex::Regex;
+use scie_scanner::scanner::scanner::IOnigCaptureIndex;
 
 pub struct RegexSource {}
 
@@ -10,12 +11,16 @@ impl RegexSource {
         match regex_source {
             None => {
                 false
-            },
+            }
             Some(source) => {
                 let re = Regex::new(capturing_regex_source).unwrap();
                 re.is_match(source.as_str())
-            },
+            }
         }
+    }
+
+    pub fn replace_captures(regex_source: String, capture_source: String, capture_indices: Vec<IOnigCaptureIndex>) -> String {
+        String::from("")
     }
 }
 

@@ -3,6 +3,7 @@ use crate::rule::{CompiledRule, RegExpSourceList, Rule};
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
 use scie_scanner::scanner::scanner::IOnigCaptureIndex;
+use crate::support::regex_source::RegexSource;
 
 pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn id(&self) -> i32;
@@ -12,8 +13,17 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     }
     // todo: add support for this;
     fn get_rule(&self) -> Rule;
-    fn get_name(&self, line_text: Option<String>, capture_indices: Option<Vec<IOnigCaptureIndex>>) -> String {
-        String::from("")
+    fn get_name(&self, line_text: Option<String>, capture_indices: Option<Vec<IOnigCaptureIndex>>) -> Option<String> {
+        let name = self.get_rule()._name.clone();
+        let has_captures = RegexSource::has_captures(name.clone());
+        if let None = capture_indices {
+            return name
+        }
+        if !has_captures || name == None || line_text == None {
+            return name
+        }
+
+        return Some(String::from(""));
     }
     fn has_missing_pattern(&self) -> bool {
         false
