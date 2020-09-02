@@ -43,11 +43,6 @@ impl Scanner {
         let mut start_pos = start_position;
         let string_vec = origin_str.graphemes(true).collect::<Vec<&str>>();
 
-        let mut has_utf8 = false;
-        if string_vec.len() != origin_str.len() {
-            has_utf8 = true;
-        }
-
         if start_pos > string_vec.len() as i32 {
             return None;
         }
@@ -59,7 +54,6 @@ impl Scanner {
         let before_vec = string_vec[..start_pos as usize].to_owned();
         let after_vec = string_vec[start_pos as usize..].to_owned();
 
-        // println!("before: {:?}, after_vec: {:?}", before_vec, after_vec);
         for x in after_vec {
             after_pos_str = after_pos_str + x
         }
@@ -74,25 +68,16 @@ impl Scanner {
             for (_, pos) in captures.iter_pos().enumerate() {
                 if let Some((start, end)) = pos {
                     let length = end - start;
+                    let x1 = after_pos_str.split_at(end).0;
+                    let utf8_end =
+                        before_vec.len() + x1.graphemes(true).collect::<Vec<&str>>().len();
+                    let utf8_start = utf8_end - length;
 
-                    let mut capture = IOnigCaptureIndex {
-                        start: start_pos as usize + start,
-                        end: start_pos as usize + end,
+                    let capture = IOnigCaptureIndex {
+                        start: utf8_start,
+                        end: utf8_end,
                         length,
                     };
-
-                    if has_utf8 {
-                        let x1 = after_pos_str.split_at(end).0;
-                        let utf8_end =
-                            before_vec.len() + x1.graphemes(true).collect::<Vec<&str>>().len() + 1;
-                        let utf8_start = utf8_end - length;
-
-                        capture = IOnigCaptureIndex {
-                            start: utf8_start,
-                            end: utf8_end,
-                            length,
-                        };
-                    }
 
                     capture_indices.push(capture)
                 }
@@ -192,7 +177,7 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&result).unwrap(),
             String::from(
-                "{\"index\":0,\"capture_indices\":[{\"start\":8,\"end\":9,\"length\":1}]}"
+                "{\"index\":0,\"capture_indices\":[{\"start\":7,\"end\":8,\"length\":1}]}"
             )
         );
     }
@@ -206,7 +191,7 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&result2).unwrap(),
             String::from(
-                "{\"index\":0,\"capture_indices\":[{\"start\":2,\"end\":3,\"length\":1}]}"
+                "{\"index\":0,\"capture_indices\":[{\"start\":1,\"end\":2,\"length\":1}]}"
             )
         );
     }
@@ -221,7 +206,7 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&result).unwrap(),
             String::from(
-                "{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"
+                "{\"index\":0,\"capture_indices\":[{\"start\":3,\"end\":4,\"length\":1}]}"
             )
         );
 
@@ -231,7 +216,7 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&result1).unwrap(),
             String::from(
-                "{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"
+                "{\"index\":0,\"capture_indices\":[{\"start\":3,\"end\":4,\"length\":1}]}"
             )
         );
 
@@ -241,7 +226,7 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&result2).unwrap(),
             String::from(
-                "{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"
+                "{\"index\":0,\"capture_indices\":[{\"start\":3,\"end\":4,\"length\":1}]}"
             )
         );
 
@@ -251,7 +236,7 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&result3).unwrap(),
             String::from(
-                "{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"
+                "{\"index\":0,\"capture_indices\":[{\"start\":3,\"end\":4,\"length\":1}]}"
             )
         );
 
@@ -261,12 +246,9 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&result4).unwrap(),
             String::from(
-                "{\"index\":1,\"capture_indices\":[{\"start\":5,\"end\":6,\"length\":1}]}"
+                "{\"index\":1,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"
             )
         );
-
-        // let result5 = scanner.find_next_match_sync(String::from("a💻bYX"), 5).unwrap();
-        // assert_eq!(serde_json::to_string(&result5).unwrap(), String::from("{\"index\":1,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"));
     }
 
     #[test]
@@ -278,7 +260,7 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&result).unwrap(),
             String::from(
-                "{\"index\":0,\"capture_indices\":[{\"start\":1,\"end\":2,\"length\":1}]}"
+                "{\"index\":0,\"capture_indices\":[{\"start\":0,\"end\":1,\"length\":1}]}"
             )
         );
 
