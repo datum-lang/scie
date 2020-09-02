@@ -208,21 +208,21 @@ impl Grammar {
                 line_tokens.produce(stack, capture_indices[0].start as i32);
                 let before_push = stack.clone();
                 let scope_name = rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
-                println!("{:?}", scope_name);
-                let name_scopes_list = stack.content_name_scopes_list.push(self, scope_name);
+                let name_scopes_list = stack.content_name_scopes_list.clone().push(self, scope_name);
                 let mut begin_rule_capture_eol = false;
                 if capture_indices[0].end == _line_length {
                     begin_rule_capture_eol = true;
                 }
-                // let new_stack = stack.push(
-                //     matched_rule_id,
-                //     line_pos,
-                //     anchor_position,
-                //     begin_rule_capture_eol,
-                //     None,
-                //     name_scopes_list.clone(),
-                //     name_scopes_list.clone()
-                // );
+                let new_stack = stack.clone().push(
+                    matched_rule_id,
+                    line_pos,
+                    anchor_position,
+                    begin_rule_capture_eol,
+                    None,
+                    name_scopes_list.clone(),
+                    name_scopes_list.clone()
+                );
+
             }
 
             if capture_indices[0].end > line_pos as usize {
