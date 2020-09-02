@@ -168,8 +168,8 @@ impl Grammar {
         line_text: String,
         origin_is_first: bool,
         origin_line_pos: i32,
-        prev_state: &mut StackElement,
-        line_tokens: LineTokens,
+        stack: &mut StackElement,
+        mut line_tokens: LineTokens,
         check_while_conditions: bool,
     ) -> Option<StackElement> {
         let _line_length = line_text.len();
@@ -183,7 +183,7 @@ impl Grammar {
                 line_text.clone(),
                 origin_is_first.clone(),
                 origin_line_pos.clone(),
-                prev_state.clone(),
+                stack.clone(),
                 line_tokens.clone(),
             );
         }
@@ -192,7 +192,7 @@ impl Grammar {
         let mut line_pos = origin_line_pos.clone();
         let mut is_first_line = origin_is_first.clone();
         while !_stop {
-            let r = self.match_rule(line_text.clone(), is_first_line, line_pos, prev_state, anchor_position);
+            let r = self.match_rule(line_text.clone(), is_first_line, line_pos, stack, anchor_position);
             if let None = r {
                 _stop = true;
                 return None;
@@ -205,7 +205,11 @@ impl Grammar {
                 println!("todo: matched the `end` for this rule => pop it");
             } else {
                 let rule = self.get_rule(matched_rule_id);
-                line_tokens.produce(prev_state, capture_indices[0].start as i32)
+                line_tokens.produce(stack, capture_indices[0].start as i32);
+                let before_push = stack.clone();
+                let scope_name = rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                // println!("{:?}", scope_name);
+                stack.content_name_scopes_list.push(self, scope_name);
             }
 
             if capture_indices[0].end > line_pos as usize {
@@ -213,7 +217,7 @@ impl Grammar {
                 is_first_line = false;
             }
         }
-        Some(prev_state.clone())
+        Some(stack.clone())
     }
 
     pub fn check_while_conditions(
@@ -267,7 +271,6 @@ impl Grammar {
             is_first_line,
             line_pos == anchor_position,
         );
-        // rule_scanner.scanner
         let r = rule_scanner.scanner.find_next_match_sync(line_text, line_pos);
         if let Some(result) = r {
             let match_rule_result = MatchRuleResult {

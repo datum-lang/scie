@@ -1,4 +1,5 @@
 use crate::grammar::{StackElement, ScopeListElement};
+use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct TokenTypeMatcher {}
@@ -36,11 +37,11 @@ impl LineTokens {
         }
     }
 
-    pub fn produce(&self, stack: &mut StackElement, end_index: i32) {
-        self.produce_from_scopes(stack.content_name_scopes_list.clone(), end_index)
+    pub fn produce(&mut self, stack: &mut StackElement, end_index: i32) {
+        self.produce_from_scopes(&mut stack.content_name_scopes_list, end_index)
     }
 
-    pub fn produce_from_scopes(&self, scopes_list: ScopeListElement, end_index: i32) {
+    pub fn produce_from_scopes(&mut self, scopes_list: &mut ScopeListElement, end_index: i32) {
         if self._last_token_end_index > end_index {
             return;
         }
@@ -49,6 +50,12 @@ impl LineTokens {
         //     let meta_data = scopes_list.metadata;
         // }
 
-        let x = scopes_list.generate_scopes();
+        let scopes = scopes_list.generate_scopes();
+        self._tokens.push(IToken {
+            start_index: 0,
+            end_index,
+            scopes
+        });
+        self._last_token_end_index = end_index
     }
 }
