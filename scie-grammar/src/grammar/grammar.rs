@@ -179,13 +179,22 @@ impl Grammar {
         let mut line_pos = origin_line_pos.clone();
         let mut is_first_line = origin_is_first.clone();
         while !_stop {
-            let r = self.match_rule(line_text.clone(), is_first_line, line_pos, prev_state.clone(), anchor_position);
+            let r = self.match_rule(line_text.clone(), is_first_line, line_pos, prev_state, anchor_position);
             if let None = r {
                 _stop = true;
                 return None
             }
 
-            let capture_indices = r.unwrap().capture_indices;
+            let capture_result = r.unwrap();
+            let capture_indices = capture_result.capture_indices;
+            let matched_rule_id = capture_result.matched_rule_id;
+            if matched_rule_id == -1 {
+                println!("todo: matched the `end` for this rule => pop it");
+            } else {
+                let rule = self.get_rule(matched_rule_id);
+                line_tokens.produce(prev_state, capture_indices[0].start as i32)
+            }
+
             if capture_indices[0].end > line_pos as usize {
                 line_pos = capture_indices[0].end as i32;
                 is_first_line = false;
@@ -214,14 +223,14 @@ impl Grammar {
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
-        stack: StackElement,
+        stack: &mut StackElement,
         anchor_position: i32,
     ) {
         let match_result = self.match_rule(
             line_text,
             is_first_line,
             line_pos,
-            stack.clone(),
+            stack,
             anchor_position,
         );
         if let Some(result) = match_result {} else {
@@ -235,13 +244,13 @@ impl Grammar {
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
-        stack: StackElement,
+        stack: &mut StackElement,
         anchor_position: i32,
     ) -> Option<MatchRuleResult> {
         let mut rule = stack.get_rule(self);
         let mut rule_scanner = rule.compile(
             self,
-            stack.end_rule,
+            stack.end_rule.clone(),
             is_first_line,
             line_pos == anchor_position,
         );

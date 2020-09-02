@@ -13,6 +13,14 @@ impl ScopeListElement {
             metadata,
         }
     }
+
+    pub fn generate_scopes(&self) -> Vec<String> {
+        let result: Vec<String> = vec![];
+        let result_len = 0;
+
+
+        return result
+    }
 }
 
 impl Default for ScopeListElement {
