@@ -45,10 +45,14 @@ impl StackElement {
         name_scopes_list: ScopeListElement,
         content_name_scopes_list: ScopeListElement,
     ) -> Self {
+        let mut depth = 1;
+        if let Some(iparent) = parent.clone() {
+            depth = iparent.depth + 1
+        }
         StackElement {
             parent,
             // todo: this.depth = (this.parent ? this.parent.depth + 1 : 1);
-            depth: 1,
+            depth,
             rule_id,
             enter_pos,
             anchor_pos,
@@ -56,6 +60,20 @@ impl StackElement {
             end_rule,
             name_scopes_list,
             content_name_scopes_list,
+        }
+    }
+
+    pub fn push(self, rule_id: i32, enter_pos: i32, anchor_pos: i32, begin_rule_captured_eol: bool, end_rule: Option<String>, name_scopes_list: ScopeListElement, content_name_scopes_list: ScopeListElement) -> StackElement {
+        StackElement {
+            parent: Some(Box::new(self)),
+            depth: 0,
+            rule_id,
+            enter_pos,
+            anchor_pos,
+            begin_rule_captured_eol,
+            end_rule,
+            name_scopes_list,
+            content_name_scopes_list
         }
     }
 }
