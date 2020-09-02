@@ -199,13 +199,16 @@ impl Grammar {
         stack: StackElement,
         anchor_position: i32,
     ) {
-        self.match_rule(
+        let match_result = self.match_rule(
             line_text,
             is_first_line,
             line_pos,
             stack.clone(),
             anchor_position,
         );
+        if let Some(result) = match_result {
+            println!("{:?}", result);
+        }
     }
 
     pub fn match_rule(
@@ -337,9 +340,16 @@ GitHub 漫游指南
 
     #[test]
     fn should_build_makefile_grammar() {
-        let code = "objects=main.o test.o
-clean:
-	rm -f *.o demo
+        let code = "CC=gcc
+CFLAGS=-I.
+DEPS = hellomake.h
+OBJ = hellomake.o hellofunc.o
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+hellomake: $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS)
 ";
         let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 64);
