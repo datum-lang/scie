@@ -58,6 +58,9 @@ impl AbstractRule for BeginWhileRule {
     fn id(&self) -> i32 {
         self.rule.id
     }
+    fn get_rule(&self) -> Rule {
+        self.rule.clone()
+    }
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }

@@ -3,6 +3,7 @@ use crate::inter::ILocation;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
+use scie_scanner::scanner::scanner::IOnigCaptureIndex;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
@@ -60,6 +61,9 @@ impl AbstractRule for BeginEndRule {
     }
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
+    }
+    fn get_rule(&self) -> Rule {
+        self.rule.clone()
     }
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns

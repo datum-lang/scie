@@ -43,6 +43,9 @@ impl AbstractRule for IncludeOnlyRule {
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }
+    fn get_rule(&self) -> Rule {
+        self.rule.clone()
+    }
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns
     }

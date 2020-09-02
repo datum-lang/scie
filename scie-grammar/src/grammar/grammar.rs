@@ -120,6 +120,9 @@ impl Grammar {
 
         if is_first_line {
             let scope_list = ScopeListElement::default();
+            // self.get_rule(self.root_id.clone());
+            // let scope_list = ScopeListElement::new(
+            //     None, );
             let mut state = StackElement::new(
                 None,
                 self.root_id.clone(),

@@ -1,13 +1,19 @@
 use crate::grammar::Grammar;
-use crate::rule::{CompiledRule, RegExpSourceList};
+use crate::rule::{CompiledRule, RegExpSourceList, Rule};
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
+use scie_scanner::scanner::scanner::IOnigCaptureIndex;
 
 pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn id(&self) -> i32;
     fn type_of(&self) -> String;
     fn display(&self) -> String {
         String::from("AbstractRule")
+    }
+    // todo: add support for this;
+    fn get_rule(&self) -> Rule;
+    fn get_name(&self, line_text: Option<String>, capture_indices: Option<Vec<IOnigCaptureIndex>>) -> String {
+        String::from("")
     }
     fn has_missing_pattern(&self) -> bool {
         false

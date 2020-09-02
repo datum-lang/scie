@@ -1,5 +1,5 @@
 use crate::grammar::Grammar;
-use crate::rule::{AbstractRule, CompiledRule, RegExpSourceList};
+use crate::rule::{AbstractRule, CompiledRule, RegExpSourceList, Rule};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct EmptyRule {}
@@ -10,6 +10,15 @@ impl AbstractRule for EmptyRule {
     }
     fn type_of(&self) -> String {
         String::from("EmptyRule")
+    }
+    fn get_rule(&self) -> Rule {
+        Rule {
+            _type: "".to_string(),
+            _location: None,
+            id: 0,
+            _name: None,
+            _content_name: None
+        }
     }
     fn collect_patterns_recursive(
         &mut self,

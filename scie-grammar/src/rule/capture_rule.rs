@@ -48,6 +48,9 @@ impl AbstractRule for CaptureRule {
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }
+    fn get_rule(&self) -> Rule {
+        self.rule.clone()
+    }
 
     fn collect_patterns_recursive(
         &mut self,

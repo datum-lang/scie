@@ -44,6 +44,9 @@ impl AbstractRule for MatchRule {
     fn display(&self) -> String {
         serde_json::to_string(&self).unwrap()
     }
+    fn get_rule(&self) -> Rule {
+        self.rule.clone()
+    }
 
     fn collect_patterns_recursive(
         &mut self,
