@@ -1,7 +1,7 @@
 use std::collections::BTreeMap as Map;
 
 use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher};
-use crate::grammar::{ScopeListElement, StackElement};
+use crate::grammar::{ScopeListElement, StackElement, MatchRuleResult};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry};
@@ -215,7 +215,7 @@ impl Grammar {
         line_pos: i32,
         stack: StackElement,
         anchor_position: i32,
-    ) -> Option<IOnigMatch> {
+    ) -> Option<MatchRuleResult> {
         let mut rule = stack.get_rule(self);
         let mut rule_scanner = rule.compile(
             self,
@@ -226,8 +226,13 @@ impl Grammar {
         // rule_scanner.scanner
         let r = rule_scanner.scanner.find_next_match_sync(line_text, line_pos);
         if let Some(result) = r {
-            println!("{:?}", result);
-            Some(result)
+            let match_rule_result = MatchRuleResult {
+                capture_indices: result.capture_indices,
+                matched_rule_id: rule_scanner.rules[result.index]
+            };
+
+            println!("{:?}", match_rule_result.clone());
+            Some(match_rule_result)
         } else {
             None
         }

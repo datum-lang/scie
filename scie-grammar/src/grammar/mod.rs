@@ -11,3 +11,11 @@ pub use self::grammar::Grammar;
 pub use self::scope_list_element::ScopeListElement;
 pub use self::scope_metadata::ScopeMetadata;
 pub use self::stack_element::StackElement;
+use scie_scanner::scanner::scanner::IOnigCaptureIndex;
+
+
+#[derive(Debug, Clone, Serialize)]
+pub struct MatchRuleResult {
+    capture_indices: Vec<IOnigCaptureIndex>,
+    matched_rule_id: i32
+}
