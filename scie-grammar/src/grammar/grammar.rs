@@ -4,8 +4,8 @@ use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher};
 use crate::grammar::{ScopeListElement, StackElement, MatchRuleResult};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::rule_factory::RuleFactory;
-use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry};
-use scie_scanner::scanner::scanner::IOnigMatch;
+use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, BeginWhileRule, CaptureRule};
+use scie_scanner::scanner::scanner::{IOnigMatch, IOnigCaptureIndex};
 
 pub struct IToken {
     pub start_index: i32,
@@ -129,7 +129,7 @@ impl Grammar {
 
             let scope_list = ScopeListElement::new(
                 None,
-                root_scope_name
+                root_scope_name,
             );
             let mut state = StackElement::new(
                 None,
@@ -220,9 +220,13 @@ impl Grammar {
                     begin_rule_capture_eol,
                     None,
                     name_scopes_list.clone(),
-                    name_scopes_list.clone()
+                    name_scopes_list.clone(),
                 );
 
+                if rule.type_of() == "BeginEndRule" {} else if rule.type_of() == "BeginWhileRule" {
+                    // let pushed = rule.clone() as BeginWhileRule;
+                    // Grammar::handle_captures(self, line_text.clone(), is_first_line, new_stack, line_tokens.clone(), pushed.begin_captures, capture_indices.clone());
+                } else {}
             }
 
             if capture_indices[0].end > line_pos as usize {
@@ -231,6 +235,10 @@ impl Grammar {
             }
         }
         Some(stack.clone())
+    }
+
+    pub fn handle_captures(grammar: &mut Grammar, line_text: String, is_first_line: bool, stack: StackElement, line_tokens: LineTokens, captures: Vec<Box<dyn AbstractRule>>, captureIndices: Vec<IOnigCaptureIndex>) {
+
     }
 
     pub fn check_while_conditions(
