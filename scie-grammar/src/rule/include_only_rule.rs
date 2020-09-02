@@ -3,6 +3,7 @@ use crate::inter::ILocation;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, RegExpSourceList, Rule};
 use std::any::Any;
+use crate::rule::abstract_rule::RuleEnum;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct IncludeOnlyRule {
@@ -45,6 +46,9 @@ impl AbstractRule for IncludeOnlyRule {
     }
     fn get_rule(&self) -> Rule {
         self.rule.clone()
+    }
+    fn get_rule_instance(&self) -> RuleEnum {
+        RuleEnum::IncludeOnlyRule(self.clone())
     }
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns

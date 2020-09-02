@@ -3,6 +3,7 @@ use crate::inter::ILocation;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
+use crate::rule::abstract_rule::RuleEnum;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginWhileRule {
@@ -58,11 +59,14 @@ impl AbstractRule for BeginWhileRule {
     fn id(&self) -> i32 {
         self.rule.id
     }
+    fn type_of(&self) -> String {
+        String::from(self.rule.clone()._type)
+    }
     fn get_rule(&self) -> Rule {
         self.rule.clone()
     }
-    fn type_of(&self) -> String {
-        String::from(self.rule.clone()._type)
+    fn get_rule_instance(&self) -> RuleEnum {
+        RuleEnum::BeginWhileRule(self.clone())
     }
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns

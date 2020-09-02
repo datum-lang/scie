@@ -1,6 +1,7 @@
 use crate::grammar::Grammar;
 use crate::inter::ILocation;
 use crate::rule::{AbstractRule, CompiledRule, RegExpSourceList, Rule};
+use crate::rule::abstract_rule::RuleEnum;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct CaptureRule {
@@ -51,7 +52,9 @@ impl AbstractRule for CaptureRule {
     fn get_rule(&self) -> Rule {
         self.rule.clone()
     }
-
+    fn get_rule_instance(&self) -> RuleEnum {
+        RuleEnum::CaptureRule(self.clone())
+    }
     fn collect_patterns_recursive(
         &mut self,
         grammar: &mut Grammar,
