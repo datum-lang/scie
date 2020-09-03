@@ -133,7 +133,7 @@ impl Grammar {
             }
 
             let scope_list = ScopeListElement::new(None, root_scope_name);
-            let mut state = StackElement::new(
+            let state = StackElement::new(
                 None,
                 self.root_id.clone(),
                 -1,
@@ -176,7 +176,7 @@ impl Grammar {
     ) -> Option<StackElement> {
         let _line_length = line_text.len();
         let mut _stop = false;
-        let mut anchor_position = -1;
+        let anchor_position = -1;
 
         if check_while_conditions {
             // todo: add realy logic
@@ -189,8 +189,8 @@ impl Grammar {
             );
         }
 
-        let mut line_pos = origin_line_pos.clone();
-        let mut is_first_line = origin_is_first.clone();
+        let line_pos = origin_line_pos.clone();
+        let is_first_line = origin_is_first.clone();
         while !_stop {
             let r = self.match_rule(
                 line_text.clone(),
@@ -225,7 +225,7 @@ impl Grammar {
                 if capture_indices[0].end == _line_length {
                     begin_rule_capture_eol = true;
                 }
-                let mut new_stack = stack.clone().push(
+                let new_stack = stack.clone().push(
                     matched_rule_id,
                     line_pos,
                     anchor_position,
@@ -247,17 +247,16 @@ impl Grammar {
                         return None;
                     }
                     _ => {
-
                         _stop = true;
                         return None;
                     }
                 }
             }
-
-            if capture_indices[0].end > line_pos as usize {
-                line_pos = capture_indices[0].end as i32;
-                is_first_line = false;
-            }
+            //
+            // if capture_indices[0].end > line_pos as usize {
+            //     line_pos = capture_indices[0].end as i32;
+            //     is_first_line = false;
+            // }
         }
         Some(stack.clone())
     }

@@ -3,19 +3,19 @@ use crate::rule::CompiledRule;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct AnchorCache {
-    A0_G0: Option<String>,
-    A0_G1: Option<String>,
-    A1_G0: Option<String>,
-    A1_G1: Option<String>,
+    a0_g0: Option<String>,
+    a0_g1: Option<String>,
+    a1_g0: Option<String>,
+    a1_g1: Option<String>,
 }
 
 impl Default for AnchorCache {
     fn default() -> Self {
         AnchorCache {
-            A0_G0: None,
-            A0_G1: None,
-            A1_G0: None,
-            A1_G1: None,
+            a0_g0: None,
+            a0_g1: None,
+            a1_g0: None,
+            a1_g1: None,
         }
     }
 }

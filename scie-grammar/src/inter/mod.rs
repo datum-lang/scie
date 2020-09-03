@@ -17,7 +17,7 @@ pub use self::raw_rule::IRawRule;
 
 #[cfg(test)]
 mod tests {
-    use crate::inter::{IRawCaptures, IRawGrammar, IRawRule, InjectionMap};
+    use crate::inter::{IRawCaptures, IRawGrammar, IRawRule};
     use serde::{Deserialize, Serialize};
     use std::fs;
     use std::fs::File;
@@ -51,42 +51,6 @@ mod tests {
             .name
             .clone();
         assert_eq!("punctuation.definition.item.text", name.unwrap())
-    }
-
-    #[test]
-    fn should_convert_injections() {
-        let data = r#"
-        "injections": {
-            "R:text.html - comment.block": {
-                "comment": "Use R: to ensure this matches after any other injections.",
-                "patterns": [
-                    {
-                        "match": "<",
-                        "name": "invalid.illegal.bad-angle-bracket.html"
-                    }
-                ]
-            }
-        }"#;
-
-        let p: InjectionMap = serde_json::from_str(data).unwrap();
-        let pattern = p
-            .map
-            .get("R:text.html - comment.block")
-            .unwrap()
-            .patterns
-            .clone();
-        assert_eq!(1, pattern.clone().unwrap().len());
-        assert_eq!(
-            "<",
-            pattern
-                .clone()
-                .unwrap()
-                .first()
-                .unwrap()
-                .match_s
-                .clone()
-                .unwrap()
-        )
     }
 
     #[test]
