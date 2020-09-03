@@ -149,14 +149,14 @@ impl Grammar {
             is_first_line = false;
         }
 
-        let format_line_text = format!("{:?}\n", line_text);
+        let format_line_text = line_text.clone() + "\n";
         let line_tokens = LineTokens::new(
             emit_binary_tokens,
             line_text,
             self._token_type_matchers.clone(),
         );
         self.tokenize_string(
-            format_line_text.parse().unwrap(),
+            format_line_text,
             is_first_line,
             0,
             &mut current_state,
@@ -321,7 +321,8 @@ impl Grammar {
                         let name_scopes_list = stack.content_name_scopes_list.push(grammar, scope_name);
                         let content_name = capture.get_content_name(Some(line_text.clone()), Some(capture_indices.clone()));
                         let content_name_scopes_list = name_scopes_list.push(grammar, content_name);
-                        let stack_clone = stack.clone().push(capture.retokenize_captured_with_rule_id,
+
+                        let mut stack_clone = stack.clone().push(capture.retokenize_captured_with_rule_id,
                                                      capture_index.start.clone() as i32,
                                                      -1,
                                                      false,
@@ -330,7 +331,20 @@ impl Grammar {
                                                      content_name_scopes_list,
                         );
 
-                        // line
+                        let sub_text = line_text.split_at(capture_index.end).0;
+                        let mut sub_is_first_line = false;
+                        if is_first_line && capture_index.start == 0 {
+                            sub_is_first_line = true;
+                        }
+                        Grammar::tokenize_string(grammar,
+                                                 String::from(sub_text),
+                                                 sub_is_first_line,
+                                                 capture_index.start as i32,
+                                                 &mut stack_clone,
+                                                 line_tokens.clone(),
+                                                 false
+                        );
+                        continue
                     }
                 }
                 _ => {}
