@@ -156,7 +156,7 @@ impl Grammar {
             format_line_text,
             is_first_line,
             0,
-            &mut current_state,
+            current_state,
             line_tokens,
             true,
         );
@@ -167,7 +167,7 @@ impl Grammar {
         line_text: String,
         origin_is_first: bool,
         origin_line_pos: i32,
-        stack: &mut StackElement,
+        mut stack: StackElement,
         mut line_tokens: LineTokens,
         check_while_conditions: bool,
     ) -> Option<StackElement> {
@@ -193,7 +193,7 @@ impl Grammar {
                 line_text.clone(),
                 is_first_line,
                 line_pos,
-                stack,
+                &mut stack,
                 anchor_position,
             );
             if let None = r {
@@ -210,7 +210,7 @@ impl Grammar {
                 return None;
             } else {
                 let rule = self.get_rule(matched_rule_id);
-                line_tokens.produce(stack, capture_indices[0].start as i32);
+                line_tokens.produce(&mut stack, capture_indices[0].start as i32);
                 // let before_push = stack.clone();
                 let scope_name =
                     rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
@@ -222,7 +222,7 @@ impl Grammar {
                 if capture_indices[0].end == _line_length {
                     begin_rule_capture_eol = true;
                 }
-                let mut new_stack = stack.clone().push(
+                stack = stack.clone().push(
                     matched_rule_id,
                     line_pos,
                     anchor_position,
@@ -239,12 +239,12 @@ impl Grammar {
                             self,
                             line_text.clone(),
                             is_first_line,
-                            &mut new_stack,
+                            &mut stack,
                             line_tokens.clone(),
                             begin_rule.begin_captures,
                             capture_indices.clone(),
                         );
-                        line_tokens.produce(stack, capture_indices[0].end.clone() as i32);
+                        line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
                         anchor_position = capture_indices[0].end.clone() as i32;
                         let content_name = push_rule
                             .get_name(Some(line_text.clone()), Some(capture_indices.clone()));
@@ -364,7 +364,7 @@ impl Grammar {
                             String::from(sub_text),
                             sub_is_first_line,
                             capture_index.start as i32,
-                            &mut stack_clone,
+                            stack_clone,
                             line_tokens.clone(),
                             false,
                         );
