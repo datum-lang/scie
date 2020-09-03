@@ -217,7 +217,7 @@ impl Grammar {
                 if capture_indices[0].end == _line_length {
                     begin_rule_capture_eol = true;
                 }
-                let new_stack = stack.clone().push(
+                let mut new_stack = stack.clone().push(
                     matched_rule_id,
                     line_pos,
                     anchor_position,
@@ -229,7 +229,7 @@ impl Grammar {
 
                 match rule.get_rule_instance() {
                     RuleEnum::BeginEndRule(begin_rule) => {
-                        Grammar::handle_captures(self, line_text.clone(), is_first_line, new_stack, line_tokens.clone(), begin_rule.begin_captures, capture_indices.clone());
+                        // Grammar::handle_captures(self, line_text.clone(), is_first_line, &mut new_stack, line_tokens.clone(), begin_rule.begin_captures, capture_indices.clone());
                     }
                     RuleEnum::BeginWhileRule(while_rule) => {}
                     _ => {}
@@ -244,7 +244,7 @@ impl Grammar {
         Some(stack.clone())
     }
 
-    pub fn handle_captures(grammar: &mut Grammar, line_text: String, is_first_line: bool, stack: StackElement, mut line_tokens: LineTokens, captures: Vec<Box<dyn AbstractRule>>, capture_indices: Vec<IOnigCaptureIndex>) {
+    pub fn handle_captures(grammar: &mut Grammar, line_text: String, is_first_line: bool, stack: &mut StackElement, mut line_tokens: LineTokens, captures: Vec<Box<dyn AbstractRule>>, capture_indices: Vec<IOnigCaptureIndex>) {
         let captures_len = captures.clone().len();
         if captures_len == 0 {
             return;
@@ -276,6 +276,18 @@ impl Grammar {
                 );
                 local_stack.pop();
             }
+
+            if local_stack.len() > 0 {
+                let mut local_stack_element = local_stack[local_stack.len() - 1].clone();
+                line_tokens.produce_from_scopes(
+                    &mut local_stack_element.scopes,
+                    local_stack_element.end_pos,
+                );
+            } else {
+                line_tokens.produce(stack, capture_index.start as i32);
+            }
+
+
         }
     }
 
