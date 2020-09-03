@@ -4,6 +4,27 @@
 
 goal: build a better code figure engine for code refactoring.
 
+Todo:
+
+ - [ ] rewrite VSCode-textmate with Rust
+    - [ ] makefile
+    - [ ] json
+ - [ ] languages main support
+    - [ ] html
+    - [ ] lua
+    - [ ] javascript
+    - [ ] java
+    - [ ] typescript
+    - [ ] groovy
+    - [ ] kotlin
+    - [ ] go
+    - [ ] rust
+    - [ ] python
+    - [ ] php
+    - [ ] swift
+    - [ ] c/c++
+ - [ ] support others language
+
 ## DevSetup
 
 
