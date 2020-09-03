@@ -157,7 +157,7 @@ impl Grammar {
             is_first_line,
             0,
             current_state,
-            line_tokens,
+            &mut line_tokens,
             true,
         );
     }
@@ -168,7 +168,7 @@ impl Grammar {
         origin_is_first: bool,
         origin_line_pos: i32,
         mut stack: StackElement,
-        mut line_tokens: LineTokens,
+        mut line_tokens: &mut LineTokens,
         check_while_conditions: bool,
     ) -> Option<StackElement> {
         let _line_length = line_text.len();
@@ -236,18 +236,15 @@ impl Grammar {
                 match rule.get_rule_instance() {
                     RuleEnum::BeginEndRule(begin_rule) => {
                         let push_rule = begin_rule.clone();
-                        let new_line_tokens = Grammar::handle_captures(
+                        Grammar::handle_captures(
                             self,
                             line_text.clone(),
                             is_first_line,
                             &mut stack,
-                            line_tokens.clone(),
+                            line_tokens,
                             begin_rule.begin_captures,
                             capture_indices.clone(),
                         );
-                        if let Some(tokens) = new_line_tokens {
-                            line_tokens = tokens;
-                        }
 
                         line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
                         anchor_position = capture_indices[0].end.clone() as i32;
@@ -288,7 +285,7 @@ impl Grammar {
         line_text: String,
         is_first_line: bool,
         stack: &mut StackElement,
-        mut line_tokens: LineTokens,
+        mut line_tokens: &mut LineTokens,
         captures: Vec<Box<dyn AbstractRule>>,
         capture_indices: Vec<IOnigCaptureIndex>,
     ) -> Option<LineTokens> {
@@ -370,7 +367,7 @@ impl Grammar {
                             sub_is_first_line,
                             capture_index.start as i32,
                             stack_clone,
-                            line_tokens.clone(),
+                            line_tokens,
                             false,
                         );
                         continue;
