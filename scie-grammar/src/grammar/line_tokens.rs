@@ -1,5 +1,4 @@
 use crate::grammar::{ScopeListElement, StackElement};
-use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct TokenTypeMatcher {}

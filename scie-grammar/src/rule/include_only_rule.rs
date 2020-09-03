@@ -3,7 +3,6 @@ use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, RegExpSourceList, Rule};
-use std::any::Any;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct IncludeOnlyRule {

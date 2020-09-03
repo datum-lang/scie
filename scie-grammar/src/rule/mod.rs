@@ -23,9 +23,7 @@ pub use self::reg_exp_source::RegExpSource;
 pub use self::reg_exp_source::RegExpSourceList;
 pub use self::rule::Rule;
 
-use crate::grammar::Grammar;
 use crate::inter::{IRawGrammar, IRawRepository};
-use serde::Serialize;
 
 // todo: trait with types
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2

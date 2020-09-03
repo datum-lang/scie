@@ -7,12 +7,11 @@ use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{
-    AbstractRule, BeginWhileRule, CaptureRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper,
+    AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper,
     IRuleRegistry,
 };
 use core::cmp;
-use scie_scanner::scanner::scanner::{IOnigCaptureIndex, IOnigMatch};
-use std::cmp::max;
+use scie_scanner::scanner::scanner::{IOnigCaptureIndex};
 
 pub struct IToken {
     pub start_index: i32,
@@ -213,7 +212,7 @@ impl Grammar {
             } else {
                 let rule = self.get_rule(matched_rule_id);
                 line_tokens.produce(stack, capture_indices[0].start as i32);
-                let before_push = stack.clone();
+                // let before_push = stack.clone();
                 let scope_name =
                     rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
                 let name_scopes_list = stack

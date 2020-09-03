@@ -1,6 +1,4 @@
 use crate::grammar::Grammar;
-use std::collections::hash_map::RandomState;
-use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ScopeListElement {

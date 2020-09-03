@@ -4,7 +4,6 @@ use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
-use scie_scanner::scanner::scanner::IOnigCaptureIndex;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
