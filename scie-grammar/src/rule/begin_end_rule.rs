@@ -10,6 +10,7 @@ pub struct BeginEndRule {
     #[serde(flatten)]
     pub rule: Rule,
     pub _begin: RegExpSource,
+    // todo: refactor to RuleEnum
     pub begin_captures: Vec<Box<dyn AbstractRule>>,
     pub _end: RegExpSource,
     // pub endHasBackReferences: Option<bool>,

@@ -225,7 +225,7 @@ impl Grammar {
                 if capture_indices[0].end == _line_length {
                     begin_rule_capture_eol = true;
                 }
-                let new_stack = stack.clone().push(
+                let mut new_stack = stack.clone().push(
                     matched_rule_id,
                     line_pos,
                     anchor_position,
@@ -237,7 +237,7 @@ impl Grammar {
 
                 match rule.get_rule_instance() {
                     RuleEnum::BeginEndRule(begin_rule) => {
-                        // Grammar::handle_captures(self, line_text.clone(), is_first_line, &mut new_stack, line_tokens.clone(), begin_rule.begin_captures, capture_indices.clone());
+                        Grammar::handle_captures(self, line_text.clone(), is_first_line, &mut new_stack, line_tokens.clone(), begin_rule.begin_captures, capture_indices.clone());
 
                         _stop = true;
                         return None;
@@ -313,6 +313,8 @@ impl Grammar {
             } else {
                 line_tokens.produce(stack, capture_index.start as i32);
             }
+
+            capture_rule
         }
     }
 
