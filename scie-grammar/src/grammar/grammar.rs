@@ -209,6 +209,8 @@ impl Grammar {
             let matched_rule_id = capture_result.matched_rule_id;
             if matched_rule_id == -1 {
                 println!("todo: matched the `end` for this rule => pop it");
+                _stop = true;
+                return None;
             } else {
                 let rule = self.get_rule(matched_rule_id);
                 line_tokens.produce(stack, capture_indices[0].start as i32);
@@ -236,9 +238,19 @@ impl Grammar {
                 match rule.get_rule_instance() {
                     RuleEnum::BeginEndRule(begin_rule) => {
                         // Grammar::handle_captures(self, line_text.clone(), is_first_line, &mut new_stack, line_tokens.clone(), begin_rule.begin_captures, capture_indices.clone());
+
+                        _stop = true;
+                        return None;
                     }
-                    RuleEnum::BeginWhileRule(while_rule) => {}
-                    _ => {}
+                    RuleEnum::BeginWhileRule(while_rule) => {
+                        _stop = true;
+                        return None;
+                    }
+                    _ => {
+
+                        _stop = true;
+                        return None;
+                    }
                 }
             }
 
