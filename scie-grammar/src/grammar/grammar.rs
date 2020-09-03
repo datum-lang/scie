@@ -176,10 +176,10 @@ impl Grammar {
     ) -> Option<StackElement> {
         let _line_length = line_text.len();
         let mut _stop = false;
-        let anchor_position = -1;
+        let mut anchor_position = -1;
 
         if check_while_conditions {
-            // todo: add realy logic
+            // todo: add really logic
             self.check_while_conditions(
                 line_text.clone(),
                 origin_is_first.clone(),
@@ -189,8 +189,8 @@ impl Grammar {
             );
         }
 
-        let line_pos = origin_line_pos.clone();
-        let is_first_line = origin_is_first.clone();
+        let mut line_pos = origin_line_pos.clone();
+        let mut is_first_line = origin_is_first.clone();
         while !_stop {
             let r = self.match_rule(
                 line_text.clone(),
@@ -237,10 +237,21 @@ impl Grammar {
 
                 match rule.get_rule_instance() {
                     RuleEnum::BeginEndRule(begin_rule) => {
+                        let push_rule = begin_rule.clone();
                         Grammar::handle_captures(self, line_text.clone(), is_first_line, &mut new_stack, line_tokens.clone(), begin_rule.begin_captures, capture_indices.clone());
+                        line_tokens.produce(stack, capture_indices[0].end.clone() as i32);
+                        anchor_position = capture_indices[0].end.clone() as i32;
+                        let content_name = push_rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                        let content_name_scopes_list = name_scopes_list.push(self, content_name);
+                        // todo: not used
+                        // let temp_stack = &mut stack.set_content_name_scopes_list(content_name_scopes_list);
+                        // if push_rule.endHasBackReferences {
+                        //
+                        // }
 
-                        _stop = true;
-                        return None;
+                        // if (!hasAdvanced && beforePush.hasSameRuleAs(stack)) {
+                        // _stop = true;
+                        // return None;
                     }
                     RuleEnum::BeginWhileRule(while_rule) => {
                         _stop = true;
@@ -252,11 +263,11 @@ impl Grammar {
                     }
                 }
             }
-            //
-            // if capture_indices[0].end > line_pos as usize {
-            //     line_pos = capture_indices[0].end as i32;
-            //     is_first_line = false;
-            // }
+
+            if capture_indices[0].end > line_pos as usize {
+                line_pos = capture_indices[0].end as i32;
+                is_first_line = false;
+            }
         }
         Some(stack.clone())
     }
