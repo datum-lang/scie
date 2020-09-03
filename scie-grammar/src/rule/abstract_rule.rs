@@ -40,8 +40,25 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
             return name;
         }
 
+        println!("todo: AbstractRule.get_name");
         return Some(String::from(""));
     }
+
+    fn get_content_name(
+        &self,
+        line_text: Option<String>,
+        capture_indices: Option<Vec<IOnigCaptureIndex>>,
+    ) -> Option<String> {
+        let _content_name = self.get_rule()._content_name.clone();
+        let has_captures = RegexSource::has_captures(_content_name.clone());
+        if !has_captures || _content_name == None {
+            return _content_name;
+        }
+
+        println!("todo: AbstractRule.get_name");
+        return Some(String::from(""));
+    }
+
     fn has_missing_pattern(&self) -> bool {
         false
     }

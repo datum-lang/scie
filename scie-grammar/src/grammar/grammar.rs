@@ -314,7 +314,27 @@ impl Grammar {
                 line_tokens.produce(stack, capture_index.start as i32);
             }
 
-            capture_rule
+            match capture_rule.get_rule_instance() {
+                RuleEnum::CaptureRule(capture) => {
+                    if capture.retokenize_captured_with_rule_id != 0 {
+                        let scope_name = capture.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                        let name_scopes_list = stack.content_name_scopes_list.push(grammar, scope_name);
+                        let content_name = capture.get_content_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                        let content_name_scopes_list = name_scopes_list.push(grammar, content_name);
+                        let stack_clone = stack.clone().push(capture.retokenize_captured_with_rule_id,
+                                                     capture_index.start.clone() as i32,
+                                                     -1,
+                                                     false,
+                                                     None,
+                                                     name_scopes_list,
+                                                     content_name_scopes_list,
+                        );
+
+                        // line
+                    }
+                }
+                _ => {}
+            }
         }
     }
 
@@ -343,8 +363,7 @@ impl Grammar {
     ) {
         let match_result =
             self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
-        if let Some(result) = match_result {
-        } else {
+        if let Some(result) = match_result {} else {
             // None
         };
         // todo: get injections logic
