@@ -349,6 +349,24 @@ impl Grammar {
                 }
                 _ => {}
             }
+
+            let capture_scope_name = capture_rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+            if let Some(name) = capture_scope_name.clone() {
+                let mut base = stack.clone().content_name_scopes_list;
+                if local_stack.len() > 0 {
+                    base = local_stack[local_stack.len() - 1].clone().scopes;
+                }
+                let capture_rule_scopes_list = base.push(grammar, capture_scope_name.clone());
+                local_stack.push(LocalStackElement::new(capture_rule_scopes_list, capture_index.end as i32));
+            }
+        }
+
+        while local_stack.len() > 0 {
+            let last_stack = local_stack[local_stack.len() - 1].clone();
+            line_tokens.produce_from_scopes(&mut last_stack.scopes.clone(),
+                                            last_stack.end_pos
+            );
+            local_stack.pop();
         }
     }
 
