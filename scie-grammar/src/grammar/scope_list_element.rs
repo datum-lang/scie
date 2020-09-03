@@ -1,6 +1,6 @@
-use std::collections::HashMap;
-use std::collections::hash_map::RandomState;
 use crate::grammar::Grammar;
+use std::collections::hash_map::RandomState;
+use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ScopeListElement {
@@ -23,15 +23,13 @@ impl ScopeListElement {
 
         let mut scope_list = self.clone();
         let mut is_scope_list_none = false;
-        while !is_scope_list_none  {
+        while !is_scope_list_none {
             result.push(scope_list.scope.clone());
             match scope_list.parent {
-                None => {
-                    is_scope_list_none = true
-                },
+                None => is_scope_list_none = true,
                 Some(scope_value) => {
                     scope_list = *scope_value.clone();
-                },
+                }
             }
         }
 
@@ -39,7 +37,11 @@ impl ScopeListElement {
         return result.clone();
     }
 
-    pub fn _push(origin_target: ScopeListElement, grammar: &mut Grammar, scopes: Vec<String>) -> ScopeListElement {
+    pub fn _push(
+        origin_target: ScopeListElement,
+        grammar: &mut Grammar,
+        scopes: Vec<String>,
+    ) -> ScopeListElement {
         let mut target = origin_target.clone();
         for scope in scopes {
             target = ScopeListElement::new(Some(Box::new(target)), scope);
@@ -48,20 +50,17 @@ impl ScopeListElement {
     }
     pub fn push(&self, grammar: &mut Grammar, scope: Option<String>) -> ScopeListElement {
         if let None = scope {
-            return self.clone()
+            return self.clone();
         }
 
         let scope_name = scope.clone().unwrap();
         return match scope.iter().position(|s| s == " ") {
-            None => {
-                ScopeListElement::_push(self.clone(), grammar, vec![scope_name])
-            },
+            None => ScopeListElement::_push(self.clone(), grammar, vec![scope_name]),
             Some(_) => {
                 println!("todo: ScopeListElement push");
                 self.clone()
-            },
-        }
-
+            }
+        };
     }
 }
 

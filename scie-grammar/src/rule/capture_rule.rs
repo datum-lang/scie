@@ -1,7 +1,7 @@
 use crate::grammar::Grammar;
 use crate::inter::ILocation;
-use crate::rule::{AbstractRule, CompiledRule, RegExpSourceList, Rule};
 use crate::rule::abstract_rule::RuleEnum;
+use crate::rule::{AbstractRule, CompiledRule, RegExpSourceList, Rule};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct CaptureRule {

@@ -1,4 +1,4 @@
-use crate::grammar::{StackElement, ScopeListElement};
+use crate::grammar::{ScopeListElement, StackElement};
 use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
@@ -54,7 +54,7 @@ impl LineTokens {
         self._tokens.push(IToken {
             start_index: 0,
             end_index,
-            scopes
+            scopes,
         });
         self._last_token_end_index = end_index
     }

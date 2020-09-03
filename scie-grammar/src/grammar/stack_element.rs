@@ -62,7 +62,16 @@ impl StackElement {
         }
     }
 
-    pub fn push(self, rule_id: i32, enter_pos: i32, anchor_pos: i32, begin_rule_captured_eol: bool, end_rule: Option<String>, name_scopes_list: ScopeListElement, content_name_scopes_list: ScopeListElement) -> StackElement {
+    pub fn push(
+        self,
+        rule_id: i32,
+        enter_pos: i32,
+        anchor_pos: i32,
+        begin_rule_captured_eol: bool,
+        end_rule: Option<String>,
+        name_scopes_list: ScopeListElement,
+        content_name_scopes_list: ScopeListElement,
+    ) -> StackElement {
         StackElement::new(
             Some(Box::new(self)),
             rule_id,

@@ -1,8 +1,8 @@
 use crate::grammar::Grammar;
 use crate::inter::ILocation;
+use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, CompiledRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
-use crate::rule::abstract_rule::RuleEnum;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct MatchRule {

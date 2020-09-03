@@ -1,10 +1,10 @@
 use crate::grammar::Grammar;
 use crate::inter::ILocation;
+use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
 use scie_scanner::scanner::scanner::IOnigCaptureIndex;
-use crate::rule::abstract_rule::RuleEnum;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {

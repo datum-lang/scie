@@ -1,15 +1,18 @@
 use std::collections::BTreeMap as Map;
 
 use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher};
-use crate::grammar::{ScopeListElement, StackElement, MatchRuleResult};
-use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
-use crate::rule::rule_factory::RuleFactory;
-use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, BeginWhileRule, CaptureRule};
-use scie_scanner::scanner::scanner::{IOnigMatch, IOnigCaptureIndex};
-use crate::rule::abstract_rule::RuleEnum;
-use core::cmp;
-use std::cmp::max;
 use crate::grammar::local_stack_element::LocalStackElement;
+use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
+use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
+use crate::rule::abstract_rule::RuleEnum;
+use crate::rule::rule_factory::RuleFactory;
+use crate::rule::{
+    AbstractRule, BeginWhileRule, CaptureRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper,
+    IRuleRegistry,
+};
+use core::cmp;
+use scie_scanner::scanner::scanner::{IOnigCaptureIndex, IOnigMatch};
+use std::cmp::max;
 
 pub struct IToken {
     pub start_index: i32,
@@ -124,17 +127,13 @@ impl Grammar {
 
         if is_first_line {
             // let scope_list = ScopeListElement::default();
-            let _root_scope_name = self.get_rule(self.root_id.clone())
-                .get_name(None, None);
+            let _root_scope_name = self.get_rule(self.root_id.clone()).get_name(None, None);
             let mut root_scope_name = String::from("unknown");
             if let Some(name) = _root_scope_name {
                 root_scope_name = name
             }
 
-            let scope_list = ScopeListElement::new(
-                None,
-                root_scope_name,
-            );
+            let scope_list = ScopeListElement::new(None, root_scope_name);
             let mut state = StackElement::new(
                 None,
                 self.root_id.clone(),
@@ -180,7 +179,6 @@ impl Grammar {
         let mut _stop = false;
         let mut anchor_position = -1;
 
-
         if check_while_conditions {
             // todo: add realy logic
             self.check_while_conditions(
@@ -192,11 +190,16 @@ impl Grammar {
             );
         }
 
-
         let mut line_pos = origin_line_pos.clone();
         let mut is_first_line = origin_is_first.clone();
         while !_stop {
-            let r = self.match_rule(line_text.clone(), is_first_line, line_pos, stack, anchor_position);
+            let r = self.match_rule(
+                line_text.clone(),
+                is_first_line,
+                line_pos,
+                stack,
+                anchor_position,
+            );
             if let None = r {
                 _stop = true;
                 return None;
@@ -211,8 +214,12 @@ impl Grammar {
                 let rule = self.get_rule(matched_rule_id);
                 line_tokens.produce(stack, capture_indices[0].start as i32);
                 let before_push = stack.clone();
-                let scope_name = rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
-                let name_scopes_list = stack.content_name_scopes_list.clone().push(self, scope_name);
+                let scope_name =
+                    rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                let name_scopes_list = stack
+                    .content_name_scopes_list
+                    .clone()
+                    .push(self, scope_name);
                 let mut begin_rule_capture_eol = false;
                 if capture_indices[0].end == _line_length {
                     begin_rule_capture_eol = true;
@@ -244,7 +251,15 @@ impl Grammar {
         Some(stack.clone())
     }
 
-    pub fn handle_captures(grammar: &mut Grammar, line_text: String, is_first_line: bool, stack: &mut StackElement, mut line_tokens: LineTokens, captures: Vec<Box<dyn AbstractRule>>, capture_indices: Vec<IOnigCaptureIndex>) {
+    pub fn handle_captures(
+        grammar: &mut Grammar,
+        line_text: String,
+        is_first_line: bool,
+        stack: &mut StackElement,
+        mut line_tokens: LineTokens,
+        captures: Vec<Box<dyn AbstractRule>>,
+        capture_indices: Vec<IOnigCaptureIndex>,
+    ) {
         let captures_len = captures.clone().len();
         if captures_len == 0 {
             return;
@@ -268,11 +283,13 @@ impl Grammar {
                 continue;
             }
 
-            while local_stack.len() > 0 && local_stack[local_stack.len() - 1].end_pos <= capture_index.start as i32 {
+            while local_stack.len() > 0
+                && local_stack[local_stack.len() - 1].end_pos <= capture_index.start as i32
+            {
                 let mut local_stack_element = local_stack[local_stack.len() - 1].clone();
                 line_tokens.produce_from_scopes(
                     &mut local_stack_element.scopes,
-                    local_stack_element.end_pos
+                    local_stack_element.end_pos,
                 );
                 local_stack.pop();
             }
@@ -286,8 +303,6 @@ impl Grammar {
             } else {
                 line_tokens.produce(stack, capture_index.start as i32);
             }
-
-
         }
     }
 
@@ -314,14 +329,10 @@ impl Grammar {
         stack: &mut StackElement,
         anchor_position: i32,
     ) {
-        let match_result = self.match_rule(
-            line_text,
-            is_first_line,
-            line_pos,
-            stack,
-            anchor_position,
-        );
-        if let Some(result) = match_result {} else {
+        let match_result =
+            self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
+        if let Some(result) = match_result {
+        } else {
             // None
         };
         // todo: get injections logic
@@ -342,7 +353,9 @@ impl Grammar {
             is_first_line,
             line_pos == anchor_position,
         );
-        let r = rule_scanner.scanner.find_next_match_sync(line_text, line_pos);
+        let r = rule_scanner
+            .scanner
+            .find_next_match_sync(line_text, line_pos);
         if let Some(result) = r {
             let match_rule_result = MatchRuleResult {
                 capture_indices: result.capture_indices,

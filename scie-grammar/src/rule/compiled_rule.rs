@@ -4,7 +4,7 @@ use scie_scanner::scanner::scanner::Scanner;
 pub struct CompiledRule {
     pub debug_reg_exps: Vec<String>,
     pub rules: Vec<i32>,
-    pub scanner: Box<Scanner>
+    pub scanner: Box<Scanner>,
 }
 
 impl CompiledRule {
@@ -13,7 +13,7 @@ impl CompiledRule {
         CompiledRule {
             debug_reg_exps,
             rules,
-            scanner: Box::new(scanner)
+            scanner: Box::new(scanner),
         }
     }
 }
