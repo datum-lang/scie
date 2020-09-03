@@ -1,5 +1,5 @@
 tests:
-	cargo test
+	cargo test --all
 
 tests-ci:
 	cargo test
