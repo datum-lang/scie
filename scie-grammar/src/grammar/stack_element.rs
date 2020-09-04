@@ -1,10 +1,11 @@
 use crate::grammar::{Grammar, ScopeListElement};
 use crate::rule::{AbstractRule, IRuleRegistry};
+use std::rc::Rc;
 
 // todo: change to rccall https://stackoverflow.com/questions/36167160/how-do-i-express-mutually-recursive-data-structures-in-safe-rust
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct StackElement {
-    pub parent: Option<Box<StackElement>>,
+    pub parent: Option<Rc<StackElement>>,
     pub depth: i32,
     pub rule_id: i32,
     pub enter_pos: i32,
@@ -30,14 +31,14 @@ impl StackElement {
         }
     }
 
-    pub fn pop(&self) -> Option<Box<StackElement>> {
-        self.clone().parent
+    pub fn pop(&self) -> Option<Rc<StackElement>> {
+        self.parent.clone()
     }
     pub fn get_rule(&self, grammar: &mut Grammar) -> Box<dyn AbstractRule> {
         grammar.get_rule(self.rule_id)
     }
     pub fn new(
-        parent: Option<Box<StackElement>>,
+        parent: Option<Rc<StackElement>>,
         rule_id: i32,
         enter_pos: i32,
         anchor_pos: i32,
@@ -74,7 +75,7 @@ impl StackElement {
         content_name_scopes_list: ScopeListElement,
     ) -> StackElement {
         StackElement::new(
-            Some(Box::new(self)),
+            Some(Rc::new(self)),
             rule_id,
             enter_pos,
             anchor_pos,

@@ -235,7 +235,7 @@ impl Grammar {
                 if capture_indices[0].end == _line_length {
                     begin_rule_capture_eol = true;
                 }
-                let new_stack = stack.push(
+                stack = stack.push(
                     matched_rule_id,
                     line_pos,
                     anchor_position,
@@ -244,7 +244,6 @@ impl Grammar {
                     name_scopes_list.clone(),
                     name_scopes_list.clone(),
                 );
-                stack = new_stack;
 
                 match rule.get_rule_instance() {
                     RuleEnum::BeginEndRule(begin_rule) => {
