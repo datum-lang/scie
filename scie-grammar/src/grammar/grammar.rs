@@ -296,7 +296,7 @@ impl Grammar {
         grammar: &mut Grammar,
         line_text: String,
         is_first_line: bool,
-        stack: &mut StackElement,
+        mut stack: &mut StackElement,
         mut line_tokens: &mut LineTokens,
         captures: Vec<Box<dyn AbstractRule>>,
         capture_indices: Vec<IOnigCaptureIndex>,

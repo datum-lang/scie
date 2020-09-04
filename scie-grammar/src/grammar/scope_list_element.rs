@@ -1,6 +1,6 @@
 use crate::grammar::Grammar;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct ScopeListElement {
     pub parent: Option<Box<ScopeListElement>>,
     pub scope: String,
