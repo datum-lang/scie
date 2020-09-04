@@ -199,7 +199,7 @@ impl Grammar {
             if let None = r {
                 line_tokens.produce(&mut stack, _line_length as i32);
                 _stop = true;
-                return None;
+                return Some(stack.clone());
             }
 
             let capture_result = r.unwrap();
@@ -208,7 +208,7 @@ impl Grammar {
             if matched_rule_id == -1 {
                 println!("todo: matched the `end` for this rule => pop it");
                 _stop = true;
-                return None;
+                return Some(stack.clone());
             } else {
                 let rule = self.get_rule(matched_rule_id);
                 line_tokens.produce(&mut stack, capture_indices[0].start as i32);
@@ -263,11 +263,11 @@ impl Grammar {
                     }
                     RuleEnum::BeginWhileRule(while_rule) => {
                         _stop = true;
-                        return None;
+                        return Some(stack.clone());
                     }
                     _ => {
                         _stop = true;
-                        return None;
+                        return Some(stack.clone());
                     }
                 }
             }
