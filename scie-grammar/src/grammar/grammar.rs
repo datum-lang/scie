@@ -6,7 +6,7 @@ use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::RuleFactory;
-use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry};
+use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, BeginWhileRule};
 use core::cmp;
 use scie_scanner::scanner::scanner::IOnigCaptureIndex;
 
@@ -44,10 +44,16 @@ pub trait IGrammar {
 pub trait Matcher {}
 
 #[derive(Debug, Clone)]
+pub struct CheckWhileRuleResult {
+    pub rule: Box<BeginWhileRule>,
+    pub stack: Box<StackElement>
+}
+
+#[derive(Debug, Clone)]
 pub struct TokenizeResult {
     line_length: usize,
     line_tokens: Box<LineTokens>,
-    rule_stack: Box<Option<StackElement>>
+    rule_stack: Box<Option<StackElement>>,
 }
 
 #[derive(Debug, Clone)]
@@ -171,7 +177,7 @@ impl Grammar {
         TokenizeResult {
             line_length: format_line_text.clone().len(),
             line_tokens: Box::new(line_tokens),
-            rule_stack: Box::new(next_state)
+            rule_stack: Box::new(next_state),
         }
     }
 
@@ -411,20 +417,48 @@ impl Grammar {
 
         return Some(line_tokens.to_owned());
     }
-
+    /**
+     * Walk the stack from bottom to top, and check each while condition in this order.
+     * If any fails, cut off the entire stack above the failed while condition. While conditions
+     * may also advance the linePosition.
+     */
     pub fn check_while_conditions(
         &mut self,
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
-        _stack: StackElement,
+        stack: StackElement,
         line_tokens: LineTokens,
     ) {
         let mut anchor_position = -1;
-        if _stack.begin_rule_captured_eol {
+        if stack.begin_rule_captured_eol {
             anchor_position = 0
         }
-        // let while_rules = vec![];
+        let mut while_rules = vec![];
+        let mut has_node = true;
+        let mut node = stack.clone();
+        while has_node {
+            let rule = node.clone().get_rule(self);
+            if let RuleEnum::BeginWhileRule(begin_rule) = rule.get_rule_instance() {
+                while_rules.push(CheckWhileRuleResult {
+                    rule: Box::from(begin_rule),
+                    stack: Box::from(node.clone())
+                })
+            }
+
+            match node.pop() {
+                None => { has_node = false},
+                Some(n) => {
+                    node = n;
+                },
+            }
+        }
+
+        for rule in while_rules.clone() {
+            // rule.rule.compileWhile();
+        }
+
+        println!("{:?}", while_rules);
     }
 
     pub fn match_rule_or_injections(
