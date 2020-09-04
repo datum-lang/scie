@@ -3,9 +3,9 @@ use crate::rule::{AbstractRule, IRuleRegistry};
 use std::rc::Rc;
 
 // todo: change to rccall https://stackoverflow.com/questions/36167160/how-do-i-express-mutually-recursive-data-structures-in-safe-rust
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct StackElement {
-    pub parent: Option<Rc<StackElement>>,
+    pub parent: Option<Vec<StackElement>>,
     pub depth: i32,
     pub rule_id: i32,
     pub enter_pos: i32,
@@ -14,6 +14,7 @@ pub struct StackElement {
     pub end_rule: Option<String>,
     pub name_scopes_list: ScopeListElement,
     pub content_name_scopes_list: ScopeListElement,
+    pub stringify: String,
 }
 
 impl StackElement {
@@ -28,17 +29,23 @@ impl StackElement {
             end_rule: None,
             name_scopes_list: Default::default(),
             content_name_scopes_list: Default::default(),
+            stringify: "".to_string()
         }
     }
 
-    pub fn pop(&self) -> Option<Rc<StackElement>> {
-        self.parent.clone()
+    pub fn pop(&self) -> Option<StackElement> {
+        match self.parent.clone() {
+            None => { None },
+            Some(parents) => {
+                Some(parents[0].clone())
+            },
+        }
     }
     pub fn get_rule(&self, grammar: &mut Grammar) -> Box<dyn AbstractRule> {
         grammar.get_rule(self.rule_id)
     }
     pub fn new(
-        parent: Option<Rc<StackElement>>,
+        parent: Option<Vec<StackElement>>,
         rule_id: i32,
         enter_pos: i32,
         anchor_pos: i32,
@@ -49,9 +56,9 @@ impl StackElement {
     ) -> Self {
         let mut depth = 1;
         if let Some(iparent) = parent.clone() {
-            depth = iparent.depth + 1
+            depth = iparent[0].depth + 1
         }
-        StackElement {
+        let mut element = StackElement {
             parent,
             depth,
             rule_id,
@@ -61,11 +68,19 @@ impl StackElement {
             end_rule,
             name_scopes_list,
             content_name_scopes_list,
-        }
+            stringify: "".to_string()
+        };
+
+        element.stringify = element.clone().stringify();
+        element
+    }
+
+    pub fn stringify(self) -> String {
+        serde_json::to_string(&self).unwrap()
     }
 
     pub fn push(
-        self,
+        &self,
         rule_id: i32,
         enter_pos: i32,
         anchor_pos: i32,
@@ -75,7 +90,7 @@ impl StackElement {
         content_name_scopes_list: ScopeListElement,
     ) -> StackElement {
         StackElement::new(
-            Some(Rc::new(self)),
+            Some(vec![self.clone()]),
             rule_id,
             enter_pos,
             anchor_pos,
@@ -97,4 +112,5 @@ impl StackElement {
         println!("todo: set_content_name_scopes_list");
         return self;
     }
+
 }
