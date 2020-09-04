@@ -591,6 +591,18 @@ hellomake: $(OBJ)
         debug_output(&grammar, String::from("program.json"));
     }
 
+    #[test]
+    fn should_resolve_make_file_error_issues() {
+        let code = "
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+";
+        let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
+        assert_eq!(grammar.rule_id2desc.len(), 64);
+        assert_eq!(grammar.get_rule(1).patterns_length(), 4);
+        debug_output(&grammar, String::from("program.json"));
+    }
+
     fn to_grammar(grammar_path: &str, code: &str) -> Grammar {
         let path = Path::new(grammar_path);
         let mut file = File::open(path).unwrap();
