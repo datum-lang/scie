@@ -12,7 +12,7 @@ pub struct BeginWhileRule {
     pub _begin: RegExpSource,
     pub begin_captures: Vec<Box<dyn AbstractRule>>,
 
-    pub _while: Option<String>,
+    pub _while: RegExpSource,
     pub while_captures: Vec<Box<dyn AbstractRule>>,
 
     pub apply_end_pattern_last: bool,
@@ -35,6 +35,11 @@ impl BeginWhileRule {
         while_captures: Vec<Box<dyn AbstractRule>>,
         patterns: ICompilePatternsResult,
     ) -> BeginWhileRule {
+        let mut while_str = String::from("");
+        if let Some(str) = _while {
+            while_str = str;
+        }
+
         BeginWhileRule {
             rule: Rule {
                 _type: String::from("BeginWhileRule"),
@@ -45,7 +50,7 @@ impl BeginWhileRule {
             },
             _begin: RegExpSource::new(_begin.unwrap().clone(), id.clone()),
             begin_captures,
-            _while,
+            _while: RegExpSource::new(while_str, -2),
             while_captures,
             apply_end_pattern_last: false,
             has_missing_patterns: patterns.clone().has_missing_patterns,
@@ -53,6 +58,23 @@ impl BeginWhileRule {
             _cached_compiled_patterns: None,
         }
     }
+    pub fn compile_while(
+        &mut self,
+        grammar: &mut Grammar,
+        end_regex_source: Option<String>,
+        allow_a: bool,
+        allow_g: bool
+    ) -> CompiledRule {
+        // todo: add hasBackReferences
+        if let None = self._cached_compiled_patterns {
+            let mut compiled_patterns = RegExpSourceList::new();
+            compiled_patterns.push(Box::new(self._while.clone()));
+            self._cached_compiled_patterns = Option::from(compiled_patterns);
+        }
+
+        return self._cached_compiled_patterns.clone().unwrap().compile(grammar, allow_a, allow_g)
+    }
+
 }
 
 impl AbstractRule for BeginWhileRule {

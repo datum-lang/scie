@@ -8,7 +8,7 @@ use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, BeginWhileRule};
 use core::cmp;
-use scie_scanner::scanner::scanner::IOnigCaptureIndex;
+use scie_scanner::scanner::scanner::{IOnigCaptureIndex, IOnigMatch};
 
 pub struct IToken {
     pub start_index: i32,
@@ -46,7 +46,15 @@ pub trait Matcher {}
 #[derive(Debug, Clone)]
 pub struct CheckWhileRuleResult {
     pub rule: Box<BeginWhileRule>,
-    pub stack: Box<StackElement>
+    pub stack: Box<StackElement>,
+}
+
+#[derive(Debug, Clone)]
+pub struct CheckWhileConditionResult {
+    pub stack: Box<StackElement>,
+    pub line_pos:  i32,
+    pub anchor_position: i32,
+    pub is_first_line: bool
 }
 
 #[derive(Debug, Clone)]
@@ -193,20 +201,24 @@ impl Grammar {
         let _line_length = line_text.len();
         let mut _stop = false;
         let mut anchor_position = -1;
+        let mut line_pos = origin_line_pos.clone();
+        let mut is_first_line = origin_is_first.clone();
 
         if check_while_conditions {
             // todo: add really logic
-            self.check_while_conditions(
+            let while_check_result = self.check_while_conditions(
                 line_text.clone(),
                 origin_is_first.clone(),
                 origin_line_pos.clone(),
                 stack.clone(),
                 line_tokens.clone(),
             );
+            stack = *while_check_result.stack;
+            line_pos = while_check_result.line_pos;
+            is_first_line = while_check_result.is_first_line;
+            anchor_position = while_check_result.anchor_position;
         }
 
-        let mut line_pos = origin_line_pos.clone();
-        let mut is_first_line = origin_is_first.clone();
         while !_stop {
             let r = self.match_rule(
                 line_text.clone(),
@@ -427,9 +439,9 @@ impl Grammar {
         line_text: String,
         is_first_line: bool,
         line_pos: i32,
-        stack: StackElement,
+        mut stack: StackElement,
         line_tokens: LineTokens,
-    ) {
+    ) -> CheckWhileConditionResult {
         let mut anchor_position = -1;
         if stack.begin_rule_captured_eol {
             anchor_position = 0
@@ -442,23 +454,45 @@ impl Grammar {
             if let RuleEnum::BeginWhileRule(begin_rule) = rule.get_rule_instance() {
                 while_rules.push(CheckWhileRuleResult {
                     rule: Box::from(begin_rule),
-                    stack: Box::from(node.clone())
+                    stack: Box::from(node.clone()),
                 })
             }
 
             match node.pop() {
-                None => { has_node = false},
+                None => { has_node = false }
                 Some(n) => {
                     node = n;
-                },
+                }
             }
         }
 
-        for rule in while_rules.clone() {
-            // rule.rule.compileWhile();
+        for while_rule in while_rules.clone() {
+            let allow_g = anchor_position == line_pos;
+            let mut rule_scanner = while_rule.clone().rule.compile_while(
+                self,
+                while_rule.clone().stack.end_rule,
+                is_first_line,
+                allow_g,
+            );
+            let match_result = rule_scanner.scanner.find_next_match_sync(line_text.clone(), line_pos);
+            match match_result {
+                None => {
+                    stack = while_rule.stack.pop().unwrap();
+                    break;
+                }
+                Some(_) => {
+                    println!("todo: check_while_conditions");
+                }
+            }
         }
 
-        println!("{:?}", while_rules);
+        // println!("{:?}", while_rules);
+        CheckWhileConditionResult {
+            stack: Box::new(stack),
+            line_pos,
+            anchor_position,
+            is_first_line
+        }
     }
 
     pub fn match_rule_or_injections(
