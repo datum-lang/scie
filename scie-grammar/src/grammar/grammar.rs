@@ -44,6 +44,13 @@ pub trait IGrammar {
 pub trait Matcher {}
 
 #[derive(Debug, Clone)]
+pub struct TokenizeResult {
+    line_length: usize,
+    line_tokens: Box<LineTokens>,
+    rule_stack: Box<Option<StackElement>>
+}
+
+#[derive(Debug, Clone)]
 pub struct Grammar {
     root_id: i32,
     grammar: IRawGrammar,
@@ -94,7 +101,7 @@ impl Grammar {
         line_text: String,
         prev_state: Option<StackElement>,
         emit_binary_tokens: bool,
-    ) {
+    ) -> TokenizeResult {
         if self.root_id.clone() == -1 {
             let mut repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.self_s.unwrap();
@@ -152,14 +159,20 @@ impl Grammar {
             line_text,
             self._token_type_matchers.clone(),
         );
-        self.tokenize_string(
-            format_line_text,
+        let next_state = self.tokenize_string(
+            format_line_text.clone(),
             is_first_line,
             0,
             current_state,
             &mut line_tokens,
             true,
         );
+
+        TokenizeResult {
+            line_length: format_line_text.clone().len(),
+            line_tokens: Box::new(line_tokens),
+            rule_stack: Box::new(next_state)
+        }
     }
 
     pub fn tokenize_string(
@@ -462,7 +475,7 @@ impl Grammar {
         }
     }
 
-    pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) {
+    pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) -> TokenizeResult {
         self.tokenize(line_text, prev_state, false)
     }
 
@@ -589,7 +602,8 @@ hellomake: $(OBJ)
         let mut grammar = Grammar::new(g);
         let c_code = String::from(code);
         for line in c_code.lines() {
-            grammar.tokenize_line(String::from(line), None)
+            let result = grammar.tokenize_line(String::from(line), None);
+            println!("{:?}", result);
         }
         grammar
     }
