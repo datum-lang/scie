@@ -60,6 +60,7 @@ impl Scanner {
 
         let pattern = self.patterns[self.index].clone();
 
+        println!("{:?}", pattern);
         let regex = Regex::new(pattern.as_str()).unwrap();
         let mut capture_indices = vec![];
         let _captures = regex.captures(after_pos_str.as_str());
@@ -98,9 +99,17 @@ impl Scanner {
     }
 }
 
+pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
+    where
+        I: IntoIterator<Item = T>,
+        T: Into<String>,
+{
+    iter.into_iter().map(Into::into).collect()
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::scanner::scanner::Scanner;
+    use crate::scanner::scanner::{Scanner, str_vec_to_string};
 
     #[test]
     fn should_handle_simple_regex() {
@@ -283,5 +292,27 @@ mod tests {
                 "{\"index\":0,\"capture_indices\":[{\"start\":5,\"end\":9,\"length\":4}]}"
             )
         );
+    }
+
+    #[test]
+    fn should_match_makefile_scan_regex() {
+        let origin = vec![
+            "[(^[ \\t]+)?(?=#)",
+            "(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+            "^(?!\\t)([^:]*)(:)(?!\\=)",
+            "^[ ]*([s\\-]?include)\\b",
+            "^[ ]*(vpath)\\b",
+            "^(?:(override)\\s*)?(define)\\s*([^\\s]+)\\s*(=|\\?=|:=|\\+=)?(?=\\s)",
+            "^[ ]*(export)\\b",
+            "^[ ]*(override|private)\\b",
+            "^[ ]*(unexport|undefine)\\b",
+            "^(ifdef|ifndef)\\s*([^\\s]+)(?=\\s)",
+            "^(ifeq|ifneq)(?=\\s)]"
+        ];
+        let rules = vec![2, 7, 28, 45, 48, 51, 61, 64, 66, 69, 77];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = Scanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 0);
+        println!("{:?}", result);
     }
 }
