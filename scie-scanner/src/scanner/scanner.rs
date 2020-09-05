@@ -1,4 +1,4 @@
-use onig::Regex;
+use onig::{Regex, Error};
 use unicode_segmentation::UnicodeSegmentation;
 
 #[derive(Debug, Clone, Serialize)]
@@ -60,14 +60,19 @@ impl Scanner {
 
         let pattern = self.patterns[self.index].clone();
 
-        println!("{:?}", pattern);
-        let regex = Regex::new(pattern.as_str()).unwrap();
+        let _regex = Regex::new(pattern.as_str());
+        if let Err(err) = _regex {
+            return None;
+        }
+
+        let regex = _regex.unwrap();
         let mut capture_indices = vec![];
         let _captures = regex.captures(after_pos_str.as_str());
 
         if let Some(captures) = _captures {
             for (_, pos) in captures.iter_pos().enumerate() {
                 if let Some((start, end)) = pos {
+                    println!("start: {:?}, end: {:?}", start, end);
                     let length = end - start;
                     let x1 = after_pos_str.split_at(end).0;
                     let utf8_end =
@@ -297,7 +302,7 @@ mod tests {
     #[test]
     fn should_match_makefile_scan_regex() {
         let origin = vec![
-            "[(^[ \\t]+)?(?=#)",
+            "(^[ \\t]+)?(?=#)",
             "(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
             "^(?!\\t)([^:]*)(:)(?!\\=)",
             "^[ ]*([s\\-]?include)\\b",
@@ -313,6 +318,6 @@ mod tests {
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = Scanner::new(debug_regex);
         let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 0);
-        println!("{:?}", result);
+        assert_eq!(3, result.unwrap().capture_indices.len());
     }
 }
