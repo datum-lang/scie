@@ -43,7 +43,7 @@ impl Scanner {
         let mut start_pos = start_position;
         let string_vec = origin_str.graphemes(true).collect::<Vec<&str>>();
 
-        if start_pos > string_vec.len() as i32 {
+        if start_pos >= string_vec.len() as i32 {
             return None;
         }
 
@@ -72,7 +72,6 @@ impl Scanner {
         if let Some(captures) = _captures {
             for (_, pos) in captures.iter_pos().enumerate() {
                 if let Some((start, end)) = pos {
-                    println!("start: {:?}, end: {:?}", start, end);
                     let length = end - start;
                     let x1 = after_pos_str.split_at(end).0;
                     let utf8_end =
