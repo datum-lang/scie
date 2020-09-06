@@ -46,7 +46,8 @@ impl BeginEndRule {
             },
             _begin: RegExpSource::new(begin.clone(), id.clone()),
             begin_captures,
-            _end: RegExpSource::new(_end.clone(), id.clone()),
+            // todo new RegExpSource(end ? end : '\uFFFF', -1);
+            _end: RegExpSource::new(_end.clone(), -1),
             end_captures,
             apply_end_pattern_last,
             has_missing_patterns: patterns.clone().has_missing_patterns,

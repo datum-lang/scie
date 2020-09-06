@@ -593,6 +593,7 @@ mod tests {
     use crate::grammar::Grammar;
     use crate::inter::IRawGrammar;
     use crate::rule::IRuleRegistry;
+    use crate::rule::abstract_rule::RuleEnum;
 
     #[test]
     fn should_build_json_code() {
@@ -650,7 +651,14 @@ DEPS = hellomake.h
 OBJ = hellomake.o hellofunc.o
 ";
         let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
-        assert_eq!(grammar.rule_id2desc.get(&30).unwrap().get_rule().id, -1);
+        match grammar.rule_id2desc.get(&30).unwrap().get_rule_instance() {
+            RuleEnum::BeginEndRule(rule) => {
+                assert_eq!(rule._end.rule_id, -1);
+            },
+            _ => {
+                assert!(false);
+            }
+        }
         assert_eq!(grammar.get_rule(1).patterns_length(), 4);
         debug_output(&grammar, String::from("program.json"));
     }
