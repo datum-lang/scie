@@ -14,6 +14,7 @@ pub struct StackElement {
     pub end_rule: Option<String>,
     pub name_scopes_list: ScopeListElement,
     pub content_name_scopes_list: ScopeListElement,
+    // todo: remove stringify
     pub stringify: String,
 }
 

@@ -4,6 +4,7 @@ use crate::grammar::Grammar;
 pub struct ScopeListElement {
     pub parent: Option<Box<ScopeListElement>>,
     pub scope: String,
+    // todo: remove stringify
     pub stringify: String,
     // pub metadata: i32,
 }
