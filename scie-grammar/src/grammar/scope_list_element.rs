@@ -14,7 +14,7 @@ impl ScopeListElement {
         let mut list_element = ScopeListElement {
             parent,
             scope,
-            stringify: String::from("")
+            stringify: String::from(""),
         };
         list_element.stringify = list_element.clone().stringify();
         list_element
@@ -75,7 +75,7 @@ impl Default for ScopeListElement {
         ScopeListElement {
             parent: None,
             scope: "".to_string(),
-            stringify: "".to_string()
+            stringify: "".to_string(),
         }
     }
 }

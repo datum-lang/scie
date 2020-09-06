@@ -30,16 +30,14 @@ impl StackElement {
             end_rule: None,
             name_scopes_list: Default::default(),
             content_name_scopes_list: Default::default(),
-            stringify: "".to_string()
+            stringify: "".to_string(),
         }
     }
 
     pub fn pop(&self) -> Option<StackElement> {
         match self.parent.clone() {
-            None => { None },
-            Some(parents) => {
-                Some(parents[0].clone())
-            },
+            None => None,
+            Some(parents) => Some(parents[0].clone()),
         }
     }
     pub fn get_rule(&self, grammar: &mut Grammar) -> Box<dyn AbstractRule> {
@@ -69,7 +67,7 @@ impl StackElement {
             end_rule,
             name_scopes_list,
             content_name_scopes_list,
-            stringify: "".to_string()
+            stringify: "".to_string(),
         };
 
         element.stringify = element.clone().stringify();
@@ -113,5 +111,4 @@ impl StackElement {
         println!("todo: set_content_name_scopes_list");
         return self;
     }
-
 }

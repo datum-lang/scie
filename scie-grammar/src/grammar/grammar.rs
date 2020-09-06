@@ -6,7 +6,9 @@ use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::RuleFactory;
-use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, BeginWhileRule};
+use crate::rule::{
+    AbstractRule, BeginWhileRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry,
+};
 use core::cmp;
 use scie_scanner::scanner::scanner::{IOnigCaptureIndex, IOnigMatch};
 use std::borrow::Borrow;
@@ -247,9 +249,7 @@ impl Grammar {
                 // let before_push = stack.clone();
                 let scope_name =
                     rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
-                let name_scopes_list = stack
-                    .content_name_scopes_list
-                    .push(self, scope_name);
+                let name_scopes_list = stack.content_name_scopes_list.push(self, scope_name);
                 let mut begin_rule_capture_eol = false;
                 if capture_indices[0].end == _line_length {
                     begin_rule_capture_eol = true;
@@ -370,14 +370,11 @@ impl Grammar {
                 }
 
                 if capture.retokenize_captured_with_rule_id != 0 {
-                    let scope_name = capture
-                        .get_name(Some(line_text.clone()), Some(capture_indices.clone()));
-                    let name_scopes_list =
-                        stack.content_name_scopes_list.push(grammar, scope_name);
-                    let content_name = capture.get_content_name(
-                        Some(line_text.clone()),
-                        Some(capture_indices.clone()),
-                    );
+                    let scope_name =
+                        capture.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                    let name_scopes_list = stack.content_name_scopes_list.push(grammar, scope_name);
+                    let content_name = capture
+                        .get_content_name(Some(line_text.clone()), Some(capture_indices.clone()));
                     let content_name_scopes_list = name_scopes_list.push(grammar, content_name);
 
                     let mut stack_clone = stack.clone().push(
@@ -462,7 +459,7 @@ impl Grammar {
             }
 
             match node.pop() {
-                None => { has_node = false }
+                None => has_node = false,
                 Some(n) => {
                     node = n;
                 }
@@ -477,7 +474,9 @@ impl Grammar {
                 is_first_line,
                 allow_g,
             );
-            let match_result = rule_scanner.scanner.find_next_match_sync(line_text.clone(), line_pos);
+            let match_result = rule_scanner
+                .scanner
+                .find_next_match_sync(line_text.clone(), line_pos);
             match match_result {
                 None => {
                     stack = while_rule.stack.pop().unwrap();
@@ -508,7 +507,8 @@ impl Grammar {
     ) {
         let match_result =
             self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
-        if let Some(result) = match_result {} else {
+        if let Some(result) = match_result {
+        } else {
             // None
         };
         // todo: get injections logic
@@ -545,7 +545,11 @@ impl Grammar {
         }
     }
 
-    pub fn tokenize_line(&mut self, line_text: String, prev_state: Option<StackElement>) -> TokenizeResult {
+    pub fn tokenize_line(
+        &mut self,
+        line_text: String,
+        prev_state: Option<StackElement>,
+    ) -> TokenizeResult {
         self.tokenize(line_text, prev_state, false)
     }
 
@@ -592,8 +596,8 @@ mod tests {
 
     use crate::grammar::Grammar;
     use crate::inter::IRawGrammar;
-    use crate::rule::IRuleRegistry;
     use crate::rule::abstract_rule::RuleEnum;
+    use crate::rule::IRuleRegistry;
 
     #[test]
     fn should_build_json_code() {
@@ -654,7 +658,7 @@ OBJ = hellomake.o hellofunc.o
         match grammar.rule_id2desc.get(&30).unwrap().get_rule_instance() {
             RuleEnum::BeginEndRule(rule) => {
                 assert_eq!(rule._end.rule_id, -1);
-            },
+            }
             _ => {
                 assert!(false);
             }

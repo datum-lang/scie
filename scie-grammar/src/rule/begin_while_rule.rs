@@ -63,7 +63,7 @@ impl BeginWhileRule {
         grammar: &mut Grammar,
         end_regex_source: Option<String>,
         allow_a: bool,
-        allow_g: bool
+        allow_g: bool,
     ) -> CompiledRule {
         // todo: add hasBackReferences
         if let None = self._cached_compiled_patterns {
@@ -72,9 +72,12 @@ impl BeginWhileRule {
             self._cached_compiled_patterns = Option::from(compiled_patterns);
         }
 
-        return self._cached_compiled_patterns.clone().unwrap().compile(grammar, allow_a, allow_g)
+        return self
+            ._cached_compiled_patterns
+            .clone()
+            .unwrap()
+            .compile(grammar, allow_a, allow_g);
     }
-
 }
 
 impl AbstractRule for BeginWhileRule {
