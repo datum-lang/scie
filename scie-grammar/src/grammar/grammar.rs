@@ -9,6 +9,7 @@ use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{AbstractRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, BeginWhileRule};
 use core::cmp;
 use scie_scanner::scanner::scanner::{IOnigCaptureIndex, IOnigMatch};
+use std::borrow::Borrow;
 
 pub struct IToken {
     pub start_index: i32,
@@ -266,7 +267,7 @@ impl Grammar {
                 match rule.get_rule_instance() {
                     RuleEnum::BeginEndRule(begin_rule) => {
                         let push_rule = begin_rule.clone();
-                        Grammar::handle_captures(
+                        let handled_tokens = Grammar::handle_captures(
                             self,
                             line_text.clone(),
                             is_first_line,
@@ -275,6 +276,10 @@ impl Grammar {
                             begin_rule.begin_captures,
                             capture_indices.clone(),
                         );
+                        //
+                        // if let Some(new_line_tokens) = handled_tokens {
+                        //     line_tokens = new_line_tokens;
+                        // }
 
                         line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
                         anchor_position = capture_indices[0].end.clone() as i32;
@@ -357,7 +362,7 @@ impl Grammar {
                 let mut local_stack_element = local_stack[local_stack.len() - 1].clone();
                 line_tokens.produce_from_scopes(
                     &mut local_stack_element.scopes,
-                    local_stack_element.end_pos,
+                    capture_index.start as i32,
                 );
             } else {
                 line_tokens.produce(stack, capture_index.start as i32);
