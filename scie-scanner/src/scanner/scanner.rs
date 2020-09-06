@@ -319,4 +319,20 @@ mod tests {
         let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 0);
         assert_eq!(3, result.unwrap().capture_indices.len());
     }
+
+    #[test]
+    fn should_match_makefile_special_char() {
+        let origin = vec![
+            "(?=\\s|$)",
+            "(\\$?\\$)[@%<?^+*]",
+            "\\$?\\$\\(",
+            "%",
+        ];
+        let rules = vec![-1, 12, 14, 33];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = Scanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(String::from("%.o"), 0);
+        let onig_match = result.unwrap();
+        println!("{:?}", onig_match);
+    }
 }

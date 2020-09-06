@@ -540,6 +540,7 @@ impl Grammar {
         anchor_position: i32,
     ) -> Option<MatchRuleResult> {
         let mut rule = stack.get_rule(self);
+        let rule_info = rule.clone().get_rule_instance();
         let mut rule_scanner = rule.compile(
             self,
             stack.end_rule.clone(),
