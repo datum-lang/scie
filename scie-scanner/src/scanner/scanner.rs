@@ -97,7 +97,14 @@ impl Scanner {
 
 
         if all_results.len() > 0 {
-            Some(all_results[0].clone())
+            let mut best_match = all_results[0].clone();
+            for x in all_results {
+                // todo: maybe have multiple captures
+                if x.capture_indices[0].start < best_match.capture_indices[0].start {
+                    best_match = x;
+                }
+            }
+            Some(best_match.clone())
         } else {
             None
         }
@@ -334,9 +341,8 @@ mod tests {
         let mut scanner = Scanner::new(debug_regex);
         let result = scanner.find_next_match_sync(String::from("%.o"), 0);
         let onig_match = result.unwrap();
-        // println!("{:?}", onig_match.clone());
-        // assert_eq!(3, onig_match.index);
-        // println!(0, onig_match.clone().capture_indices[0].start);
-        // println!(1, onig_match.clone().capture_indices[0].end);
+        assert_eq!(3, onig_match.index);
+        assert_eq!(0, onig_match.clone().capture_indices[0].start);
+        assert_eq!(1, onig_match.clone().capture_indices[0].end);
     }
 }
