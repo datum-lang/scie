@@ -300,7 +300,7 @@ impl Grammar {
                         line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
                         anchor_position = capture_indices[0].end.clone() as i32;
                         let content_name = push_rule
-                            .get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                            .get_content_name(Some(line_text.clone()), Some(capture_indices.clone()));
                         let _content_name_scopes_list = name_scopes_list.push(self, content_name);
                         stack = stack.set_content_name_scopes_list(_content_name_scopes_list);
                         // todo: not used
