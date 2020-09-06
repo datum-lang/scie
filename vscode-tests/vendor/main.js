@@ -920,10 +920,12 @@ function matchRule(grammar, lineText, isFirstLine, linePos, stack, anchorPositio
         }
     }
     if (r) {
-        return {
+        let result = {
             captureIndices: r.captureIndices,
             matchedRuleId: ruleScanner.rules[r.index]
         };
+        console.log(result);
+        return result;
     }
     return null;
 }

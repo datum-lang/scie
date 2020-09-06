@@ -248,7 +248,7 @@ impl Grammar {
                     stack = stack.set_content_name_scopes_list(name_scopes_list);
                     Grammar::handle_captures(
                         self,
-                        line_text,
+                        line_text.clone(),
                         is_first_line,
                         &mut stack,
                         line_tokens,
@@ -264,8 +264,6 @@ impl Grammar {
                     }
                     anchor_position = popped.anchor_pos;
                 }
-                _stop = true;
-                return Some(stack.clone());
             } else {
                 let rule = self.get_rule(matched_rule_id);
                 line_tokens.produce(&mut stack, capture_indices[0].start as i32);
@@ -299,10 +297,6 @@ impl Grammar {
                             begin_rule.begin_captures,
                             capture_indices.clone(),
                         );
-                        //
-                        // if let Some(new_line_tokens) = handled_tokens {
-                        //     line_tokens = new_line_tokens;
-                        // }
 
                         line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
                         anchor_position = capture_indices[0].end.clone() as i32;
