@@ -643,6 +643,19 @@ GitHub 漫游指南
     }
 
     #[test]
+    fn should_build_correct_end_rule_id_for_makefile() {
+        let code = "CC=gcc
+CFLAGS=-I.
+DEPS = hellomake.h
+OBJ = hellomake.o hellofunc.o
+";
+        let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
+        assert_eq!(grammar.rule_id2desc.get(&30).unwrap().get_rule().id, -1);
+        assert_eq!(grammar.get_rule(1).patterns_length(), 4);
+        debug_output(&grammar, String::from("program.json"));
+    }
+
+    #[test]
     fn should_build_makefile_grammar() {
         let code = "CC=gcc
 CFLAGS=-I.

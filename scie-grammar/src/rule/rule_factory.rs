@@ -309,7 +309,6 @@ impl RuleFactory {
             let end_rule_factory = RuleFactory::compile_captures(end_captures, helper, repository);
             let pattern_factory = RuleFactory::compile_patterns(desc.patterns, helper, repository);
 
-            // todo: register with compile patterns
             let begin_end_rule = BeginEndRule::new(
                 desc.location.clone(),
                 id.clone(),
