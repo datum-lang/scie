@@ -197,7 +197,7 @@ impl Grammar {
         origin_is_first: bool,
         origin_line_pos: i32,
         mut stack: StackElement,
-        mut line_tokens: &mut LineTokens,
+        line_tokens: &mut LineTokens,
         check_while_conditions: bool,
     ) -> Option<StackElement> {
         let _line_length = line_text.len();
@@ -256,11 +256,12 @@ impl Grammar {
 
                     line_tokens.produce(&mut stack, capture_indices[0].end as i32);
                     let popped = stack.clone();
-
                     if let Some(_stack) = stack.pop() {
                         stack = _stack;
                     }
                     anchor_position = popped.anchor_pos;
+                } else {
+                    println!("_popped_rule {:?}", _popped_rule.clone());
                 }
             } else {
                 let rule = self.get_rule(matched_rule_id);
@@ -433,6 +434,8 @@ impl Grammar {
                         capture_index.end as i32,
                     ));
                 }
+            } else {
+                println!("lose rule: {:?}", capture_rule.clone());
             }
         }
 
