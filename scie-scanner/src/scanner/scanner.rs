@@ -1,4 +1,4 @@
-use onig::{Regex};
+use onig::Regex;
 use unicode_segmentation::UnicodeSegmentation;
 
 #[derive(Debug, Clone, Serialize)]
@@ -90,11 +90,10 @@ impl Scanner {
 
                 all_results.push(IOnigMatch {
                     index,
-                    capture_indices
+                    capture_indices,
                 })
             }
         }
-
 
         if all_results.len() > 0 {
             let mut best_match = all_results[0].clone();
@@ -121,7 +120,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::scanner::{str_vec_to_string, Scanner, IOnigMatch};
+    use crate::scanner::scanner::{str_vec_to_string, IOnigMatch, Scanner};
 
     #[test]
     fn should_handle_simple_regex() {
@@ -330,12 +329,7 @@ mod tests {
 
     #[test]
     fn should_match_makefile_special_char() {
-        let origin = vec![
-            "(?=\\s|$)",
-            "(\\$?\\$)[@%<?^+*]",
-            "\\$?\\$\\(",
-            "%",
-        ];
+        let origin = vec!["(?=\\s|$)", "(\\$?\\$)[@%<?^+*]", "\\$?\\$\\(", "%"];
         let rules = vec![-1, 12, 14, 33];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = Scanner::new(debug_regex);

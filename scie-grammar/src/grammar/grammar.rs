@@ -10,7 +10,7 @@ use crate::rule::{
     AbstractRule, BeginWhileRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry,
 };
 use core::cmp;
-use scie_scanner::scanner::scanner::{IOnigCaptureIndex};
+use scie_scanner::scanner::scanner::IOnigCaptureIndex;
 
 pub struct IToken {
     pub start_index: i32,
@@ -299,8 +299,10 @@ impl Grammar {
 
                         line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
                         anchor_position = capture_indices[0].end.clone() as i32;
-                        let content_name = push_rule
-                            .get_content_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                        let content_name = push_rule.get_content_name(
+                            Some(line_text.clone()),
+                            Some(capture_indices.clone()),
+                        );
                         let _content_name_scopes_list = name_scopes_list.push(self, content_name);
                         stack = stack.set_content_name_scopes_list(_content_name_scopes_list);
                         // todo: not used
@@ -542,7 +544,8 @@ impl Grammar {
     ) {
         let match_result =
             self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
-        if let Some(_result) = match_result {} else {
+        if let Some(_result) = match_result {
+        } else {
             // None
         };
         // todo: get injections logic
@@ -747,9 +750,16 @@ hellomake: $(OBJ)
             for token in result.line_tokens._tokens {
                 let start = token.start_index.clone() as usize;
                 let end = token.end_index.clone() as usize;
-                let new_line: String = String::from(line).chars().skip(start).take(end - start).collect();
+                let new_line: String = String::from(line)
+                    .chars()
+                    .skip(start)
+                    .take(end - start)
+                    .collect();
                 let token_str: String = token.scopes.join(", ");
-                println!(" - token from {:?} to {:?} ({:?}) with scopes {:?}", token.start_index, token.end_index, new_line, token_str)
+                println!(
+                    " - token from {:?} to {:?} ({:?}) with scopes {:?}",
+                    token.start_index, token.end_index, new_line, token_str
+                )
             }
         }
         grammar

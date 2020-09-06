@@ -53,7 +53,12 @@ impl RegExpSourceList {
         }
     }
 
-    pub fn compile(&mut self, _grammar: &mut Grammar, _allow_a: bool, _allow_g: bool) -> CompiledRule {
+    pub fn compile(
+        &mut self,
+        _grammar: &mut Grammar,
+        _allow_a: bool,
+        _allow_g: bool,
+    ) -> CompiledRule {
         if !self._has_anchors {
             if let None = self._cached {
                 let reg_exps = self
