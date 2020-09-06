@@ -242,7 +242,7 @@ impl Grammar {
                 let _popped_rule = stack.get_rule(self);
                 if let RuleEnum::BeginEndRule(popped_rule) = _popped_rule.get_rule_instance() {
                     let name_scopes_list = stack.clone().name_scopes_list;
-                    line_tokens.produce(&mut stack, capture_indices[0].clone().start as i32);
+                    line_tokens.produce(&mut stack, capture_indices[0].start.clone() as i32);
                     stack = stack.set_content_name_scopes_list(name_scopes_list);
                     Grammar::handle_captures(
                         self,
