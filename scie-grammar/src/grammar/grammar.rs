@@ -705,8 +705,7 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues() {
-        let code = "%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+        let code = "%.o: %.c $(DEPS)\
 ";
         let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 64);

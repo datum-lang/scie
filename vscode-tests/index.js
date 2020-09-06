@@ -21,8 +21,6 @@ const registry = new vsctm.Registry({
 
 registry.loadGrammar('source.makefile').then(grammar => {
     const text = `%.o: %.c $(DEPS)
-\t$(CC) -c -o $@ $< $(CFLAGS)
-
 `.split("\n");
     let ruleStack = vsctm.INITIAL;
     for (let i = 0; i < text.length; i++) {
