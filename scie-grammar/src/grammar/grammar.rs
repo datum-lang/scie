@@ -302,8 +302,8 @@ impl Grammar {
                         let content_name = push_rule
                             .get_name(Some(line_text.clone()), Some(capture_indices.clone()));
                         let _content_name_scopes_list = name_scopes_list.push(self, content_name);
+                        stack = stack.set_content_name_scopes_list(_content_name_scopes_list);
                         // todo: not used
-                        // let temp_stack = &mut stack.set_content_name_scopes_list(_content_name_scopes_list);
                         // if push_rule.endHasBackReferences {
                         //
                         // }
