@@ -25,9 +25,9 @@ pub struct GrammarRegistry {}
 impl GrammarRegistry {
     pub fn load_grammar_with_configuration(
         &self,
-        initial_scope_name: String,
-        initial_language: i32,
-        configuration: IGrammarConfiguration,
+        _initial_scope_name: String,
+        _initial_language: i32,
+        _configuration: IGrammarConfiguration,
     ) {
     }
 }

@@ -10,9 +10,7 @@ use crate::rule::{
     AbstractRule, BeginWhileRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry,
 };
 use core::cmp;
-use scie_scanner::scanner::scanner::{IOnigCaptureIndex, IOnigMatch};
-use std::borrow::Borrow;
-use std::alloc::handle_alloc_error;
+use scie_scanner::scanner::scanner::{IOnigCaptureIndex};
 
 pub struct IToken {
     pub start_index: i32,
@@ -121,7 +119,7 @@ impl Grammar {
         emit_binary_tokens: bool,
     ) -> TokenizeResult {
         if self.root_id.clone() == -1 {
-            let mut repository = self.grammar.repository.clone().unwrap();
+            let repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.self_s.unwrap();
             self.root_id = RuleFactory::get_compiled_rule_id(
                 based.clone(),
@@ -302,9 +300,9 @@ impl Grammar {
                         anchor_position = capture_indices[0].end.clone() as i32;
                         let content_name = push_rule
                             .get_name(Some(line_text.clone()), Some(capture_indices.clone()));
-                        let content_name_scopes_list = name_scopes_list.push(self, content_name);
+                        let _content_name_scopes_list = name_scopes_list.push(self, content_name);
                         // todo: not used
-                        // let temp_stack = &mut stack.set_content_name_scopes_list(content_name_scopes_list);
+                        // let temp_stack = &mut stack.set_content_name_scopes_list(_content_name_scopes_list);
                         // if push_rule.endHasBackReferences {
                         //
                         // }
@@ -313,7 +311,7 @@ impl Grammar {
                         // _stop = true;
                         // return None;
                     }
-                    RuleEnum::BeginWhileRule(while_rule) => {
+                    RuleEnum::BeginWhileRule(_while_rule) => {
                         _stop = true;
                         return Some(stack.clone());
                     }
@@ -424,7 +422,7 @@ impl Grammar {
 
                 let capture_scope_name =
                     capture_rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
-                if let Some(name) = capture_scope_name.clone() {
+                if let Some(_name) = capture_scope_name.clone() {
                     let mut base = stack.clone().content_name_scopes_list;
                     if local_stack.len() > 0 {
                         base = local_stack[local_stack.len() - 1].clone().scopes;
@@ -457,7 +455,7 @@ impl Grammar {
         is_first_line: bool,
         line_pos: i32,
         mut stack: StackElement,
-        line_tokens: LineTokens,
+        _line_tokens: LineTokens,
     ) -> CheckWhileConditionResult {
         let mut anchor_position = -1;
         if stack.begin_rule_captured_eol {
@@ -524,7 +522,7 @@ impl Grammar {
     ) {
         let match_result =
             self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
-        if let Some(result) = match_result {} else {
+        if let Some(_result) = match_result {} else {
             // None
         };
         // todo: get injections logic
@@ -569,7 +567,7 @@ impl Grammar {
         self.tokenize(line_text, prev_state, false)
     }
 
-    pub fn tokenize_line2(&self, line_text: String, prev_state: Option<StackElement>) {}
+    pub fn tokenize_line2(&self, _line_text: String, _prev_state: Option<StackElement>) {}
 }
 
 impl IRuleFactoryHelper for Grammar {}
@@ -577,8 +575,8 @@ impl IRuleFactoryHelper for Grammar {}
 impl IGrammarRegistry for Grammar {
     fn get_external_grammar(
         &self,
-        scope_name: String,
-        repository: IRawRepository,
+        _scope_name: String,
+        _repository: IRawRepository,
     ) -> Option<IRawGrammar> {
         None
     }
@@ -626,7 +624,7 @@ return 0;
 ";
         let grammar = to_grammar("test-cases/first-mate/fixtures/c.json", code);
         // assert_eq!(grammar.rule_id2desc.len(), 162);
-        // debug_output(&grammar, String::from("program.json"));
+        debug_output(&grammar, String::from("program.json"));
     }
 
     #[test]
@@ -672,7 +670,7 @@ OBJ = hellomake.o hellofunc.o
 ";
         let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
         let mut end_rule_count = 0;
-        for (x, rule) in grammar.rule_id2desc.clone() {
+        for (_x, rule) in grammar.rule_id2desc.clone() {
             let rule_instance = rule.get_rule_instance();
             if let RuleEnum::BeginEndRule(rule) = rule_instance {
                 assert_eq!(rule._end.rule_id, -1);

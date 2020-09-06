@@ -1,4 +1,4 @@
-use onig::{Error, Regex};
+use onig::{Regex};
 use unicode_segmentation::UnicodeSegmentation;
 
 #[derive(Debug, Clone, Serialize)]
@@ -61,7 +61,7 @@ impl Scanner {
         let pattern = self.patterns[self.index].clone();
 
         let _regex = Regex::new(pattern.as_str());
-        if let Err(err) = _regex {
+        if let Err(_err) = _regex {
             return None;
         }
 

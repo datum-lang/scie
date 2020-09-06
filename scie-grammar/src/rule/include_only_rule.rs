@@ -60,7 +60,7 @@ impl AbstractRule for IncludeOnlyRule {
         &mut self,
         grammar: &mut Grammar,
         out: &mut RegExpSourceList,
-        is_first: bool,
+        _is_first: bool,
     ) {
         for x in self.patterns.clone() {
             let mut rule = grammar.get_rule(x);
@@ -71,7 +71,7 @@ impl AbstractRule for IncludeOnlyRule {
     fn compile(
         &mut self,
         grammar: &mut Grammar,
-        end_regex_source: Option<String>,
+        _end_regex_source: Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {

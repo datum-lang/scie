@@ -45,7 +45,7 @@ impl ScopeListElement {
 
     pub fn _push(
         origin_target: ScopeListElement,
-        grammar: &mut Grammar,
+        _grammar: &mut Grammar,
         scopes: Vec<String>,
     ) -> ScopeListElement {
         let mut target = origin_target.clone();

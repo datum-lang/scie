@@ -1,6 +1,5 @@
 use crate::grammar::{Grammar, ScopeListElement};
 use crate::rule::{AbstractRule, IRuleRegistry};
-use std::rc::Rc;
 
 // todo: change to rccall https://stackoverflow.com/questions/36167160/how-do-i-express-mutually-recursive-data-structures-in-safe-rust
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]

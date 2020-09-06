@@ -98,7 +98,7 @@ impl AbstractRule for BeginEndRule {
     fn compile(
         &mut self,
         grammar: &mut Grammar,
-        end_regex_source: Option<String>,
+        _end_regex_source: Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {

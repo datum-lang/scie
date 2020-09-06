@@ -173,7 +173,7 @@ mod tests {
         let mut data = String::new();
         file.read_to_string(&mut data).unwrap();
 
-        let p: IRawRule = serde_json::from_str(&data).unwrap();
+        let _p: IRawRule = serde_json::from_str(&data).unwrap();
     }
 
     #[test]
@@ -206,7 +206,7 @@ mod tests {
         file.read_to_string(&mut data).unwrap();
         let p: IRawGrammar = match serde_json::from_str(&data) {
             Ok(x) => x,
-            Err(err) => IRawGrammar::new(),
+            Err(_err) => IRawGrammar::new(),
         };
         assert_eq!(25, p.repository.unwrap().map.name_map.len());
     }

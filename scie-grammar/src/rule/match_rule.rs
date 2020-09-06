@@ -53,9 +53,9 @@ impl AbstractRule for MatchRule {
     }
     fn collect_patterns_recursive(
         &mut self,
-        grammar: &mut Grammar,
+        _grammar: &mut Grammar,
         out: &mut RegExpSourceList,
-        is_first: bool,
+        _is_first: bool,
     ) {
         out.push(Box::new(self._match.clone()));
     }
@@ -63,7 +63,7 @@ impl AbstractRule for MatchRule {
     fn compile(
         &mut self,
         grammar: &mut Grammar,
-        end_regex_source: Option<String>,
+        _end_regex_source: Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {

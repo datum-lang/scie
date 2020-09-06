@@ -57,19 +57,19 @@ impl AbstractRule for CaptureRule {
     }
     fn collect_patterns_recursive(
         &mut self,
-        grammar: &mut Grammar,
-        out: &mut RegExpSourceList,
-        is_first: bool,
+        _grammar: &mut Grammar,
+        _out: &mut RegExpSourceList,
+        _is_first: bool,
     ) {
         unimplemented!()
     }
 
     fn compile(
         &mut self,
-        grammar: &mut Grammar,
-        end_regex_source: Option<String>,
-        allow_a: bool,
-        allow_g: bool,
+        _grammar: &mut Grammar,
+        _end_regex_source: Option<String>,
+        _allow_a: bool,
+        _allow_g: bool,
     ) -> CompiledRule {
         unimplemented!()
     }

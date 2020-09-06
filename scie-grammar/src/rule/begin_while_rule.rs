@@ -61,7 +61,7 @@ impl BeginWhileRule {
     pub fn compile_while(
         &mut self,
         grammar: &mut Grammar,
-        end_regex_source: Option<String>,
+        _end_regex_source: Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
@@ -119,7 +119,7 @@ impl AbstractRule for BeginWhileRule {
     fn compile(
         &mut self,
         grammar: &mut Grammar,
-        end_regex_source: Option<String>,
+        _end_regex_source: Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {

@@ -12,7 +12,7 @@ fn parse_raw_grammar(content: String, file_path: Option<String>) -> Result<IRawG
     ))
 }
 
-fn parse_json_grammar(content: String, file_path: String) -> IRawGrammar {
+fn parse_json_grammar(_content: String, _file_path: String) -> IRawGrammar {
     IRawGrammar::new()
 }
 

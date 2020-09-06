@@ -17,9 +17,9 @@ impl RegexSource {
     }
 
     pub fn replace_captures(
-        regex_source: String,
-        capture_source: String,
-        capture_indices: Vec<IOnigCaptureIndex>,
+        _regex_source: String,
+        _capture_source: String,
+        _capture_indices: Vec<IOnigCaptureIndex>,
     ) -> String {
         String::from("")
     }

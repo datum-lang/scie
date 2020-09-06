@@ -29,7 +29,7 @@ impl RuleFactory {
 
         if let Some(capts) = captures.clone() {
             let mut maximum_capture_id = 0;
-            for (id_str, value) in capts.clone().map.capture_map {
+            for (id_str, _value) in capts.clone().map.capture_map {
                 let id: i32 = id_str.parse().unwrap_or(0);
                 if id > maximum_capture_id {
                     maximum_capture_id = id
@@ -104,7 +104,7 @@ impl RuleFactory {
                     if include_s.starts_with("#") {
                         let first = remove_first(include_s.as_str());
                         let mut local_included_rule = repository.map.name_map.get_mut(first);
-                        if let Some(mut rule) = local_included_rule.cloned() {
+                        if let Some(rule) = local_included_rule.cloned() {
                             pattern_id = RuleFactory::get_compiled_rule_id(
                                 *rule,
                                 helper,
@@ -120,7 +120,7 @@ impl RuleFactory {
                     } else if include_s == "$base" || include_s == "$self" {
                         let local_included_rule =
                             repository.map.name_map.get_mut(include_s.as_str());
-                        if let Some(mut rule) = local_included_rule.cloned() {
+                        if let Some(rule) = local_included_rule.cloned() {
                             pattern_id = RuleFactory::get_compiled_rule_id(
                                 *rule,
                                 helper,
@@ -131,21 +131,21 @@ impl RuleFactory {
                     } else {
                         // todo: find the cases
                         println!("todo: external grammar {:?}", pattern.include);
-                        let mut external_grammar_name: Option<String> = None;
-                        let mut external_grammar_include: Option<String> = None;
+                        let mut _external_grammar_name: Option<String> = None;
+                        let mut _external_grammar_include: Option<String> = None;
                         let include_string = pattern.include.unwrap();
                         let sharp_index = include_string.find("#");
 
                         if let Some(index) = sharp_index {
                             let (_, last) = include_string.split_at(index);
-                            external_grammar_name = Some(String::from(last));
+                            _external_grammar_name = Some(String::from(last));
 
                             let (_, include_last) = include_string.split_at(index + 1);
-                            external_grammar_include = Some(String::from(include_last));
+                            _external_grammar_include = Some(String::from(include_last));
 
                             println!(
                                 "{:?}, {:?}",
-                                external_grammar_name, external_grammar_include
+                                _external_grammar_name, _external_grammar_include
                             );
                         }
                     }
@@ -270,7 +270,7 @@ impl RuleFactory {
                 return id.clone();
             }
 
-            let mut begin_captures = desc.begin_captures.clone();
+            let begin_captures = desc.begin_captures.clone();
             if let None = begin_captures {
                 desc.begin_captures = desc.clone().captures
             }
