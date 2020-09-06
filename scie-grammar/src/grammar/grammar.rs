@@ -709,7 +709,13 @@ hellomake: $(OBJ)
         let c_code = String::from(code);
         for line in c_code.lines() {
             let result = grammar.tokenize_line(String::from(line), None);
-            println!("{:?}", result);
+            for token in result.line_tokens._tokens {
+                let start = token.start_index.clone() as usize;
+                let end = token.end_index.clone() as usize;
+                let new_line: String = String::from(line).chars().skip(start).take(end - start).collect();
+                let token_str: String = token.scopes.join(", ");
+                println!(" - token from {:?} to {:?} ({:?}) with scopes {:?}", token.start_index, token.end_index, new_line, token_str)
+            }
         }
         grammar
     }
