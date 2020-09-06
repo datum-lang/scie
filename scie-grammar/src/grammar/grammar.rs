@@ -507,8 +507,7 @@ impl Grammar {
     ) {
         let match_result =
             self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
-        if let Some(result) = match_result {
-        } else {
+        if let Some(result) = match_result {} else {
             // None
         };
         // todo: get injections logic
@@ -655,15 +654,16 @@ DEPS = hellomake.h
 OBJ = hellomake.o hellofunc.o
 ";
         let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
-        match grammar.rule_id2desc.get(&30).unwrap().get_rule_instance() {
-            RuleEnum::BeginEndRule(rule) => {
+        let mut end_rule_count = 0;
+        for (x, rule) in grammar.rule_id2desc.clone() {
+            let rule_instance = rule.get_rule_instance();
+            if let RuleEnum::BeginEndRule(rule) = rule_instance {
                 assert_eq!(rule._end.rule_id, -1);
-            }
-            _ => {
-                assert!(false);
+                end_rule_count = end_rule_count + 1;
             }
         }
         assert_eq!(grammar.get_rule(1).patterns_length(), 4);
+        assert_eq!(end_rule_count, 24);
         debug_output(&grammar, String::from("program.json"));
     }
 
