@@ -267,7 +267,7 @@ impl Grammar {
                 match rule.get_rule_instance() {
                     RuleEnum::BeginEndRule(begin_rule) => {
                         let push_rule = begin_rule.clone();
-                        let handled_tokens = Grammar::handle_captures(
+                        Grammar::handle_captures(
                             self,
                             line_text.clone(),
                             is_first_line,
