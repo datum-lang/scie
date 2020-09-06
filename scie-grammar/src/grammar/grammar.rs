@@ -53,9 +53,9 @@ pub struct CheckWhileRuleResult {
 #[derive(Debug, Clone)]
 pub struct CheckWhileConditionResult {
     pub stack: Box<StackElement>,
-    pub line_pos:  i32,
+    pub line_pos: i32,
     pub anchor_position: i32,
-    pub is_first_line: bool
+    pub is_first_line: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -334,96 +334,93 @@ impl Grammar {
         let max_end = capture_indices[0].end;
         for i in 0..len {
             let capture_rule = captures[i].clone();
-            // if let None = capture_rule {
-            //     continue
-            // }
-
-            let capture_index = capture_indices[i].clone();
-            if capture_index.length == 0 {
-                continue;
-            }
-
-            if capture_index.start > max_end {
-                continue;
-            }
-
-            while local_stack.len() > 0
-                && local_stack[local_stack.len() - 1].end_pos <= capture_index.start as i32
-            {
-                let mut local_stack_element = local_stack[local_stack.len() - 1].clone();
-                line_tokens.produce_from_scopes(
-                    &mut local_stack_element.scopes,
-                    local_stack_element.end_pos,
-                );
-                local_stack.pop();
-            }
-
-            if local_stack.len() > 0 {
-                let mut local_stack_element = local_stack[local_stack.len() - 1].clone();
-                line_tokens.produce_from_scopes(
-                    &mut local_stack_element.scopes,
-                    capture_index.start as i32,
-                );
-            } else {
-                line_tokens.produce(stack, capture_index.start as i32);
-            }
-
-            match capture_rule.get_rule_instance() {
-                RuleEnum::CaptureRule(capture) => {
-                    if capture.retokenize_captured_with_rule_id != 0 {
-                        let scope_name = capture
-                            .get_name(Some(line_text.clone()), Some(capture_indices.clone()));
-                        let name_scopes_list =
-                            stack.content_name_scopes_list.push(grammar, scope_name);
-                        let content_name = capture.get_content_name(
-                            Some(line_text.clone()),
-                            Some(capture_indices.clone()),
-                        );
-                        let content_name_scopes_list = name_scopes_list.push(grammar, content_name);
-
-                        let mut stack_clone = stack.clone().push(
-                            capture.retokenize_captured_with_rule_id,
-                            capture_index.start.clone() as i32,
-                            -1,
-                            false,
-                            None,
-                            name_scopes_list,
-                            content_name_scopes_list,
-                        );
-
-                        let sub_text = line_text.split_at(capture_index.end).0;
-                        let mut sub_is_first_line = false;
-                        if is_first_line && capture_index.start == 0 {
-                            sub_is_first_line = true;
-                        }
-                        Grammar::tokenize_string(
-                            grammar,
-                            String::from(sub_text),
-                            sub_is_first_line,
-                            capture_index.start as i32,
-                            stack_clone,
-                            line_tokens,
-                            false,
-                        );
-                        // todo: find the next_text_not_switch_issues
-                        continue;
-                    }
+            if let RuleEnum::CaptureRule(capture) = capture_rule.get_rule_instance() {
+                if capture.clone().rule._type == "" {
+                    continue;
                 }
-                _ => {}
-            }
 
-            let capture_scope_name =
-                capture_rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
-            if let Some(name) = capture_scope_name.clone() {
-                let mut base = stack.clone().content_name_scopes_list;
+                let capture_index = capture_indices[i].clone();
+                if capture_index.length == 0 {
+                    continue;
+                }
+
+                if capture_index.start > max_end {
+                    continue;
+                }
+
+                while local_stack.len() > 0
+                    && local_stack[local_stack.len() - 1].end_pos <= capture_index.start as i32
+                {
+                    let mut local_stack_element = local_stack[local_stack.len() - 1].clone();
+                    line_tokens.produce_from_scopes(
+                        &mut local_stack_element.scopes,
+                        local_stack_element.end_pos,
+                    );
+                    local_stack.pop();
+                }
+
                 if local_stack.len() > 0 {
-                    base = local_stack[local_stack.len() - 1].clone().scopes;
+                    let mut local_stack_element = local_stack[local_stack.len() - 1].clone();
+                    line_tokens.produce_from_scopes(
+                        &mut local_stack_element.scopes,
+                        capture_index.start as i32,
+                    );
+                } else {
+                    line_tokens.produce(stack, capture_index.start as i32);
                 }
-                let capture_rule_scopes_list = base.push(grammar, capture_scope_name.clone());
-                local_stack.push(LocalStackElement::new(
-                    capture_rule_scopes_list,
-                    capture_index.end as i32,
-                ));
+
+                if capture.retokenize_captured_with_rule_id != 0 {
+                    let scope_name = capture
+                        .get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                    let name_scopes_list =
+                        stack.content_name_scopes_list.push(grammar, scope_name);
+                    let content_name = capture.get_content_name(
+                        Some(line_text.clone()),
+                        Some(capture_indices.clone()),
+                    );
+                    let content_name_scopes_list = name_scopes_list.push(grammar, content_name);
+
+                    let mut stack_clone = stack.clone().push(
+                        capture.retokenize_captured_with_rule_id,
+                        capture_index.start.clone() as i32,
+                        -1,
+                        false,
+                        None,
+                        name_scopes_list,
+                        content_name_scopes_list,
+                    );
+
+                    let sub_text = line_text.split_at(capture_index.end).0;
+                    let mut sub_is_first_line = false;
+                    if is_first_line && capture_index.start == 0 {
+                        sub_is_first_line = true;
+                    }
+                    Grammar::tokenize_string(
+                        grammar,
+                        String::from(sub_text),
+                        sub_is_first_line,
+                        capture_index.start as i32,
+                        stack_clone,
+                        line_tokens,
+                        false,
+                    );
+                    // todo: find the next_text_not_switch_issues
+                    continue;
+                }
+
+                let capture_scope_name =
+                    capture_rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                if let Some(name) = capture_scope_name.clone() {
+                    let mut base = stack.clone().content_name_scopes_list;
+                    if local_stack.len() > 0 {
+                        base = local_stack[local_stack.len() - 1].clone().scopes;
+                    }
+                    let capture_rule_scopes_list = base.push(grammar, capture_scope_name.clone());
+                    local_stack.push(LocalStackElement::new(
+                        capture_rule_scopes_list,
+                        capture_index.end as i32,
+                    ));
+                }
             }
         }
 
@@ -497,7 +494,7 @@ impl Grammar {
             stack: Box::new(stack),
             line_pos,
             anchor_position,
-            is_first_line
+            is_first_line,
         }
     }
 
