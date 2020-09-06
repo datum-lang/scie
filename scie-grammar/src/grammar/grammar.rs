@@ -313,6 +313,7 @@ impl Grammar {
                         // return None;
                     }
                     RuleEnum::BeginWhileRule(_while_rule) => {
+                        println!("todo: RuleEnum - BeginWhileRule");
                         _stop = true;
                         return Some(stack.clone());
                     }
@@ -327,13 +328,12 @@ impl Grammar {
                             capture_indices.clone(),
                         );
                         line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
-                        let popped = stack.clone();
                         if let Some(_stack) = stack.pop() {
                             stack = _stack;
                         }
                     }
                     _ => {
-                        println!("todo: RuleEnum");
+                        println!("todo: RuleEnum - Others");
                         _stop = true;
                         return Some(stack.clone());
                     }
