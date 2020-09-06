@@ -39,66 +39,67 @@ impl Scanner {
             return None;
         }
 
-        let mut after_pos_str = String::from("");
-        let mut start_pos = start_position;
-        let string_vec = origin_str.graphemes(true).collect::<Vec<&str>>();
+        let mut all_results: Vec<IOnigMatch> = vec![];
+        for (index, pattern) in self.patterns.iter().enumerate() {
+            let mut after_pos_str = String::from("");
+            let mut start_pos = start_position;
+            let string_vec = origin_str.graphemes(true).collect::<Vec<&str>>();
 
-        if start_pos >= string_vec.len() as i32 {
-            return None;
-        }
+            if start_pos >= string_vec.len() as i32 {
+                return None;
+            }
 
-        if start_pos < 0 {
-            start_pos = 0
-        }
+            if start_pos < 0 {
+                start_pos = 0
+            }
 
-        let before_vec = string_vec[..start_pos as usize].to_owned();
-        let after_vec = string_vec[start_pos as usize..].to_owned();
+            let before_vec = string_vec[..start_pos as usize].to_owned();
+            let after_vec = string_vec[start_pos as usize..].to_owned();
 
-        for x in after_vec {
-            after_pos_str = after_pos_str + x
-        }
+            for x in after_vec {
+                after_pos_str = after_pos_str + x
+            }
 
-        let pattern = self.patterns[self.index].clone();
+            let _regex = Regex::new(pattern.as_str());
+            if let Err(_err) = _regex {
+                return None;
+            }
 
-        let _regex = Regex::new(pattern.as_str());
-        if let Err(_err) = _regex {
-            return None;
-        }
+            let regex = _regex.unwrap();
+            let mut capture_indices = vec![];
+            let _captures = regex.captures(after_pos_str.as_str());
 
-        let regex = _regex.unwrap();
-        let mut capture_indices = vec![];
-        let _captures = regex.captures(after_pos_str.as_str());
+            if let Some(captures) = _captures {
+                for (_, pos) in captures.iter_pos().enumerate() {
+                    if let Some((start, end)) = pos {
+                        let length = end - start;
+                        let x1 = after_pos_str.split_at(end).0;
+                        let utf8_end =
+                            before_vec.len() + x1.graphemes(true).collect::<Vec<&str>>().len();
+                        let utf8_start = utf8_end - length;
 
-        if let Some(captures) = _captures {
-            for (_, pos) in captures.iter_pos().enumerate() {
-                if let Some((start, end)) = pos {
-                    let length = end - start;
-                    let x1 = after_pos_str.split_at(end).0;
-                    let utf8_end =
-                        before_vec.len() + x1.graphemes(true).collect::<Vec<&str>>().len();
-                    let utf8_start = utf8_end - length;
+                        let capture = IOnigCaptureIndex {
+                            start: utf8_start,
+                            end: utf8_end,
+                            length,
+                        };
 
-                    let capture = IOnigCaptureIndex {
-                        start: utf8_start,
-                        end: utf8_end,
-                        length,
-                    };
-
-                    capture_indices.push(capture)
+                        capture_indices.push(capture);
+                    }
                 }
+
+                all_results.push(IOnigMatch {
+                    index,
+                    capture_indices
+                })
             }
         }
 
-        if capture_indices.len() <= 0 {
-            self.index = self.index + 1;
-            self.find_next_match_sync(origin_str.clone(), start_pos)
+
+        if all_results.len() > 0 {
+            Some(all_results[0].clone())
         } else {
-            let index = self.index.clone();
-            self.index = 0;
-            Some(IOnigMatch {
-                index,
-                capture_indices,
-            })
+            None
         }
     }
 }
@@ -113,7 +114,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::scanner::{str_vec_to_string, Scanner};
+    use crate::scanner::scanner::{str_vec_to_string, Scanner, IOnigMatch};
 
     #[test]
     fn should_handle_simple_regex() {
@@ -333,6 +334,9 @@ mod tests {
         let mut scanner = Scanner::new(debug_regex);
         let result = scanner.find_next_match_sync(String::from("%.o"), 0);
         let onig_match = result.unwrap();
-        println!("{:?}", onig_match);
+        // println!("{:?}", onig_match.clone());
+        // assert_eq!(3, onig_match.index);
+        // println!(0, onig_match.clone().capture_indices[0].start);
+        // println!(1, onig_match.clone().capture_indices[0].end);
     }
 }
