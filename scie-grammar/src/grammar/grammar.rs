@@ -12,6 +12,7 @@ use crate::rule::{
 use core::cmp;
 use scie_scanner::scanner::scanner::{IOnigCaptureIndex, IOnigMatch};
 use std::borrow::Borrow;
+use std::alloc::handle_alloc_error;
 
 pub struct IToken {
     pub start_index: i32,
@@ -240,7 +241,29 @@ impl Grammar {
             let capture_indices = capture_result.capture_indices;
             let matched_rule_id = capture_result.matched_rule_id;
             if matched_rule_id == -1 {
-                println!("todo: matched the `end` for this rule => pop it");
+                let _popped_rule = stack.get_rule(self);
+                if let RuleEnum::BeginEndRule(popped_rule) = _popped_rule.get_rule_instance() {
+                    let name_scopes_list = stack.clone().name_scopes_list;
+                    line_tokens.produce(&mut stack, capture_indices[0].clone().start as i32);
+                    stack = stack.set_content_name_scopes_list(name_scopes_list);
+                    Grammar::handle_captures(
+                        self,
+                        line_text,
+                        is_first_line,
+                        &mut stack,
+                        line_tokens,
+                        popped_rule.end_captures,
+                        capture_indices.clone(),
+                    );
+
+                    line_tokens.produce(&mut stack, capture_indices[0].end as i32);
+                    let popped = stack.clone();
+
+                    if let Some(_stack) = stack.pop() {
+                        stack = _stack;
+                    }
+                    anchor_position = popped.anchor_pos;
+                }
                 _stop = true;
                 return Some(stack.clone());
             } else {
