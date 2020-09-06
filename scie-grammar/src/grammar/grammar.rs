@@ -316,7 +316,24 @@ impl Grammar {
                         _stop = true;
                         return Some(stack.clone());
                     }
+                    RuleEnum::MatchRule(match_rule) => {
+                        Grammar::handle_captures(
+                            self,
+                            line_text.clone(),
+                            is_first_line,
+                            &mut stack,
+                            line_tokens,
+                            match_rule.captures,
+                            capture_indices.clone(),
+                        );
+                        line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
+                        let popped = stack.clone();
+                        if let Some(_stack) = stack.pop() {
+                            stack = _stack;
+                        }
+                    }
                     _ => {
+                        println!("todo: RuleEnum");
                         _stop = true;
                         return Some(stack.clone());
                     }
