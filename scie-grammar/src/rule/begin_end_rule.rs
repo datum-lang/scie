@@ -113,10 +113,7 @@ impl AbstractRule for BeginEndRule {
         let mut cached_compiled_patterns = RegExpSourceList::new();
 
         if let None = self._cached_compiled_patterns {
-            // todo: figured cached issues
-            println!("todo: figured cached issues");
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
-
             if let Some(apply_end) = self.apply_end_pattern_last {
                 if apply_end {
                     cached_compiled_patterns.push(Box::new(self._end.clone()));

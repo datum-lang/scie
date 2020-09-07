@@ -560,7 +560,6 @@ impl Grammar {
     ) -> Option<MatchRuleResult> {
         let mut rule = stack.get_rule(self);
         let rule_info = rule.clone().get_rule_instance();
-        println!("line_text: {:?}, rule_info: {:?}", line_text.clone(), rule.clone().get_rule().id);
 
         let mut rule_scanner;
         match rule_info {
@@ -591,7 +590,6 @@ impl Grammar {
                 matched_rule_id: rule_scanner.rules[result.index],
             };
 
-            println!("{:?}", match_rule_result.clone());
             Some(match_rule_result)
         } else {
             None
@@ -742,7 +740,7 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues() {
-        let code = "%.o: %.c $(DEPS)\
+        let code = "%.o: %.c $(DEPS)
 ";
         let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 64);
