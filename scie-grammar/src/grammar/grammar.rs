@@ -667,6 +667,7 @@ return 0;
     fn should_identify_c_include() {
         let code = "#include <stdio.h>";
         let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/c.json", code);
+        assert_eq!(grammar.rule_id2desc.len(), 161);
         debug_output(&grammar, String::from("program.json"));
     }
 
@@ -700,7 +701,7 @@ GitHub 漫游指南
     fn should_build_html_grammar() {
         let code = "{}";
         let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/html.json", code);
-        assert_eq!(grammar.rule_id2desc.len(), 67);
+        assert_eq!(grammar.rule_id2desc.len(), 101);
         debug_output(&grammar, String::from("program.json"));
     }
 
@@ -739,7 +740,7 @@ hellomake: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 ";
         let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
-        assert_eq!(grammar.rule_id2desc.len(), 64);
+        assert_eq!(grammar.rule_id2desc.len(), 82);
         assert_eq!(grammar.get_rule(1).patterns_length(), 4);
         debug_output(&grammar, String::from("program.json"));
     }
@@ -749,9 +750,6 @@ hellomake: $(OBJ)
         let code = "%.o: %.c $(DEPS)
 ";
         let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
-        assert_eq!(grammar.rule_id2desc.len(), 64);
-        assert_eq!(grammar.get_rule(1).patterns_length(), 4);
-
         let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), &mut None);
         let tokens = result.line_tokens._tokens.clone();
         assert_eq!(8, tokens.len());
