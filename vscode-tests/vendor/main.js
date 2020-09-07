@@ -3653,7 +3653,8 @@ var RuleFactory = /** @class */ (function () {
                     }
                     else if (pattern.include === '$base' || pattern.include === '$self') {
                         // Special include also found in `repository`
-                        patternId = RuleFactory.getCompiledRuleId(repository[pattern.include], helper, repository);
+                        let repositoryElement = repository[pattern.include];
+                        patternId = RuleFactory.getCompiledRuleId(repositoryElement, helper, repository);
                     }
                     else {
                         var externalGrammarName = null;

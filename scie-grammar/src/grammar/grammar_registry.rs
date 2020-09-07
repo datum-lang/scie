@@ -29,5 +29,14 @@ impl GrammarRegistry {
         _initial_language: i32,
         _configuration: IGrammarConfiguration,
     ) {
+
+    }
+    // todo: modify logic to here for _collectDependenciesForDep
+    pub fn load_grammar(
+        &self,
+        _initial_scope_name: String,
+        _initial_language: i32,
+        _configuration: IGrammarConfiguration,
+    ) {
     }
 }
