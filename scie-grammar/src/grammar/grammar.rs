@@ -661,7 +661,7 @@ printf(\"Hello, World!\");
 return 0;
 }
 ";
-        let grammar = to_grammar("test-cases/first-mate/fixtures/c.json", code);
+        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/c.json", code);
         // assert_eq!(grammar.rule_id2desc.len(), 162);
         debug_output(&grammar, String::from("program.json"));
     }
@@ -671,7 +671,7 @@ return 0;
         let code = "
 GitHub 漫游指南
 ";
-        let grammar = to_grammar("test-cases/first-mate/fixtures/text.json", code);
+        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/text.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 8);
     }
 
@@ -687,7 +687,7 @@ GitHub 漫游指南
     #[test]
     fn should_build_json_grammar() {
         let code = "{}";
-        let grammar = to_grammar("test-cases/first-mate/fixtures/json.json", code);
+        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/json.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 22);
         debug_output(&grammar, String::from("program.json"));
     }
@@ -695,7 +695,7 @@ GitHub 漫游指南
     #[test]
     fn should_build_html_grammar() {
         let code = "{}";
-        let grammar = to_grammar("test-cases/first-mate/fixtures/html.json", code);
+        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/html.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 67);
         debug_output(&grammar, String::from("program.json"));
     }
@@ -707,7 +707,7 @@ CFLAGS=-I.
 DEPS = hellomake.h
 OBJ = hellomake.o hellofunc.o
 ";
-        let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
+        let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         let mut end_rule_count = 0;
         for (_x, rule) in grammar.rule_id2desc.clone() {
             let rule_instance = rule.get_rule_instance();
@@ -734,7 +734,7 @@ OBJ = hellomake.o hellofunc.o
 hellomake: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 ";
-        let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
+        let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 64);
         assert_eq!(grammar.get_rule(1).patterns_length(), 4);
         debug_output(&grammar, String::from("program.json"));
@@ -744,7 +744,7 @@ hellomake: $(OBJ)
     fn should_resolve_make_file_error_issues() {
         let code = "%.o: %.c $(DEPS)
 ";
-        let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
+        let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 64);
         assert_eq!(grammar.get_rule(1).patterns_length(), 4);
 
@@ -767,19 +767,12 @@ hellomake: $(OBJ)
     fn should_resolve_make_file_error_issues2() {
         let code = "hellomake: $(OBJ)
     $(CC) -o $@ $^ $(CFLAGS)";
-        let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
+        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         debug_output(&grammar, String::from("program.json"));
     }
 
-    fn to_grammar(grammar_path: &str, code: &str) -> Grammar {
-        let path = Path::new(grammar_path);
-        let mut file = File::open(path).unwrap();
-        let mut data = String::new();
-        file.read_to_string(&mut data).unwrap();
-
-        let g: IRawGrammar = serde_json::from_str(&data).unwrap();
-
-        let mut grammar = Grammar::new(g);
+    fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
+        let mut grammar = to_grammar(grammar_path);
         let c_code = String::from(code);
         for line in c_code.lines() {
             let result = grammar.tokenize_line(String::from(line), None);
@@ -797,7 +790,18 @@ hellomake: $(OBJ)
                     token.start_index, token.end_index, new_line, token_str
                 )
             }
-        }
+        };
+
         grammar
+    }
+
+    fn to_grammar(grammar_path: &str) -> Grammar {
+        let path = Path::new(grammar_path);
+        let mut file = File::open(path).unwrap();
+        let mut data = String::new();
+        file.read_to_string(&mut data).unwrap();
+
+        let g: IRawGrammar = serde_json::from_str(&data).unwrap();
+        Grammar::new(g)
     }
 }
