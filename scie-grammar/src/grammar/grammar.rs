@@ -545,7 +545,8 @@ impl Grammar {
     ) {
         let match_result =
             self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
-        if let Some(_result) = match_result {} else {
+        if let Some(_result) = match_result {
+        } else {
             // None
         };
         // todo: get injections logic
@@ -762,7 +763,6 @@ hellomake: $(OBJ)
         debug_output(&grammar, String::from("program.json"));
     }
 
-
     #[test]
     fn should_resolve_make_file_error_issues2() {
         let code = "hellomake: $(OBJ)
@@ -800,5 +800,4 @@ hellomake: $(OBJ)
         }
         grammar
     }
-
 }

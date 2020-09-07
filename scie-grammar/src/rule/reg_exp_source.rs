@@ -76,7 +76,7 @@ impl RegExpSourceList {
                 let compiled_rule = CompiledRule::new(reg_exps, rules);
                 self._cached = Some(compiled_rule.clone());
             };
-            return self._cached.clone().unwrap()
+            return self._cached.clone().unwrap();
         } else {
             println!("// todo: cached {:?}", self._items);
         }

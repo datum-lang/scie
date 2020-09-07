@@ -111,7 +111,5 @@ impl StackElement {
         return self;
     }
 
-    pub fn reset(&mut self) {
-
-    }
+    pub fn reset(&mut self) {}
 }

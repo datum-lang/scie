@@ -120,7 +120,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::scanner::{str_vec_to_string, IOnigMatch, Scanner};
+    use crate::scanner::scanner::{str_vec_to_string, Scanner};
 
     #[test]
     fn should_handle_simple_regex() {
@@ -320,7 +320,7 @@ mod tests {
             "^(ifdef|ifndef)\\s*([^\\s]+)(?=\\s)",
             "^(ifeq|ifneq)(?=\\s)]",
         ];
-        let rules = vec![2, 7, 28, 45, 48, 51, 61, 64, 66, 69, 77];
+        let _rules = vec![2, 7, 28, 45, 48, 51, 61, 64, 66, 69, 77];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = Scanner::new(debug_regex);
         let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 0);
@@ -330,7 +330,7 @@ mod tests {
     #[test]
     fn should_match_makefile_special_char() {
         let origin = vec!["(?=\\s|$)", "(\\$?\\$)[@%<?^+*]", "\\$?\\$\\(", "%"];
-        let rules = vec![-1, 12, 14, 33];
+        let _rules = vec![-1, 12, 14, 33];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = Scanner::new(debug_regex);
         let result = scanner.find_next_match_sync(String::from("%.o"), 0);
@@ -343,11 +343,16 @@ mod tests {
     #[test]
     fn should_match_for_scope_target() {
         let origin = vec!["^(?!\\t)", "\\G", "^\\t"];
-        let rules = vec![-1, 36, 39];
+        let _rules = vec![-1, 36, 39];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = Scanner::new(debug_regex);
-        let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)
-"), 4);
+        let result = scanner.find_next_match_sync(
+            String::from(
+                "%.o: %.c $(DEPS)
+",
+            ),
+            4,
+        );
         let onig_match = result.unwrap();
         assert_eq!(1, onig_match.index);
         assert_eq!(4, onig_match.capture_indices[0].start);
