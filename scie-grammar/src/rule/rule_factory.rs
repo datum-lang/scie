@@ -1,10 +1,10 @@
 use crate::grammar::Grammar;
 use crate::inter::{ILocation, IRawCaptures, IRawRepository, IRawRule};
+use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{
     AbstractRule, BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule,
     MatchRule,
 };
-use crate::rule::abstract_rule::RuleEnum;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ICompilePatternsResult {
@@ -168,10 +168,10 @@ impl RuleFactory {
                         || rule.type_of() == "BeginWhileRule"
                     {
                         if rule.has_missing_pattern() && rule.patterns_length() == 0 {
-                            match rule.get_rule_instance()  {
+                            match rule.get_rule_instance() {
                                 RuleEnum::BeginEndRule(r) => {
                                     println!("{:?}", r);
-                                },
+                                }
                                 _ => {}
                             }
                             skip_rule = true;
@@ -314,7 +314,8 @@ impl RuleFactory {
 
             let begin_rule_factory =
                 RuleFactory::compile_captures(desc.begin_captures, helper, repository);
-            let end_rule_factory = RuleFactory::compile_captures(desc.end_captures, helper, repository);
+            let end_rule_factory =
+                RuleFactory::compile_captures(desc.end_captures, helper, repository);
             let pattern_factory = RuleFactory::compile_patterns(desc.patterns, helper, repository);
 
             let begin_end_rule = BeginEndRule::new(

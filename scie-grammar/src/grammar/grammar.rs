@@ -712,7 +712,8 @@ CFLAGS=-I.
 DEPS = hellomake.h
 OBJ = hellomake.o hellofunc.o
 ";
-        let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
+        let mut grammar =
+            to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         let mut end_rule_count = 0;
         for (_x, rule) in grammar.rule_id2desc.clone() {
             let rule_instance = rule.get_rule_instance();
@@ -739,7 +740,8 @@ OBJ = hellomake.o hellofunc.o
 hellomake: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 ";
-        let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
+        let mut grammar =
+            to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 82);
         assert_eq!(grammar.get_rule(1).patterns_length(), 4);
         debug_output(&grammar, String::from("program.json"));
@@ -749,7 +751,8 @@ hellomake: $(OBJ)
     fn should_resolve_make_file_error_issues() {
         let code = "%.o: %.c $(DEPS)
 ";
-        let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
+        let mut grammar =
+            to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), &mut None);
         let tokens = result.line_tokens._tokens.clone();
         assert_eq!(8, tokens.len());
@@ -794,7 +797,7 @@ hellomake: $(OBJ)
                     token.start_index, token.end_index, new_line, token_str
                 )
             }
-        };
+        }
 
         grammar
     }
