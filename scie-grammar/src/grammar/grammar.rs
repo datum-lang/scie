@@ -206,7 +206,6 @@ impl Grammar {
         let mut is_first_line = origin_is_first.clone();
 
         if check_while_conditions {
-            // todo: add really logic
             let while_check_result = self.check_while_conditions(
                 line_text.clone(),
                 origin_is_first.clone(),
@@ -660,6 +659,7 @@ return 0;
 }
 ";
         let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/c.json", code);
+        assert_eq!(28, grammar.rule_id2desc.get(&1).unwrap().patterns_length());
         debug_output(&grammar, String::from("program.json"));
     }
 

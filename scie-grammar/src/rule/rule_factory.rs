@@ -4,6 +4,7 @@ use crate::rule::{
     AbstractRule, BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule,
     MatchRule,
 };
+use crate::rule::abstract_rule::RuleEnum;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ICompilePatternsResult {
@@ -126,6 +127,8 @@ impl RuleFactory {
                                 repository,
                                 String::from(include_s.as_str()),
                             );
+                        } else {
+                            println!("lost local_included_rule: {:?}", include_s);
                         }
                     } else {
                         // todo: find the cases
@@ -165,6 +168,12 @@ impl RuleFactory {
                         || rule.type_of() == "BeginWhileRule"
                     {
                         if rule.has_missing_pattern() && rule.patterns_length() == 0 {
+                            match rule.get_rule_instance()  {
+                                RuleEnum::BeginEndRule(r) => {
+                                    println!("{:?}", r);
+                                },
+                                _ => {}
+                            }
                             skip_rule = true;
                         }
                     }
