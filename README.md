@@ -9,6 +9,7 @@ Todo:
  - [ ] rewrite VSCode-textmate with Rust
     - [ ] makefile
     - [ ] json
+    - [ ] external
  - [ ] languages main support
     - [ ] html
     - [ ] lua
