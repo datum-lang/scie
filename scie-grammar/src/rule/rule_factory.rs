@@ -26,7 +26,6 @@ impl RuleFactory {
         repository: &mut IRawRepository,
     ) -> Vec<Box<dyn AbstractRule>> {
         let mut r: Vec<Box<dyn AbstractRule>> = vec![];
-
         if let Some(capts) = captures.clone() {
             let mut maximum_capture_id = 0;
             for (id_str, _value) in capts.clone().map.capture_map {
@@ -305,8 +304,8 @@ impl RuleFactory {
             }
 
             let begin_rule_factory =
-                RuleFactory::compile_captures(begin_captures, helper, repository);
-            let end_rule_factory = RuleFactory::compile_captures(end_captures, helper, repository);
+                RuleFactory::compile_captures(desc.begin_captures, helper, repository);
+            let end_rule_factory = RuleFactory::compile_captures(desc.end_captures, helper, repository);
             let pattern_factory = RuleFactory::compile_patterns(desc.patterns, helper, repository);
 
             let begin_end_rule = BeginEndRule::new(

@@ -734,11 +734,11 @@ var Grammar = /** @class */ (function () {
         if (this._rootId === -1) {
             this._rootId = rule_1.RuleFactory.getCompiledRuleId(this._grammar.repository.$self, this, this._grammar.repository);
         }
-
+        //
         // console.log(this._ruleId2desc.length);
         // let fs = require('fs');
         // let data = JSON.stringify(this._ruleId2desc, null, 2);
-        // fs.writeFileSync("testdata/makefile.out.json", data, 'utf8');
+        // fs.writeFileSync("testdata/c.out.json", data, 'utf8');
 
         var isFirstLine;
         if (!prevState || prevState === StackElement.NULL) {
@@ -3628,6 +3628,8 @@ var RuleFactory = /** @class */ (function () {
                 var retokenizeCapturedWithRuleId = 0;
                 if (captures[captureId].patterns) {
                     retokenizeCapturedWithRuleId = RuleFactory.getCompiledRuleId(captures[captureId], helper, repository);
+                } else {
+                    console.log(captures[captureId], numericCaptureId);
                 }
                 r[numericCaptureId] = RuleFactory.createCaptureRule(helper, captures[captureId].$vscodeTextmateLocation, captures[captureId].name, captures[captureId].contentName, retokenizeCapturedWithRuleId);
             }

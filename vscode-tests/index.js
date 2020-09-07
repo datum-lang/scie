@@ -15,15 +15,12 @@ const registry = new vsctm.Registry({
         createOnigString: (str) => new oniguruma.OnigString(str)
     }),
     loadGrammar: (scopeName) => {
-        return readFile('./syntaxes/json/makefile.json').then(data => vsctm.parseRawGrammar(data.toString(), "makefile.json"))
+        return readFile('./syntaxes/json/c.json').then(data => vsctm.parseRawGrammar(data.toString(), "c.json"))
     }
 });
 
-registry.loadGrammar('source.makefile').then(grammar => {
-    const text = `
-hellomake: $(OBJ)
-\t$(CC) -o $@ $^ $(CFLAGS)
-`.split("\n");
+registry.loadGrammar('source.c').then(grammar => {
+    const text = `#include <stdio.h>`.split("\n");
     let ruleStack = vsctm.INITIAL;
     for (let i = 0; i < text.length; i++) {
         const line = text[i];

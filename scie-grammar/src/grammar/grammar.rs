@@ -660,7 +660,13 @@ return 0;
 }
 ";
         let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/c.json", code);
-        // assert_eq!(grammar.rule_id2desc.len(), 162);
+        debug_output(&grammar, String::from("program.json"));
+    }
+
+    #[test]
+    fn should_identify_c_include() {
+        let code = "#include <stdio.h>";
+        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/c.json", code);
         debug_output(&grammar, String::from("program.json"));
     }
 

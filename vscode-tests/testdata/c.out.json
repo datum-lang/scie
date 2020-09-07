@@ -1,0 +1,3362 @@
+[
+  null,
+  {
+    "id": 1,
+    "_name": "source.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "patterns": [
+      2,
+      20,
+      33,
+      38,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      70,
+      73,
+      81,
+      85,
+      15,
+      95,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      154
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "IncludeOnlyRule"
+  },
+  {
+    "id": 2,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*(#(if)\\s+(0*1)\\b)",
+      "_anchorCache": null,
+      "ruleId": 2,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 3,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 4,
+        "_name": "keyword.control.import.if.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 5,
+        "_name": "constant.numeric.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(endif)\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 6,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 7,
+        "_name": "keyword.control.import.if.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 8,
+        "_name": "constant.numeric.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      9,
+      19
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 3,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 4,
+    "_name": "keyword.control.import.if.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 5,
+    "_name": "constant.numeric.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 6,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 7,
+    "_name": "keyword.control.import.if.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 8,
+    "_name": "constant.numeric.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 9,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": "comment.block.preprocessor.else-branch",
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(else)\\b).*",
+      "_anchorCache": null,
+      "ruleId": 9,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 10,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 11,
+        "_name": "keyword.control.import.else.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=^\\s*#\\s*endif\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 12,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 13,
+        "_name": "keyword.control.import.else.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      14,
+      15
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 10,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 11,
+    "_name": "keyword.control.import.else.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 12,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 13,
+    "_name": "keyword.control.import.else.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 14,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*#\\s*if(n?def)?\\b.*$",
+      "_anchorCache": null,
+      "ruleId": 14,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^\\s*#\\s*endif\\b",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      14,
+      15
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 15,
+    "_name": "meta.section",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(pragma\\s+mark)\\s+(.*))",
+      "_anchorCache": null,
+      "ruleId": 15,
+      "hasBackReferences": false
+    },
+    "captures": [
+      null,
+      {
+        "id": 16,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 17,
+        "_name": "keyword.control.import.pragma.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 18,
+        "_name": "meta.toc-list.pragma-mark.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 16,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 17,
+    "_name": "keyword.control.import.pragma.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 18,
+    "_name": "meta.toc-list.pragma-mark.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 19,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "",
+      "_anchorCache": null,
+      "ruleId": 19,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=^\\s*#\\s*(else|endif)\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      1
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 20,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*(#(if)\\s+(0)\\b).*",
+      "_anchorCache": null,
+      "ruleId": 20,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 21,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 22,
+        "_name": "keyword.control.import.if.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 23,
+        "_name": "constant.numeric.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(endif)\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 24,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 25,
+        "_name": "keyword.control.import.if.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 26,
+        "_name": "constant.numeric.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      27,
+      32
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 21,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 22,
+    "_name": "keyword.control.import.if.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 23,
+    "_name": "constant.numeric.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 24,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 25,
+    "_name": "keyword.control.import.if.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 26,
+    "_name": "constant.numeric.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 27,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(else)\\b)",
+      "_anchorCache": null,
+      "ruleId": 27,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 28,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 29,
+        "_name": "keyword.control.import.else.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=^\\s*#\\s*endif\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 30,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 31,
+        "_name": "keyword.control.import.else.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      1
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 28,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 29,
+    "_name": "keyword.control.import.else.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 30,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 31,
+    "_name": "keyword.control.import.else.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 32,
+    "_name": "comment.block.preprocessor.if-branch",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "",
+      "_anchorCache": null,
+      "ruleId": 32,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=^\\s*#\\s*(else|endif)\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      14,
+      15
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 33,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(if(n?def)?)\\b.*?(?:(?=(?://|/\\*))|$))",
+      "_anchorCache": null,
+      "ruleId": 33,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 34,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 35,
+        "_name": "keyword.control.import.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(endif)\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 36,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 37,
+        "_name": "keyword.control.import.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      1
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 34,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 35,
+    "_name": "keyword.control.import.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 36,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 37,
+    "_name": "keyword.control.import.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 38,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "patterns": [
+      39,
+      41,
+      44,
+      45,
+      47
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "IncludeOnlyRule"
+  },
+  {
+    "id": 39,
+    "_name": "comment.block.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "^/\\* =(\\s*.*?)\\s*= \\*/$\\n?",
+      "_anchorCache": null,
+      "ruleId": 39,
+      "hasBackReferences": false
+    },
+    "captures": [
+      null,
+      {
+        "id": 40,
+        "_name": "meta.toc-list.banner.block.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 40,
+    "_name": "meta.toc-list.banner.block.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 41,
+    "_name": "comment.block.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "/\\*",
+      "_anchorCache": null,
+      "ruleId": 41,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 42,
+        "_name": "punctuation.definition.comment.begin.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "\\*/",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      {
+        "id": 43,
+        "_name": "punctuation.definition.comment.end.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 42,
+    "_name": "punctuation.definition.comment.begin.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 43,
+    "_name": "punctuation.definition.comment.end.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 44,
+    "_name": "invalid.illegal.stray-comment-end.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\*/.*\\n",
+      "_anchorCache": null,
+      "ruleId": 44,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 45,
+    "_name": "comment.line.banner.c++",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "^// =(\\s*.*?)\\s*=\\s*$\\n?",
+      "_anchorCache": null,
+      "ruleId": 45,
+      "hasBackReferences": false
+    },
+    "captures": [
+      null,
+      {
+        "id": 46,
+        "_name": "meta.toc-list.banner.line.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 46,
+    "_name": "meta.toc-list.banner.line.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 47,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "(^[ \\t]+)?(?=//)",
+      "_anchorCache": null,
+      "ruleId": 47,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 48,
+        "_name": "punctuation.whitespace.comment.leading.c++",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": true,
+      "source": "(?!\\G)",
+      "_anchorCache": {
+        "A0_G0": "(?!\\￿)",
+        "A0_G1": "(?!\\G)",
+        "A1_G0": "(?!\\￿)",
+        "A1_G1": "(?!\\G)"
+      },
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      49
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 48,
+    "_name": "punctuation.whitespace.comment.leading.c++",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 49,
+    "_name": "comment.line.double-slash.c++",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "//",
+      "_anchorCache": null,
+      "ruleId": 49,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 50,
+        "_name": "punctuation.definition.comment.c++",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "\\n",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      51
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 50,
+    "_name": "punctuation.definition.comment.c++",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 51,
+    "_name": "punctuation.separator.continuation.c++",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "(?>\\\\\\s*\\n)",
+      "_anchorCache": null,
+      "ruleId": 51,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 52,
+    "_name": "keyword.control.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b(break|case|continue|default|do|else|for|goto|if|_Pragma|return|switch|while)\\b",
+      "_anchorCache": null,
+      "ruleId": 52,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 53,
+    "_name": "storage.type.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b(asm|__asm__|auto|bool|_Bool|char|_Complex|double|enum|float|_Imaginary|int|long|short|signed|struct|typedef|union|unsigned|void)\\b",
+      "_anchorCache": null,
+      "ruleId": 53,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 54,
+    "_name": "storage.modifier.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b(const|extern|register|restrict|static|volatile|inline)\\b",
+      "_anchorCache": null,
+      "ruleId": 54,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 55,
+    "_name": "constant.other.variable.mac-classic.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\bk[A-Z]\\w*\\b",
+      "_anchorCache": null,
+      "ruleId": 55,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 56,
+    "_name": "variable.other.readwrite.global.mac-classic.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\bg[A-Z]\\w*\\b",
+      "_anchorCache": null,
+      "ruleId": 56,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 57,
+    "_name": "variable.other.readwrite.static.mac-classic.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\bs[A-Z]\\w*\\b",
+      "_anchorCache": null,
+      "ruleId": 57,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 58,
+    "_name": "constant.language.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b(NULL|true|false|TRUE|FALSE)\\b",
+      "_anchorCache": null,
+      "ruleId": 58,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 59,
+    "_name": "keyword.operator.sizeof.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b(sizeof)\\b",
+      "_anchorCache": null,
+      "ruleId": 59,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 60,
+    "_name": "constant.numeric.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\\b",
+      "_anchorCache": null,
+      "ruleId": 60,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 61,
+    "_name": "string.quoted.double.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "\"",
+      "_anchorCache": null,
+      "ruleId": 61,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 62,
+        "_name": "punctuation.definition.string.begin.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "\"",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      {
+        "id": 63,
+        "_name": "punctuation.definition.string.end.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      64,
+      67
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 62,
+    "_name": "punctuation.definition.string.begin.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 63,
+    "_name": "punctuation.definition.string.end.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 64,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "patterns": [
+      65,
+      66
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "IncludeOnlyRule"
+  },
+  {
+    "id": 65,
+    "_name": "constant.character.escape.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\\\(\\\\|[abefnprtv'\"?]|[0-3]\\d{,2}|[4-7]\\d?|x[a-fA-F0-9]{,2}|u[a-fA-F0-9]{,4}|U[a-fA-F0-9]{,8})",
+      "_anchorCache": null,
+      "ruleId": 65,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 66,
+    "_name": "invalid.illegal.unknown-escape.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\\\.",
+      "_anchorCache": null,
+      "ruleId": 66,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 67,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "patterns": [
+      68,
+      69
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "IncludeOnlyRule"
+  },
+  {
+    "id": 68,
+    "_name": "constant.other.placeholder.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "(?x)%\n    \t\t\t\t\t\t(\\d+\\$)?                             # field (argument #)\n    \t\t\t\t\t\t[#0\\- +']*                           # flags\n    \t\t\t\t\t\t[,;:_]?                              # separator character (AltiVec)\n    \t\t\t\t\t\t((-?\\d+)|\\*(-?\\d+\\$)?)?              # minimum field width\n    \t\t\t\t\t\t(\\.((-?\\d+)|\\*(-?\\d+\\$)?)?)?         # precision\n    \t\t\t\t\t\t(hh|h|ll|l|j|t|z|q|L|vh|vl|v|hv|hl)? # length modifier\n    \t\t\t\t\t\t[diouxXDOUeEfFgGaACcSspn%]           # conversion type\n    \t\t\t\t\t",
+      "_anchorCache": null,
+      "ruleId": 68,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 69,
+    "_name": "invalid.illegal.placeholder.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "%",
+      "_anchorCache": null,
+      "ruleId": 69,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 70,
+    "_name": "string.quoted.single.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "'",
+      "_anchorCache": null,
+      "ruleId": 70,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 71,
+        "_name": "punctuation.definition.string.begin.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "'",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      {
+        "id": 72,
+        "_name": "punctuation.definition.string.end.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      64
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 71,
+    "_name": "punctuation.definition.string.begin.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 72,
+    "_name": "punctuation.definition.string.end.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 73,
+    "_name": "meta.preprocessor.macro.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "(?x)\n        \t\t^\\s*\\#\\s*(define)\\s+             # define\n        \t\t((?<id>[a-zA-Z_][a-zA-Z0-9_]*))  # macro name\n        \t\t(?:                              # and optionally:\n        \t\t    (\\()                         # an open parenthesis\n        \t\t        (\n        \t\t            \\s* \\g<id> \\s*       # first argument\n        \t\t            ((,) \\s* \\g<id> \\s*)*  # additional arguments\n        \t\t            (?:\\.\\.\\.)?          # varargs ellipsis?\n        \t\t        )\n        \t\t    (\\))                         # a close parenthesis\n        \t\t)?\n        \t",
+      "_anchorCache": null,
+      "ruleId": 73,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 74,
+        "_name": "keyword.control.import.define.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 75,
+        "_name": "entity.name.function.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      null,
+      {
+        "id": 76,
+        "_name": "punctuation.definition.parameters.begin.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 77,
+        "_name": "variable.parameter.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      null,
+      {
+        "id": 78,
+        "_name": "punctuation.separator.parameters.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 79,
+        "_name": "punctuation.definition.parameters.end.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=(?://|/\\*))|$",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      80,
+      1
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 74,
+    "_name": "keyword.control.import.define.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 75,
+    "_name": "entity.name.function.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 76,
+    "_name": "punctuation.definition.parameters.begin.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 77,
+    "_name": "variable.parameter.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 78,
+    "_name": "punctuation.separator.parameters.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 79,
+    "_name": "punctuation.definition.parameters.end.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 80,
+    "_name": "punctuation.separator.continuation.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "(?>\\\\\\s*\\n)",
+      "_anchorCache": null,
+      "ruleId": 80,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 81,
+    "_name": "meta.preprocessor.diagnostic.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*#\\s*(error|warning)\\b",
+      "_anchorCache": null,
+      "ruleId": 81,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 82,
+        "_name": "keyword.control.import.error.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "$",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 83,
+        "_name": "keyword.control.import.error.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      84
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 82,
+    "_name": "keyword.control.import.error.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 83,
+    "_name": "keyword.control.import.error.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 84,
+    "_name": "punctuation.separator.continuation.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "(?>\\\\\\s*\\n)",
+      "_anchorCache": null,
+      "ruleId": 84,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 85,
+    "_name": "meta.preprocessor.c.include",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*#\\s*(include|import)\\b\\s+",
+      "_anchorCache": null,
+      "ruleId": 85,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 86,
+        "_name": "keyword.control.import.include.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=(?://|/\\*))|$",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 87,
+        "_name": "keyword.control.import.include.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      88,
+      89,
+      92
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 86,
+    "_name": "keyword.control.import.include.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 87,
+    "_name": "keyword.control.import.include.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 88,
+    "_name": "punctuation.separator.continuation.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "(?>\\\\\\s*\\n)",
+      "_anchorCache": null,
+      "ruleId": 88,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 89,
+    "_name": "string.quoted.double.include.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "\"",
+      "_anchorCache": null,
+      "ruleId": 89,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 90,
+        "_name": "punctuation.definition.string.begin.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "\"",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      {
+        "id": 91,
+        "_name": "punctuation.definition.string.end.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 90,
+    "_name": "punctuation.definition.string.begin.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 91,
+    "_name": "punctuation.definition.string.end.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 92,
+    "_name": "string.quoted.other.lt-gt.include.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "<",
+      "_anchorCache": null,
+      "ruleId": 92,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 93,
+        "_name": "punctuation.definition.string.begin.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": ">",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      {
+        "id": 94,
+        "_name": "punctuation.definition.string.end.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 93,
+    "_name": "punctuation.definition.string.begin.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 94,
+    "_name": "punctuation.definition.string.end.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 95,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*#\\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef)\\b",
+      "_anchorCache": null,
+      "ruleId": 95,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 96,
+        "_name": "keyword.control.import.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=(?://|/\\*))|$",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 97,
+        "_name": "keyword.control.import.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      98
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 96,
+    "_name": "keyword.control.import.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 97,
+    "_name": "keyword.control.import.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 98,
+    "_name": "punctuation.separator.continuation.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "(?>\\\\\\s*\\n)",
+      "_anchorCache": null,
+      "ruleId": 98,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 99,
+    "_name": "support.type.sys-types.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b(u_char|u_short|u_int|u_long|ushort|uint|u_quad_t|quad_t|qaddr_t|caddr_t|daddr_t|dev_t|fixpt_t|blkcnt_t|blksize_t|gid_t|in_addr_t|in_port_t|ino_t|key_t|mode_t|nlink_t|id_t|pid_t|off_t|segsz_t|swblk_t|uid_t|id_t|clock_t|size_t|ssize_t|time_t|useconds_t|suseconds_t)\\b",
+      "_anchorCache": null,
+      "ruleId": 99,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 100,
+    "_name": "support.type.pthread.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b(pthread_attr_t|pthread_cond_t|pthread_condattr_t|pthread_mutex_t|pthread_mutexattr_t|pthread_once_t|pthread_rwlock_t|pthread_rwlockattr_t|pthread_t|pthread_key_t)\\b",
+      "_anchorCache": null,
+      "ruleId": 100,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 101,
+    "_name": "support.type.stdint.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b(int8_t|int16_t|int32_t|int64_t|uint8_t|uint16_t|uint32_t|uint64_t|int_least8_t|int_least16_t|int_least32_t|int_least64_t|uint_least8_t|uint_least16_t|uint_least32_t|uint_least64_t|int_fast8_t|int_fast16_t|int_fast32_t|int_fast64_t|uint_fast8_t|uint_fast16_t|uint_fast32_t|uint_fast64_t|intptr_t|uintptr_t|intmax_t|intmax_t|uintmax_t|uintmax_t)\\b",
+      "_anchorCache": null,
+      "ruleId": 101,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 102,
+    "_name": "support.constant.mac-classic.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b(noErr|kNilOptions|kInvalidID|kVariableLengthArray)\\b",
+      "_anchorCache": null,
+      "ruleId": 102,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 103,
+    "_name": "support.type.mac-classic.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b(AbsoluteTime|Boolean|Byte|ByteCount|ByteOffset|BytePtr|CompTimeValue|ConstLogicalAddress|ConstStrFileNameParam|ConstStringPtr|Duration|Fixed|FixedPtr|Float32|Float32Point|Float64|Float80|Float96|FourCharCode|Fract|FractPtr|Handle|ItemCount|LogicalAddress|OptionBits|OSErr|OSStatus|OSType|OSTypePtr|PhysicalAddress|ProcessSerialNumber|ProcessSerialNumberPtr|ProcHandle|Ptr|ResType|ResTypePtr|ShortFixed|ShortFixedPtr|SignedByte|SInt16|SInt32|SInt64|SInt8|Size|StrFileName|StringHandle|StringPtr|TimeBase|TimeRecord|TimeScale|TimeValue|TimeValue64|UInt16|UInt32|UInt64|UInt8|UniChar|UniCharCount|UniCharCountPtr|UniCharPtr|UnicodeScalarValue|UniversalProcHandle|UniversalProcPtr|UnsignedFixed|UnsignedFixedPtr|UnsignedWide|UTF16Char|UTF32Char|UTF8Char)\\b",
+      "_anchorCache": null,
+      "ruleId": 103,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 104,
+    "_name": "support.type.posix-reserved.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\b([a-z0-9_]+_t)\\b",
+      "_anchorCache": null,
+      "ruleId": 104,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 105,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "patterns": [
+      106
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "IncludeOnlyRule"
+  },
+  {
+    "id": 106,
+    "_name": "meta.block.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "\\{",
+      "_anchorCache": null,
+      "ruleId": 106,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 107,
+        "_name": "punctuation.section.block.begin.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "\\}",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      {
+        "id": 108,
+        "_name": "punctuation.section.block.end.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      109
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 107,
+    "_name": "punctuation.section.block.begin.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 108,
+    "_name": "punctuation.section.block.end.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 109,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "patterns": [
+      110,
+      123,
+      136,
+      59,
+      141,
+      144,
+      147,
+      151,
+      105,
+      1
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "IncludeOnlyRule"
+  },
+  {
+    "id": 110,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*(#(if)\\s+(0*1)\\b)",
+      "_anchorCache": null,
+      "ruleId": 110,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 111,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 112,
+        "_name": "keyword.control.import.if.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 113,
+        "_name": "constant.numeric.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(endif)\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 114,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 115,
+        "_name": "keyword.control.import.if.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 116,
+        "_name": "constant.numeric.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      117,
+      122
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 111,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 112,
+    "_name": "keyword.control.import.if.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 113,
+    "_name": "constant.numeric.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 114,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 115,
+    "_name": "keyword.control.import.if.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 116,
+    "_name": "constant.numeric.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 117,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": "comment.block.preprocessor.else-branch.in-block",
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(else)\\b).*",
+      "_anchorCache": null,
+      "ruleId": 117,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 118,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 119,
+        "_name": "keyword.control.import.else.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=^\\s*#\\s*endif\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 120,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 121,
+        "_name": "keyword.control.import.else.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      14,
+      15
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 118,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 119,
+    "_name": "keyword.control.import.else.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 120,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 121,
+    "_name": "keyword.control.import.else.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 122,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "",
+      "_anchorCache": null,
+      "ruleId": 122,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=^\\s*#\\s*(else|endif)\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      109
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 123,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*(#(if)\\s+(0)\\b).*",
+      "_anchorCache": null,
+      "ruleId": 123,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 124,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 125,
+        "_name": "keyword.control.import.if.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 126,
+        "_name": "constant.numeric.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(endif)\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 127,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 128,
+        "_name": "keyword.control.import.if.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 129,
+        "_name": "constant.numeric.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      130,
+      135
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 124,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 125,
+    "_name": "keyword.control.import.if.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 126,
+    "_name": "constant.numeric.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 127,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 128,
+    "_name": "keyword.control.import.if.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 129,
+    "_name": "constant.numeric.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 130,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(else)\\b)",
+      "_anchorCache": null,
+      "ruleId": 130,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 131,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 132,
+        "_name": "keyword.control.import.else.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=^\\s*#\\s*endif\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 133,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 134,
+        "_name": "keyword.control.import.else.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      109
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 131,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 132,
+    "_name": "keyword.control.import.else.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 133,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 134,
+    "_name": "keyword.control.import.else.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 135,
+    "_name": "comment.block.preprocessor.if-branch.in-block",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "",
+      "_anchorCache": null,
+      "ruleId": 135,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?=^\\s*#\\s*(else|endif)\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      14,
+      15
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 136,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(if(n?def)?)\\b.*?(?:(?=(?://|/\\*))|$))",
+      "_anchorCache": null,
+      "ruleId": 136,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 137,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 138,
+        "_name": "keyword.control.import.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "^\\s*(#\\s*(endif)\\b)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      null,
+      {
+        "id": 139,
+        "_name": "meta.preprocessor.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 140,
+        "_name": "keyword.control.import.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      109
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 137,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 138,
+    "_name": "keyword.control.import.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 139,
+    "_name": "meta.preprocessor.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 140,
+    "_name": "keyword.control.import.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 141,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "(\\.)([a-zA-Z_][a-zA-Z_0-9]*)\\b(?!\\s*\\()",
+      "_anchorCache": null,
+      "ruleId": 141,
+      "hasBackReferences": false
+    },
+    "captures": [
+      null,
+      {
+        "id": 142,
+        "_name": "punctuation.separator.variable-access.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 143,
+        "_name": "variable.other.dot-access.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 142,
+    "_name": "punctuation.separator.variable-access.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 143,
+    "_name": "variable.other.dot-access.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 144,
+    "_name": null,
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "(\\s*)\\b(hypot(f|l)?|s(scanf|ystem|nprintf|ca(nf|lb(n(f|l)?|ln(f|l)?))|i(n(h(f|l)?|f|l)?|gn(al|bit))|tr(s(tr|pn)|nc(py|at|mp)|c(spn|hr|oll|py|at|mp)|to(imax|d|u(l(l)?|max)|k|f|l(d|l)?)|error|pbrk|ftime|len|rchr|xfrm)|printf|et(jmp|vbuf|locale|buf)|qrt(f|l)?|w(scanf|printf)|rand)|n(e(arbyint(f|l)?|xt(toward(f|l)?|after(f|l)?))|an(f|l)?)|c(s(in(h(f|l)?|f|l)?|qrt(f|l)?)|cos(h(f)?|f|l)?|imag(f|l)?|t(ime|an(h(f|l)?|f|l)?)|o(s(h(f|l)?|f|l)?|nj(f|l)?|pysign(f|l)?)|p(ow(f|l)?|roj(f|l)?)|e(il(f|l)?|xp(f|l)?)|l(o(ck|g(f|l)?)|earerr)|a(sin(h(f|l)?|f|l)?|cos(h(f|l)?|f|l)?|tan(h(f|l)?|f|l)?|lloc|rg(f|l)?|bs(f|l)?)|real(f|l)?|brt(f|l)?)|t(ime|o(upper|lower)|an(h(f|l)?|f|l)?|runc(f|l)?|gamma(f|l)?|mp(nam|file))|i(s(space|n(ormal|an)|cntrl|inf|digit|u(nordered|pper)|p(unct|rint)|finite|w(space|c(ntrl|type)|digit|upper|p(unct|rint)|lower|al(num|pha)|graph|xdigit|blank)|l(ower|ess(equal|greater)?)|al(num|pha)|gr(eater(equal)?|aph)|xdigit|blank)|logb(f|l)?|max(div|abs))|di(v|fftime)|_Exit|unget(c|wc)|p(ow(f|l)?|ut(s|c(har)?|wc(har)?)|error|rintf)|e(rf(c(f|l)?|f|l)?|x(it|p(2(f|l)?|f|l|m1(f|l)?)?))|v(s(scanf|nprintf|canf|printf|w(scanf|printf))|printf|f(scanf|printf|w(scanf|printf))|w(scanf|printf)|a_(start|copy|end|arg))|qsort|f(s(canf|e(tpos|ek))|close|tell|open|dim(f|l)?|p(classify|ut(s|c|w(s|c))|rintf)|e(holdexcept|set(e(nv|xceptflag)|round)|clearexcept|testexcept|of|updateenv|r(aiseexcept|ror)|get(e(nv|xceptflag)|round))|flush|w(scanf|ide|printf|rite)|loor(f|l)?|abs(f|l)?|get(s|c|pos|w(s|c))|re(open|e|ad|xp(f|l)?)|m(in(f|l)?|od(f|l)?|a(f|l|x(f|l)?)?))|l(d(iv|exp(f|l)?)|o(ngjmp|cal(time|econv)|g(1(p(f|l)?|0(f|l)?)|2(f|l)?|f|l|b(f|l)?)?)|abs|l(div|abs|r(int(f|l)?|ound(f|l)?))|r(int(f|l)?|ound(f|l)?)|gamma(f|l)?)|w(scanf|c(s(s(tr|pn)|nc(py|at|mp)|c(spn|hr|oll|py|at|mp)|to(imax|d|u(l(l)?|max)|k|f|l(d|l)?|mbs)|pbrk|ftime|len|r(chr|tombs)|xfrm)|to(b|mb)|rtomb)|printf|mem(set|c(hr|py|mp)|move))|a(s(sert|ctime|in(h(f|l)?|f|l)?)|cos(h(f|l)?|f|l)?|t(o(i|f|l(l)?)|exit|an(h(f|l)?|2(f|l)?|f|l)?)|b(s|ort))|g(et(s|c(har)?|env|wc(har)?)|mtime)|r(int(f|l)?|ound(f|l)?|e(name|alloc|wind|m(ove|quo(f|l)?|ainder(f|l)?))|a(nd|ise))|b(search|towc)|m(odf(f|l)?|em(set|c(hr|py|mp)|move)|ktime|alloc|b(s(init|towcs|rtowcs)|towc|len|r(towc|len))))\\b",
+      "_anchorCache": null,
+      "ruleId": 144,
+      "hasBackReferences": false
+    },
+    "captures": [
+      null,
+      {
+        "id": 145,
+        "_name": "punctuation.whitespace.support.function.leading.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 146,
+        "_name": "support.function.C99.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 145,
+    "_name": "punctuation.whitespace.support.function.leading.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 146,
+    "_name": "support.function.C99.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 147,
+    "_name": "meta.function-call.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "(?x) (?: (?= \\s )  (?:(?<=else|new|return) | (?<!\\w)) (\\s+))?\n\t\t\t(\\b \n\t\t\t\t(?!(while|for|do|if|else|switch|catch|enumerate|return|sizeof|[cr]?iterate)\\s*\\()(?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\\b | :: )++                  # actual name\n\t\t\t)\n\t\t\t \\s*(\\()",
+      "_anchorCache": null,
+      "ruleId": 147,
+      "hasBackReferences": false
+    },
+    "captures": [
+      null,
+      {
+        "id": 148,
+        "_name": "punctuation.whitespace.function-call.leading.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 149,
+        "_name": "support.function.any-method.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 150,
+        "_name": "punctuation.definition.parameters.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 148,
+    "_name": "punctuation.whitespace.function-call.leading.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 149,
+    "_name": "support.function.any-method.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 150,
+    "_name": "punctuation.definition.parameters.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 151,
+    "_name": "meta.initialization.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "(?x)\n\t\t\t        (?x)\n\t\t\t(?:  \n\t\t\t     (?: (?= \\s )           (?<!else|new|return) (?<=\\w)\\s+      #  or word + space before name\n\t\t\t     )\n\t\t\t)\n\t\t\t(\n\t\t\t\t(?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++    |              # actual name\n\t\t\t\t(?: (?<=operator) (?: [-*&<>=+!]+ | \\(\\) | \\[\\] ) )?  # if it is a C++ operator\n\t\t\t)\n\t\t\t \\s*(\\()",
+      "_anchorCache": null,
+      "ruleId": 151,
+      "hasBackReferences": false
+    },
+    "captures": [
+      null,
+      {
+        "id": 152,
+        "_name": "variable.other.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 153,
+        "_name": "punctuation.definition.parameters.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  },
+  {
+    "id": 152,
+    "_name": "variable.other.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 153,
+    "_name": "punctuation.definition.parameters.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 154,
+    "_name": "meta.function.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "(?x)\n    \t\t(?:  ^                                 # begin-of-line\n    \t\t  |  \n    \t\t     (?: (?= \\s )           (?<!else|new|return) (?<=\\w)      #  or word + space before name\n    \t\t       | (?= \\s*[A-Za-z_] ) (?<!&&)       (?<=[*&>])   #  or type modifier before name\n    \t\t     )\n    \t\t)\n    \t\t(\\s*) (?!(while|for|do|if|else|switch|catch|enumerate|return|sizeof|[cr]?iterate)\\s*\\()\n    \t\t(\n    \t\t\t(?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++ |                  # actual name\n    \t\t\t(?: (?<=operator) (?: [-*&<>=+!]+ | \\(\\) | \\[\\] ) )  # if it is a C++ operator\n    \t\t)\n    \t\t \\s*(?=\\()",
+      "_anchorCache": null,
+      "ruleId": 154,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      null,
+      {
+        "id": 155,
+        "_name": "punctuation.whitespace.function.leading.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      null,
+      {
+        "id": 156,
+        "_name": "entity.name.function.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      },
+      {
+        "id": 157,
+        "_name": "punctuation.definition.parameters.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "(?<=\\})|(?=#)|(;)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [],
+    "applyEndPatternLast": false,
+    "patterns": [
+      38,
+      158,
+      161,
+      105
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 155,
+    "_name": "punctuation.whitespace.function.leading.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 156,
+    "_name": "entity.name.function.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 157,
+    "_name": "punctuation.definition.parameters.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 158,
+    "_name": "meta.parens.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_begin": {
+      "hasAnchor": false,
+      "source": "\\(",
+      "_anchorCache": null,
+      "ruleId": 158,
+      "hasBackReferences": false
+    },
+    "beginCaptures": [
+      {
+        "id": 159,
+        "_name": "punctuation.section.parens.begin.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "_end": {
+      "hasAnchor": false,
+      "source": "\\)",
+      "_anchorCache": null,
+      "ruleId": -1,
+      "hasBackReferences": false
+    },
+    "endHasBackReferences": false,
+    "endCaptures": [
+      {
+        "id": 160,
+        "_name": "punctuation.section.parens.end.c",
+        "_nameIsCapturing": false,
+        "_contentName": null,
+        "_contentNameIsCapturing": false,
+        "retokenizeCapturedWithRuleId": 0,
+        "_type": "CaptureRule"
+      }
+    ],
+    "applyEndPatternLast": false,
+    "patterns": [
+      1
+    ],
+    "hasMissingPatterns": false,
+    "_cachedCompiledPatterns": null,
+    "_type": "BeginEndRule"
+  },
+  {
+    "id": 159,
+    "_name": "punctuation.section.parens.begin.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 160,
+    "_name": "punctuation.section.parens.end.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "retokenizeCapturedWithRuleId": 0,
+    "_type": "CaptureRule"
+  },
+  {
+    "id": 161,
+    "_name": "storage.modifier.c",
+    "_nameIsCapturing": false,
+    "_contentName": null,
+    "_contentNameIsCapturing": false,
+    "_match": {
+      "hasAnchor": false,
+      "source": "\\bconst\\b",
+      "_anchorCache": null,
+      "ruleId": 161,
+      "hasBackReferences": false
+    },
+    "captures": [],
+    "_cachedCompiledPatterns": null,
+    "_type": "MatchRule"
+  }
+]
