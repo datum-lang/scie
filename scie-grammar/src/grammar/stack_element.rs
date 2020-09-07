@@ -110,4 +110,8 @@ impl StackElement {
         println!("todo: set_content_name_scopes_list");
         return self;
     }
+
+    pub fn reset(&mut self) {
+
+    }
 }

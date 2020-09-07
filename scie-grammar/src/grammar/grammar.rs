@@ -167,6 +167,7 @@ impl Grammar {
             current_state = state;
         } else {
             is_first_line = false;
+            prev_state.unwrap().reset();
         }
 
         let format_line_text = line_text.clone() + "\n";
@@ -758,6 +759,15 @@ hellomake: $(OBJ)
         assert_eq!(11, tokens[5].start_index);
         assert_eq!(15, tokens[6].start_index);
         assert_eq!(16, tokens[7].start_index);
+        debug_output(&grammar, String::from("program.json"));
+    }
+
+
+    #[test]
+    fn should_resolve_make_file_error_issues2() {
+        let code = "hellomake: $(OBJ)
+    $(CC) -o $@ $^ $(CFLAGS)";
+        let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
         debug_output(&grammar, String::from("program.json"));
     }
 
