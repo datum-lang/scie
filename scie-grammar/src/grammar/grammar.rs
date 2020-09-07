@@ -115,7 +115,7 @@ impl Grammar {
     fn tokenize(
         &mut self,
         line_text: String,
-        prev_state: Option<StackElement>,
+        prev_state: &mut Option<StackElement>,
         emit_binary_tokens: bool,
     ) -> TokenizeResult {
         if self.root_id.clone() == -1 {
@@ -132,7 +132,6 @@ impl Grammar {
         let mut is_first_line: bool = false;
 
         let mut current_state = StackElement::null();
-
         match prev_state.clone() {
             None => is_first_line = true,
             Some(state) => {
@@ -145,7 +144,6 @@ impl Grammar {
         }
 
         if is_first_line {
-            // let scope_list = ScopeListElement::default();
             let _root_scope_name = self.get_rule(self.root_id.clone()).get_name(None, None);
             let mut root_scope_name = String::from("unknown");
             if let Some(name) = _root_scope_name {
@@ -167,7 +165,8 @@ impl Grammar {
             current_state = state;
         } else {
             is_first_line = false;
-            prev_state.unwrap().reset();
+            // current_state.as_ref().unwrap().reset();
+            current_state.reset();
         }
 
         let format_line_text = line_text.clone() + "\n";
@@ -601,7 +600,7 @@ impl Grammar {
     pub fn tokenize_line(
         &mut self,
         line_text: String,
-        prev_state: Option<StackElement>,
+        prev_state: &mut Option<StackElement>,
     ) -> TokenizeResult {
         self.tokenize(line_text, prev_state, false)
     }
@@ -647,7 +646,7 @@ mod tests {
     use std::io::{Read, Write};
     use std::path::Path;
 
-    use crate::grammar::Grammar;
+    use crate::grammar::{Grammar, StackElement};
     use crate::inter::IRawGrammar;
     use crate::rule::abstract_rule::RuleEnum;
     use crate::rule::IRuleRegistry;
@@ -748,7 +747,7 @@ hellomake: $(OBJ)
         assert_eq!(grammar.rule_id2desc.len(), 64);
         assert_eq!(grammar.get_rule(1).patterns_length(), 4);
 
-        let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), None);
+        let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), &mut None);
         let tokens = result.line_tokens._tokens.clone();
         assert_eq!(8, tokens.len());
         assert_eq!("Makefile,meta.scope.target.makefile,entity.name.function.target.makefile,constant.other.placeholder.makefile", tokens[0].scopes.join(","));
@@ -774,8 +773,10 @@ hellomake: $(OBJ)
     fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
         let mut grammar = to_grammar(grammar_path);
         let c_code = String::from(code);
+        let mut rule_stack = Some(StackElement::null());
         for line in c_code.lines() {
-            let result = grammar.tokenize_line(String::from(line), None);
+            let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
+            rule_stack = *result.rule_stack;
             for token in result.line_tokens._tokens {
                 let start = token.start_index.clone() as usize;
                 let end = token.end_index.clone() as usize;
