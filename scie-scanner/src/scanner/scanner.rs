@@ -99,7 +99,7 @@ impl Scanner {
             let mut best_match = all_results[0].clone();
             for x in all_results {
                 // todo: maybe have multiple captures
-                if x.capture_indices[0].start < best_match.capture_indices[0].start {
+                if x.capture_indices[0].start <= best_match.capture_indices[0].start {
                     best_match = x;
                 }
             }
@@ -349,6 +349,8 @@ mod tests {
         let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)
 "), 4);
         let onig_match = result.unwrap();
-        println!("{:?}", onig_match);
+        assert_eq!(1, onig_match.index);
+        assert_eq!(4, onig_match.capture_indices[0].start);
+        assert_eq!(4, onig_match.capture_indices[0].end);
     }
 }
