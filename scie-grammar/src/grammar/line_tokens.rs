@@ -51,7 +51,7 @@ impl LineTokens {
 
         let scopes = scopes_list.generate_scopes();
         self._tokens.push(IToken {
-            start_index: 0,
+            start_index: self._last_token_end_index,
             end_index,
             scopes,
         });
