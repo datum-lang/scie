@@ -197,7 +197,7 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&result).unwrap(),
             String::from(
-                "{\"index\":0,\"capture_indices\":[{\"start\":7,\"end\":8,\"length\":1}]}"
+                "{\"index\":1,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"
             )
         );
     }
