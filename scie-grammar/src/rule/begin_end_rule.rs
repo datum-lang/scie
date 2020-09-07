@@ -123,7 +123,8 @@ impl AbstractRule for BeginEndRule {
             cached_compiled_patterns = self._cached_compiled_patterns.as_ref().unwrap().clone();
         }
 
-        // todo: support for hasBackReferences
+        // self._end.has_anchor
+        // println!("todo: support for hasBackReferences");
         cached_compiled_patterns.compile(grammar, allow_a, allow_g)
     }
 }
