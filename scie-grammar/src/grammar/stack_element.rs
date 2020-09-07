@@ -4,7 +4,7 @@ use crate::rule::{AbstractRule, IRuleRegistry};
 // todo: change to rccall https://stackoverflow.com/questions/36167160/how-do-i-express-mutually-recursive-data-structures-in-safe-rust
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct StackElement {
-    pub parent: Option<Vec<StackElement>>,
+    pub parent: Option<Box<StackElement>>,
     pub depth: i32,
     pub rule_id: i32,
     pub enter_pos: i32,
@@ -36,14 +36,14 @@ impl StackElement {
     pub fn pop(&self) -> Option<StackElement> {
         match self.parent.clone() {
             None => None,
-            Some(parents) => Some(parents[0].clone()),
+            Some(parents) => Some(*parents.clone()),
         }
     }
     pub fn get_rule(&self, grammar: &mut Grammar) -> Box<dyn AbstractRule> {
         grammar.get_rule(self.rule_id)
     }
     pub fn new(
-        parent: Option<Vec<StackElement>>,
+        parent: Option<Box<StackElement>>,
         rule_id: i32,
         enter_pos: i32,
         anchor_pos: i32,
@@ -54,7 +54,7 @@ impl StackElement {
     ) -> Self {
         let mut depth = 1;
         if let Some(iparent) = parent.clone() {
-            depth = iparent[0].depth + 1
+            depth = iparent.depth + 1
         }
         let mut element = StackElement {
             parent,
@@ -88,7 +88,7 @@ impl StackElement {
         content_name_scopes_list: ScopeListElement,
     ) -> StackElement {
         StackElement::new(
-            Some(vec![self.clone()]),
+            Some(Box::from(self.clone())),
             rule_id,
             enter_pos,
             anchor_pos,
