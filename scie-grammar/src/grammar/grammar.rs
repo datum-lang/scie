@@ -745,6 +745,19 @@ hellomake: $(OBJ)
         let mut grammar = to_grammar("test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 64);
         assert_eq!(grammar.get_rule(1).patterns_length(), 4);
+
+        let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), None);
+        let tokens = result.line_tokens._tokens.clone();
+        assert_eq!(8, tokens.len());
+        assert_eq!("Makefile,meta.scope.target.makefile,entity.name.function.target.makefile,constant.other.placeholder.makefile", tokens[0].scopes.join(","));
+        assert_eq!(0, tokens[0].start_index);
+        assert_eq!(1, tokens[1].start_index);
+        assert_eq!(3, tokens[2].start_index);
+        assert_eq!(4, tokens[3].start_index);
+        assert_eq!(9, tokens[4].start_index);
+        assert_eq!(11, tokens[5].start_index);
+        assert_eq!(15, tokens[6].start_index);
+        assert_eq!(16, tokens[7].start_index);
         debug_output(&grammar, String::from("program.json"));
     }
 
@@ -775,6 +788,7 @@ hellomake: $(OBJ)
                 )
             }
         }
+
         grammar
     }
 }

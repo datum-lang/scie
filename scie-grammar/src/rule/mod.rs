@@ -42,3 +42,11 @@ pub trait IGrammarRegistry {
 }
 
 pub trait IRuleFactoryHelper: IGrammarRegistry + IRuleRegistry {}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn should_build_json_code() {
+
+    }
+}
