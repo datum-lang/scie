@@ -165,7 +165,6 @@ impl Grammar {
             current_state = state;
         } else {
             is_first_line = false;
-            // current_state.as_ref().unwrap().reset();
             current_state.reset();
         }
 
@@ -765,7 +764,7 @@ hellomake: $(OBJ)
     #[test]
     fn should_resolve_make_file_error_issues2() {
         let code = "hellomake: $(OBJ)
-    $(CC) -o $@ $^ $(CFLAGS)";
+\t$(CC) -o $@ $^ $(CFLAGS)";
         let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         debug_output(&grammar, String::from("program.json"));
     }

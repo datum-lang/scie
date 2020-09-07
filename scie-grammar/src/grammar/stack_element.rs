@@ -111,5 +111,25 @@ impl StackElement {
         return self;
     }
 
-    pub fn reset(&mut self) {}
+    pub fn reset(&mut self) {
+        let mut has_parent = true;
+        if let None = self.parent {
+            has_parent = false;
+            self.enter_pos = -1;
+            self.anchor_pos = -1;
+        }
+
+        while has_parent {
+            self.enter_pos = -1;
+            self.anchor_pos = -1;
+
+            if let None = self.parent {
+                has_parent = false;
+            } else {
+                // todo: check parent not null
+                // self = self.parent.unwrap().borrow_mut();
+                self.parent = None;
+            }
+        }
+    }
 }
