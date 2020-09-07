@@ -354,8 +354,8 @@ impl Grammar {
         grammar: &mut Grammar,
         line_text: String,
         is_first_line: bool,
-        mut stack: &mut StackElement,
-        mut line_tokens: &mut LineTokens,
+        stack: &mut StackElement,
+        line_tokens: &mut LineTokens,
         captures: Vec<Box<dyn AbstractRule>>,
         capture_indices: Vec<IOnigCaptureIndex>,
     ) -> Option<LineTokens> {
@@ -412,7 +412,7 @@ impl Grammar {
                         .get_content_name(Some(line_text.clone()), Some(capture_indices.clone()));
                     let content_name_scopes_list = name_scopes_list.push(grammar, content_name);
 
-                    let mut stack_clone = stack.clone().push(
+                    let stack_clone = stack.clone().push(
                         capture.retokenize_captured_with_rule_id,
                         capture_index.start.clone() as i32,
                         -1,

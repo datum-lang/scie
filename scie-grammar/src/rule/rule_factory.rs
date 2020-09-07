@@ -103,7 +103,7 @@ impl RuleFactory {
                 if let Some(include_s) = pattern.clone().include {
                     if include_s.starts_with("#") {
                         let first = remove_first(include_s.as_str());
-                        let mut local_included_rule = repository.map.name_map.get_mut(first);
+                        let local_included_rule = repository.map.name_map.get_mut(first);
                         if let Some(rule) = local_included_rule.cloned() {
                             pattern_id = RuleFactory::get_compiled_rule_id(
                                 *rule,
