@@ -560,6 +560,7 @@ impl Grammar {
     ) -> Option<MatchRuleResult> {
         let mut rule = stack.get_rule(self);
         let rule_info = rule.clone().get_rule_instance();
+        println!("line_text: {:?}, rule_info: {:?}", line_text.clone(), rule.clone().get_rule().id);
 
         let mut rule_scanner;
         match rule_info {

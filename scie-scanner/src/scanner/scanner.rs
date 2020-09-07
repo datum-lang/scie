@@ -339,4 +339,16 @@ mod tests {
         assert_eq!(0, onig_match.clone().capture_indices[0].start);
         assert_eq!(1, onig_match.clone().capture_indices[0].end);
     }
+
+    #[test]
+    fn should_match_for_scope_target() {
+        let origin = vec!["^(?!\\t)", "\\G", "^\\t"];
+        let rules = vec![-1, 36, 39];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = Scanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)
+"), 4);
+        let onig_match = result.unwrap();
+        println!("{:?}", onig_match);
+    }
 }
