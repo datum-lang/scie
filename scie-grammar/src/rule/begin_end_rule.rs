@@ -88,6 +88,14 @@ impl AbstractRule for BeginEndRule {
         if is_first {
             for x in self.patterns.clone() {
                 let mut rule = grammar.get_rule(x);
+                // match rule.get_rule_instance() {
+                //     RuleEnum::BeginEndRule(rule) => {println!("{:?}", rule)},
+                //     RuleEnum::BeginWhileRule(rule) => {println!("{:?}", rule)},
+                //     RuleEnum::CaptureRule(rule) => {println!("{:?}", rule)},
+                //     RuleEnum::MatchRule(rule) => {println!("{:?}", rule)},
+                //     RuleEnum::EmptyRule(rule) => {println!("{:?}", rule)},
+                //     RuleEnum::IncludeOnlyRule(rule) => {println!("{:?}", rule)},
+                // }
                 rule.collect_patterns_recursive(grammar, out, is_first);
             }
         } else {
@@ -106,6 +114,7 @@ impl AbstractRule for BeginEndRule {
 
         if let None = self._cached_compiled_patterns {
             // todo: figured cached issues
+            println!("todo: figured cached issues");
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
 
             if let Some(apply_end) = self.apply_end_pattern_last {

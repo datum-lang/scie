@@ -544,8 +544,7 @@ impl Grammar {
     ) {
         let match_result =
             self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
-        if let Some(_result) = match_result {
-        } else {
+        if let Some(_result) = match_result {} else {
             // None
         };
         // todo: get injections logic
@@ -561,12 +560,27 @@ impl Grammar {
     ) -> Option<MatchRuleResult> {
         let mut rule = stack.get_rule(self);
         let rule_info = rule.clone().get_rule_instance();
-        let mut rule_scanner = rule.compile(
-            self,
-            stack.end_rule.clone(),
-            is_first_line,
-            line_pos == anchor_position,
-        );
+
+        let mut rule_scanner;
+        match rule_info {
+            RuleEnum::BeginEndRule(mut begin_end_rule) => {
+                rule_scanner = begin_end_rule.compile(
+                    self,
+                    stack.end_rule.clone(),
+                    is_first_line,
+                    line_pos == anchor_position,
+                );
+            }
+            _ => {
+                rule_scanner = rule.compile(
+                    self,
+                    stack.end_rule.clone(),
+                    is_first_line,
+                    line_pos == anchor_position,
+                );
+            }
+        }
+
         let r = rule_scanner
             .scanner
             .find_next_match_sync(line_text, line_pos);

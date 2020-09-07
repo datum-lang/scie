@@ -9,6 +9,7 @@ pub struct CompiledRule {
 
 impl CompiledRule {
     pub fn new(debug_reg_exps: Vec<String>, rules: Vec<i32>) -> Self {
+        // println!("{:?}", rules);
         let scanner = Scanner::new(debug_reg_exps.clone());
         CompiledRule {
             debug_reg_exps,
