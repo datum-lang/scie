@@ -281,9 +281,9 @@ impl RuleFactory {
 
             if let Some(_) = desc.while_s {
                 let begin_rule_factory =
-                    RuleFactory::compile_captures(begin_captures, helper, repository);
+                    RuleFactory::compile_captures(desc.begin_captures, helper, repository);
                 let end_rule_factory =
-                    RuleFactory::compile_captures(end_captures, helper, repository);
+                    RuleFactory::compile_captures(desc.end_captures, helper, repository);
                 let pattern_factory =
                     RuleFactory::compile_patterns(desc.patterns, helper, repository);
 

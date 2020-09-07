@@ -3628,8 +3628,6 @@ var RuleFactory = /** @class */ (function () {
                 var retokenizeCapturedWithRuleId = 0;
                 if (captures[captureId].patterns) {
                     retokenizeCapturedWithRuleId = RuleFactory.getCompiledRuleId(captures[captureId], helper, repository);
-                } else {
-                    console.log(captures[captureId], numericCaptureId);
                 }
                 r[numericCaptureId] = RuleFactory.createCaptureRule(helper, captures[captureId].$vscodeTextmateLocation, captures[captureId].name, captures[captureId].contentName, retokenizeCapturedWithRuleId);
             }
