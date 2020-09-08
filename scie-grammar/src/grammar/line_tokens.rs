@@ -64,11 +64,12 @@ impl LineTokens {
             self._tokens.pop();
         }
 
-        let tokens_len = self._tokens.len();
-        if tokens_len == 0 {
+        if self._tokens.len() == 0 {
             self._last_token_end_index = -1;
             self.produce(stack, line_length);
-            self._tokens[tokens_len - 1].start_index = 0;
+
+            let new_tokens_len = self._tokens.len();
+            self._tokens[new_tokens_len - 1].start_index = 0;
         }
 
         self._tokens.clone()

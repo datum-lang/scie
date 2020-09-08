@@ -155,7 +155,6 @@ impl Grammar {
         let stack = &mut next_state.clone().unwrap();
         let vec = line_tokens.get_result(stack, line_length as i32);
         TokenizeResult {
-            // line_length,
             tokens: vec,
             rule_stack: Box::new(next_state.clone()),
         }
@@ -764,11 +763,11 @@ hellomake: $(OBJ)
             for token in result.tokens {
                 let start = token.start_index.clone() as usize;
                 let end = token.end_index.clone() as usize;
-                // let new_line: String = String::from(line)
-                //     .chars()
-                //     .skip(start)
-                //     .take(end - start)
-                //     .collect();
+                let new_line: String = String::from(line)
+                    .chars()
+                    .skip(start)
+                    .take(end - start)
+                    .collect();
                 let token_str: String = token.scopes.join(", ");
                 println!(
                     " - token from {:?} to {:?} ({:?}) with scopes {:?}",

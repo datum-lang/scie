@@ -167,7 +167,7 @@ impl RuleFactory {
                         if rule.has_missing_pattern() && rule.patterns_length() == 0 {
                             match rule.get_rule_instance() {
                                 RuleEnum::BeginEndRule(r) => {
-                                    println!("{:?}", r);
+                                    println!("missing patterns -> {:?}", r);
                                 }
                                 _ => {}
                             }
