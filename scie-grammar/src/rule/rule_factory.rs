@@ -118,13 +118,15 @@ impl RuleFactory {
                             );
                         }
                     } else if include_s == "$base" || include_s == "$self" {
-                        let mut local_included_rule = repository.map.base_s.clone();
-                        pattern_id = RuleFactory::get_compiled_rule_id(
-                            *local_included_rule.unwrap(),
-                            helper,
-                            repository,
-                            String::from(include_s.as_str()),
-                        );
+                        // todo: set base to 1 for quick fixed
+                        pattern_id = 1;
+                        // let mut local_included_rule = repository.map.base_s.clone();
+                        // pattern_id = RuleFactory::get_compiled_rule_id(
+                        //     *local_included_rule.unwrap(),
+                        //     helper,
+                        //     repository,
+                        //     String::from(include_s.as_str()),
+                        // );
                     } else {
                         // todo: find the cases
                         println!("todo: external grammar {:?}", pattern.include);
