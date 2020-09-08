@@ -123,14 +123,14 @@ impl AbstractRule for BeginEndRule {
             } else {
                 cached_compiled_patterns.unshift(Box::new(self._end.clone()));
             }
-
-            self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
         } else {
             cached_compiled_patterns = self._cached_compiled_patterns.as_ref().unwrap().clone();
         }
 
         // self._end.has_anchor
         // println!("todo: support for hasBackReferences");
-        cached_compiled_patterns.compile(grammar, allow_a, allow_g)
+        let compiled_rule = cached_compiled_patterns.compile(grammar, allow_a, allow_g);
+        self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
+        compiled_rule
     }
 }
