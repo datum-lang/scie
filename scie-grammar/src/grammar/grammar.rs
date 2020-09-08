@@ -677,7 +677,7 @@ GitHub 漫游指南
 
     #[test]
     fn should_build_html_grammar() {
-        let code = "{}";
+        let code = "<html><html>";
         let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/html.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 101);
         debug_output(&grammar, String::from("program.json"));
@@ -706,6 +706,7 @@ OBJ = hellomake.o hellofunc.o
     }
 
     #[test]
+    #[ignore]
     fn should_build_makefile_grammar() {
         let code = "CC=gcc
 CFLAGS=-I.
@@ -727,8 +728,7 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues() {
-        let code = "%.o: %.c $(DEPS)
-";
+        let code = "%.o: %.c $(DEPS)";
         let mut grammar =
             to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), &mut None);
@@ -749,7 +749,14 @@ hellomake: $(OBJ)
     fn should_resolve_make_file_error_issues2() {
         let code = "hellomake: $(OBJ)
 \t$(CC) -o $@ $^ $(CFLAGS)";
-        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
+        let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
+
+        let mut rule_stack = Some(StackElement::null());
+        let result = grammar.tokenize_line(String::from("hellomake: $(OBJ)"), &mut rule_stack);
+        assert_eq!(6, result.tokens.len());
+        rule_stack = *result.rule_stack;
+        let result2 = grammar.tokenize_line(String::from("\t$(CC) -o $@ $^ $(CFLAGS)"), &mut rule_stack);
+        assert_eq!(14, result2.tokens.len());
         debug_output(&grammar, String::from("program.json"));
     }
 
