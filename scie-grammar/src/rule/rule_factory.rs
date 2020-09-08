@@ -118,10 +118,9 @@ impl RuleFactory {
                             );
                         }
                     } else if include_s == "$base" || include_s == "$self" {
-                        // todo: support for $self
                         let mut local_included_rule = repository.map.base_s.clone();
                         pattern_id = RuleFactory::get_compiled_rule_id(
-                            local_included_rule.unwrap().clone(),
+                            *local_included_rule.unwrap(),
                             helper,
                             repository,
                             String::from(include_s.as_str()),

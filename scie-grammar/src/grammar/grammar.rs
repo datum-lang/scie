@@ -86,8 +86,8 @@ pub fn init_grammar(grammar: IRawGrammar, _base: Option<IRawRule>) -> IRawGramma
     new_based.name = grammar.clone().name;
 
     let mut repository_map = IRawRepositoryMap::new();
-    repository_map.base_s = Some(new_based.clone());
-    repository_map.self_s = Some(new_based.clone());
+    repository_map.base_s = Some(Box::from(new_based.clone()));
+    repository_map.self_s = Some(Box::from(new_based.clone()));
     if let Some(repo) = grammar.clone().repository {
         repository_map.name_map = repo.clone().map.name_map.clone();
     }
@@ -122,7 +122,7 @@ impl Grammar {
             let repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.self_s.unwrap();
             self.root_id = RuleFactory::get_compiled_rule_id(
-                based.clone(),
+                *based.clone(),
                 self,
                 &mut repository.clone(),
                 String::from(""),

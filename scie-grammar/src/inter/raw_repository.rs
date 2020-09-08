@@ -23,9 +23,9 @@ pub struct IRawRepositoryMap {
     #[serde(flatten)]
     pub name_map: HashMap<String, Box<IRawRule>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub self_s: Option<IRawRule>,
+    pub self_s: Option<Box<IRawRule>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub base_s: Option<IRawRule>,
+    pub base_s: Option<Box<IRawRule>>,
 }
 
 impl IRawRepositoryMap {
