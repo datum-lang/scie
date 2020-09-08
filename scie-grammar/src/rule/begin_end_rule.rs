@@ -96,11 +96,7 @@ impl AbstractRule for BeginEndRule {
                 //     RuleEnum::EmptyRule(rule) => {println!("{:?}", rule)},
                 //     RuleEnum::IncludeOnlyRule(rule) => {println!("{:?}", rule)},
                 // }
-                if let RuleEnum::BeginEndRule(r) = rule.clone().get_rule_instance() {
-                    out.push(Box::from(r._begin.clone()))
-                } else {
-                    rule.collect_patterns_recursive(grammar, &mut out, is_first);
-                }
+                rule.collect_patterns_recursive(grammar, &mut out, false);
             }
         } else {
             &mut out.push(Box::from(self._begin.clone()));
