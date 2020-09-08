@@ -1,4 +1,4 @@
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct ILocation {
     pub filename: String,
     pub line: String,
@@ -15,7 +15,7 @@ impl ILocation {
     }
 }
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct ILocatable {
     #[serde(flatten, skip_serializing_if = "Option::is_none")]
     pub textmate_location: Option<ILocation>,

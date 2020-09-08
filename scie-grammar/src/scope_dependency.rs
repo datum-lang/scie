@@ -1,5 +1,5 @@
-use crate::inter::IRawRule;
 use std::collections::HashSet;
+use crate::inter::IRawRule;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct PartialScopeDependency {
@@ -47,7 +47,6 @@ impl ScopeDependencyCollector {
     pub fn add(&mut self, dep: ScopeDependency) {
         match dep {
             ScopeDependency::FullScopeDependency(full_dep) => {
-                // self._seen_full.get_or_insert(full_dep.scope_name);
                 // self._seen_full.get(&*full_dep.scope_name.clone());
             },
             ScopeDependency::PartialScopeDependency(_) => {

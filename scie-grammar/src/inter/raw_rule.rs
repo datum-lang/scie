@@ -1,6 +1,6 @@
 use crate::inter::{ILocation, IRawCaptures, IRawRepository};
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, Eq, PartialEq, Debug, Clone)]
 pub struct IRawRule {
     pub id: Option<i32>,
     #[serde(skip_serializing_if = "Option::is_none")]

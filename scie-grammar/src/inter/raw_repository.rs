@@ -1,7 +1,7 @@
 use crate::inter::{ILocation, IRawRule};
 use std::collections::HashMap;
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct IRawRepository {
     #[serde(flatten)]
     pub map: Box<IRawRepositoryMap>,
@@ -18,7 +18,7 @@ impl IRawRepository {
     }
 }
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct IRawRepositoryMap {
     #[serde(flatten)]
     pub name_map: HashMap<String, Box<IRawRule>>,
