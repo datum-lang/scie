@@ -28,15 +28,13 @@ impl GrammarRegistry {
         _initial_scope_name: String,
         _initial_language: i32,
         _configuration: IGrammarConfiguration,
-    ) {
+    ) {}
+    // todo: modify logic to here for _collectDependenciesForDep
+    pub fn _load_grammar(&self, initial_scope_name: String, _initial_language: i32, _token_type: Option<ITokenTypeMap>) {
 
     }
-    // todo: modify logic to here for _collectDependenciesForDep
-    pub fn load_grammar(
-        &self,
-        _initial_scope_name: String,
-        _initial_language: i32,
-        _configuration: IGrammarConfiguration,
-    ) {
+
+    pub fn load_grammar(&self, initial_scope_name: String) {
+        self._load_grammar(initial_scope_name, 0, None)
     }
 }

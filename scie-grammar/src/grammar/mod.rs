@@ -1,6 +1,5 @@
 pub mod grammar;
 pub mod grammar_reader;
-pub mod grammar_registry;
 pub mod line_tokens;
 
 pub mod local_stack_element;

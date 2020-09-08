@@ -11,6 +11,8 @@ extern crate regex;
 
 pub mod grammar;
 pub mod inter;
-pub mod matcher;
 pub mod rule;
 pub mod support;
+pub mod grammar_registry;
+pub mod sync_register;
+pub mod scope_dependency;
