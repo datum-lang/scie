@@ -273,14 +273,6 @@ impl Grammar {
                         );
                         let _content_name_scopes_list = name_scopes_list.push(self, content_name);
                         stack = stack.set_content_name_scopes_list(_content_name_scopes_list);
-                        // todo: not used
-                        // if push_rule.endHasBackReferences {
-                        //
-                        // }
-
-                        // if (!hasAdvanced && beforePush.hasSameRuleAs(stack)) {
-                        // _stop = true;
-                        // return None;
                     }
                     RuleEnum::BeginWhileRule(_while_rule) => {
                         println!("todo: RuleEnum - BeginWhileRule");
