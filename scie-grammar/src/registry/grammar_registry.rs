@@ -1,6 +1,8 @@
-use std::collections::{HashMap, HashSet};
-use crate::registry::scope_dependency::{ScopeDependency, FullScopeDependency, ScopeDependencyCollector};
 use crate::registry::scope_dependency::ScopeDependency::Full;
+use crate::registry::scope_dependency::{
+    FullScopeDependency, ScopeDependency, ScopeDependencyCollector,
+};
+use std::collections::{HashMap, HashSet};
 
 pub struct IEmbeddedLanguagesMap {
     map: HashMap<String, i32>,
@@ -30,9 +32,15 @@ impl GrammarRegistry {
         _initial_scope_name: String,
         _initial_language: i32,
         _configuration: IGrammarConfiguration,
-    ) {}
+    ) {
+    }
     // todo: modify logic to here for _collect_dependencies_for_dep
-    pub fn _load_grammar(&self, initial_scope_name: String, _initial_language: i32, _token_type: Option<ITokenTypeMap>) {
+    pub fn _load_grammar(
+        &self,
+        initial_scope_name: String,
+        _initial_language: i32,
+        _token_type: Option<ITokenTypeMap>,
+    ) {
         let mut seen_full_scope_requests: HashSet<String> = HashSet::new();
         let _seen_partial_scope_requests: HashSet<String> = HashSet::new();
 
@@ -63,8 +71,12 @@ impl GrammarRegistry {
         }
     }
 
-    pub fn _collect_dependencies_for_dep(&self, _scope_name: String, _deps: &mut ScopeDependencyCollector, _dep: ScopeDependency) {
-        
+    pub fn _collect_dependencies_for_dep(
+        &self,
+        _scope_name: String,
+        _deps: &mut ScopeDependencyCollector,
+        _dep: ScopeDependency,
+    ) {
     }
     pub fn _load_single_grammar(&self, _scope_name: String) {
         // todo: add cache support

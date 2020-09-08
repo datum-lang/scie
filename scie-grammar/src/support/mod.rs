@@ -1,2 +1,2 @@
-pub mod regex_source;
 pub mod matcher;
+pub mod regex_source;

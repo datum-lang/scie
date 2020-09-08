@@ -8,10 +8,7 @@ pub struct ScopeListElement {
 
 impl ScopeListElement {
     pub fn new(parent: Option<Box<ScopeListElement>>, scope: String) -> Self {
-        ScopeListElement {
-            parent,
-            scope,
-        }
+        ScopeListElement { parent, scope }
     }
 
     pub fn stringify(self) -> String {

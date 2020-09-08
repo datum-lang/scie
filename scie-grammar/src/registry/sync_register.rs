@@ -1,4 +1,1 @@
-pub struct SyncRegister {
-
-}
-
+pub struct SyncRegister {}

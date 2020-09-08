@@ -1,6 +1,6 @@
 use std::collections::BTreeMap as Map;
 
-use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher, IToken};
+use crate::grammar::line_tokens::{IToken, LineTokens, TokenTypeMatcher};
 use crate::grammar::local_stack_element::LocalStackElement;
 use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
@@ -512,7 +512,8 @@ impl Grammar {
     ) {
         let match_result =
             self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
-        if let Some(_result) = match_result {} else {
+        if let Some(_result) = match_result {
+        } else {
             // None
         };
         // todo: get injections logic
@@ -749,13 +750,15 @@ hellomake: $(OBJ)
     fn should_resolve_make_file_error_issues2() {
         let code = "hellomake: $(OBJ)
 \t$(CC) -o $@ $^ $(CFLAGS)";
-        let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
+        let mut grammar =
+            to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
 
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line(String::from("hellomake: $(OBJ)"), &mut rule_stack);
         assert_eq!(6, result.tokens.len());
         rule_stack = *result.rule_stack;
-        let result2 = grammar.tokenize_line(String::from("\t$(CC) -o $@ $^ $(CFLAGS)"), &mut rule_stack);
+        let result2 =
+            grammar.tokenize_line(String::from("\t$(CC) -o $@ $^ $(CFLAGS)"), &mut rule_stack);
         assert_eq!(14, result2.tokens.len());
         debug_output(&grammar, String::from("program.json"));
     }

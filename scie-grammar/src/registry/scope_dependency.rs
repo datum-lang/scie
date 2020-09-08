@@ -1,10 +1,10 @@
-use std::collections::{HashSet, HashMap};
 use crate::inter::IRawRule;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct PartialScopeDependency {
     pub scope_name: String,
-    pub include: String
+    pub include: String,
 }
 
 impl PartialScopeDependency {
@@ -15,7 +15,7 @@ impl PartialScopeDependency {
 
 #[derive(Clone, Debug, Serialize)]
 pub struct FullScopeDependency {
-    pub scope_name: String
+    pub scope_name: String,
 }
 
 impl FullScopeDependency {
@@ -27,7 +27,7 @@ impl FullScopeDependency {
 #[derive(Clone, Debug, Serialize)]
 pub enum ScopeDependency {
     Full(FullScopeDependency),
-    Partial(PartialScopeDependency)
+    Partial(PartialScopeDependency),
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -46,7 +46,7 @@ impl ScopeDependencyCollector {
             partial: vec![],
             visited_rule: Default::default(),
             _seen_full: Default::default(),
-            _seen_partial: Default::default()
+            _seen_partial: Default::default(),
         }
     }
 
@@ -58,15 +58,14 @@ impl ScopeDependencyCollector {
                     self._seen_full.insert(String::from(scope_name));
                     self.full.push(full_dep);
                 }
-            },
+            }
             ScopeDependency::Partial(partial_dep) => {
                 let key = &*partial_dep.to_key();
                 if let None = self._seen_partial.get(key) {
                     self._seen_partial.insert(String::from(key));
                     self.partial.push(partial_dep);
                 }
-            },
+            }
         }
     }
 }
-
