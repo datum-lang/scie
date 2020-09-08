@@ -1,6 +1,6 @@
 use std::collections::BTreeMap as Map;
 
-use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher};
+use crate::grammar::line_tokens::{LineTokens, TokenTypeMatcher, IToken};
 use crate::grammar::local_stack_element::LocalStackElement;
 use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
@@ -11,37 +11,6 @@ use crate::rule::{
 };
 use core::cmp;
 use scie_scanner::scanner::scanner::IOnigCaptureIndex;
-
-pub struct IToken {
-    pub start_index: i32,
-    pub end_index: i32,
-    pub scopes: Vec<String>,
-}
-
-pub struct ITokenizeLineResult {
-    pub tokens: Vec<IToken>,
-    pub rule_stack: Box<StackElement>,
-}
-
-pub struct ITokenizeLineResult2 {
-    pub tokens: Vec<i32>,
-    pub rule_stack: Box<StackElement>,
-}
-
-pub trait IGrammar {
-    fn tokenize_line(line_text: String, prev_state: Option<StackElement>) -> ITokenizeLineResult;
-    /**
-     * Tokenize `lineText` using previous line state `prevState`.
-     * The result contains the tokens in binary format, resolved with the following information:
-     *  - language
-     *  - token type (regex, string, comment, other)
-     *  - font style
-     *  - foreground color
-     *  - background color
-     * e.g. for getting the languageId: `(metadata & MetadataConsts.LANGUAGEID_MASK) >>> MetadataConsts.LANGUAGEID_OFFSET`
-     */
-    fn tokenize_line2(line_text: String, prev_state: Option<StackElement>) -> ITokenizeLineResult2;
-}
 
 pub trait Matcher {}
 
@@ -61,8 +30,7 @@ pub struct CheckWhileConditionResult {
 
 #[derive(Debug, Clone)]
 pub struct TokenizeResult {
-    line_length: usize,
-    line_tokens: Box<LineTokens>,
+    tokens: Vec<IToken>,
     rule_stack: Box<Option<StackElement>>,
 }
 
@@ -183,10 +151,13 @@ impl Grammar {
             true,
         );
 
+        let line_length = format_line_text.clone().len();
+        let stack = &mut next_state.clone().unwrap();
+        let vec = line_tokens.get_result(stack, line_length as i32);
         TokenizeResult {
-            line_length: format_line_text.clone().len(),
-            line_tokens: Box::new(line_tokens),
-            rule_stack: Box::new(next_state),
+            // line_length,
+            tokens: vec,
+            rule_stack: Box::new(next_state.clone()),
         }
     }
 
@@ -649,7 +620,7 @@ mod tests {
     use crate::rule::IRuleRegistry;
 
     #[test]
-    fn should_build_json_code() {
+    fn should_build_grammar_json() {
         let code = "
 #include <stdio.h>
 int main() {
@@ -670,14 +641,13 @@ return 0;
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line(String::from(code), &mut rule_stack);
 
-        assert_eq!(7, result.line_tokens._tokens.len());
-        assert_eq!(0, result.line_tokens._tokens[0].start_index);
-        assert_eq!(1, result.line_tokens._tokens[1].start_index);
-        assert_eq!(8, result.line_tokens._tokens[2].start_index);
-        assert_eq!(9, result.line_tokens._tokens[3].start_index);
-        assert_eq!(10, result.line_tokens._tokens[4].start_index);
-        assert_eq!(17, result.line_tokens._tokens[5].start_index);
-        assert_eq!(18, result.line_tokens._tokens[6].start_index);
+        assert_eq!(6, result.tokens.len());
+        assert_eq!(0, result.tokens[0].start_index);
+        assert_eq!(1, result.tokens[1].start_index);
+        assert_eq!(8, result.tokens[2].start_index);
+        assert_eq!(9, result.tokens[3].start_index);
+        assert_eq!(10, result.tokens[4].start_index);
+        assert_eq!(17, result.tokens[5].start_index);
     }
 
     #[test]
@@ -763,8 +733,8 @@ hellomake: $(OBJ)
         let mut grammar =
             to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), &mut None);
-        let tokens = result.line_tokens._tokens.clone();
-        assert_eq!(8, tokens.len());
+        let tokens = result.tokens.clone();
+        assert_eq!(7, tokens.len());
         assert_eq!("Makefile,meta.scope.target.makefile,entity.name.function.target.makefile,constant.other.placeholder.makefile", tokens[0].scopes.join(","));
         assert_eq!(0, tokens[0].start_index);
         assert_eq!(1, tokens[1].start_index);
@@ -773,7 +743,6 @@ hellomake: $(OBJ)
         assert_eq!(9, tokens[4].start_index);
         assert_eq!(11, tokens[5].start_index);
         assert_eq!(15, tokens[6].start_index);
-        assert_eq!(16, tokens[7].start_index);
         debug_output(&grammar, String::from("program.json"));
     }
 
@@ -792,14 +761,14 @@ hellomake: $(OBJ)
         for line in c_code.lines() {
             let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
             rule_stack = *result.rule_stack;
-            for token in result.line_tokens._tokens {
+            for token in result.tokens {
                 let start = token.start_index.clone() as usize;
                 let end = token.end_index.clone() as usize;
-                let new_line: String = String::from(line)
-                    .chars()
-                    .skip(start)
-                    .take(end - start)
-                    .collect();
+                // let new_line: String = String::from(line)
+                //     .chars()
+                //     .skip(start)
+                //     .take(end - start)
+                //     .collect();
                 let token_str: String = token.scopes.join(", ");
                 println!(
                     " - token from {:?} to {:?} ({:?}) with scopes {:?}",
