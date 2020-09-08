@@ -118,18 +118,14 @@ impl RuleFactory {
                             );
                         }
                     } else if include_s == "$base" || include_s == "$self" {
-                        let local_included_rule =
-                            repository.map.name_map.get_mut(include_s.as_str());
-                        if let Some(rule) = local_included_rule.cloned() {
-                            pattern_id = RuleFactory::get_compiled_rule_id(
-                                *rule,
-                                helper,
-                                repository,
-                                String::from(include_s.as_str()),
-                            );
-                        } else {
-                            println!("lost local_included_rule: {:?}", include_s);
-                        }
+                        // todo: support for $self
+                        let mut local_included_rule = repository.map.base_s.clone();
+                        pattern_id = RuleFactory::get_compiled_rule_id(
+                            local_included_rule.unwrap().clone(),
+                            helper,
+                            repository,
+                            String::from(include_s.as_str()),
+                        );
                     } else {
                         // todo: find the cases
                         println!("todo: external grammar {:?}", pattern.include);
