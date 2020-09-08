@@ -230,6 +230,8 @@ impl Grammar {
                     anchor_position = popped.anchor_pos;
                 } else {
                     println!("_popped_rule {:?}", _popped_rule.clone());
+                    _stop = true;
+                    return Some(stack.clone());
                 }
             } else {
                 let rule = self.get_rule(matched_rule_id);

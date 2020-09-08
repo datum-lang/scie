@@ -26,8 +26,7 @@ const registry = new vsctm.Registry({
 });
 
 registry.loadGrammar('source.makefile').then(grammar => {
-    const text = `hellomake: $(OBJ)
-\t$(CC) -o $@ $^ $(CFLAGS)`.split("\n");
+    const text = `%.o: %.c $(DEPS)`.split("\n");
     let ruleStack = vsctm.INITIAL;
     for (let i = 0; i < text.length; i++) {
         const line = text[i];
