@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
-use crate::scope_dependency::{ScopeDependency, FullScopeDependency, ScopeDependencyCollector};
-use crate::scope_dependency::ScopeDependency::Full;
+use crate::registry::scope_dependency::{ScopeDependency, FullScopeDependency, ScopeDependencyCollector};
+use crate::registry::scope_dependency::ScopeDependency::Full;
 
 pub struct IEmbeddedLanguagesMap {
     map: HashMap<String, i32>,
@@ -31,42 +31,42 @@ impl GrammarRegistry {
         _initial_language: i32,
         _configuration: IGrammarConfiguration,
     ) {}
-    // todo: modify logic to here for _collectDependenciesForDep
+    // todo: modify logic to here for _collect_dependencies_for_dep
     pub fn _load_grammar(&self, initial_scope_name: String, _initial_language: i32, _token_type: Option<ITokenTypeMap>) {
         let mut seen_full_scope_requests: HashSet<String> = HashSet::new();
-        let seen_partial_scope_requests: HashSet<String> = HashSet::new();
+        let _seen_partial_scope_requests: HashSet<String> = HashSet::new();
 
         seen_full_scope_requests.insert(initial_scope_name.clone());
 
         let dependency = FullScopeDependency::new(initial_scope_name.clone());
-        let mut Q: Vec<ScopeDependency> = vec![ScopeDependency::Full(dependency)];
+        let mut queue: Vec<ScopeDependency> = vec![ScopeDependency::Full(dependency)];
 
-        while Q.len() > 0 {
-            let q = Q.clone();
-            Q = vec![];
+        while queue.len() > 0 {
+            let q = queue.clone();
+            queue = vec![];
 
-            for x in q {
+            for x in q.clone() {
                 match x {
                     Full(dep) => {
-                        self._loadSingleGrammar(dep.scope_name);
+                        self._load_single_grammar(dep.scope_name);
                     }
                     ScopeDependency::Partial(dep) => {
-                        self._loadSingleGrammar(dep.scope_name);
+                        self._load_single_grammar(dep.scope_name);
                     }
                 }
             }
 
             let mut deps = ScopeDependencyCollector::new();
-            for dep in q {
-                self._collectDependenciesForDep(initial_scope_name.clone(), &mut deps, dep);
+            for dep in q.clone() {
+                self._collect_dependencies_for_dep(initial_scope_name.clone(), &mut deps, dep);
             }
         }
     }
 
-    pub fn _collectDependenciesForDep(&self, scope_name: String, deps: &mut ScopeDependencyCollector, dep: ScopeDependency) {
+    pub fn _collect_dependencies_for_dep(&self, _scope_name: String, _deps: &mut ScopeDependencyCollector, _dep: ScopeDependency) {
         
     }
-    pub fn _loadSingleGrammar(&self, scope_name: String) {
+    pub fn _load_single_grammar(&self, _scope_name: String) {
         // todo: add cache support
         // todo: add load single gammar
     }
