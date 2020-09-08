@@ -542,8 +542,7 @@ impl Grammar {
     ) {
         let match_result =
             self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
-        if let Some(_result) = match_result {
-        } else {
+        if let Some(_result) = match_result {} else {
             // None
         };
         // todo: get injections logic
@@ -659,16 +658,26 @@ return 0;
 }
 ";
         let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/c.json", code);
-        assert_eq!(28, grammar.rule_id2desc.get(&1).unwrap().patterns_length());
+        let first_rule = grammar.rule_id2desc.get(&1).unwrap();
+        assert_eq!(28, first_rule.clone().patterns_length());
         debug_output(&grammar, String::from("program.json"));
     }
 
     #[test]
     fn should_identify_c_include() {
         let code = "#include <stdio.h>";
-        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/c.json", code);
-        assert_eq!(grammar.rule_id2desc.len(), 161);
-        debug_output(&grammar, String::from("program.json"));
+        let mut grammar = to_grammar("test-cases/first-mate/fixtures/c.json");
+        let mut rule_stack = Some(StackElement::null());
+        let result = grammar.tokenize_line(String::from(code), &mut rule_stack);
+
+        assert_eq!(7, result.line_tokens._tokens.len());
+        assert_eq!(0, result.line_tokens._tokens[0].start_index);
+        assert_eq!(1, result.line_tokens._tokens[1].start_index);
+        assert_eq!(8, result.line_tokens._tokens[2].start_index);
+        assert_eq!(9, result.line_tokens._tokens[3].start_index);
+        assert_eq!(10, result.line_tokens._tokens[4].start_index);
+        assert_eq!(17, result.line_tokens._tokens[5].start_index);
+        assert_eq!(18, result.line_tokens._tokens[6].start_index);
     }
 
     #[test]

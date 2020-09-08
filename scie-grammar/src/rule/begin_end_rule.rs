@@ -82,7 +82,7 @@ impl AbstractRule for BeginEndRule {
     fn collect_patterns_recursive(
         &mut self,
         grammar: &mut Grammar,
-        out: &mut RegExpSourceList,
+        mut out: &mut RegExpSourceList,
         is_first: bool,
     ) {
         if is_first {
@@ -96,10 +96,14 @@ impl AbstractRule for BeginEndRule {
                 //     RuleEnum::EmptyRule(rule) => {println!("{:?}", rule)},
                 //     RuleEnum::IncludeOnlyRule(rule) => {println!("{:?}", rule)},
                 // }
-                rule.collect_patterns_recursive(grammar, out, is_first);
+                if let RuleEnum::BeginEndRule(r) = rule.clone().get_rule_instance() {
+                    out.push(Box::from(r._begin.clone()))
+                } else {
+                    rule.collect_patterns_recursive(grammar, &mut out, is_first);
+                }
             }
         } else {
-            out.push(Box::from(self._begin.clone()));
+            &mut out.push(Box::from(self._begin.clone()));
         }
     }
 
