@@ -18,10 +18,16 @@ pub struct FullScopeDependency {
     pub scope_name: String
 }
 
+impl FullScopeDependency {
+    pub fn new(scope_name: String) -> Self {
+        FullScopeDependency { scope_name }
+    }
+}
+
 #[derive(Clone, Debug, Serialize)]
 pub enum ScopeDependency {
-    FullScopeDependency(FullScopeDependency),
-    PartialScopeDependency(PartialScopeDependency)
+    Full(FullScopeDependency),
+    Partial(PartialScopeDependency)
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -46,14 +52,14 @@ impl ScopeDependencyCollector {
 
     pub fn add(&mut self, dep: ScopeDependency) {
         match dep {
-            ScopeDependency::FullScopeDependency(full_dep) => {
+            ScopeDependency::Full(full_dep) => {
                 let scope_name = &*full_dep.scope_name.clone();
                 if let None = self._seen_full.get(scope_name.clone()) {
                     self._seen_full.insert(String::from(scope_name));
                     self.full.push(full_dep);
                 }
             },
-            ScopeDependency::PartialScopeDependency(partial_dep) => {
+            ScopeDependency::Partial(partial_dep) => {
                 let key = &*partial_dep.to_key();
                 if let None = self._seen_partial.get(key) {
                     self._seen_partial.insert(String::from(key));
