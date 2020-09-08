@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashSet, HashMap};
 use crate::inter::IRawRule;
 
 #[derive(Clone, Debug, Serialize)]
@@ -28,7 +28,7 @@ pub enum ScopeDependency {
 pub struct ScopeDependencyCollector {
     pub full: Vec<FullScopeDependency>,
     pub partial: Vec<PartialScopeDependency>,
-    // pub visited_rule: HashSet<IRawRule>,
+    pub visited_rule: HashMap<String, IRawRule>,
     pub _seen_full: HashSet<String>,
     pub _seen_partial: HashSet<String>,
 }
@@ -38,7 +38,7 @@ impl ScopeDependencyCollector {
         ScopeDependencyCollector {
             full: vec![],
             partial: vec![],
-            // visited_rule: Default::default(),
+            visited_rule: Default::default(),
             _seen_full: Default::default(),
             _seen_partial: Default::default()
         }
@@ -47,10 +47,18 @@ impl ScopeDependencyCollector {
     pub fn add(&mut self, dep: ScopeDependency) {
         match dep {
             ScopeDependency::FullScopeDependency(full_dep) => {
-                // self._seen_full.get(&*full_dep.scope_name.clone());
+                let scope_name = &*full_dep.scope_name.clone();
+                if let None = self._seen_full.get(scope_name.clone()) {
+                    self._seen_full.insert(String::from(scope_name));
+                    self.full.push(full_dep);
+                }
             },
-            ScopeDependency::PartialScopeDependency(_) => {
-
+            ScopeDependency::PartialScopeDependency(partial_dep) => {
+                let key = &*partial_dep.to_key();
+                if let None = self._seen_partial.get(key) {
+                    self._seen_partial.insert(String::from(key));
+                    self.partial.push(partial_dep);
+                }
             },
         }
     }
