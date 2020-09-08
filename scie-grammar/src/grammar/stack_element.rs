@@ -13,8 +13,6 @@ pub struct StackElement {
     pub end_rule: Option<String>,
     pub name_scopes_list: ScopeListElement,
     pub content_name_scopes_list: ScopeListElement,
-    // todo: remove stringify
-    pub stringify: String,
 }
 
 impl StackElement {
@@ -29,7 +27,6 @@ impl StackElement {
             end_rule: None,
             name_scopes_list: Default::default(),
             content_name_scopes_list: Default::default(),
-            stringify: "".to_string(),
         }
     }
 
@@ -56,7 +53,8 @@ impl StackElement {
         if let Some(iparent) = parent.clone() {
             depth = iparent.depth + 1
         }
-        let mut element = StackElement {
+
+        StackElement {
             parent,
             depth,
             rule_id,
@@ -66,11 +64,7 @@ impl StackElement {
             end_rule,
             name_scopes_list,
             content_name_scopes_list,
-            stringify: "".to_string(),
-        };
-
-        element.stringify = element.clone().stringify();
-        element
+        }
     }
 
     pub fn stringify(self) -> String {
