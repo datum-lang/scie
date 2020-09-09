@@ -111,9 +111,9 @@ impl Scanner {
 }
 
 pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
-where
-    I: IntoIterator<Item = T>,
-    T: Into<String>,
+    where
+        I: IntoIterator<Item=T>,
+        T: Into<String>,
 {
     iter.into_iter().map(Into::into).collect()
 }
@@ -357,5 +357,24 @@ mod tests {
         assert_eq!(1, onig_match.index);
         assert_eq!(4, onig_match.capture_indices[0].start);
         assert_eq!(4, onig_match.capture_indices[0].end);
+    }
+
+    #[test]
+    fn should_return_correct_index_when_for_markdown() {
+        let origin = vec!["^", "\\\n", "%|\\*", "(^[ \t]+)?(?=#)", "(\\$?\\$)[@%<?^+*]", "\\$?\\$\\("];
+        let _rules = vec![-1, 37, 38, 2, 12, 14];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = Scanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(
+            String::from(
+                "%.o: %.c $(DEPS)
+",
+            ),
+            4,
+        );
+        let onig_match = result.unwrap();
+        assert_eq!(2, onig_match.index);
+        assert_eq!(5, onig_match.capture_indices[0].start);
+        assert_eq!(6, onig_match.capture_indices[0].end);
     }
 }

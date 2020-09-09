@@ -919,6 +919,11 @@ function matchRule(grammar, lineText, isFirstLine, linePos, stack, anchorPositio
             console.log("matched rule id: " + ruleScanner.rules[r.index] + " from " + r.captureIndices[0].start + " to " + r.captureIndices[0].end);
         }
     }
+    if(rule.id === 36) {
+        console.log(lineText, linePos, stack.depth);
+        console.log(JSON.stringify(ruleScanner));
+        console.log(JSON.stringify(r));
+    }
     if (r) {
         let result = {
             captureIndices: r.captureIndices,
@@ -1147,8 +1152,9 @@ function _tokenizeString(grammar, lineText, isFirstLine, linePos, stack, lineTok
             }
         }
         if (captureIndices[0].end > linePos) {
-            // Advance stream
             linePos = captureIndices[0].end;
+            // Advance stream
+            console.log(linePos);
             isFirstLine = false;
         }
     }
