@@ -163,7 +163,7 @@ impl Grammar {
     pub fn tokenize_string(
         &mut self,
         line_text: String,
-        origin_is_first: bool,
+        mut is_first_line: bool,
         origin_line_pos: i32,
         mut stack: StackElement,
         line_tokens: &mut LineTokens,
@@ -173,12 +173,11 @@ impl Grammar {
         let mut _stop = false;
         let mut anchor_position = -1;
         let mut line_pos = origin_line_pos.clone();
-        let mut is_first_line = origin_is_first.clone();
 
         if check_while_conditions {
             let while_check_result = self.check_while_conditions(
                 line_text.clone(),
-                origin_is_first.clone(),
+                is_first_line.clone(),
                 origin_line_pos.clone(),
                 stack.clone(),
                 line_tokens.clone(),
