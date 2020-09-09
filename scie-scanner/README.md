@@ -1,3 +1,8 @@
+Refs:
+
+ - office API: [https://github.com/kkos/oniguruma/blob/master/doc/API](https://github.com/kkos/oniguruma/blob/master/doc/API)
+
+
 ## vscode-oniguruma parameters
 
 create options:
