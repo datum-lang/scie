@@ -38,6 +38,10 @@ impl Scanner {
             self.index = 0;
             return None;
         }
+        //
+        // if origin_str.clone().len() <= start_position.clone() as usize {
+        //     return None;
+        // }
 
         let mut all_results: Vec<IOnigMatch> = vec![];
         for (index, pattern) in self.patterns.iter().enumerate() {
@@ -380,5 +384,18 @@ mod tests {
         assert_eq!(2, onig_match.index);
         assert_eq!(5, onig_match.capture_indices[0].start);
         assert_eq!(6, onig_match.capture_indices[0].end);
+    }
+
+    #[test]
+    fn should_return_null_when_out_size() {
+        let origin = vec!["^", "\\\n", "%|\\*", "(^[ \t]+)?(?=#)", "(\\$?\\$)[@%<?^+*]", "\\$?\\$\\("];
+        let _rules = vec![-1, 37, 38, 2, 12, 14];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = Scanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(
+            String::from("%.o: %.c $(DEPS)"),
+            16,
+        );
+        assert!(result.is_none());
     }
 }
