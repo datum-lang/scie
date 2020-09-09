@@ -14,7 +14,7 @@ for examples:
 
  - ONIG_REGSET_POSITION_LEAD (returns most left position)
  - ONIG_OPTION_CAPTURE_GROUP      named and no-named group captured.
- 
+
 
 ## Decision
 

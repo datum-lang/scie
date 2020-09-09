@@ -1,4 +1,4 @@
-use onig::Regex;
+use onig::{Regex, SearchOptions};
 use unicode_segmentation::UnicodeSegmentation;
 
 #[derive(Debug, Clone, Serialize)]
@@ -68,6 +68,10 @@ impl Scanner {
             let regex = _regex.unwrap();
             let mut capture_indices = vec![];
             let _captures = regex.captures(after_pos_str.as_str());
+            let zz = regex.search_with_options(&*origin_str.clone(), start_pos as usize, origin_str.clone().len(), SearchOptions::SEARCH_OPTION_NOTBOL, None);
+            if let Some(pos) = zz {
+                println!("pos: {:?}", pos);
+            }
 
             if let Some(captures) = _captures {
                 for (_, pos) in captures.iter_pos().enumerate() {
