@@ -738,7 +738,7 @@ var Grammar = /** @class */ (function () {
         // console.log(this._ruleId2desc.length);
         // let fs = require('fs');
         // let data = JSON.stringify(this._ruleId2desc, null, 2);
-        // fs.writeFileSync("testdata/c.out.json", data, 'utf8');
+        // fs.writeFileSync("fixtures/c.out.json", data, 'utf8');
 
         var isFirstLine;
         if (!prevState || prevState === StackElement.NULL) {

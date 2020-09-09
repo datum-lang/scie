@@ -11,7 +11,11 @@ fn main() {
     let target_dir = get_target_dir();
     let root_dir = get_top_dir(&*target_dir);
 
-    let lang_spec_dir = root_dir.join("extensions").join("json").join("syntaxes").join("JSON.tmLanguage.json");
+    let lang_spec_dir = root_dir
+        .join("extensions")
+        .join("json")
+        .join("syntaxes")
+        .join("JSON.tmLanguage.json");
     let lang_test_dir = Path::new("fixtures").join("JavaScript.tmLanguage.json.txt");
 
     let code = read_code(&lang_test_dir);
@@ -28,7 +32,11 @@ fn main() {
     }
 
     if let Ok(n) = SystemTime::now().duration_since(start) {
-        println!("TOKENIZING {:?} length using grammar source.js {:?} ms", code.len(), n.as_millis())
+        println!(
+            "TOKENIZING {:?} length using grammar source.js {:?} ms",
+            code.len(),
+            n.as_millis()
+        )
     }
 }
 

@@ -11,9 +11,9 @@ use crate::rule::{
 };
 use core::cmp;
 use scie_scanner::scanner::scanner::IOnigCaptureIndex;
-use std::path::Path;
 use std::fs::File;
 use std::io::Read;
+use std::path::Path;
 
 pub trait Matcher {}
 
@@ -407,9 +407,9 @@ impl Grammar {
                 let capture_scope_name =
                     capture_rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
                 if let Some(_name) = capture_scope_name.clone() {
-                    let mut base = stack.clone().content_name_scopes_list;
+                    let mut base = stack.content_name_scopes_list.clone();
                     if local_stack.len() > 0 {
-                        base = local_stack[local_stack.len() - 1].clone().scopes;
+                        base = local_stack[local_stack.len() - 1].scopes.clone();
                     }
                     let capture_rule_scopes_list = base.push(grammar, capture_scope_name.clone());
                     local_stack.push(LocalStackElement::new(
@@ -617,11 +617,9 @@ impl IRuleRegistry for Grammar {
 #[cfg(test)]
 mod tests {
     use std::fs::File;
-    use std::io::{Read, Write};
-    use std::path::Path;
+    use std::io::Write;
 
     use crate::grammar::{Grammar, StackElement};
-    use crate::inter::IRawGrammar;
     use crate::rule::abstract_rule::RuleEnum;
     use crate::rule::IRuleRegistry;
 
