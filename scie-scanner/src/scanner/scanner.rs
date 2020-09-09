@@ -101,13 +101,10 @@ impl Scanner {
 
         if all_results.len() > 0 {
             let mut best_match = all_results[0].clone();
-            if all_results.len() > 1 {
-                best_match = all_results[1].clone();
-                for i in 1..all_results.len().clone() {
-                    let current = all_results[i].capture_indices[0].clone();
-                    if current.start <= best_match.capture_indices[0].start {
-                        best_match = all_results[i].clone();
-                    }
+            for i in 1..all_results.len().clone() {
+                let current = all_results[i].capture_indices[0].clone();
+                if current.start <= best_match.capture_indices[0].start {
+                    best_match = all_results[i].clone();
                 }
             }
 
