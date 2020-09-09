@@ -11,6 +11,9 @@ use crate::rule::{
 };
 use core::cmp;
 use scie_scanner::scanner::scanner::IOnigCaptureIndex;
+use std::path::Path;
+use std::fs::File;
+use std::io::Read;
 
 pub trait Matcher {}
 
@@ -30,8 +33,8 @@ pub struct CheckWhileConditionResult {
 
 #[derive(Debug, Clone)]
 pub struct TokenizeResult {
-    tokens: Vec<IToken>,
-    rule_stack: Box<Option<StackElement>>,
+    pub tokens: Vec<IToken>,
+    pub rule_stack: Box<Option<StackElement>>,
 }
 
 #[derive(Debug, Clone)]
@@ -567,6 +570,16 @@ impl Grammar {
     }
 
     pub fn tokenize_line2(&self, _line_text: String, _prev_state: Option<StackElement>) {}
+
+    pub fn to_grammar(grammar_path: &str) -> Grammar {
+        let path = Path::new(grammar_path);
+        let mut file = File::open(path).unwrap();
+        let mut data = String::new();
+        file.read_to_string(&mut data).unwrap();
+
+        let g: IRawGrammar = serde_json::from_str(&data).unwrap();
+        Grammar::new(g)
+    }
 }
 
 impl IRuleFactoryHelper for Grammar {}
@@ -630,7 +643,7 @@ return 0;
     #[test]
     fn should_identify_c_include() {
         let code = "#include <stdio.h>";
-        let mut grammar = to_grammar("test-cases/first-mate/fixtures/c.json");
+        let mut grammar = Grammar::to_grammar("test-cases/first-mate/fixtures/c.json");
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line(String::from(code), &mut rule_stack);
 
@@ -757,7 +770,7 @@ hellomake: $(OBJ)
     }
 
     fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
-        let mut grammar = to_grammar(grammar_path);
+        let mut grammar = Grammar::to_grammar(grammar_path);
         let c_code = String::from(code);
         let mut rule_stack = Some(StackElement::null());
         for line in c_code.lines() {
@@ -780,15 +793,5 @@ hellomake: $(OBJ)
         }
 
         grammar
-    }
-
-    fn to_grammar(grammar_path: &str) -> Grammar {
-        let path = Path::new(grammar_path);
-        let mut file = File::open(path).unwrap();
-        let mut data = String::new();
-        file.read_to_string(&mut data).unwrap();
-
-        let g: IRawGrammar = serde_json::from_str(&data).unwrap();
-        Grammar::new(g)
     }
 }

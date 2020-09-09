@@ -1,12 +1,37 @@
 use std::path::{Path, PathBuf};
 use std::env;
 use std::ffi::OsStr;
+use scie_grammar::grammar::{Grammar, StackElement};
+use std::fs::File;
+use std::io::Read;
 
 fn main() {
-    println!("Hello, world!");
     let target_dir = get_target_dir();
     let root_dir = get_top_dir(&*target_dir);
-    println!("{:?}", root_dir);
+
+    let lang_spec_dir = root_dir.join("extensions").join("json").join("syntaxes").join("JSON.tmLanguage.json");
+    let lang_test_dir = Path::new("fixtures").join("JavaScript.tmLanguage.json.txt");
+
+    let code = read_code(&lang_test_dir);
+
+    let mut grammar = Grammar::to_grammar(lang_spec_dir.to_str().unwrap());
+
+    let mut rule_stack = Some(StackElement::null());
+    for line in code.lines() {
+        println!("{:?}", line);
+        let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
+        rule_stack = *result.rule_stack;
+    }
+
+    println!("{:?}", lang_spec_dir);
+    println!("{:?}", lang_test_dir);
+}
+
+fn read_code(lang_test_dir: &PathBuf) -> String {
+    let mut file = File::open(lang_test_dir).unwrap();
+    let mut code = String::new();
+    file.read_to_string(&mut code).unwrap();
+    code
 }
 
 // https://github.com/rust-lang/cargo/issues/2841
