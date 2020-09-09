@@ -38,10 +38,6 @@ impl Scanner {
             self.index = 0;
             return None;
         }
-        //
-        // if origin_str.clone().len() <= start_position.clone() as usize {
-        //     return None;
-        // }
 
         let mut all_results: Vec<IOnigMatch> = vec![];
         for (index, pattern) in self.patterns.iter().enumerate() {
@@ -99,6 +95,7 @@ impl Scanner {
             }
         }
 
+        println!("{:?}", all_results.clone());
         if all_results.len() > 0 {
             let mut best_match = all_results[0].clone();
             for i in 1..all_results.len().clone() {
@@ -290,7 +287,7 @@ mod tests {
         );
 
         let result2 = scanner.find_next_match_sync(String::from("X💻X"), 10000);
-        assert_eq!(format!("{:?}", result2), "None");
+        assert!(result2.is_none());
     }
 
     #[test]
