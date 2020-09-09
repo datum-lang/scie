@@ -621,11 +621,23 @@ impl IRuleRegistry for Grammar {
 #[cfg(test)]
 mod tests {
     use std::fs::File;
-    use std::io::Write;
+    use std::io::{Write, Read};
 
     use crate::grammar::{Grammar, StackElement};
     use crate::rule::abstract_rule::RuleEnum;
     use crate::rule::IRuleRegistry;
+    use std::path::Path;
+    use crate::inter::IRawGrammar;
+
+    pub fn to_grammar_for_test(grammar_path: &str) -> Grammar {
+        let path = Path::new(grammar_path);
+        let mut file = File::open(path).unwrap();
+        let mut data = String::new();
+        file.read_to_string(&mut data).unwrap();
+
+        let g: IRawGrammar = serde_json::from_str(&data).unwrap();
+        Grammar::new(g)
+    }
 
     #[test]
     fn should_build_grammar_json() {
@@ -645,7 +657,7 @@ return 0;
     #[test]
     fn should_identify_c_include() {
         let code = "#include <stdio.h>";
-        let mut grammar = Grammar::to_grammar("test-cases/first-mate/fixtures/c.json");
+        let mut grammar = to_grammar_for_test("test-cases/first-mate/fixtures/c.json");
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line(String::from(code), &mut rule_stack);
 
@@ -738,8 +750,7 @@ hellomake: $(OBJ)
     #[test]
     fn should_resolve_make_file_error_issues() {
         let code = "%.o: %.c $(DEPS)";
-        let mut grammar =
-            to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
+        let mut grammar = to_grammar_for_test("scie-grammar/test-cases/first-mate/fixtures/makefile.json");
         let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), &mut None);
         let tokens = result.tokens.clone();
         assert_eq!(7, tokens.len());
@@ -772,7 +783,7 @@ hellomake: $(OBJ)
     }
 
     fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
-        let mut grammar = Grammar::to_grammar(grammar_path);
+        let mut grammar = to_grammar_for_test(grammar_path);
         let c_code = String::from(code);
         let mut rule_stack = Some(StackElement::null());
         for line in c_code.lines() {
