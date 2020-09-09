@@ -1,9 +1,11 @@
-use std::path::{Path, PathBuf};
 use std::env;
 use std::ffi::OsStr;
-use scie_grammar::grammar::{Grammar, StackElement};
 use std::fs::File;
 use std::io::Read;
+use std::path::{Path, PathBuf};
+use std::time::SystemTime;
+
+use scie_grammar::grammar::{Grammar, StackElement};
 
 fn main() {
     let target_dir = get_target_dir();
@@ -17,14 +19,17 @@ fn main() {
     let mut grammar = Grammar::to_grammar(lang_spec_dir.to_str().unwrap());
 
     let mut rule_stack = Some(StackElement::null());
+
+    let start = SystemTime::now();
     for line in code.lines() {
-        println!("{:?}", line);
+        // println!("{:?}", line);
         let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
         rule_stack = *result.rule_stack;
     }
 
-    println!("{:?}", lang_spec_dir);
-    println!("{:?}", lang_test_dir);
+    if let Ok(n) = SystemTime::now().duration_since(start) {
+        println!("TOKENIZING {:?} length using grammar source.js {:?} ms", code.len(), n.as_millis())
+    }
 }
 
 fn read_code(lang_test_dir: &PathBuf) -> String {
