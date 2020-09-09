@@ -1,5 +1,5 @@
 [package]
-name = "scie"
+name = "benchmark"
 version = "0.1.0"
 authors = ["Phodal Huang <h@phodal.com>"]
 edition = "2018"
@@ -8,15 +8,9 @@ edition = "2018"
 
 [dependencies]
 
+
 [dependencies.scie-grammar]
-path = "scie-grammar"
+path = "../scie-grammar"
 
 [dependencies.scie_scanner]
-path = "scie-scanner"
-
-[workspace]
-members = [
- "scie-grammar",
- "scie-scanner",
- "benchmark"
-]
+path = "../scie-scanner"
