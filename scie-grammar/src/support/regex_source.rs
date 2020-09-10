@@ -1,5 +1,5 @@
 use regex::Regex;
-use scie_scanner::scanner::scanner::IOnigCaptureIndex;
+use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
 pub struct RegexSource {}
 

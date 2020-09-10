@@ -10,7 +10,7 @@ use crate::rule::{
     AbstractRule, BeginWhileRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry,
 };
 use core::cmp;
-use scie_scanner::scanner::scanner::IOnigCaptureIndex;
+use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;

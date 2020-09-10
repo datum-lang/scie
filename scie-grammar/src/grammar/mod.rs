@@ -11,7 +11,7 @@ pub use self::grammar::Grammar;
 pub use self::scope_list_element::ScopeListElement;
 pub use self::scope_metadata::ScopeMetadata;
 pub use self::stack_element::StackElement;
-use scie_scanner::scanner::scanner::IOnigCaptureIndex;
+use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct MatchRuleResult {

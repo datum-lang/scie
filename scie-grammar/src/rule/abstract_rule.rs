@@ -6,7 +6,7 @@ use crate::rule::{
 use crate::support::regex_source::RegexSource;
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
-use scie_scanner::scanner::scanner::IOnigCaptureIndex;
+use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
 pub enum RuleEnum {
     BeginEndRule(BeginEndRule),

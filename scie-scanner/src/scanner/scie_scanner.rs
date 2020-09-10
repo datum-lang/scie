@@ -15,14 +15,14 @@ pub struct IOnigMatch {
 }
 
 #[derive(Debug, Clone, Serialize)]
-pub struct Scanner {
+pub struct ScieScanner {
     pub index: usize,
     pub patterns: Vec<String>,
 }
 
-impl Scanner {
+impl ScieScanner {
     pub fn new(patterns: Vec<String>) -> Self {
-        Scanner { index: 0, patterns }
+        ScieScanner { index: 0, patterns }
     }
 
     pub fn dispose(&mut self) {
@@ -137,12 +137,12 @@ pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::scanner::{str_vec_to_string, Scanner};
+    use crate::scanner::scie_scanner::{str_vec_to_string, ScieScanner};
 
     #[test]
     fn should_handle_simple_regex() {
         let regex = vec![String::from("ell"), String::from("wo")];
-        let mut scanner = Scanner::new(regex);
+        let mut scanner = ScieScanner::new(regex);
         let s = String::from("Hello world!");
         let result = scanner.find_next_match_sync(s.clone(), 0).unwrap();
         assert_eq!(result.index, 0);
@@ -158,7 +158,7 @@ mod tests {
     #[test]
     fn should_handle_simple2() {
         let regex = vec![String::from("a"), String::from("b"), String::from("c")];
-        let mut scanner = Scanner::new(regex);
+        let mut scanner = ScieScanner::new(regex);
 
         if let None = scanner.find_next_match_sync(String::from("x"), 0) {
             assert_eq!(true, true);
@@ -206,7 +206,7 @@ mod tests {
     #[test]
     fn should_handle_unicode1() {
         let regex = vec![String::from("1"), String::from("2")];
-        let mut scanner = Scanner::new(regex);
+        let mut scanner = ScieScanner::new(regex);
 
         let result = scanner
             .find_next_match_sync(String::from("ab…cde21"), 5)
@@ -221,7 +221,7 @@ mod tests {
 
     #[test]
     fn should_handle_unicode2() {
-        let mut scanner2 = Scanner::new(vec![String::from("\"")]);
+        let mut scanner2 = ScieScanner::new(vec![String::from("\"")]);
         let result2 = scanner2
             .find_next_match_sync(String::from("{\"…\": 1}"), 1)
             .unwrap();
@@ -236,7 +236,7 @@ mod tests {
     #[test]
     fn should_handle_unicode3() {
         let regex = vec![String::from("Y"), String::from("X")];
-        let mut scanner = Scanner::new(regex);
+        let mut scanner = ScieScanner::new(regex);
         let result = scanner
             .find_next_match_sync(String::from("a💻bYX"), 0)
             .unwrap();
@@ -290,7 +290,7 @@ mod tests {
 
     #[test]
     fn should_out_of_bounds() {
-        let mut scanner = Scanner::new(vec![String::from("X")]);
+        let mut scanner = ScieScanner::new(vec![String::from("X")]);
         let result = scanner
             .find_next_match_sync(String::from("X💻X"), -10000)
             .unwrap();
@@ -307,7 +307,7 @@ mod tests {
 
     #[test]
     fn should_handle_regex_g() {
-        let mut scanner = Scanner::new(vec![String::from("\\G-and")]);
+        let mut scanner = ScieScanner::new(vec![String::from("\\G-and")]);
         let result = scanner.find_next_match_sync(String::from("first-and-second"), 0);
         assert_eq!(format!("{:?}", result), "None");
 
@@ -339,7 +339,7 @@ mod tests {
         ];
         let _rules = vec![2, 7, 28, 45, 48, 51, 61, 64, 66, 69, 77];
         let debug_regex = str_vec_to_string(origin);
-        let mut scanner = Scanner::new(debug_regex);
+        let mut scanner = ScieScanner::new(debug_regex);
         let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 0);
         assert_eq!(3, result.unwrap().capture_indices.len());
     }
@@ -349,7 +349,7 @@ mod tests {
         let origin = vec!["(?=\\s|$)", "(\\$?\\$)[@%<?^+*]", "\\$?\\$\\(", "%"];
         let _rules = vec![-1, 12, 14, 33];
         let debug_regex = str_vec_to_string(origin);
-        let mut scanner = Scanner::new(debug_regex);
+        let mut scanner = ScieScanner::new(debug_regex);
         let result = scanner.find_next_match_sync(String::from("%.o"), 0);
         let onig_match = result.unwrap();
         assert_eq!(3, onig_match.index);
@@ -362,7 +362,7 @@ mod tests {
         let origin = vec!["^(?!\\t)", "\\G", "^\\t"];
         let _rules = vec![-1, 36, 39];
         let debug_regex = str_vec_to_string(origin);
-        let mut scanner = Scanner::new(debug_regex);
+        let mut scanner = ScieScanner::new(debug_regex);
         let result = scanner.find_next_match_sync(
             String::from(
                 "%.o: %.c $(DEPS)
@@ -381,7 +381,7 @@ mod tests {
         let origin = vec!["^", "\\\n", "%|\\*", "(^[ \t]+)?(?=#)", "(\\$?\\$)[@%<?^+*]", "\\$?\\$\\("];
         let _rules = vec![-1, 37, 38, 2, 12, 14];
         let debug_regex = str_vec_to_string(origin);
-        let mut scanner = Scanner::new(debug_regex);
+        let mut scanner = ScieScanner::new(debug_regex);
         let result = scanner.find_next_match_sync(
             String::from(
                 "%.o: %.c $(DEPS)
@@ -400,7 +400,7 @@ mod tests {
         let origin = vec!["^", "\\\n", "%|\\*", "(^[ \t]+)?(?=#)", "(\\$?\\$)[@%<?^+*]", "\\$?\\$\\("];
         let _rules = vec![-1, 37, 38, 2, 12, 14];
         let debug_regex = str_vec_to_string(origin);
-        let mut scanner = Scanner::new(debug_regex);
+        let mut scanner = ScieScanner::new(debug_regex);
         let result = scanner.find_next_match_sync(
             String::from("%.o: %.c $(DEPS)"),
             16,
