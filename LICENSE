@@ -1,8 +1,8 @@
 MIT License
 
-scie-grammar based on vscode-textmate Copyright (c) Microsoft Corporation with MIT LICENSE
+Copyright (c) Microsoft Corporation with MIT LICENSE (scie-scanner based on vscode-oniguruma, scie-grammar based on vscode-textmate)
 
-scie-scanner based on vscode-oniguruma Copyright (c) Microsoft Corporation with MIT LICENSE
+Copyright (c) 2015 Will Speak <will@willspeak.me>, Ivan Ivashchenko <defuz@me.com>, and contributors. (scie-scanner based on rust-onig)
 
 Copyright (c) 2020 Phodal Huang
 
