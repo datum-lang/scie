@@ -70,7 +70,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        ScieOnig::demo_new(r"^");
+        let _result = ScieOnig::demo_new(r"^");
         assert!(true)
     }
 }

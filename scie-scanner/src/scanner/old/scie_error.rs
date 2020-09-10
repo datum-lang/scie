@@ -23,7 +23,6 @@
 
 
 use std::os::raw::c_int;
-use std::ptr::null;
 use std::{error, fmt, str};
 
 /// This struture represents an error from the underlying Oniguruma libray.
@@ -37,9 +36,9 @@ impl ScieOnigError {
         ScieOnigError::new(code, info)
     }
 
-    fn from_code(code: c_int) -> ScieOnigError {
-        ScieOnigError::new(code, null())
-    }
+    // fn from_code(code: c_int) -> ScieOnigError {
+    //     ScieOnigError::new(code, null())
+    // }
 
     fn new(code: c_int, info: *const onig_sys::OnigErrorInfo) -> ScieOnigError {
         let buff = &mut [0; onig_sys::ONIG_MAX_ERROR_MESSAGE_LEN as usize];
