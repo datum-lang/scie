@@ -21,7 +21,7 @@ pub struct ScieOnig {
 }
 
 impl ScieOnig {
-    pub fn new(pattern: &str) -> Result<Self, ScieOnigError> {
+    pub fn demo_new(pattern: &str) -> Result<Self, ScieOnigError> {
         let option = ScieOnigOptions::REGEX_OPTION_NONE;
         let syntax = Syntax::default();
 
@@ -70,7 +70,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        ScieOnig::new(r"^");
+        ScieOnig::demo_new(r"^");
         assert!(true)
     }
 }
