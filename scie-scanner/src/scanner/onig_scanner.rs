@@ -7,8 +7,8 @@ pub struct OnigScanner {
 
 impl OnigScanner {
     pub fn new(pattens: Vec<&str>) -> Self {
-        let strPtrsArr: Vec<Pointer> = vec![];
-        let strLenArr: Vec<i32> = vec![];
+        let str_ptrs_arr: Vec<Pointer> = vec![];
+        let str_len_arr: Vec<i32> = vec![];
         for x in pattens {
 
         }
