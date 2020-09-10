@@ -21,7 +21,6 @@
 // > OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // > SOFTWARE.
 
-
 use std::os::raw::c_int;
 use std::{error, fmt, str};
 

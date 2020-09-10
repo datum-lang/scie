@@ -12,16 +12,16 @@ impl IOnigBinding {
     pub fn new() -> Self {
         IOnigBinding {
             HEAPU8: vec![],
-            HEAPU32: vec![]
+            HEAPU32: vec![],
         }
     }
 
     // https://users.rust-lang.org/t/how-to-malloc-an-array-in-heap-like-c/27827/34
     // https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=8a124ff92349ac5ca6356bfd832ff1be
-    pub fn _malloc<T : Copy> (&self, count: usize) -> *mut T
-    {
-        debug_assert!(mem::size_of::<T>() > 0,
-                      "manually allocating a buffer of ZST is a very dangerous idea"
+    pub fn _malloc<T: Copy>(&self, count: usize) -> *mut T {
+        debug_assert!(
+            mem::size_of::<T>() > 0,
+            "manually allocating a buffer of ZST is a very dangerous idea"
         );
         let mut vec = Vec::<T>::with_capacity(count);
         let ret = vec.as_mut_ptr();
@@ -32,7 +32,7 @@ impl IOnigBinding {
 
 pub struct OnigScanner {
     pub _onigBinding: IOnigBinding,
-    pub _ptr: Pointer
+    pub _ptr: Pointer,
 }
 
 impl OnigScanner {
@@ -45,10 +45,12 @@ impl OnigScanner {
             // strPtrsArr[i] = utf_string.create_string(IOnigBinding::new());
             utf_string.create_string(IOnigBinding::new());
         }
-        OnigScanner { _onigBinding: IOnigBinding::new(), _ptr: 0 }
+        OnigScanner {
+            _onigBinding: IOnigBinding::new(),
+            _ptr: 0,
+        }
     }
 }
-
 
 #[cfg(test)]
 mod tests {

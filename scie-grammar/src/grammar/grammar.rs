@@ -621,13 +621,13 @@ impl IRuleRegistry for Grammar {
 #[cfg(test)]
 mod tests {
     use std::fs::File;
-    use std::io::{Write, Read};
+    use std::io::{Read, Write};
 
     use crate::grammar::{Grammar, StackElement};
+    use crate::inter::IRawGrammar;
     use crate::rule::abstract_rule::RuleEnum;
     use crate::rule::IRuleRegistry;
     use std::path::Path;
-    use crate::inter::IRawGrammar;
 
     pub fn to_grammar_for_test(grammar_path: &str) -> Grammar {
         let path = Path::new(grammar_path);

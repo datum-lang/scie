@@ -1,9 +1,9 @@
 //
 //
-use std::ptr::null_mut;
-use onig::{Syntax, EncodedChars};
-use std::sync::Mutex;
 use crate::scanner::old::scie_error::ScieOnigError;
+use onig::{EncodedChars, Syntax};
+use std::ptr::null_mut;
+use std::sync::Mutex;
 
 lazy_static! {
     static ref REGEX_NEW_MUTEX: Mutex<()> = Mutex::new(());
@@ -58,11 +58,8 @@ impl ScieOnig {
             Err(ScieOnigError::from_code_and_info(err, &error))
         }
     }
-    pub fn create_onig_scanner(_sources: Vec<String>) {
-
-    }
+    pub fn create_onig_scanner(_sources: Vec<String>) {}
 }
-
 
 #[cfg(test)]
 mod tests {

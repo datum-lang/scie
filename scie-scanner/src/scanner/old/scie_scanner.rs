@@ -69,7 +69,13 @@ impl ScieScanner {
             let regex = _regex.unwrap();
             let mut capture_indices = vec![];
             let _captures = regex.captures(after_pos_str.as_str());
-            let zz = regex.search_with_options(&*origin_str.clone(), start_pos as usize, origin_str.clone().len(), SearchOptions::SEARCH_OPTION_NOTBOL, None);
+            let zz = regex.search_with_options(
+                &*origin_str.clone(),
+                start_pos as usize,
+                origin_str.clone().len(),
+                SearchOptions::SEARCH_OPTION_NOTBOL,
+                None,
+            );
             if let Some(pos) = zz {
                 // println!("pos: {:?}", pos);
                 search_indexes.push(pos);
@@ -128,16 +134,16 @@ impl ScieScanner {
 }
 
 pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
-    where
-        I: IntoIterator<Item=T>,
-        T: Into<String>,
+where
+    I: IntoIterator<Item = T>,
+    T: Into<String>,
 {
     iter.into_iter().map(Into::into).collect()
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::old::scie_scanner::{ScieScanner, str_vec_to_string};
+    use crate::scanner::old::scie_scanner::{str_vec_to_string, ScieScanner};
 
     #[test]
     fn should_handle_simple_regex() {
@@ -378,7 +384,14 @@ mod tests {
 
     #[test]
     fn should_return_correct_index_when_for_markdown() {
-        let origin = vec!["^", "\\\n", "%|\\*", "(^[ \t]+)?(?=#)", "(\\$?\\$)[@%<?^+*]", "\\$?\\$\\("];
+        let origin = vec![
+            "^",
+            "\\\n",
+            "%|\\*",
+            "(^[ \t]+)?(?=#)",
+            "(\\$?\\$)[@%<?^+*]",
+            "\\$?\\$\\(",
+        ];
         let _rules = vec![-1, 37, 38, 2, 12, 14];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
@@ -397,14 +410,18 @@ mod tests {
 
     #[test]
     fn should_return_null_when_out_size() {
-        let origin = vec!["^", "\\\n", "%|\\*", "(^[ \t]+)?(?=#)", "(\\$?\\$)[@%<?^+*]", "\\$?\\$\\("];
+        let origin = vec![
+            "^",
+            "\\\n",
+            "%|\\*",
+            "(^[ \t]+)?(?=#)",
+            "(\\$?\\$)[@%<?^+*]",
+            "\\$?\\$\\(",
+        ];
         let _rules = vec![-1, 37, 38, 2, 12, 14];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
-        let result = scanner.find_next_match_sync(
-            String::from("%.o: %.c $(DEPS)"),
-            16,
-        );
+        let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 16);
         assert!(result.is_none());
     }
 }

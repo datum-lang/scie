@@ -8,7 +8,6 @@ pub struct UtfString {
     pub utf8value: Vec<u8>,
     pub utf16offset_to_utf8: Vec<u32>,
     pub utf8offset_to_utf16: Vec<u32>,
-
 }
 
 impl UtfString {
@@ -78,25 +77,34 @@ impl UtfString {
                 utf8value[i8] = codePoint as u8;
                 i8 = i8 + 1;
             } else if codePoint <= 0x7ff {
-                utf8value[i8] = (0b11000000 | ((codePoint & 0b00000000000000000000011111000000) >> 6)) as u8;
+                utf8value[i8] =
+                    (0b11000000 | ((codePoint & 0b00000000000000000000011111000000) >> 6)) as u8;
                 i8 = i8 + 1;
-                utf8value[i8] = (0b10000000 | ((codePoint & 0b00000000000000000000000000111111) >> 0)) as u8;
+                utf8value[i8] =
+                    (0b10000000 | ((codePoint & 0b00000000000000000000000000111111) >> 0)) as u8;
                 i8 = i8 + 1;
             } else if codePoint <= 0xffff {
-                utf8value[i8] = (0b11100000 | ((codePoint & 0b00000000000000001111000000000000) >> 12)) as u8;
+                utf8value[i8] =
+                    (0b11100000 | ((codePoint & 0b00000000000000001111000000000000) >> 12)) as u8;
                 i8 = i8 + 1;
-                utf8value[i8] = (0b10000000 | ((codePoint & 0b00000000000000000000111111000000) >> 6)) as u8;
+                utf8value[i8] =
+                    (0b10000000 | ((codePoint & 0b00000000000000000000111111000000) >> 6)) as u8;
                 i8 = i8 + 1;
-                utf8value[i8] = (0b10000000 | ((codePoint & 0b00000000000000000000000000111111) >> 0)) as u8;
+                utf8value[i8] =
+                    (0b10000000 | ((codePoint & 0b00000000000000000000000000111111) >> 0)) as u8;
                 i8 = i8 + 1;
             } else {
-                utf8value[i8] = (0b11110000 | ((codePoint & 0b00000000000111000000000000000000) >> 18)) as u8;
+                utf8value[i8] =
+                    (0b11110000 | ((codePoint & 0b00000000000111000000000000000000) >> 18)) as u8;
                 i8 = i8 + 1;
-                utf8value[i8] = (0b10000000 | ((codePoint & 0b00000000000000111111000000000000) >> 12)) as u8;
+                utf8value[i8] =
+                    (0b10000000 | ((codePoint & 0b00000000000000111111000000000000) >> 12)) as u8;
                 i8 = i8 + 1;
-                utf8value[i8] = (0b10000000 | ((codePoint & 0b00000000000000000000111111000000) >> 6)) as u8;
+                utf8value[i8] =
+                    (0b10000000 | ((codePoint & 0b00000000000000000000111111000000) >> 6)) as u8;
                 i8 = i8 + 1;
-                utf8value[i8] = (0b10000000 | ((codePoint & 0b00000000000000000000000000111111) >> 0)) as u8;
+                utf8value[i8] =
+                    (0b10000000 | ((codePoint & 0b00000000000000000000000000111111) >> 0)) as u8;
                 i8 = i8 + 1;
             }
 
@@ -125,7 +133,6 @@ impl UtfString {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::scanner::utf_string::UtfString;
@@ -137,8 +144,14 @@ mod tests {
 
         assert_eq!(6, onig_string.utf16length);
         assert_eq!(8, onig_string.utf8length);
-        assert_eq!(vec![97, 240, 159, 146, 187, 98, 89, 88], onig_string.utf8value);
+        assert_eq!(
+            vec![97, 240, 159, 146, 187, 98, 89, 88],
+            onig_string.utf8value
+        );
         assert_eq!(vec![0, 1, 1, 5, 6, 7, 8], onig_string.utf16offset_to_utf8);
-        assert_eq!(vec![0, 1, 1, 1, 1, 3, 4, 5, 6], onig_string.utf8offset_to_utf16);
+        assert_eq!(
+            vec![0, 1, 1, 1, 1, 3, 4, 5, 6],
+            onig_string.utf8offset_to_utf16
+        );
     }
 }
