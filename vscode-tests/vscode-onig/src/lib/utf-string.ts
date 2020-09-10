@@ -1,3 +1,5 @@
+import {IOnigBinding, Pointer} from "./types";
+
 export default class UtfString {
   private static _utf8ByteLength(str: string): number {
     let result = 0;
@@ -131,10 +133,10 @@ export default class UtfString {
     this.utf8OffsetToUtf16 = utf8OffsetToUtf16;
   }
 
-  //
-  // public createString(onigBinding: IOnigBinding): Pointer {
-  //   const result = onigBinding._malloc(this.utf8Length);
-  //   onigBinding.HEAPU8.set(this.utf8Value, result);
-  //   return result;
-  // }
+
+  public createString(onigBinding: IOnigBinding): Pointer {
+    const result = onigBinding._malloc(this.utf8Length);
+    onigBinding.HEAPU8.set(this.utf8Value, result);
+    return result;
+  }
 }
