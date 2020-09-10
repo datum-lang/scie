@@ -39,6 +39,7 @@ impl Scanner {
             return None;
         }
 
+        let mut searchIndexes = vec![];
         let mut all_results: Vec<IOnigMatch> = vec![];
         for (index, pattern) in self.patterns.iter().enumerate() {
             let mut after_pos_str = String::from("");
@@ -70,7 +71,8 @@ impl Scanner {
             let _captures = regex.captures(after_pos_str.as_str());
             let zz = regex.search_with_options(&*origin_str.clone(), start_pos as usize, origin_str.clone().len(), SearchOptions::SEARCH_OPTION_NOTBOL, None);
             if let Some(pos) = zz {
-                println!("pos: {:?}", pos);
+                // println!("pos: {:?}", pos);
+                searchIndexes.push(pos);
             }
 
             if let Some(captures) = _captures {
@@ -99,7 +101,16 @@ impl Scanner {
             }
         }
 
-        println!("{:?}", all_results.clone());
+        // let mut best_index = 0;
+        // if searchIndexes.len() > 1 {
+        //     for x in searchIndexes {
+        //         if best_index > x {
+        //             best_index = x;
+        //         }
+        //     }
+        // }
+
+        // println!("{:?} - best_index: {:?}", all_results.clone(), best_index);
         if all_results.len() > 0 {
             let mut best_match = all_results[0].clone();
             for i in 1..all_results.len().clone() {
