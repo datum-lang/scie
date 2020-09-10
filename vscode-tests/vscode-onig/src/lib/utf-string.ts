@@ -59,8 +59,10 @@ export default class UtfString {
     const utf8Value = new Uint8Array(utf8Length);
 
     let i8 = 0;
+    console.log("utf16Length: " + utf16Length);
     for (let i16 = 0; i16 < utf16Length; i16++) {
       const charCode = str.charCodeAt(i16);
+      console.log(charCode);
 
       let codePoint = charCode;
       let wasSurrogatePair = false;
