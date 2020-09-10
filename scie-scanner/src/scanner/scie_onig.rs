@@ -21,7 +21,7 @@ pub struct ScieOnig {
 }
 
 impl ScieOnig {
-    pub fn hello(pattern: &str) -> Result<Self, ScieOnigError> {
+    pub fn new(pattern: &str) -> Result<Self, ScieOnigError> {
         let option = ScieOnigOptions::REGEX_OPTION_NONE;
         let syntax = Syntax::default();
 
@@ -58,7 +58,9 @@ impl ScieOnig {
             Err(ScieOnigError::from_code_and_info(err, &error))
         }
     }
-    pub fn create_onig_scanner(_sources: Vec<String>) {}
+    pub fn create_onig_scanner(_sources: Vec<String>) {
+
+    }
 }
 
 
@@ -68,7 +70,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        ScieOnig::hello(r"^");
+        ScieOnig::new(r"^");
         assert!(true)
     }
 }
