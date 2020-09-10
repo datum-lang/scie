@@ -39,7 +39,7 @@ impl ScieScanner {
             return None;
         }
 
-        let mut searchIndexes = vec![];
+        let mut search_indexes = vec![];
         let mut all_results: Vec<IOnigMatch> = vec![];
         for (index, pattern) in self.patterns.iter().enumerate() {
             let mut after_pos_str = String::from("");
@@ -72,7 +72,7 @@ impl ScieScanner {
             let zz = regex.search_with_options(&*origin_str.clone(), start_pos as usize, origin_str.clone().len(), SearchOptions::SEARCH_OPTION_NOTBOL, None);
             if let Some(pos) = zz {
                 // println!("pos: {:?}", pos);
-                searchIndexes.push(pos);
+                search_indexes.push(pos);
             }
 
             if let Some(captures) = _captures {
@@ -102,8 +102,8 @@ impl ScieScanner {
         }
 
         // let mut best_index = 0;
-        // if searchIndexes.len() > 1 {
-        //     for x in searchIndexes {
+        // if search_indexes.len() > 1 {
+        //     for x in search_indexes {
         //         if best_index > x {
         //             best_index = x;
         //         }
