@@ -1,7 +1,9 @@
+//
+//
 use std::ptr::null_mut;
 use onig::{Syntax, EncodedChars};
 use std::sync::Mutex;
-
+use crate::scanner::scie_error::ScieOnigError;
 
 lazy_static! {
     static ref REGEX_NEW_MUTEX: Mutex<()> = Mutex::new(());
@@ -14,10 +16,12 @@ bitflags! {
     }
 }
 
-pub struct ScieOnig {}
+pub struct ScieOnig {
+    raw: onig_sys::OnigRegex,
+}
 
 impl ScieOnig {
-    pub fn hello(pattern: &str) {
+    pub fn hello(pattern: &str) -> Result<Self, ScieOnigError> {
         let option = ScieOnigOptions::REGEX_OPTION_NONE;
         let syntax = Syntax::default();
 
@@ -33,7 +37,7 @@ impl ScieOnig {
             par_end: null_mut(),
         };
 
-        let _err = unsafe {
+        let err = unsafe {
             // Grab a lock to make sure that `onig_new` isn't called by
             // more than one thread at a time.
             let _guard = REGEX_NEW_MUTEX.lock().unwrap();
@@ -45,8 +49,14 @@ impl ScieOnig {
                 pattern.encoding(),
                 syntax as *const Syntax as *mut Syntax as *mut onig_sys::OnigSyntaxType,
                 &mut error,
-            );
+            )
         };
+
+        if err == onig_sys::ONIG_NORMAL as i32 {
+            Ok(ScieOnig { raw: reg })
+        } else {
+            Err(ScieOnigError::from_code_and_info(err, &error))
+        }
     }
     pub fn create_onig_scanner(_sources: Vec<String>) {}
 }
