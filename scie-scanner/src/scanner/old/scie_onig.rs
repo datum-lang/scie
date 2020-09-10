@@ -3,7 +3,7 @@
 use std::ptr::null_mut;
 use onig::{Syntax, EncodedChars};
 use std::sync::Mutex;
-use crate::scanner::scie_error::ScieOnigError;
+use crate::scanner::old::scie_error::ScieOnigError;
 
 lazy_static! {
     static ref REGEX_NEW_MUTEX: Mutex<()> = Mutex::new(());
@@ -21,9 +21,6 @@ pub struct ScieOnig {
 }
 
 impl ScieOnig {
-    pub fn new(pattern: &str) -> Result<Self, ScieOnigError> {
-
-    }
     pub fn demo_new(pattern: &str) -> Result<Self, ScieOnigError> {
         let option = ScieOnigOptions::REGEX_OPTION_NONE;
         let syntax = Syntax::default();
@@ -69,7 +66,7 @@ impl ScieOnig {
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::scie_onig::ScieOnig;
+    use crate::scanner::old::scie_onig::ScieOnig;
 
     #[test]
     fn it_works() {

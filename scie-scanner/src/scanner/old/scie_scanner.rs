@@ -137,7 +137,7 @@ pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::scie_scanner::{str_vec_to_string, ScieScanner};
+    use crate::scanner::old::scie_scanner::{ScieScanner, str_vec_to_string};
 
     #[test]
     fn should_handle_simple_regex() {

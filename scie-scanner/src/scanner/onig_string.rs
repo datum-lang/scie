@@ -1,3 +1,5 @@
+use unicode_segmentation::UnicodeSegmentation;
+
 pub struct OnigString {
  pub utf16length: i32,
  pub utf8length: i32,
@@ -10,12 +12,15 @@ pub struct OnigString {
 
 impl OnigString {
     pub fn new(str: String) -> Self {
-        let utf16Length = str.len();
-        
+        let utf16length = str.len();
+        let utf8_str = str.graphemes(true).collect::<Vec<&str>>().clone();
+        println!("{:?}", utf8_str);
+        let utf8length = utf8_str.len();
+
 
         OnigString {
-            utf16length: 0,
-            utf8length: 0,
+            utf16length: utf16length as i32,
+            utf8length: utf8length as i32,
             utf16value: "".to_string(),
             utf8value: vec![],
             utf16offset_to_utf8: None,
@@ -27,12 +32,12 @@ impl OnigString {
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::onig_scanner::OnigScanner;
     use crate::scanner::onig_string::OnigString;
 
     #[test]
     fn it_show_works_works() {
-        OnigString::new(String::from(""));
-        assert!(true)
+        let onig_string = OnigString::new(String::from("a💻bYX"));
+        assert_eq!(8, onig_string.utf16length);
+        assert_eq!(5, onig_string.utf8length);
     }
 }
