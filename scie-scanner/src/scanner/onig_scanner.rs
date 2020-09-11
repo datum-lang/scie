@@ -28,6 +28,10 @@ impl IOnigBinding {
         mem::forget(vec); // avoid dropping the memory
         ret
     }
+
+    pub fn box_malloc(&self, count: usize) -> Box<Vec<i32>> {
+        Box::new(vec![0;count])
+    }
 }
 
 pub struct OnigScanner {
