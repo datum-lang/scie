@@ -116,19 +116,6 @@ impl ScieOnig {
                 0,
                 &mut pos,
             );
-            // onig_sys::onig_search_with_param(
-            //     self.raw,
-            //     beg,
-            //     end,
-            //     start,
-            //     &0,
-            //     match region {
-            //         Some(region) => region as *mut Region as *mut onig_sys::OnigRegion,
-            //         None => std::ptr::null_mut(),
-            //     },
-            //     options.bits(),
-            //     match_param.as_raw(),
-            // )
         };
 
         println!("match_param: {:?}", match_param.as_raw());

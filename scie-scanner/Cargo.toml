@@ -7,10 +7,6 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-onig_sys = "69.5.1"
-# regex library
-onig = "6"
-
 lazy_static = "1.2"
 bitflags = "1.0"
 
@@ -25,4 +21,15 @@ serde_derive = "1.0.115"
 
 [target.'cfg(windows)'.dependencies]
 libc = "0.2"
+
+
+[dependencies.onig_sys]
+version = "69.5.1"
+path = "../rust-onig/onig_sys"
+default-features = false
+
+[dependencies.onig]
+version = "6"
+path = "../rust-onig/onig"
+default-features = false
 
