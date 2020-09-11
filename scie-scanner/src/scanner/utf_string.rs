@@ -128,7 +128,7 @@ impl UtfString {
     pub fn create_string(&self, onig_binding: IOnigBinding) {
         let result = onig_binding._malloc::<i32>(self.utf8length as usize);
         println!("{:?}, {:?}", self.utf8value, result);
-        onig_binding.HEAPU8.set(self.utf8value.clone(), result);
+        // onig_binding.HEAPU8(self.utf8value.clone(), result);
         // return result;
     }
 }
