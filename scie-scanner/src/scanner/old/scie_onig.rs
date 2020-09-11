@@ -5,7 +5,7 @@ use onig::{EncodedChars, Syntax, Region, EncodedBytes, SearchOptions, MatchParam
 use std::ptr::null_mut;
 use std::sync::Mutex;
 use std::os::raw::c_int;
-use onig_sys::OnigRegSetStruct;
+use onig_sys::{OnigRegSetStruct, OnigRegSetLead_ONIG_REGSET_POSITION_LEAD, ONIG_OPTION_NONE};
 
 lazy_static! {
     static ref REGEX_NEW_MUTEX: Mutex<()> = Mutex::new(());
@@ -112,8 +112,8 @@ impl ScieOnig {
                 end,
                 start,
                 &0,
-                0,
-                0,
+                OnigRegSetLead_ONIG_REGSET_POSITION_LEAD,
+                ONIG_OPTION_NONE,
                 &mut pos,
             );
         };
