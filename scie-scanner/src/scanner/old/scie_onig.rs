@@ -1,7 +1,7 @@
 //
 //
 use crate::scanner::old::scie_error::ScieOnigError;
-use onig::{EncodedChars, Syntax};
+use onig::{EncodedChars, Syntax, Region, EncodedBytes, SearchOptions, MatchParam};
 use std::ptr::null_mut;
 use std::sync::Mutex;
 
@@ -58,6 +58,34 @@ impl ScieOnig {
             Err(ScieOnigError::from_code_and_info(err, &error))
         }
     }
+
+    pub fn search(&self) {
+        let at = 0;
+        let chars = EncodedBytes::ascii(b"a");
+        let match_param = MatchParam::default();
+        let options = SearchOptions::SEARCH_OPTION_NONE;
+        let region: Option<&mut Region> = None;
+
+        let r = unsafe {
+            let offset = chars.start_ptr().add(at);
+            assert!(offset <= chars.limit_ptr());
+            onig_sys::onig_match_with_param(
+                self.raw,
+                chars.start_ptr(),
+                chars.limit_ptr(),
+                offset,
+                match region {
+                    Some(region) => region as *mut Region as *mut onig_sys::OnigRegion,
+                    None => std::ptr::null_mut(),
+                },
+                options.bits(),
+                match_param.as_raw(),
+            )
+        };
+
+        println!("{:?}", r);
+    }
+
     pub fn create_onig_scanner(_sources: Vec<String>) {}
 }
 
@@ -67,7 +95,8 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let _result = ScieOnig::demo_new(r"^");
+        let onig = ScieOnig::demo_new(r"\w").unwrap();
+        onig.search();
         assert!(true)
     }
 }
