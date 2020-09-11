@@ -59,7 +59,7 @@ impl ScieOnig {
         }
     }
 
-    pub fn search(&self) {
+    pub fn match_str(&self) {
         let at = 0;
         let chars = EncodedBytes::ascii(b"a");
         let match_param = MatchParam::default();
@@ -86,6 +86,41 @@ impl ScieOnig {
         println!("{:?}", r);
     }
 
+    pub fn search_str(&self) {
+        let at = 0;
+        let chars = EncodedBytes::ascii(b"azzzzzzz");
+        let match_param = MatchParam::default();
+        let options = SearchOptions::SEARCH_OPTION_NONE;
+        let region: Option<&mut Region> = None;
+        let from = 5;
+        let to = 10;
+        let to = 10;
+
+        let (beg, end) = (chars.start_ptr(), chars.limit_ptr());
+        let r = unsafe {
+            let start = beg.add(from);
+            let range = beg.add(to);
+            // assert!(start <= end);
+            // assert!(range <= end);
+            onig_sys::onig_search_with_param(
+                self.raw,
+                beg,
+                end,
+                start,
+                &0,
+                match region {
+                    Some(region) => region as *mut Region as *mut onig_sys::OnigRegion,
+                    None => std::ptr::null_mut(),
+                },
+                options.bits(),
+                match_param.as_raw(),
+            )
+        };
+
+
+        println!("{:?}", r);
+    }
+
     pub fn create_onig_scanner(_sources: Vec<String>) {}
 }
 
@@ -96,7 +131,8 @@ mod tests {
     #[test]
     fn it_works() {
         let onig = ScieOnig::demo_new(r"\w").unwrap();
-        onig.search();
+        onig.match_str();
+        onig.search_str();
         assert!(true)
     }
 }
