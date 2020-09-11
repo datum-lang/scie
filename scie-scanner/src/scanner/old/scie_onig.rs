@@ -4,6 +4,8 @@ use crate::scanner::old::scie_error::ScieOnigError;
 use onig::{EncodedChars, Syntax, Region, EncodedBytes, SearchOptions, MatchParam};
 use std::ptr::null_mut;
 use std::sync::Mutex;
+use std::os::raw::c_int;
+use onig_sys::OnigRegSetStruct;
 
 lazy_static! {
     static ref REGEX_NEW_MUTEX: Mutex<()> = Mutex::new(());
@@ -25,7 +27,6 @@ impl ScieOnig {
         let option = ScieOnigOptions::REGEX_OPTION_NONE;
         let syntax = Syntax::default();
 
-        // `onig_new`.
         let mut reg: onig_sys::OnigRegex = null_mut();
         let reg_ptr = &mut reg as *mut onig_sys::OnigRegex;
 
@@ -94,29 +95,43 @@ impl ScieOnig {
         let region: Option<&mut Region> = None;
         let from = 5;
         let to = 10;
-        let to = 10;
+        let mut pos: c_int = 0;
+
 
         let (beg, end) = (chars.start_ptr(), chars.limit_ptr());
         let r = unsafe {
             let start = beg.add(from);
             let range = beg.add(to);
-            // assert!(start <= end);
-            // assert!(range <= end);
-            onig_sys::onig_search_with_param(
-                self.raw,
+
+            let mut some = OnigRegSetStruct {
+                _unused: []
+            };
+            onig_sys::onig_regset_search(
+                &mut some,
                 beg,
                 end,
                 start,
                 &0,
-                match region {
-                    Some(region) => region as *mut Region as *mut onig_sys::OnigRegion,
-                    None => std::ptr::null_mut(),
-                },
-                options.bits(),
-                match_param.as_raw(),
-            )
+                0,
+                0,
+                &mut pos,
+            );
+            // onig_sys::onig_search_with_param(
+            //     self.raw,
+            //     beg,
+            //     end,
+            //     start,
+            //     &0,
+            //     match region {
+            //         Some(region) => region as *mut Region as *mut onig_sys::OnigRegion,
+            //         None => std::ptr::null_mut(),
+            //     },
+            //     options.bits(),
+            //     match_param.as_raw(),
+            // )
         };
 
+        println!("match_param: {:?}", match_param.as_raw());
 
         println!("{:?}", r);
     }
