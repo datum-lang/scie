@@ -1,0 +1,3 @@
+[submodule "rust-onig"]
+	path = rust-onig
+	url = https://github.com/phodal/rust-onig.git
