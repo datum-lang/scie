@@ -125,9 +125,8 @@ impl UtfString {
         }
     }
 
-    pub fn create_string(&self, mut onig_binding: IOnigBinding) -> Box<Vec<i32>> {
-        // let result = onig_binding._malloc::<i32>(self.utf8length as usize);
-        let result = onig_binding.box_malloc(self.utf8length as usize);
+    pub fn create_string(&self, mut onig_binding: IOnigBinding) -> *const i32 {
+        let result = onig_binding.malloc(self.utf8length as usize);
         onig_binding.HEAPU8.append(&mut self.utf8value.clone());
         return result
     }

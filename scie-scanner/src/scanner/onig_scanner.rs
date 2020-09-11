@@ -29,8 +29,9 @@ impl IOnigBinding {
         ret
     }
 
-    pub fn box_malloc(&self, count: usize) -> Box<Vec<i32>> {
-        Box::new(vec![0;count])
+    pub fn malloc(&self, count: usize) -> *const i32 {
+        let mut vec = vec![0; count];
+        vec.as_ptr()
     }
 }
 
@@ -41,14 +42,19 @@ pub struct OnigScanner {
 
 impl OnigScanner {
     pub fn new(pattens: Vec<&str>) -> Self {
-        let mut strPtrsArr: Vec<Pointer> = vec![];
+        let mut strPtrsArr: Vec<Pointer> = vec![0; pattens.len()];
         let _str_len_arr: Vec<i32> = vec![];
         for i in 0..pattens.len() {
             let pattern = pattens[i].clone();
             let utf_string = UtfString::new(String::from(pattern));
             // strPtrsArr[i] = utf_string.create_string(IOnigBinding::new());
-            utf_string.create_string(IOnigBinding::new());
+            unsafe {
+                let x = utf_string.create_string(IOnigBinding::new());
+                strPtrsArr[i] = *(x);
+                println!("{:?}, {:?}", strPtrsArr, x);
+            }
         }
+        println!("{:?}", strPtrsArr);
         OnigScanner {
             _onigBinding: IOnigBinding::new(),
             _ptr: 0,
@@ -61,8 +67,8 @@ mod tests {
     use crate::scanner::onig_scanner::OnigScanner;
 
     #[test]
-    fn it_show_works_works() {
-        OnigScanner::new(vec!["^"]);
+    fn should_init_onig_scanner() {
+        OnigScanner::new(vec!["^hello", "workd"]);
         assert!(true)
     }
 }
