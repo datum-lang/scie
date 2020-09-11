@@ -1,4 +1,4 @@
-use onig::{Regex, SearchOptions};
+use onig::{Regex, SearchOptions, Region};
 use unicode_segmentation::UnicodeSegmentation;
 
 #[derive(Debug, Clone, Serialize)]
@@ -41,6 +41,8 @@ impl ScieScanner {
 
         let mut search_indexes = vec![];
         let mut all_results: Vec<IOnigMatch> = vec![];
+
+        let mut region = Region::new();
         for (index, pattern) in self.patterns.iter().enumerate() {
             let mut after_pos_str = String::from("");
             let mut start_pos = start_position;
@@ -74,7 +76,7 @@ impl ScieScanner {
                 start_pos as usize,
                 origin_str.clone().len(),
                 SearchOptions::SEARCH_OPTION_NOTBOL,
-                None,
+                Some(&mut region),
             );
             if let Some(pos) = zz {
                 // println!("pos: {:?}", pos);
