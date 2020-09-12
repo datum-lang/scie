@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.1)
 project(LibOnigVS LANGUAGES CXX)
 
-add_library(onigvs STATIC onig.cc)
+#include_directories(oniguruma)
+add_subdirectory(oniguruma)
 
-include_directories(../../rust-onig/onig_sys/oniguruma/src)
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
-file(GLOB LIBRARIES "../../rust-onig/onig_sys/oniguruma/libonig.dylib")
-message("LIBRARIES = ${LIBRARIES}")
+add_library(onigvs STATIC onigvs.cc)
 
-install(TARGETS onigvs DESTINATION .)
+target_link_libraries(onigvs onig)
+
