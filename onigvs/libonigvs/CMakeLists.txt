@@ -3,7 +3,7 @@ project(libonigvs C)
 
 add_definitions("-Wall" "-g")
 
-set(_SRCS src/config.h)
+# set(_SRCS src/config.h)
 set(_SRCS src/regint.h src/regparse.h src/regenc.h src/st.h
         src/regerror.c src/regparse.c src/regext.c src/regcomp.c src/regexec.c
         src/reggnu.c src/regenc.c src/regsyntax.c src/regtrav.c src/regversion.c
@@ -17,8 +17,8 @@ set(_SRCS src/regint.h src/regparse.h src/regenc.h src/st.h
         src/gb18030.c src/koi8_r.c src/cp1251.c
         src/euc_jp_prop.c src/sjis_prop.c
         src/unicode_unfold_key.c
-        src/unicode_fold1_key.c src/unicode_fold2_key.c src/unicode_fold3_key.c)
-set(_SRCS onigvs.c)
+        src/unicode_fold1_key.c src/unicode_fold2_key.c src/unicode_fold3_key.c
+        src/config.h onigvs.c)
 
 add_library(onigvs STATIC ${_SRCS})
 
