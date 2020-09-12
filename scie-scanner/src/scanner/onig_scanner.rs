@@ -42,21 +42,27 @@ impl OnigScanner {
         let mut strLenArr: Vec<c_int> = vec![0; pattens.len()];
 
         let _str_len_arr: Vec<i32> = vec![];
+
+        let mut _pattern_ptr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
+
         for i in 0..pattens.len() {
             let pattern = pattens[i].clone();
             let utf_string = UtfString::new(String::from(pattern));
             strLenArr[i] = utf_string.utf8length;
+
+            unsafe {
+                let mut _x = *pattens[i].as_ptr();
+                _pattern_ptr.push(&mut _x);
+            }
         }
 
         unsafe {
             let mut x = Box::new(32);
             let lengths = &mut *x;
 
-            let pattern_ptr = Box::new(8 as u8);
-            let x1 = &mut *pattern_ptr;
-            let patterns = &mut *x1;
+            let patterns: *mut *mut ::std::os::raw::c_uchar = &mut _pattern_ptr[0];
 
-            // createOnigScanner(patterns, lengths, pattens.len() as i32);
+            createOnigScanner(patterns, lengths, pattens.len() as i32);
         }
 
         OnigScanner {}
