@@ -1,4 +1,4 @@
-use crate::scanner::onig_scanner::IOnigBinding;
+use crate::scanner::scie_scanner::IOnigBinding;
 use libc::malloc;
 use std::ffi::c_void;
 

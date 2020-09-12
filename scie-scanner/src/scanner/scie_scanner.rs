@@ -7,6 +7,19 @@ use crate::scanner::onig_string::OnigString;
 
 pub type Pointer = i32;
 
+#[derive(Debug, Clone, Serialize)]
+pub struct IOnigCaptureIndex {
+    pub start: usize,
+    pub end: usize,
+    pub length: usize,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct IOnigMatch {
+    pub index: usize,
+    pub capture_indices: Vec<IOnigCaptureIndex>,
+}
+
 pub struct IOnigBinding {
     pub HEAPU8: Vec<u8>,
     pub HEAPU32: Vec<u32>,
@@ -34,12 +47,13 @@ impl IOnigBinding {
     }
 }
 
-pub struct OnigScanner {
+#[derive(Clone, Debug, Serialize)]
+pub struct ScieScanner {
     _ptr: ::std::os::raw::c_int
 }
 
-impl OnigScanner {
-    pub fn new(pattens: Vec<&str>) -> Self {
+impl ScieScanner {
+    pub fn new(pattens: Vec<String>) -> Self {
         let mut strPtrsArr: Vec<&mut &[u8]> = vec![];
         let mut strLenArr: Vec<c_int> = vec![0; pattens.len()];
 
@@ -49,7 +63,7 @@ impl OnigScanner {
 
         for i in 0..pattens.len() {
             let pattern = pattens[i].clone();
-            let utf_string = UtfString::new(String::from(pattern));
+            let utf_string = UtfString::new(pattern);
             strLenArr[i] = utf_string.utf8length;
 
             unsafe {
@@ -68,18 +82,18 @@ impl OnigScanner {
             onig_scanner = createOnigScanner(patterns, lengths, pattens.len() as i32);
         }
 
-        OnigScanner {
+        ScieScanner {
             _ptr: onig_scanner
         }
     }
 
-    pub fn findNextMatchSync(self, string: String, start_position: i32) {
+    pub fn findNextMatchSync(self, string: String, start_position: i32) -> Option<IOnigMatch> {
         let onig_string = OnigString::new(string);
-        self._findNextMatchSync(onig_string, start_position);
+        self._findNextMatchSync(onig_string, start_position)
     }
 
 
-    pub fn _findNextMatchSync(self, string: OnigString, start_position: i32) {
+    pub fn _findNextMatchSync(self, string: OnigString, start_position: i32) -> Option<IOnigMatch> {
         unsafe {
             // findNextOnigScannerMatch(
             //     self._ptr,
@@ -89,16 +103,26 @@ impl OnigScanner {
             //     string.convertUtf8OffsetToUtf16(start_position)
             // );
         }
+
+        let capture_indices = IOnigCaptureIndex {
+            start: 0,
+            end: 0,
+            length: 0,
+        };
+        Some(IOnigMatch {
+            index: 0,
+            capture_indices: vec![capture_indices],
+        })
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::onig_scanner::OnigScanner;
+    use crate::scanner::scie_scanner::ScieScanner;
 
     #[test]
     fn should_init_onig_scanner() {
-        OnigScanner::new(vec!["^hello", "workd"]);
+        ScieScanner::new(vec![String::from("^hello"), String::from("workd")]);
         assert!(true)
     }
 }
