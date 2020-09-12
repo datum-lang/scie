@@ -1,6 +1,8 @@
 use crate::scanner::utf_string::UtfString;
 use core::mem;
 use onigvs::createOnigScanner;
+use std::ffi::CString;
+use std::os::raw::{c_char, c_int, c_uchar};
 
 pub type Pointer = i32;
 
@@ -32,35 +34,32 @@ impl IOnigBinding {
 }
 
 pub struct OnigScanner {
-    pub _onigBinding: IOnigBinding,
-    pub _ptr: Pointer,
 }
 
 impl OnigScanner {
     pub fn new(pattens: Vec<&str>) -> Self {
-        let mut strPtrsArr: Vec<Pointer> = vec![0; pattens.len()];
-        let mut strLenArr: Vec<i32> = vec![0; pattens.len()];
+        let mut strPtrsArr: Vec<&mut &[u8]> = vec![];
+        let mut strLenArr: Vec<c_int> = vec![0; pattens.len()];
 
         let _str_len_arr: Vec<i32> = vec![];
         for i in 0..pattens.len() {
             let pattern = pattens[i].clone();
             let utf_string = UtfString::new(String::from(pattern));
-            unsafe {
-                let x = utf_string.create_string(IOnigBinding::new());
-                strPtrsArr[i] = x as i32;
-                strLenArr[i] = utf_string.utf8length;
-            }
+            strLenArr[i] = utf_string.utf8length;
         }
 
         unsafe {
-            // createOnigScanner()
+            let mut x = Box::new(32);
+            let lengths = &mut *x;
+
+            let pattern_ptr = Box::new(8 as u8);
+            let x1 = &mut *pattern_ptr;
+            let patterns = &mut *x1;
+
+            // createOnigScanner(patterns, lengths, pattens.len() as i32);
         }
 
-        println!("{:?}", strPtrsArr);
-        OnigScanner {
-            _onigBinding: IOnigBinding::new(),
-            _ptr: 0,
-        }
+        OnigScanner {}
     }
 }
 
