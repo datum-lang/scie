@@ -1,9 +1,9 @@
+use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
 use core::mem;
 use onigvs::{createOnigScanner, findNextOnigScannerMatch};
 use std::ffi::CString;
 use std::os::raw::{c_char, c_int, c_uchar};
-use crate::scanner::onig_string::OnigString;
 
 pub type Pointer = i32;
 
@@ -49,7 +49,7 @@ impl IOnigBinding {
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ScieScanner {
-    _ptr: ::std::os::raw::c_int
+    _ptr: ::std::os::raw::c_int,
 }
 
 impl ScieScanner {
@@ -82,16 +82,13 @@ impl ScieScanner {
             onig_scanner = createOnigScanner(patterns, lengths, pattens.len() as i32);
         }
 
-        ScieScanner {
-            _ptr: onig_scanner
-        }
+        ScieScanner { _ptr: onig_scanner }
     }
 
     pub fn findNextMatchSync(self, string: String, start_position: i32) -> Option<IOnigMatch> {
         let onig_string = OnigString::new(string);
         self._findNextMatchSync(onig_string, start_position)
     }
-
 
     pub fn _findNextMatchSync(self, string: OnigString, start_position: i32) -> Option<IOnigMatch> {
         unsafe {

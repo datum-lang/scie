@@ -127,9 +127,7 @@ impl UtfString {
         }
     }
 
-    pub fn createString() {
-
-    }
+    pub fn createString() {}
 }
 
 #[cfg(test)]

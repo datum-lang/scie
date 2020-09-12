@@ -10,10 +10,10 @@ use crate::rule::{
     AbstractRule, BeginWhileRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry,
 };
 use core::cmp;
+use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
-use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
 pub trait Matcher {}
 
@@ -551,9 +551,7 @@ impl Grammar {
             }
         }
 
-        let r = rule_scanner
-            .scanner
-            .findNextMatchSync(line_text, line_pos);
+        let r = rule_scanner.scanner.findNextMatchSync(line_text, line_pos);
 
         if let Some(result) = r {
             let match_rule_result = MatchRuleResult {
