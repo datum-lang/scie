@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
-#include "oniguruma/oniguruma.h"
+#include "src/oniguruma.h"
 
 extern "C" {
 
