@@ -1,3 +1,6 @@
 [submodule "rust-onig"]
 	path = rust-onig
 	url = https://github.com/phodal/rust-onig.git
+[submodule "onigvs/libonigvs/oniguruma"]
+	path = onigvs/libonigvs/oniguruma
+	url = https://github.com/kkos/oniguruma

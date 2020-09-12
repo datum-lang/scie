@@ -8,5 +8,4 @@ libonigvs.a
 libonig.dylib
 libonigvs/src
 libonigvs/libonigvs.dylib
-oniguruma/
 install_manifest.txt

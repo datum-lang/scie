@@ -13,3 +13,10 @@ libc = "0.2"
 cc = "1.0"
 cmake = "0.1.31"
 bindgen = { version = "0.55", optional = true, features = [ "runtime" ] }
+pkg-config = "^0.3.16"
+
+[features]
+default = ["generate"]
+print-debug = []
+posix-api = []
+generate = ["bindgen"]

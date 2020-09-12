@@ -5,7 +5,7 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
-#include "src/oniguruma.h"
+#include "oniguruma/src/oniguruma.h"
 #include <stdbool.h>
 
 

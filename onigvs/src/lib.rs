@@ -25,5 +25,6 @@ fn test_is_linked() {
     unsafe {
         assert!(!onig_copyright().is_null());
         assert!(!onig_version().is_null());
+        getLastOnigError();
     }
 }
