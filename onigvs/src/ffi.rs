@@ -1393,3 +1393,94 @@ extern "C" {
         fp: *mut ::std::os::raw::c_void,
     ) -> ::std::os::raw::c_int;
 }
+#[repr(C)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct OnigRegExp_ {
+    pub strData: *mut ::std::os::raw::c_uchar,
+    pub strLength: ::std::os::raw::c_int,
+    pub regex: *mut regex_t,
+    pub region: *mut OnigRegion,
+    pub hasGAnchor: bool,
+    pub lastSearchStrCacheId: ::std::os::raw::c_int,
+    pub lastSearchPosition: ::std::os::raw::c_int,
+    pub lastSearchMatched: bool,
+}
+pub type OnigRegExp = OnigRegExp_;
+#[repr(C)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct OnigScanner_ {
+    pub rset: *mut OnigRegSet,
+    pub regexes: *mut *mut OnigRegExp,
+    pub count: ::std::os::raw::c_int,
+}
+pub type OnigScanner = OnigScanner_;
+pub const lastOnigStatus: ::std::os::raw::c_int = 0;
+extern "C" {
+    pub static mut lastOnigErrorInfo: OnigErrorInfo;
+}
+extern "C" {
+    pub fn getLastOnigError() -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn encodeOnigRegion(
+        result: *mut OnigRegion,
+        index: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn hasGAnchor(str_: *mut ::std::os::raw::c_uchar, len: ::std::os::raw::c_int) -> bool;
+}
+extern "C" {
+    pub fn createOnigRegExp(
+        data: *mut ::std::os::raw::c_uchar,
+        length: ::std::os::raw::c_int,
+    ) -> *mut OnigRegExp;
+}
+extern "C" {
+    pub fn freeOnigRegExp(regex: *mut OnigRegExp);
+}
+extern "C" {
+    pub fn _searchOnigRegExp(
+        regex: *mut OnigRegExp,
+        strData: *mut ::std::os::raw::c_uchar,
+        strLength: ::std::os::raw::c_int,
+        position: ::std::os::raw::c_int,
+    ) -> *mut OnigRegion;
+}
+extern "C" {
+    pub fn searchOnigRegExp(
+        regex: *mut OnigRegExp,
+        strCacheId: ::std::os::raw::c_int,
+        strData: *mut ::std::os::raw::c_uchar,
+        strLength: ::std::os::raw::c_int,
+        position: ::std::os::raw::c_int,
+    ) -> *mut OnigRegion;
+}
+extern "C" {
+    pub fn createOnigScanner(
+        patterns: *mut *mut ::std::os::raw::c_uchar,
+        lengths: *mut ::std::os::raw::c_int,
+        count: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn freeOnigScanner(scanner: *mut OnigScanner) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn findNextOnigScannerMatch(
+        scanner: *mut OnigScanner,
+        strCacheId: ::std::os::raw::c_int,
+        strData: *mut ::std::os::raw::c_uchar,
+        strLength: ::std::os::raw::c_int,
+        position: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+pub type __builtin_va_list = [__va_list_tag; 1usize];
+#[repr(C)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct __va_list_tag {
+    pub gp_offset: ::std::os::raw::c_uint,
+    pub fp_offset: ::std::os::raw::c_uint,
+    pub overflow_arg_area: *mut ::std::os::raw::c_void,
+    pub reg_save_area: *mut ::std::os::raw::c_void,
+}

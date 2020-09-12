@@ -3,7 +3,8 @@ project(libonigvs C CXX)
 
 add_definitions("-Wall" "-g")
 
-set(_SRCS src/config.h src/regint.h src/regparse.h src/regenc.h src/st.h
+set(_SRCS src/config.h)
+set(_SRCS src/regint.h src/regparse.h src/regenc.h src/st.h
         src/regerror.c src/regparse.c src/regext.c src/regcomp.c src/regexec.c
         src/reggnu.c src/regenc.c src/regsyntax.c src/regtrav.c src/regversion.c
         src/st.c src/onig_init.c
