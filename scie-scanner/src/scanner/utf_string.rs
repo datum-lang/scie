@@ -126,6 +126,10 @@ impl UtfString {
             utf8offset_to_utf16,
         }
     }
+
+    pub fn createString() {
+
+    }
 }
 
 #[cfg(test)]

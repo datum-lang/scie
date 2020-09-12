@@ -1,8 +1,9 @@
 use crate::scanner::utf_string::UtfString;
 use core::mem;
-use onigvs::createOnigScanner;
+use onigvs::{createOnigScanner, findNextOnigScannerMatch};
 use std::ffi::CString;
 use std::os::raw::{c_char, c_int, c_uchar};
+use crate::scanner::onig_string::OnigString;
 
 pub type Pointer = i32;
 
@@ -34,7 +35,7 @@ impl IOnigBinding {
 }
 
 pub struct OnigScanner {
-    _ptr: i32
+    _ptr: ::std::os::raw::c_int
 }
 
 impl OnigScanner {
@@ -69,6 +70,24 @@ impl OnigScanner {
 
         OnigScanner {
             _ptr: onig_scanner
+        }
+    }
+
+    pub fn findNextMatchSync(self, string: String, start_position: i32) {
+        let onig_string = OnigString::new(string);
+        self._findNextMatchSync(onig_string, start_position);
+    }
+
+
+    pub fn _findNextMatchSync(self, string: OnigString, start_position: i32) {
+        unsafe {
+            // findNextOnigScannerMatch(
+            //     self._ptr,
+            //     string.id,
+            //     string.ptr,
+            //     string.utf8length,
+            //     string.convertUtf8OffsetToUtf16(start_position)
+            // );
         }
     }
 }
