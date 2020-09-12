@@ -52,7 +52,7 @@ int encodeOnigRegion(OnigRegion *result, int index) {
         encodedResult[2 * i + 2] = result->beg[i];
         encodedResult[2 * i + 3] = result->end[i];
     }
-    return (long)encodedResult;
+    return (int)encodedResult;
 }
 
 #pragma region OnigRegExp
@@ -177,7 +177,7 @@ int createOnigScanner(unsigned char** patterns, int* lengths, int count) {
     scanner->rset = rset;
     scanner->regexes = regexes;
     scanner->count = count;
-    return (long)scanner;
+    return (int)scanner;
 }
 
 
