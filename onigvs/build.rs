@@ -5,10 +5,10 @@ use std::env;
 
 fn main()
 {
-    let dst = Config::new("libfoo++").build();
+    let dst = Config::new("libonigvs").build();
 
     println!("cargo:rustc-link-search=native={}", dst.display());
-    println!("cargo:rustc-link-lib=static=foo++");
+    println!("cargo:rustc-link-lib=static=onigvs");
 
     let target  = env::var("TARGET").unwrap();
     if target.contains("apple")

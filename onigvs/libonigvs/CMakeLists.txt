@@ -18,4 +18,6 @@ set(_SRCS src/config.h src/regint.h src/regparse.h src/regenc.h src/st.h
         src/unicode_unfold_key.c
         src/unicode_fold1_key.c src/unicode_fold2_key.c src/unicode_fold3_key.c)
 
-add_library(onigvs SHARED ${_SRCS})
+add_library(onigvs STATIC ${_SRCS})
+
+install(TARGETS onigvs DESTINATION .)
