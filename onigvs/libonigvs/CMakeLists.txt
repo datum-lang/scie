@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-project(libonigvs C CXX)
+project(libonigvs C)
 
 add_definitions("-Wall" "-g")
 

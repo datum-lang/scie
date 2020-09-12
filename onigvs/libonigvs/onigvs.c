@@ -2,12 +2,12 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
+#include "stdlib.h"
+#include "stdio.h"
+#include "string.h"
 #include "src/oniguruma.h"
+#include <stdbool.h>
 
-extern "C" {
 
 typedef struct OnigRegExp_ {
     unsigned char* strData;
@@ -144,7 +144,6 @@ OnigRegion* searchOnigRegExp(OnigRegExp* regex, int strCacheId, unsigned char* s
 
 #pragma region OnigScanner
 
-
 int createOnigScanner(unsigned char** patterns, int* lengths, int count) {
     int i, j;
     OnigRegExp** regexes;
@@ -237,4 +236,3 @@ int findNextOnigScannerMatch(OnigScanner* scanner, int strCacheId, unsigned char
 
 #pragma endregion
 
-}
