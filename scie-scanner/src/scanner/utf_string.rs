@@ -1,4 +1,6 @@
 use crate::scanner::onig_scanner::IOnigBinding;
+use libc::malloc;
+use std::ffi::c_void;
 
 #[derive(Clone, Debug)]
 pub struct UtfString {
@@ -125,8 +127,11 @@ impl UtfString {
         }
     }
 
-    pub fn create_string(&self, mut onig_binding: IOnigBinding) -> *const i32 {
-        let result = onig_binding.malloc(self.utf8length as usize);
+    pub fn create_string(&self, mut onig_binding: IOnigBinding) -> *mut c_void {
+        let result;
+        unsafe {
+            result = malloc(self.utf8length as usize);
+        }
         onig_binding.HEAPU8.append(&mut self.utf8value.clone());
         return result
     }

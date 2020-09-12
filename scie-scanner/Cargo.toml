@@ -17,19 +17,9 @@ unicode-segmentation = "1.6.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 serde_derive = "1.0.115"
-
-
-[target.'cfg(windows)'.dependencies]
 libc = "0.2"
 
-
-[dependencies.onig_sys]
-version = "69.5.1"
-path = "../rust-onig/onig_sys"
-default-features = false
-
-[dependencies.onig]
-version = "6"
-path = "../rust-onig/onig"
+[dependencies.onigvs]
+path = "../onigvs"
 default-features = false
 
