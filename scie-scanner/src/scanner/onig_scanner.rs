@@ -34,6 +34,7 @@ impl IOnigBinding {
 }
 
 pub struct OnigScanner {
+    _ptr: i32
 }
 
 impl OnigScanner {
@@ -56,16 +57,19 @@ impl OnigScanner {
             }
         }
 
+        let onig_scanner;
         unsafe {
             let mut x = Box::new(32);
             let lengths = &mut *x;
 
             let patterns: *mut *mut ::std::os::raw::c_uchar = &mut _pattern_ptr[0];
 
-            createOnigScanner(patterns, lengths, pattens.len() as i32);
+            onig_scanner = createOnigScanner(patterns, lengths, pattens.len() as i32);
         }
 
-        OnigScanner {}
+        OnigScanner {
+            _ptr: onig_scanner
+        }
     }
 }
 
