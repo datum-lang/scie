@@ -1,5 +1,3 @@
-use crate::scanner::utf_string::UtfString;
-
 pub struct OnigString {
     pub id: i32,
     pub content: String,
@@ -24,7 +22,7 @@ impl OnigString {
         }
     }
 
-    pub fn convertUtf8OffsetToUtf16(&self, utf8Offset: i32) -> i32 {
+    pub fn convertUtf8OffsetToUtf16(&self, _utf8Offset: i32) -> i32 {
         0
     }
 }

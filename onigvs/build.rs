@@ -149,7 +149,7 @@ fn compile() {
                 if bits == "64" { "8" } else { "4" }
             ),
         )
-            .expect("Can't write config.h to OUT_DIR");
+        .expect("Can't write config.h to OUT_DIR");
     }
     if let Ok("wasm32") = arch.as_ref().map(String::as_str) {
         cc.define("ONIG_DISABLE_DIRECT_THREADING", Some("1"));

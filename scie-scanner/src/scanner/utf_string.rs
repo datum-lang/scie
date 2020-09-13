@@ -1,6 +1,4 @@
 use crate::scanner::scie_scanner::IOnigBinding;
-use libc::malloc;
-use std::ffi::c_void;
 
 #[derive(Clone, Debug)]
 pub struct UtfString {
@@ -10,7 +8,7 @@ pub struct UtfString {
     pub utf8value: Vec<u8>,
     pub utf16offset_to_utf8: Vec<u32>,
     pub utf8offset_to_utf16: Vec<u32>,
-    pub onig_binding: Box<IOnigBinding>
+    pub onig_binding: Box<IOnigBinding>,
 }
 
 impl UtfString {
@@ -37,7 +35,7 @@ impl UtfString {
         let mut i16 = 0;
         while i16 < utf16_vec.len() {
             let char_code = utf16_vec[i16].clone();
-            let mut codePoint = char_code.clone() as usize;
+            let mut code_point = char_code.clone() as usize;
             let mut was_surrogate_pair = false;
             if char_code >= 0xd800 && char_code <= 0xdbff {
                 // todo: update logic
@@ -46,7 +44,7 @@ impl UtfString {
                     let next_char_code = utf16_vec[i16 + 1].clone();
                     if next_char_code >= 0xdc00 && next_char_code <= 0xdfff {
                         let temp = ((char_code - 0xd800) << 10) as usize + 0x10000;
-                        codePoint = (temp as usize) | (next_char_code as usize - 0xdc00);
+                        code_point = (temp as usize) | (next_char_code as usize - 0xdc00);
                         was_surrogate_pair = true;
                     }
                 }
@@ -59,12 +57,12 @@ impl UtfString {
                     utf16offset_to_utf8[i16 + 1] = i8 as u32;
                 }
 
-                if codePoint <= 0x7f {
+                if code_point <= 0x7f {
                     utf8offset_to_utf16[i8 + 0] = i16 as u32;
-                } else if codePoint <= 0x7ff {
+                } else if code_point <= 0x7ff {
                     utf8offset_to_utf16[i8 + 0] = i16 as u32;
                     utf8offset_to_utf16[i8 + 1] = i16 as u32;
-                } else if codePoint <= 0xffff {
+                } else if code_point <= 0xffff {
                     utf8offset_to_utf16[i8 + 0] = i16 as u32;
                     utf8offset_to_utf16[i8 + 1] = i16 as u32;
                     utf8offset_to_utf16[i8 + 2] = i16 as u32;
@@ -76,38 +74,38 @@ impl UtfString {
                 }
             }
 
-            if codePoint <= 0x7f {
-                utf8value[i8] = codePoint as u8;
+            if code_point <= 0x7f {
+                utf8value[i8] = code_point as u8;
                 i8 = i8 + 1;
-            } else if codePoint <= 0x7ff {
+            } else if code_point <= 0x7ff {
                 utf8value[i8] =
-                    (0b11000000 | ((codePoint & 0b00000000000000000000011111000000) >> 6)) as u8;
-                i8 = i8 + 1;
-                utf8value[i8] =
-                    (0b10000000 | ((codePoint & 0b00000000000000000000000000111111) >> 0)) as u8;
-                i8 = i8 + 1;
-            } else if codePoint <= 0xffff {
-                utf8value[i8] =
-                    (0b11100000 | ((codePoint & 0b00000000000000001111000000000000) >> 12)) as u8;
+                    (0b11000000 | ((code_point & 0b00000000000000000000011111000000) >> 6)) as u8;
                 i8 = i8 + 1;
                 utf8value[i8] =
-                    (0b10000000 | ((codePoint & 0b00000000000000000000111111000000) >> 6)) as u8;
+                    (0b10000000 | ((code_point & 0b00000000000000000000000000111111) >> 0)) as u8;
+                i8 = i8 + 1;
+            } else if code_point <= 0xffff {
+                utf8value[i8] =
+                    (0b11100000 | ((code_point & 0b00000000000000001111000000000000) >> 12)) as u8;
                 i8 = i8 + 1;
                 utf8value[i8] =
-                    (0b10000000 | ((codePoint & 0b00000000000000000000000000111111) >> 0)) as u8;
+                    (0b10000000 | ((code_point & 0b00000000000000000000111111000000) >> 6)) as u8;
+                i8 = i8 + 1;
+                utf8value[i8] =
+                    (0b10000000 | ((code_point & 0b00000000000000000000000000111111) >> 0)) as u8;
                 i8 = i8 + 1;
             } else {
                 utf8value[i8] =
-                    (0b11110000 | ((codePoint & 0b00000000000111000000000000000000) >> 18)) as u8;
+                    (0b11110000 | ((code_point & 0b00000000000111000000000000000000) >> 18)) as u8;
                 i8 = i8 + 1;
                 utf8value[i8] =
-                    (0b10000000 | ((codePoint & 0b00000000000000111111000000000000) >> 12)) as u8;
+                    (0b10000000 | ((code_point & 0b00000000000000111111000000000000) >> 12)) as u8;
                 i8 = i8 + 1;
                 utf8value[i8] =
-                    (0b10000000 | ((codePoint & 0b00000000000000000000111111000000) >> 6)) as u8;
+                    (0b10000000 | ((code_point & 0b00000000000000000000111111000000) >> 6)) as u8;
                 i8 = i8 + 1;
                 utf8value[i8] =
-                    (0b10000000 | ((codePoint & 0b00000000000000000000000000111111) >> 0)) as u8;
+                    (0b10000000 | ((code_point & 0b00000000000000000000000000111111) >> 0)) as u8;
                 i8 = i8 + 1;
             }
 
@@ -125,7 +123,7 @@ impl UtfString {
             utf8value,
             utf16offset_to_utf8,
             utf8offset_to_utf16,
-            onig_binding: Box::new(IOnigBinding::new())
+            onig_binding: Box::new(IOnigBinding::new()),
         }
     }
 
