@@ -1,6 +1,6 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
-use onigvs::{createOnigScanner};
+use onigvs::{createOnigScanner, OnigScanner, findNextOnigScannerMatch};
 use std::collections::BinaryHeap;
 use std::os::raw::{c_int};
 
@@ -36,7 +36,9 @@ impl IOnigBinding {
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ScieScanner {
-    _ptr: ::std::os::raw::c_int,
+    // _ptr: Box<OnigScanner>,
+    #[serde(skip_serializing)]
+    pub _ptr: *mut OnigScanner
 }
 
 impl ScieScanner {
@@ -63,8 +65,7 @@ impl ScieScanner {
         unsafe {
             let patterns_length_ptr = strLenArr.as_mut_ptr();
             let patterns_ptr: *mut *mut ::std::os::raw::c_uchar = _pattern_ptr.as_mut_ptr();
-            onig_scanner =
-                createOnigScanner(patterns_ptr, patterns_length_ptr, patterns.len() as i32);
+            onig_scanner = createOnigScanner(patterns_ptr, patterns_length_ptr, patterns.len() as i32);
         }
 
         ScieScanner { _ptr: onig_scanner }
@@ -75,15 +76,15 @@ impl ScieScanner {
         self._findNextMatchSync(onig_string, start_position)
     }
 
-    pub fn _findNextMatchSync(self, _string: OnigString, _start_position: i32) -> Option<IOnigMatch> {
+    pub fn _findNextMatchSync(self, string: OnigString, start_position: i32) -> Option<IOnigMatch> {
         // unsafe {
-            // findNextOnigScannerMatch(
-            //     self._ptr,
-            //     string.id,
-            //     string.ptr,
-            //     string.utf8length,
-            //     string.convertUtf8OffsetToUtf16(_start_position)
-            // );
+        //     findNextOnigScannerMatch(
+        //         self._ptr,
+        //         string.id,
+        //         string.ptr,
+        //         string.utf8length,
+        //         string.convertUtf8OffsetToUtf16(start_position)
+        //     );
         // }
 
         let capture_indices = IOnigCaptureIndex {
@@ -104,7 +105,8 @@ mod tests {
 
     #[test]
     fn should_init_onig_scanner() {
-        ScieScanner::new(vec![String::from("^hello"), String::from("workd")]);
+        let scanner = ScieScanner::new(vec![String::from("^hello"), String::from("workd")]);
+        println!("scanner: {:?}", scanner);
         assert!(true)
     }
 

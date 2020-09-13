@@ -1461,7 +1461,7 @@ extern "C" {
         patterns: *mut *mut ::std::os::raw::c_uchar,
         lengths: *mut ::std::os::raw::c_int,
         count: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
+    ) -> *mut OnigScanner;
 }
 extern "C" {
     pub fn freeOnigScanner(scanner: *mut OnigScanner) -> ::std::os::raw::c_int;
