@@ -36,7 +36,6 @@ impl IOnigBinding {
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ScieScanner {
-    // _ptr: Box<OnigScanner>,
     #[serde(skip_serializing)]
     pub _ptr: *mut OnigScanner
 }
@@ -64,7 +63,7 @@ impl ScieScanner {
             onig_scanner = createOnigScanner(patterns_ptr, patterns_length_ptr, patterns.len() as i32);
         }
 
-        ScieScanner { _ptr: onig_scanner }
+        ScieScanner { _ptr: onig_scanner as *mut OnigScanner }
     }
 
     pub fn dispose(&self) {

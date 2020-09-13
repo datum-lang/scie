@@ -5023,12 +5023,11 @@ pub struct OnigScanner_ {
 pub type OnigScanner = OnigScanner_;
 #[repr(C)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct OnigScieResult_ {
+pub struct OnigScieResult {
     pub start: ::std::os::raw::c_int,
     pub end: ::std::os::raw::c_int,
     pub index: ::std::os::raw::c_int,
 }
-pub type OnigScieResult = OnigScieResult_;
 pub const lastOnigStatus: ::std::os::raw::c_int = 0;
 extern "C" {
     pub static mut lastOnigErrorInfo: OnigErrorInfo;
@@ -5076,7 +5075,7 @@ extern "C" {
         patterns: *mut *mut ::std::os::raw::c_uchar,
         lengths: *mut ::std::os::raw::c_int,
         count: ::std::os::raw::c_int,
-    ) -> *mut OnigScanner;
+    ) -> ::std::os::raw::c_long;
 }
 extern "C" {
     pub fn freeOnigScanner(scanner: *mut OnigScanner) -> ::std::os::raw::c_int;
