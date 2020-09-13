@@ -1,6 +1,6 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
-use onigvs::{createOnigScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS, OnigScanner};
+use onigvs::{createOnigScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS, OnigScanner, malloc};
 use std::os::raw::{c_int};
 
 pub type Pointer = i32;
@@ -35,7 +35,12 @@ impl ScieScanner {
         for i in 0..patterns.len() {
             let mut utf_string = UtfString::new(patterns[i].clone());
 
-            let mut _x = utf_string.createString();
+            // let mut _x = utf_string.createString();
+            let _x;
+            unsafe {
+                _x = malloc(utf_string.utf8length as u64) as *mut u8;
+            }
+
 
             str_ptrs_arr[i] = _x as *mut u8;
             str_len_arr[i] = utf_string.utf8length;
@@ -126,7 +131,7 @@ mod tests {
     #[test]
     fn should_init_onig_scanner() {
         let mut scanner = ScieScanner::new(vec![String::from("ell"), String::from("wo")]);
-        let onig = scanner.clone().find_next_match_sync(String::from("z"), 1);
+        let onig = scanner.find_next_match_sync(String::from("z"), 1);
         assert!(onig.is_none());
 
         let onig2 = scanner.find_next_match_sync(String::from("Hello world!"), 0);
@@ -450,7 +455,8 @@ mod tests {
     #[test]
     fn should_compile_long_string() {
         let origin = vec![
-            "(?x)\\n        \\t\\t^\\s*\\#\\s*(define)\\s+             # define\\n        \\t\\t((?<id>[a-zA-Z_][a-zA-Z0-9_]*))  # macro name\\n        \\t\\t(?:                              # and optionally:\\n        \\t\\t    (\\()                         # an open parenthesis\\n        \\t\\t        (\\n        \\t\\t            \\s* \\g<id> \\s*       # first argument\\n        \\t\\t            ((,) \\s* \\g<id> \\s*)*  # additional arguments\\n        \\t\\t            (?:\\.\\.\\.)?          # varargs ellipsis?\\n        \\t\\t        )\\n        \\t\\t    (\\))                         # a close parenthesis\\n        \\t\\t)?\\n        \\t"
+            "(?x)\\n        \\t\\t^\\s*\\#\\s*(define)\\s+             # define\\n        \\t\\t((?<id>[a-zA-Z_][a-zA-Z0-9_]*))  # macro name\\n        \\t\\t(?:                              # and optionally:\\n        \\t\\t    (\\()                         # an open parenthesis\\n        \\t\\t        (\\n        \\t\\t            \\s* \\g<id> \\s*       # first argument\\n        \\t\\t            ((,) \\s* \\g<id> \\s*)*  # additional arguments\\n        \\t\\t            (?:\\.\\.\\.)?          # varargs ellipsis?\\n        \\t\\t        )\\n        \\t\\t    (\\))                         # a close parenthesis\\n        \\t\\t)?\\n        \\t",
+            "\\b(AbsoluteTime|Boolean|Byte|ByteCount|ByteOffset|BytePtr|CompTimeValue|ConstLogicalAddress|ConstStrFileNameParam|ConstStringPtr|Duration|Fixed|FixedPtr|Float32|Float32Point|Float64|Float80|Float96|FourCharCode|Fract|FractPtr|Handle|ItemCount|LogicalAddress|OptionBits|OSErr|OSStatus|OSType|OSTypePtr|PhysicalAddress|ProcessSerialNumber|ProcessSerialNumberPtr|ProcHandle|Ptr|ResType|ResTypePtr|ShortFixed|ShortFixedPtr|SignedByte|SInt16|SInt32|SInt64|SInt8|Size|StrFileName|StringHandle|StringPtr|TimeBase|TimeRecord|TimeScale|TimeValue|TimeValue64|UInt16|UInt32|UInt64|UInt8|UniChar|UniCharCount|UniCharCountPtr|UniCharPtr|UnicodeScalarValue|UniversalProcHandle|UniversalProcPtr|UnsignedFixed|UnsignedFixedPtr|UnsignedWide|UTF16Char|UTF32Char|UTF8Char)\\b",
         ];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
