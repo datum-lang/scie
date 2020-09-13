@@ -1,8 +1,9 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
-use onigvs::{createOnigScanner, OnigScanner, OnigScieResult, findNextScieScanner, freeOnigScanner};
+use onigvs::{createOnigScanner, OnigScanner, OnigScieResult, findNextScieScanner, freeOnigScanner, findNextOnigScannerMatch};
 use std::collections::BinaryHeap;
 use std::os::raw::{c_int};
+use core::mem;
 
 pub type Pointer = i32;
 
@@ -39,6 +40,8 @@ pub struct ScieScanner {
     #[serde(skip_serializing)]
     pub _ptr: *mut OnigScanner
 }
+
+pub type IntArray = Vec<i32>;
 
 impl ScieScanner {
     pub fn new(patterns: Vec<String>) -> Self {
@@ -81,7 +84,7 @@ impl ScieScanner {
 
     pub fn _find_next_match_sync(&self, string: &mut OnigString, start_position: i32) -> Option<IOnigMatch> {
         unsafe {
-            let result = findNextScieScanner(
+            let mut result = findNextOnigScannerMatch(
                 self._ptr,
                 string.id,
                 string.ptr,
@@ -93,19 +96,16 @@ impl ScieScanner {
                 return None;
             }
 
-            let scie_result = result as *mut OnigScieResult;
-            let onig_scie_result = *scie_result;
-            let start = onig_scie_result.start.clone() as usize;
-            let end = onig_scie_result.end.clone() as usize;
-            let length = end - start;
+            let index: *mut Vec<c_int> = result as *mut Vec<_>;
+            result = result + 1;
 
             let capture_indices = IOnigCaptureIndex {
-                start: string.convertUtf8OffsetToUtf16(start as i32) as usize,
-                end: string.convertUtf8OffsetToUtf16(end as i32) as usize,
-                length,
+                start: 0,
+                end: 0,
+                length: 0,
             };
             return Some(IOnigMatch {
-                index: onig_scie_result.index as usize,
+                index: 0,
                 capture_indices: vec![capture_indices],
             });
         }

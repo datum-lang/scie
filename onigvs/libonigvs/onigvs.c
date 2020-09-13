@@ -197,8 +197,7 @@ int freeOnigScanner(OnigScanner *scanner) {
 }
 
 
-int
-findNextOnigScannerMatch(OnigScanner *scanner, int strCacheId, unsigned char *strData, int strLength, int position) {
+long findNextOnigScannerMatch(OnigScanner *scanner, int strCacheId, unsigned char *strData, int strLength, int position) {
     int bestLocation = 0;
     int bestResultIndex = 0;
     OnigRegion *bestResult = NULL;

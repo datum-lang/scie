@@ -23,3 +23,5 @@ libc = "0.2"
 path = "../onigvs"
 default-features = false
 
+[features]
+alloc = []

@@ -5087,7 +5087,7 @@ extern "C" {
         strData: *mut ::std::os::raw::c_uchar,
         strLength: ::std::os::raw::c_int,
         position: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
+    ) -> ::std::os::raw::c_long;
 }
 extern "C" {
     pub fn encodeOnigToScie(
