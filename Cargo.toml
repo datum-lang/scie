@@ -18,7 +18,5 @@ path = "scie-scanner"
 members = [
  "scie-grammar",
  "onigvs",
- "rust-onig/onig",
- "rust-onig/onig_sys",
  "benchmark"
 ]
