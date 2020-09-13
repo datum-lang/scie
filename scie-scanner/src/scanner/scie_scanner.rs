@@ -43,8 +43,8 @@ pub struct ScieScanner {
 
 impl ScieScanner {
     pub fn new(patterns: Vec<String>) -> Self {
-        let mut strLenArr: Vec<c_int> = vec![0; patterns.len()];
-        let mut _pattern_ptr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
+        let mut str_len_arr: Vec<c_int> = vec![0; patterns.len()];
+        let mut str_ptrs_arr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
 
         let _str_len_arr: Vec<i32> = vec![];
 
@@ -54,15 +54,15 @@ impl ScieScanner {
                 let mut utf_string = UtfString::new(pattern);
 
                 let mut _x = utf_string.createString();
-                _pattern_ptr.push(*&mut _x);
-                strLenArr[i] = utf_string.utf8length;
+                str_ptrs_arr.push(*&mut _x);
+                str_len_arr[i] = utf_string.utf8length;
             }
         }
 
         let onig_scanner ;
         unsafe {
-            let patterns_length_ptr = strLenArr.as_mut_ptr();
-            let patterns_ptr: *mut *mut ::std::os::raw::c_uchar = _pattern_ptr.as_mut_ptr();
+            let patterns_length_ptr = str_len_arr.as_mut_ptr();
+            let patterns_ptr: *mut *mut ::std::os::raw::c_uchar = str_ptrs_arr.as_mut_ptr();
             onig_scanner = createOnigScanner(patterns_ptr, patterns_length_ptr, patterns.len() as i32);
         }
 
@@ -107,7 +107,7 @@ mod tests {
 
     #[test]
     fn should_init_onig_scanner() {
-        let scanner = ScieScanner::new(vec![String::from("^ell"), String::from("wo")]);
+        let scanner = ScieScanner::new(vec![String::from("ell"), String::from("wo")]);
         let onig = scanner.clone().findNextMatchSync(String::from("z"), 1);
         assert!(onig.is_none());
 
