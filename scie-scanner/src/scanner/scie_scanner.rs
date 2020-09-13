@@ -42,33 +42,30 @@ pub struct ScieScanner {
 }
 
 impl ScieScanner {
-    pub fn new(pattens: Vec<String>) -> Self {
+    pub fn new(patterns: Vec<String>) -> Self {
         let mut strPtrsArr: Vec<&mut &[u8]> = vec![];
-        let mut strLenArr: Vec<c_int> = vec![0; pattens.len()];
+        let mut strLenArr: Vec<c_int> = vec![0; patterns.len()];
 
         let _str_len_arr: Vec<i32> = vec![];
 
         let mut _pattern_ptr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
 
-        for i in 0..pattens.len() {
-            let pattern = pattens[i].clone();
+        for i in 0..patterns.len() {
+            let pattern = patterns[i].clone();
             let mut utf_string = UtfString::new(pattern);
 
             unsafe {
                 strLenArr[i] = *utf_string.createString();
-                let mut _x = *pattens[i].as_ptr();
+                let mut _x = *patterns[i].as_ptr();
                 _pattern_ptr.push(&mut _x);
             }
         }
 
-        let onig_scanner;
+        let mut onig_scanner = 0;
         unsafe {
-            let mut x = Box::new(32);
-            let lengths = &mut *x;
-
-            let patterns: *mut *mut ::std::os::raw::c_uchar = &mut _pattern_ptr[0];
-
-            onig_scanner = createOnigScanner(patterns, lengths, pattens.len() as i32);
+            let patterns_length_ptr = strLenArr.as_mut_ptr();
+            let patterns_ptr: *mut *mut ::std::os::raw::c_uchar = _pattern_ptr.as_mut_ptr();
+            onig_scanner = createOnigScanner(patterns_ptr, patterns_length_ptr, patterns.len() as i32);
         }
 
         ScieScanner { _ptr: onig_scanner }
