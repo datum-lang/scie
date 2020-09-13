@@ -77,15 +77,19 @@ impl ScieScanner {
     }
 
     pub fn _findNextMatchSync(self, string: OnigString, start_position: i32) -> Option<IOnigMatch> {
-        // unsafe {
-        //     findNextOnigScannerMatch(
-        //         self._ptr,
-        //         string.id,
-        //         string.ptr,
-        //         string.utf8length,
-        //         string.convertUtf8OffsetToUtf16(start_position)
-        //     );
-        // }
+        unsafe {
+            let result = findNextOnigScannerMatch(
+                self._ptr,
+                string.id,
+                string.ptr,
+                string.utf8length,
+                string.convertUtf8OffsetToUtf16(start_position)
+            );
+            println!("{:?}", result);
+            if result == 0 {
+                return None;
+            }
+        }
 
         let capture_indices = IOnigCaptureIndex {
             start: 0,
@@ -107,6 +111,7 @@ mod tests {
     fn should_init_onig_scanner() {
         let scanner = ScieScanner::new(vec![String::from("^hello"), String::from("workd")]);
         println!("scanner: {:?}", scanner);
+        scanner.findNextMatchSync(String::from("-"), 1);
         assert!(true)
     }
 

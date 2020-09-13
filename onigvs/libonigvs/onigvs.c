@@ -39,7 +39,7 @@ char* getLastOnigError()
 
 #define MAX_REGIONS 1000
 
-int encodeOnigRegion(OnigRegion *result, int index) {
+long encodeOnigRegion(OnigRegion *result, int index) {
     static int encodedResult[2 * (1 + MAX_REGIONS)];
     int i;
     if (result == NULL || result->num_regs > MAX_REGIONS) {
@@ -52,7 +52,7 @@ int encodeOnigRegion(OnigRegion *result, int index) {
         encodedResult[2 * i + 2] = result->beg[i];
         encodedResult[2 * i + 3] = result->end[i];
     }
-    return (int)encodedResult;
+    return (long)encodedResult;
 }
 
 #pragma region OnigRegExp
@@ -144,7 +144,7 @@ OnigRegion* searchOnigRegExp(OnigRegExp* regex, int strCacheId, unsigned char* s
 
 #pragma region OnigScanner
 
-int createOnigScanner(unsigned char** patterns, int* lengths, int count) {
+long createOnigScanner(unsigned char** patterns, int* lengths, int count) {
     int i, j;
     OnigRegExp** regexes;
     regex_t** regs;
@@ -176,7 +176,7 @@ int createOnigScanner(unsigned char** patterns, int* lengths, int count) {
     scanner->rset = rset;
     scanner->regexes = regexes;
     scanner->count = count;
-    return (int)scanner;
+    return (long)scanner;
 }
 
 

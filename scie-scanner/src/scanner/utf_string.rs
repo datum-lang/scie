@@ -144,7 +144,6 @@ mod tests {
     #[test]
     fn should_convert_utf_string_success() {
         let onig_string = UtfString::new(String::from("a💻bYX"));
-        println!("{:?}", onig_string);
 
         assert_eq!(6, onig_string.utf16length);
         assert_eq!(8, onig_string.utf8length);
@@ -157,6 +156,14 @@ mod tests {
             vec![0, 1, 1, 1, 1, 3, 4, 5, 6],
             onig_string.utf8offset_to_utf16
         );
+    }
+
+    #[test]
+    fn should_handle_normal_String() {
+        let mut onig_string = UtfString::new(String::from("12"));
+
+        assert_eq!(2, onig_string.utf16length);
+        assert_eq!(2, onig_string.utf8length);
     }
 
     #[test]
