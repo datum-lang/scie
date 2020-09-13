@@ -1,6 +1,6 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
-use onigvs::{createOnigScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS, OnigScanner};
+use onigvs::{createOnigScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS, OnigScanner, malloc};
 use std::os::raw::{c_int};
 
 pub type Pointer = i32;
@@ -33,8 +33,7 @@ impl ScieScanner {
         str_ptrs_arr.resize_with(patterns.len(), || { &mut 0 });
 
         for i in 0..patterns.len() {
-            let pattern = patterns[i].clone();
-            let mut utf_string = UtfString::new(pattern);
+            let mut utf_string = UtfString::new(patterns[i].clone());
 
             let mut _x = utf_string.createString();
 
@@ -441,6 +440,19 @@ mod tests {
             "\\$?\\$\\(",
         ];
         let _rules = vec![-1, 37, 38, 2, 12, 14];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = ScieScanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 16);
+        assert!(result.is_none());
+
+        scanner.dispose();
+    }
+
+    #[test]
+    fn should_compile_long_string() {
+        let origin = vec![
+            "(?x)\\n        \\t\\t^\\s*\\#\\s*(define)\\s+             # define\\n        \\t\\t((?<id>[a-zA-Z_][a-zA-Z0-9_]*))  # macro name\\n        \\t\\t(?:                              # and optionally:\\n        \\t\\t    (\\()                         # an open parenthesis\\n        \\t\\t        (\\n        \\t\\t            \\s* \\g<id> \\s*       # first argument\\n        \\t\\t            ((,) \\s* \\g<id> \\s*)*  # additional arguments\\n        \\t\\t            (?:\\.\\.\\.)?          # varargs ellipsis?\\n        \\t\\t        )\\n        \\t\\t    (\\))                         # a close parenthesis\\n        \\t\\t)?\\n        \\t"
+        ];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
         let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 16);
