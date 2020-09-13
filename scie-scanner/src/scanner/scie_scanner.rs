@@ -1,6 +1,6 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
-use onigvs::{createOnigScanner, OnigScanner, findNextOnigScannerMatch, OnigScieResult, findNextScieScanner};
+use onigvs::{createOnigScanner, OnigScanner, OnigScieResult, findNextScieScanner};
 use std::collections::BinaryHeap;
 use std::os::raw::{c_int};
 
@@ -82,24 +82,26 @@ impl ScieScanner {
                 string.convertUtf8OffsetToUtf16(start_position),
             );
 
-            println!("{:?}", result);
             if result == 0 {
                 return None;
             }
 
-            let scie_result = result as *mut i64 as *mut OnigScieResult;
-            println!("{:?}", scie_result);
-        }
+            let scie_result = result as *mut OnigScieResult;
+            let onig_scie_result = *scie_result;
+            let start = onig_scie_result.start.clone() as usize;
+            let end = onig_scie_result.end.clone() as usize;
+            let length = end - start;
 
-        let capture_indices = IOnigCaptureIndex {
-            start: 0,
-            end: 0,
-            length: 0,
-        };
-        Some(IOnigMatch {
-            index: 0,
-            capture_indices: vec![capture_indices],
-        })
+            let capture_indices = IOnigCaptureIndex {
+                start,
+                end,
+                length,
+            };
+            return Some(IOnigMatch {
+                index: onig_scie_result.index as usize,
+                capture_indices: vec![capture_indices]
+            });
+        }
     }
 }
 
@@ -114,7 +116,9 @@ mod tests {
         assert!(onig.is_none());
 
         let onig2 = scanner.findNextMatchSync(String::from("Hello world!"), 0);
-        assert_eq!(0, onig2.unwrap().index);
+        assert_eq!(0, onig2.clone().unwrap().index);
+        assert_eq!(1, onig2.clone().unwrap().capture_indices[0].start);
+        assert_eq!(4, onig2.clone().unwrap().capture_indices[0].end);
     }
 
     //     #[test]

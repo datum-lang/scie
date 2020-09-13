@@ -5103,7 +5103,7 @@ extern "C" {
         strData: *mut ::std::os::raw::c_uchar,
         strLength: ::std::os::raw::c_int,
         position: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
+    ) -> ::std::os::raw::c_long;
 }
 pub type __builtin_va_list = [__va_list_tag; 1usize];
 #[repr(C)]

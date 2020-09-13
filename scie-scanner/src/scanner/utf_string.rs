@@ -161,10 +161,9 @@ mod tests {
 
     #[test]
     fn should_handle_normal_String() {
-        let mut onig_string = UtfString::new(String::from("12"));
-
-        assert_eq!(2, onig_string.utf16length);
-        assert_eq!(2, onig_string.utf8length);
+        let onig_string = UtfString::new(String::from("12"));
+        assert_eq!(2, onig_string.utf16length.clone());
+        assert_eq!(2, onig_string.utf8length.clone());
     }
 
     #[test]

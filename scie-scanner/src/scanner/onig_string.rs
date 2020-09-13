@@ -1,4 +1,3 @@
-use onigvs::OnigScanner;
 use crate::scanner::utf_string::UtfString;
 
 #[derive(Debug, Clone)]
@@ -16,7 +15,7 @@ impl OnigString {
     pub fn new(str: String) -> Self {
         let mut utf_string = UtfString::new(str.clone());
         let ptr = utf_string.createString();
-        let mut onig_string = OnigString {
+        let onig_string = OnigString {
             id: 0,
             content: str.to_string(),
             utf16length: utf_string.utf16length,

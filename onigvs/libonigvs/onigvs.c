@@ -251,7 +251,7 @@ long encodeOnigToScie(OnigRegion *result, int index) {
     return (long) scieResult;
 }
 
-int findNextScieScanner(OnigScanner *scanner, int strCacheId, unsigned char *strData, int strLength, int position) {
+long findNextScieScanner(OnigScanner *scanner, int strCacheId, unsigned char *strData, int strLength, int position) {
     int bestLocation = 0;
     int bestResultIndex = 0;
     OnigRegion *bestResult = NULL;
