@@ -16,4 +16,10 @@ impl CompiledRule {
             scanner: Box::new(scanner),
         }
     }
+
+    pub fn dispose(&self) {
+        unsafe {
+            self.scanner.dispose();
+        }
+    }
 }

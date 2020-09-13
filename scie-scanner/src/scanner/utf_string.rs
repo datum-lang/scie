@@ -125,10 +125,10 @@ impl UtfString {
         }
     }
 
-    pub fn createString(&mut self) -> *mut u8 {
-        let result: *mut u8;
+    pub fn createString(&mut self) -> *mut i32 {
+        let result: *mut i32;
         unsafe {
-            result = malloc(self.utf8length as usize) as *mut u8;
+            result = malloc(self.utf8length as usize) as *mut i32;
         }
         result
     }

@@ -36,11 +36,14 @@ impl ScieScanner {
             let mut utf_string = UtfString::new(pattern);
 
             let mut _x = utf_string.createString();
-            str_ptrs_arr.push(*&mut _x);
+            // str_ptrs_arr.push(*&mut (_x as ));
+            str_ptrs_arr.push(_x as *mut u8);
             str_len_arr[i] = utf_string.utf8length;
         }
 
         let onig_scanner;
+        println!("createOnigScanner");
+
         unsafe {
             let patterns_length_ptr = str_len_arr.as_mut_ptr();
             let patterns_ptr: *mut *mut ::std::os::raw::c_uchar = str_ptrs_arr.as_mut_ptr();
@@ -69,7 +72,7 @@ impl ScieScanner {
             let result = findNextOnigScannerMatch(
                 self._ptr,
                 string.id,
-                string.ptr,
+                string.ptr as *mut u8,
                 string.utf8length,
                 string.convertUtf16OffsetToUtf8(start_position),
             );

@@ -657,7 +657,7 @@ return 0;
     #[test]
     fn should_identify_c_include() {
         let code = "#include <stdio.h>";
-        let mut grammar = to_grammar_for_test("test-cases/first-mate/fixtures/c.json");
+        let mut grammar = to_grammar_for_test("scie-grammar/test-cases/first-mate/fixtures/c.json");
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line(String::from(code), &mut rule_stack);
 

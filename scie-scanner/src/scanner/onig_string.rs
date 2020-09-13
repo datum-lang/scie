@@ -8,7 +8,7 @@ pub struct OnigString {
     pub content: String,
     pub utf16length: i32,
     pub utf8length: i32,
-    pub ptr: *mut u8,
+    pub ptr: *mut i32,
     pub utf16offset_to_utf8: Vec<u32>,
     pub utf8offset_to_utf16: Vec<u32>,
 }
@@ -22,7 +22,7 @@ impl OnigString {
             content: str.to_string(),
             utf16length: utf_string.utf16length,
             utf8length: utf_string.utf8length,
-            ptr: ptr as *mut u8,
+            ptr: ptr,
             utf16offset_to_utf8: utf_string.utf16offset_to_utf8,
             utf8offset_to_utf16: utf_string.utf8offset_to_utf16,
         };
