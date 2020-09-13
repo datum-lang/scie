@@ -6,6 +6,8 @@ Date: 2020-09-11
 
 2020-09-11 proposed
 
+2020-09-14 deprecated
+
 ## Context
 
 Onig use OnigRegSet as parameters, but it's private:

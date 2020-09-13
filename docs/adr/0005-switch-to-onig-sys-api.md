@@ -6,6 +6,8 @@ Date: 2020-09-10
 
 2020-09-10 proposed
 
+2020-09-14 done
+
 ## Context
 
 VCode-Oniguruma use different options for search, in order to match same results, we need to align API usage.
@@ -15,6 +17,7 @@ for examples:
  - ONIG_REGSET_POSITION_LEAD (returns most left position)
  - ONIG_OPTION_CAPTURE_GROUP      named and no-named group captured.
 
+use TypeScript VS Code Oniguruma Bindings for compile
 
 ## Decision
 
