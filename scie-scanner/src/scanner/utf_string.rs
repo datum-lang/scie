@@ -1,4 +1,5 @@
 use crate::scanner::scie_scanner::IOnigBinding;
+use libc::malloc;
 
 #[derive(Clone, Debug)]
 pub struct UtfString {
@@ -128,9 +129,9 @@ impl UtfString {
     }
 
     pub fn createString(&mut self) -> *mut i32 {
-        let result: *mut i32 = &mut 0;
+        let result: *mut i32;
         unsafe {
-            let result: *mut i32 = libc::malloc(self.utf8length as usize) as *mut i32;
+            result = malloc(self.utf8length as usize) as *mut i32;
             self.onig_binding.HEAPU8.push(*result);
         }
         result
