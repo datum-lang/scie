@@ -128,10 +128,10 @@ impl UtfString {
         }
     }
 
-    pub fn createString(&mut self) -> *mut i32 {
-        let result: *mut i32;
+    pub fn createString(&mut self) -> *mut u8 {
+        let result: *mut u8;
         unsafe {
-            result = malloc(self.utf8length as usize) as *mut i32;
+            result = malloc(self.utf8length as usize) as *mut u8;
             self.onig_binding.HEAPU8.push(*result);
         }
         result

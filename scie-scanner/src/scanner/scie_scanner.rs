@@ -21,8 +21,8 @@ pub struct IOnigMatch {
 
 #[derive(Debug, Clone, Serialize)]
 pub struct IOnigBinding {
-    pub HEAPU8: BinaryHeap<i32>,
-    pub HEAPU32: BinaryHeap<i32>,
+    pub HEAPU8: BinaryHeap<u8>,
+    pub HEAPU32: BinaryHeap<u8>,
 }
 
 impl IOnigBinding {
@@ -43,21 +43,19 @@ pub struct ScieScanner {
 
 impl ScieScanner {
     pub fn new(patterns: Vec<String>) -> Self {
-        let mut _strPtrsArr: Vec<&mut &[u8]> = vec![];
         let mut strLenArr: Vec<c_int> = vec![0; patterns.len()];
+        let mut _pattern_ptr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
 
         let _str_len_arr: Vec<i32> = vec![];
 
-        let mut _pattern_ptr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
-
         for i in 0..patterns.len() {
             let pattern = patterns[i].clone();
-            let mut utf_string = UtfString::new(pattern);
-
             unsafe {
-                strLenArr[i] = *utf_string.createString();
-                let mut _x = *patterns[i].as_ptr();
-                _pattern_ptr.push(&mut _x);
+                let mut utf_string = UtfString::new(pattern);
+
+                let mut _x = utf_string.createString();
+                _pattern_ptr.push(*&mut _x);
+                strLenArr[i] = utf_string.utf8length;
             }
         }
 
@@ -109,10 +107,12 @@ mod tests {
 
     #[test]
     fn should_init_onig_scanner() {
-        let scanner = ScieScanner::new(vec![String::from("^hello"), String::from("workd")]);
-        println!("scanner: {:?}", scanner);
-        scanner.findNextMatchSync(String::from("-"), 1);
-        assert!(true)
+        let scanner = ScieScanner::new(vec![String::from("^ell"), String::from("wo")]);
+        let onig = scanner.clone().findNextMatchSync(String::from("z"), 1);
+        assert!(onig.is_none());
+
+        let onig2 = scanner.findNextMatchSync(String::from("Hello world!"), 0);
+        assert_eq!(0, onig2.unwrap().index);
     }
 
     //     #[test]
