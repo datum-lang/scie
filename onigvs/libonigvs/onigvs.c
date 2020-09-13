@@ -10,10 +10,10 @@
 
 
 typedef struct OnigRegExp_ {
-    unsigned char* strData;
+    unsigned char *strData;
     int strLength;
-    regex_t* regex;
-    OnigRegion* region;
+    regex_t *regex;
+    OnigRegion *region;
     bool hasGAnchor;
     int lastSearchStrCacheId;
     int lastSearchPosition;
@@ -21,25 +21,24 @@ typedef struct OnigRegExp_ {
 } OnigRegExp;
 
 typedef struct OnigScanner_ {
-    OnigRegSet* rset;
-    OnigRegExp** regexes;
+    OnigRegSet *rset;
+    OnigRegExp **regexes;
     int count;
 } OnigScanner;
 
-typedef struct OnigScieResult_ {
+struct OnigScieResult {
     int start;
     int end;
     int index;
-} OnigScieResult;
+};
 
 int lastOnigStatus = 0;
 OnigErrorInfo lastOnigErrorInfo;
 
 
-char* getLastOnigError()
-{
+char *getLastOnigError() {
     static char s[ONIG_MAX_ERROR_MESSAGE_LEN];
-    onig_error_code_to_str((UChar*)s, lastOnigStatus, &lastOnigErrorInfo);
+    onig_error_code_to_str((UChar *) s, lastOnigStatus, &lastOnigErrorInfo);
     return s;
 }
 
@@ -58,12 +57,12 @@ long encodeOnigRegion(OnigRegion *result, int index) {
         encodedResult[2 * i + 2] = result->beg[i];
         encodedResult[2 * i + 3] = result->end[i];
     }
-    return (long)encodedResult;
+    return (long) encodedResult;
 }
 
 #pragma region OnigRegExp
 
-bool hasGAnchor(unsigned char* str, int len) {
+bool hasGAnchor(unsigned char *str, int len) {
     int pos;
     for (pos = 0; pos < len; pos++) {
         if (str[pos] == '\\' && pos + 1 < len) {
@@ -75,9 +74,9 @@ bool hasGAnchor(unsigned char* str, int len) {
     return false;
 }
 
-OnigRegExp* createOnigRegExp(unsigned char* data, int length) {
-    OnigRegExp* result;
-    regex_t* regex;
+OnigRegExp *createOnigRegExp(unsigned char *data, int length) {
+    OnigRegExp *result;
+    regex_t *regex;
 
     lastOnigStatus = onig_new(&regex, data, data + length,
                               ONIG_OPTION_CAPTURE_GROUP, ONIG_ENCODING_UTF8,
@@ -87,9 +86,9 @@ OnigRegExp* createOnigRegExp(unsigned char* data, int length) {
         return NULL;
     }
 
-    result = (OnigRegExp*)malloc(sizeof(OnigRegExp));
+    result = (OnigRegExp *) malloc(sizeof(OnigRegExp));
     result->strLength = length;
-    result->strData = (unsigned char*)malloc(length);
+    result->strData = (unsigned char *) malloc(length);
     memcpy(result->strData, data, length);
     result->regex = regex;
     result->region = onig_region_new();
@@ -100,14 +99,14 @@ OnigRegExp* createOnigRegExp(unsigned char* data, int length) {
     return result;
 }
 
-void freeOnigRegExp(OnigRegExp* regex) {
+void freeOnigRegExp(OnigRegExp *regex) {
     // regex->regex will be freed separately / as part of the regset
     free(regex->strData);
     onig_region_free(regex->region, 1);
     free(regex);
 }
 
-OnigRegion* _searchOnigRegExp(OnigRegExp* regex, unsigned char* strData, int strLength, int position) {
+OnigRegion *_searchOnigRegExp(OnigRegExp *regex, unsigned char *strData, int strLength, int position) {
     int status;
 
     status = onig_search(regex->regex, strData, strData + strLength,
@@ -123,7 +122,7 @@ OnigRegion* _searchOnigRegExp(OnigRegExp* regex, unsigned char* strData, int str
     return regex->region;
 }
 
-OnigRegion* searchOnigRegExp(OnigRegExp* regex, int strCacheId, unsigned char* strData, int strLength, int position) {
+OnigRegion *searchOnigRegExp(OnigRegExp *regex, int strCacheId, unsigned char *strData, int strLength, int position) {
     if (regex->hasGAnchor) {
         // Should not use caching, because the regular expression
         // targets the current search position (\G)
@@ -150,15 +149,15 @@ OnigRegion* searchOnigRegExp(OnigRegExp* regex, int strCacheId, unsigned char* s
 
 #pragma region OnigScanner
 
-long createOnigScanner(unsigned char** patterns, int* lengths, int count) {
+long createOnigScanner(unsigned char **patterns, int *lengths, int count) {
     int i, j;
-    OnigRegExp** regexes;
-    regex_t** regs;
-    OnigRegSet* rset;
-    OnigScanner* scanner;
+    OnigRegExp **regexes;
+    regex_t **regs;
+    OnigRegSet *rset;
+    OnigScanner *scanner;
 
-    regexes = (OnigRegExp**)malloc(sizeof(OnigRegExp*) * count);
-    regs = (regex_t**)malloc(sizeof(regex_t*) * count);
+    regexes = (OnigRegExp **) malloc(sizeof(OnigRegExp *) * count);
+    regs = (regex_t **) malloc(sizeof(regex_t *) * count);
 
     for (i = 0; i < count; i++) {
         regexes[i] = createOnigRegExp(patterns[i], lengths[i]);
@@ -178,17 +177,17 @@ long createOnigScanner(unsigned char** patterns, int* lengths, int count) {
     onig_regset_new(&rset, count, regs);
     free(regs);
 
-    scanner = (OnigScanner*)malloc(sizeof(OnigScanner));
+    scanner = (OnigScanner *) malloc(sizeof(OnigScanner));
     scanner->rset = rset;
     scanner->regexes = regexes;
     scanner->count = count;
-    return (long)scanner;
+    return (long) scanner;
 }
 
 
-int freeOnigScanner(OnigScanner* scanner) {
+int freeOnigScanner(OnigScanner *scanner) {
     int i;
-    for (i = 0 ; i < scanner->count; i++) {
+    for (i = 0; i < scanner->count; i++) {
         freeOnigRegExp(scanner->regexes[i]);
     }
     free(scanner->regexes);
@@ -198,17 +197,19 @@ int freeOnigScanner(OnigScanner* scanner) {
 }
 
 
-int findNextOnigScannerMatch(OnigScanner* scanner, int strCacheId, unsigned char* strData, int strLength, int position) {
+int
+findNextOnigScannerMatch(OnigScanner *scanner, int strCacheId, unsigned char *strData, int strLength, int position) {
     int bestLocation = 0;
     int bestResultIndex = 0;
-    OnigRegion* bestResult = NULL;
-    OnigRegion* result;
+    OnigRegion *bestResult = NULL;
+    OnigRegion *result;
     int i;
     int location;
 
     if (strLength < 1000) {
         // for short strings, it is better to use the RegSet API, but for longer strings caching pays off
-        bestResultIndex = onig_regset_search(scanner->rset, strData, strData + strLength, strData + position, strData + strLength,
+        bestResultIndex = onig_regset_search(scanner->rset, strData, strData + strLength, strData + position,
+                                             strData + strLength,
                                              ONIG_REGSET_POSITION_LEAD, ONIG_OPTION_NONE, &bestLocation);
         if (bestResultIndex < 0) {
             return 0;
@@ -238,6 +239,59 @@ int findNextOnigScannerMatch(OnigScanner* scanner, int strCacheId, unsigned char
     }
 
     return encodeOnigRegion(bestResult, bestResultIndex);
+}
+
+long encodeOnigToScie(OnigRegion *result, int index) {
+    struct OnigScieResult *scieResult = (struct OnigScieResult*) malloc(sizeof(struct OnigScieResult));
+
+    scieResult->index = index;
+    scieResult->start = *result->beg;
+    scieResult->end = *result->end;
+
+    return (long) scieResult;
+}
+
+int findNextScieScanner(OnigScanner *scanner, int strCacheId, unsigned char *strData, int strLength, int position) {
+    int bestLocation = 0;
+    int bestResultIndex = 0;
+    OnigRegion *bestResult = NULL;
+    OnigRegion *result;
+    int i;
+    int location;
+
+    if (strLength < 1000) {
+        // for short strings, it is better to use the RegSet API, but for longer strings caching pays off
+        bestResultIndex = onig_regset_search(scanner->rset, strData, strData + strLength, strData + position,
+                                             strData + strLength,
+                                             ONIG_REGSET_POSITION_LEAD, ONIG_OPTION_NONE, &bestLocation);
+        if (bestResultIndex < 0) {
+            return 0;
+        }
+        return encodeOnigToScie(onig_regset_get_region(scanner->rset, bestResultIndex), bestResultIndex);
+    }
+
+    for (i = 0; i < scanner->count; i++) {
+        result = searchOnigRegExp(scanner->regexes[i], strCacheId, strData, strLength, position);
+        if (result != NULL && result->num_regs > 0) {
+            location = result->beg[0];
+
+            if (bestResult == NULL || location < bestLocation) {
+                bestLocation = location;
+                bestResult = result;
+                bestResultIndex = i;
+            }
+
+            if (location == position) {
+                break;
+            }
+        }
+    }
+
+    if (bestResult == NULL) {
+        return 0;
+    }
+
+    return encodeOnigToScie(bestResult, bestResultIndex);
 }
 
 #pragma endregion

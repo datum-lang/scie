@@ -1,6 +1,6 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
-use onigvs::{createOnigScanner, OnigScanner, findNextOnigScannerMatch};
+use onigvs::{createOnigScanner, OnigScanner, findNextOnigScannerMatch, OnigScieResult, findNextScieScanner};
 use std::collections::BinaryHeap;
 use std::os::raw::{c_int};
 
@@ -50,16 +50,14 @@ impl ScieScanner {
 
         for i in 0..patterns.len() {
             let pattern = patterns[i].clone();
-            unsafe {
-                let mut utf_string = UtfString::new(pattern);
+            let mut utf_string = UtfString::new(pattern);
 
-                let mut _x = utf_string.createString();
-                str_ptrs_arr.push(*&mut _x);
-                str_len_arr[i] = utf_string.utf8length;
-            }
+            let mut _x = utf_string.createString();
+            str_ptrs_arr.push(*&mut _x);
+            str_len_arr[i] = utf_string.utf8length;
         }
 
-        let onig_scanner ;
+        let onig_scanner;
         unsafe {
             let patterns_length_ptr = str_len_arr.as_mut_ptr();
             let patterns_ptr: *mut *mut ::std::os::raw::c_uchar = str_ptrs_arr.as_mut_ptr();
@@ -76,17 +74,21 @@ impl ScieScanner {
 
     pub fn _findNextMatchSync(self, string: OnigString, start_position: i32) -> Option<IOnigMatch> {
         unsafe {
-            let result = findNextOnigScannerMatch(
+            let result = findNextScieScanner(
                 self._ptr,
                 string.id,
                 string.ptr,
                 string.utf8length,
-                string.convertUtf8OffsetToUtf16(start_position)
+                string.convertUtf8OffsetToUtf16(start_position),
             );
+
             println!("{:?}", result);
             if result == 0 {
                 return None;
             }
+
+            let scie_result = result as *mut i64 as *mut OnigScieResult;
+            println!("{:?}", scie_result);
         }
 
         let capture_indices = IOnigCaptureIndex {
