@@ -67,19 +67,21 @@ impl ScieScanner {
         ScieScanner { _ptr: onig_scanner }
     }
 
-    pub fn findNextMatchSync(self, string: String, start_position: i32) -> Option<IOnigMatch> {
-        let onig_string = OnigString::new(string);
-        self._findNextMatchSync(onig_string, start_position)
+    pub fn find_next_match_sync(&self, string: String, start_position: i32) -> Option<IOnigMatch> {
+        let mut onig_string = OnigString::new(string);
+        let result = self._find_next_match_sync(&mut onig_string, start_position);
+        onig_string.dispose();
+        return result
     }
 
-    pub fn _findNextMatchSync(self, string: OnigString, start_position: i32) -> Option<IOnigMatch> {
+    pub fn _find_next_match_sync(&self, string: &mut OnigString, start_position: i32) -> Option<IOnigMatch> {
         unsafe {
             let result = findNextScieScanner(
                 self._ptr,
                 string.id,
                 string.ptr,
                 string.utf8length,
-                string.convertUtf8OffsetToUtf16(start_position),
+                string.convertUtf16OffsetToUtf8(start_position),
             );
 
             if result == 0 {
@@ -99,7 +101,7 @@ impl ScieScanner {
             };
             return Some(IOnigMatch {
                 index: onig_scie_result.index as usize,
-                capture_indices: vec![capture_indices]
+                capture_indices: vec![capture_indices],
             });
         }
     }
@@ -112,31 +114,32 @@ mod tests {
     #[test]
     fn should_init_onig_scanner() {
         let scanner = ScieScanner::new(vec![String::from("ell"), String::from("wo")]);
-        let onig = scanner.clone().findNextMatchSync(String::from("z"), 1);
+        let onig = scanner.clone().find_next_match_sync(String::from("z"), 1);
         assert!(onig.is_none());
 
-        let onig2 = scanner.findNextMatchSync(String::from("Hello world!"), 0);
+        let onig2 = scanner.find_next_match_sync(String::from("Hello world!"), 0);
         assert_eq!(0, onig2.clone().unwrap().index);
         assert_eq!(1, onig2.clone().unwrap().capture_indices[0].start);
         assert_eq!(4, onig2.clone().unwrap().capture_indices[0].end);
     }
 
-    //     #[test]
-    //     fn should_handle_simple_regex() {
-    //         let regex = vec![String::from("ell"), String::from("wo")];
-    //         let mut scanner = ScieScanner::new(regex);
-    //         let s = String::from("Hello world!");
-    //         let result = scanner.find_next_match_sync(s.clone(), 0).unwrap();
-    //         assert_eq!(result.index, 0);
-    //         assert_eq!(result.capture_indices[0].start, 1);
-    //         assert_eq!(result.capture_indices[0].end, 4);
-    //
-    //         let second_result = scanner.find_next_match_sync(s, 2).unwrap();
-    //         assert_eq!(second_result.index, 1);
-    //         assert_eq!(second_result.capture_indices[0].start, 6);
-    //         assert_eq!(second_result.capture_indices[0].end, 8);
-    //     }
-    //
+    #[test]
+    fn should_handle_simple_regex() {
+        let regex = vec![String::from("ell"), String::from("wo")];
+        let scanner = ScieScanner::new(regex);
+        let s = String::from("Hello world!");
+        let result = scanner.find_next_match_sync(s.clone(), 0).unwrap();
+        assert_eq!(result.index, 0);
+        assert_eq!(result.capture_indices[0].start, 1);
+        assert_eq!(result.capture_indices[0].end, 4);
+
+        let second_result = scanner.find_next_match_sync(s, 2).unwrap();
+        println!("second_result: {:?}", second_result);
+        assert_eq!(second_result.index, 1);
+        assert_eq!(second_result.capture_indices[0].start, 6);
+        assert_eq!(second_result.capture_indices[0].end, 8);
+    }
+
     //     #[test]
     //     fn should_handle_simple2() {
     //         let regex = vec![String::from("a"), String::from("b"), String::from("c")];

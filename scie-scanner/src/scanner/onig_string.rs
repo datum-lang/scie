@@ -1,4 +1,6 @@
 use crate::scanner::utf_string::UtfString;
+use onigvs::free;
+use std::ffi::c_void;
 
 #[derive(Debug, Clone)]
 pub struct OnigString {
@@ -28,7 +30,28 @@ impl OnigString {
         onig_string
     }
 
+    pub fn dispose(&self) {
+        unsafe {
+            free(self.ptr as *mut c_void);
+        }
+    }
+
     pub fn convertUtf8OffsetToUtf16(&self, _utf8Offset: i32) -> i32 {
         0
+    }
+
+    pub fn convertUtf16OffsetToUtf8(&self, utf16Offset: i32) -> i32 {
+        if self.utf16offset_to_utf8.len() > 0 {
+            if utf16Offset < 0 {
+                return 0
+            }
+            if utf16Offset > self.utf16length {
+                return self.utf8length
+            }
+
+            return self.utf16offset_to_utf8[utf16Offset as usize] as i32;
+        }
+
+        return utf16Offset
     }
 }
