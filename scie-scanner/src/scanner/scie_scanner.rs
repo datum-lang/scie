@@ -71,7 +71,7 @@ impl ScieScanner {
         let mut onig_string = OnigString::new(string);
         let result = self._find_next_match_sync(&mut onig_string, start_position);
         onig_string.dispose();
-        return result
+        return result;
     }
 
     pub fn _find_next_match_sync(&self, string: &mut OnigString, start_position: i32) -> Option<IOnigMatch> {
@@ -95,8 +95,8 @@ impl ScieScanner {
             let length = end - start;
 
             let capture_indices = IOnigCaptureIndex {
-                start,
-                end,
+                start: string.convertUtf8OffsetToUtf16(start as i32) as usize,
+                end:  string.convertUtf8OffsetToUtf16(end as i32) as usize,
                 length,
             };
             return Some(IOnigMatch {
@@ -140,69 +140,69 @@ mod tests {
         assert_eq!(second_result.capture_indices[0].end, 8);
     }
 
-    //     #[test]
-    //     fn should_handle_simple2() {
-    //         let regex = vec![String::from("a"), String::from("b"), String::from("c")];
-    //         let mut scanner = ScieScanner::new(regex);
-    //
-    //         if let None = scanner.find_next_match_sync(String::from("x"), 0) {
-    //             assert_eq!(true, true);
-    //         } else {
-    //             assert_eq!(true, false);
-    //         }
-    //
-    //         let result = scanner
-    //             .find_next_match_sync(String::from("xxaxxbxxc"), 0)
-    //             .unwrap();
-    //         assert_eq!(
-    //             serde_json::to_string(&result).unwrap(),
-    //             String::from(
-    //                 "{\"index\":0,\"capture_indices\":[{\"start\":2,\"end\":3,\"length\":1}]}"
-    //             )
-    //         );
-    //
-    //         let result2 = scanner
-    //             .find_next_match_sync(String::from("xxaxxbxxc"), 4)
-    //             .unwrap();
-    //         assert_eq!(
-    //             serde_json::to_string(&result2).unwrap(),
-    //             String::from(
-    //                 "{\"index\":1,\"capture_indices\":[{\"start\":5,\"end\":6,\"length\":1}]}"
-    //             )
-    //         );
-    //
-    //         let result3 = scanner
-    //             .find_next_match_sync(String::from("xxaxxbxxc"), 7)
-    //             .unwrap();
-    //         assert_eq!(
-    //             serde_json::to_string(&result3).unwrap(),
-    //             String::from(
-    //                 "{\"index\":2,\"capture_indices\":[{\"start\":8,\"end\":9,\"length\":1}]}"
-    //             )
-    //         );
-    //
-    //         if let None = scanner.find_next_match_sync(String::from("xxaxxbxxc"), 9) {
-    //             assert_eq!(true, true);
-    //         } else {
-    //             assert_eq!(true, false);
-    //         }
-    //     }
-    //
-    //     #[test]
-    //     fn should_handle_unicode1() {
-    //         let regex = vec![String::from("1"), String::from("2")];
-    //         let mut scanner = ScieScanner::new(regex);
-    //
-    //         let result = scanner
-    //             .find_next_match_sync(String::from("ab…cde21"), 5)
-    //             .unwrap();
-    //         assert_eq!(
-    //             serde_json::to_string(&result).unwrap(),
-    //             String::from(
-    //                 "{\"index\":1,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"
-    //             )
-    //         );
-    //     }
+    #[test]
+    fn should_handle_simple2() {
+        let regex = vec![String::from("a"), String::from("b"), String::from("c")];
+        let mut scanner = ScieScanner::new(regex);
+
+        if let None = scanner.find_next_match_sync(String::from("x"), 0) {
+            assert_eq!(true, true);
+        } else {
+            assert_eq!(true, false);
+        }
+
+        let result = scanner
+            .find_next_match_sync(String::from("xxaxxbxxc"), 0)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":2,\"end\":3,\"length\":1}]}"
+            )
+        );
+
+        let result2 = scanner
+            .find_next_match_sync(String::from("xxaxxbxxc"), 4)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result2).unwrap(),
+            String::from(
+                "{\"index\":1,\"capture_indices\":[{\"start\":5,\"end\":6,\"length\":1}]}"
+            )
+        );
+
+        let result3 = scanner
+            .find_next_match_sync(String::from("xxaxxbxxc"), 7)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result3).unwrap(),
+            String::from(
+                "{\"index\":2,\"capture_indices\":[{\"start\":8,\"end\":9,\"length\":1}]}"
+            )
+        );
+
+        if let None = scanner.find_next_match_sync(String::from("xxaxxbxxc"), 9) {
+            assert_eq!(true, true);
+        } else {
+            assert_eq!(true, false);
+        }
+    }
+
+    #[test]
+    fn should_handle_unicode1() {
+        let regex = vec![String::from("1"), String::from("2")];
+        let mut scanner = ScieScanner::new(regex);
+
+        let result = scanner
+            .find_next_match_sync(String::from("ab…cde21"), 5)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result).unwrap(),
+            String::from(
+                "{\"index\":1,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"
+            )
+        );
+    }
     //
     //     #[test]
     //     fn should_handle_unicode2() {

@@ -36,8 +36,17 @@ impl OnigString {
         }
     }
 
-    pub fn convertUtf8OffsetToUtf16(&self, _utf8Offset: i32) -> i32 {
-        0
+    pub fn convertUtf8OffsetToUtf16(&self, utf8Offset: i32) -> i32 {
+        if self.utf8offset_to_utf16.len() > 0 {
+            if utf8Offset < 0 {
+                return 0;
+            }
+            if utf8Offset > self.utf8length {
+                return self.utf16length;
+            }
+            return self.utf8offset_to_utf16[utf8Offset as usize] as i32;
+        }
+        return utf8Offset;
     }
 
     pub fn convertUtf16OffsetToUtf8(&self, utf16Offset: i32) -> i32 {
