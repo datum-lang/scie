@@ -72,7 +72,7 @@ impl ScieScanner {
         }
     }
 
-    pub fn find_next_match_sync(&self, string: String, start_position: i32) -> Option<IOnigMatch> {
+    pub fn find_next_match_sync(&mut self, string: String, start_position: i32) -> Option<IOnigMatch> {
         let mut onig_string = OnigString::new(string);
         let result = self._find_next_match_sync(&mut onig_string, start_position);
         onig_string.dispose();
@@ -97,7 +97,7 @@ impl ScieScanner {
             let onig_scie_result = *scie_result;
             let start = onig_scie_result.start.clone() as usize;
             let end = onig_scie_result.end.clone() as usize;
-                let length = end - start;
+            let length = end - start;
 
             let capture_indices = IOnigCaptureIndex {
                 start: string.convertUtf8OffsetToUtf16(start as i32) as usize,
@@ -112,13 +112,21 @@ impl ScieScanner {
     }
 }
 
+pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
+    where
+        I: IntoIterator<Item=T>,
+        T: Into<String>,
+{
+    iter.into_iter().map(Into::into).collect()
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::scanner::scie_scanner::ScieScanner;
+    use crate::scanner::scie_scanner::{ScieScanner, str_vec_to_string};
 
     #[test]
     fn should_init_onig_scanner() {
-        let scanner = ScieScanner::new(vec![String::from("ell"), String::from("wo")]);
+        let mut scanner = ScieScanner::new(vec![String::from("ell"), String::from("wo")]);
         let onig = scanner.clone().find_next_match_sync(String::from("z"), 1);
         assert!(onig.is_none());
 
@@ -133,7 +141,7 @@ mod tests {
     #[test]
     fn should_handle_simple_regex() {
         let regex = vec![String::from("ell"), String::from("wo")];
-        let scanner = ScieScanner::new(regex);
+        let mut scanner = ScieScanner::new(regex);
         let s = String::from("Hello world!");
         let result = scanner.find_next_match_sync(s.clone(), 0).unwrap();
         assert_eq!(result.index, 0);
@@ -316,44 +324,44 @@ mod tests {
         scanner.dispose();
     }
 
-    //     #[test]
-    //     fn should_handle_regex_g() {
-    //         let mut scanner = ScieScanner::new(vec![String::from("\\G-and")]);
-    //         let result = scanner.find_next_match_sync(String::from("first-and-second"), 0);
-    //         assert_eq!(format!("{:?}", result), "None");
-    //
-    //         let result2 = scanner
-    //             .find_next_match_sync(String::from("first-and-second"), 5)
-    //             .unwrap();
-    //         assert_eq!(
-    //             serde_json::to_string(&result2).unwrap(),
-    //             String::from(
-    //                 "{\"index\":0,\"capture_indices\":[{\"start\":5,\"end\":9,\"length\":4}]}"
-    //             )
-    //         );
-    //     }
-    //
-    //     #[test]
-    //     fn should_match_makefile_scan_regex() {
-    //         let origin = vec![
-    //             "(^[ \\t]+)?(?=#)",
-    //             "(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
-    //             "^(?!\\t)([^:]*)(:)(?!\\=)",
-    //             "^[ ]*([s\\-]?include)\\b",
-    //             "^[ ]*(vpath)\\b",
-    //             "^(?:(override)\\s*)?(define)\\s*([^\\s]+)\\s*(=|\\?=|:=|\\+=)?(?=\\s)",
-    //             "^[ ]*(export)\\b",
-    //             "^[ ]*(override|private)\\b",
-    //             "^[ ]*(unexport|undefine)\\b",
-    //             "^(ifdef|ifndef)\\s*([^\\s]+)(?=\\s)",
-    //             "^(ifeq|ifneq)(?=\\s)]",
-    //         ];
-    //         let _rules = vec![2, 7, 28, 45, 48, 51, 61, 64, 66, 69, 77];
-    //         let debug_regex = str_vec_to_string(origin);
-    //         let mut scanner = ScieScanner::new(debug_regex);
-    //         let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 0);
-    //         assert_eq!(3, result.unwrap().capture_indices.len());
-    //     }
+    #[test]
+    fn should_handle_regex_g() {
+        let mut scanner = ScieScanner::new(vec![String::from("\\G-and")]);
+        let result = scanner.find_next_match_sync(String::from("first-and-second"), 0);
+        assert_eq!(format!("{:?}", result), "None");
+
+        let result2 = scanner
+            .find_next_match_sync(String::from("first-and-second"), 5)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result2).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":5,\"end\":9,\"length\":4}]}"
+            )
+        );
+    }
+
+    #[test]
+    fn should_match_makefile_scan_regex() {
+        let origin = vec![
+            "(^[ \\t]+)?(?=#)",
+            "(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+            "^(?!\\t)([^:]*)(:)(?!\\=)",
+            "^[ ]*([s\\-]?include)\\b",
+            "^[ ]*(vpath)\\b",
+            "^(?:(override)\\s*)?(define)\\s*([^\\s]+)\\s*(=|\\?=|:=|\\+=)?(?=\\s)",
+            "^[ ]*(export)\\b",
+            "^[ ]*(override|private)\\b",
+            "^[ ]*(unexport|undefine)\\b",
+            "^(ifdef|ifndef)\\s*([^\\s]+)(?=\\s)",
+            "^(ifeq|ifneq)(?=\\s)]",
+        ];
+        let _rules = vec![2, 7, 28, 45, 48, 51, 61, 64, 66, 69, 77];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = ScieScanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 0);
+        assert_eq!(3, result.unwrap().capture_indices.len());
+    }
     //
     //     #[test]
     //     fn should_match_makefile_special_char() {
