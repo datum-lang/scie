@@ -26,12 +26,6 @@ typedef struct OnigScanner_ {
     int count;
 } OnigScanner;
 
-struct OnigScieResult {
-    int start;
-    int end;
-    int index;
-};
-
 int lastOnigStatus = 0;
 OnigErrorInfo lastOnigErrorInfo;
 
@@ -238,59 +232,6 @@ long findNextOnigScannerMatch(OnigScanner *scanner, int strCacheId, unsigned cha
     }
 
     return encodeOnigRegion(bestResult, bestResultIndex);
-}
-
-long encodeOnigToScie(OnigRegion *result, int index) {
-    struct OnigScieResult *scieResult = (struct OnigScieResult*) malloc(sizeof(struct OnigScieResult));
-
-    scieResult->index = index;
-    scieResult->start = *result->beg;
-    scieResult->end = *result->end;
-
-    return (long) scieResult;
-}
-
-long findNextScieScanner(OnigScanner *scanner, int strCacheId, unsigned char *strData, int strLength, int position) {
-    int bestLocation = 0;
-    int bestResultIndex = 0;
-    OnigRegion *bestResult = NULL;
-    OnigRegion *result;
-    int i;
-    int location;
-
-    if (strLength < 1000) {
-        // for short strings, it is better to use the RegSet API, but for longer strings caching pays off
-        bestResultIndex = onig_regset_search(scanner->rset, strData, strData + strLength, strData + position,
-                                             strData + strLength,
-                                             ONIG_REGSET_POSITION_LEAD, ONIG_OPTION_NONE, &bestLocation);
-        if (bestResultIndex < 0) {
-            return 0;
-        }
-        return encodeOnigToScie(onig_regset_get_region(scanner->rset, bestResultIndex), bestResultIndex);
-    }
-
-    for (i = 0; i < scanner->count; i++) {
-        result = searchOnigRegExp(scanner->regexes[i], strCacheId, strData, strLength, position);
-        if (result != NULL && result->num_regs > 0) {
-            location = result->beg[0];
-
-            if (bestResult == NULL || location < bestLocation) {
-                bestLocation = location;
-                bestResult = result;
-                bestResultIndex = i;
-            }
-
-            if (location == position) {
-                break;
-            }
-        }
-    }
-
-    if (bestResult == NULL) {
-        return 0;
-    }
-
-    return encodeOnigToScie(bestResult, bestResultIndex);
 }
 
 #pragma endregion
