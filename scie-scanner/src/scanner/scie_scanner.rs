@@ -3,7 +3,6 @@ use crate::scanner::utf_string::UtfString;
 use onigvs::{createOnigScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS, OnigScanner};
 use std::collections::BinaryHeap;
 use std::os::raw::{c_int};
-use core::mem;
 
 pub type Pointer = i32;
 
@@ -85,7 +84,7 @@ impl ScieScanner {
 
     pub fn _find_next_match_sync(&self, string: &mut OnigString, start_position: i32) -> Option<IOnigMatch> {
         unsafe {
-            let mut result = findNextOnigScannerMatch(
+            let result = findNextOnigScannerMatch(
                 self._ptr,
                 string.id,
                 string.ptr,
@@ -98,27 +97,26 @@ impl ScieScanner {
             }
 
 
-            let mut index: usize;
+            let index: usize;
             let mut capture_indices = vec![];
 
-            unsafe {
-                let size = 2 * (1 + MAX_REGIONS);
-                let result = std::slice::from_raw_parts(result as *const i32, size as usize);
-                index = result[0] as usize;
-                let count = result[1];
-                let mut offset = 1;
-                for i in 0..count {
-                    offset = offset + 1;
-                    let start = string.convertUtf8OffsetToUtf16(result[offset]);
-                    offset = offset + 1;
-                    let end = string.convertUtf8OffsetToUtf16(result[offset]);
-                    let length = end - start;
-                    capture_indices.push(IOnigCaptureIndex {
-                        start: start as usize,
-                        end: end as usize,
-                        length: length as usize,
-                    })
-                }
+            let size = 2 * (1 + MAX_REGIONS);
+            let result = std::slice::from_raw_parts(result as *const i32, size as usize);
+            index = result[0] as usize;
+            let count = result[1];
+            let mut offset = 1;
+            for _i in 0..count {
+                offset = offset + 1;
+                let start = string.convertUtf8OffsetToUtf16(result[offset]);
+                offset = offset + 1;
+                let end = string.convertUtf8OffsetToUtf16(result[offset]);
+                let length = end - start;
+
+                capture_indices.push(IOnigCaptureIndex {
+                    start: start as usize,
+                    end: end as usize,
+                    length: length as usize,
+                })
             }
 
             return Some(IOnigMatch {
@@ -464,5 +462,4 @@ mod tests {
 
         scanner.dispose();
     }
-
 }
