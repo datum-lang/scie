@@ -43,7 +43,9 @@ Todo:
 License
 ---
 
-[scie-grammar based on [vscode-textmate](https://github.com/microsoft/vscode-textmate) with MIT LICENSE see in  [scie-grammar/src/scanner/LICENSE](scie-grammar/src/scanner/LICENSE)
+[scie-grammar](scie-gramma/r) based on [vscode-textmate](https://github.com/microsoft/vscode-textmate) with MIT LICENSE see in  [scie-grammar/src/scanner/LICENSE](scie-grammar/src/scanner/LICENSE)
+
+[onigvs](onigvs/) based on [rust-onig](https://github.com/rust-onig/rust-onig)
 
 [![Phodal's Idea](http://brand.phodal.com/shields/idea-small.svg)](http://ideas.phodal.com/)
 
