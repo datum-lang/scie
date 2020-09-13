@@ -1,6 +1,6 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
-use onigvs::{createOnigScanner, OnigScanner, OnigScieResult, findNextScieScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS};
+use onigvs::{createOnigScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS, OnigScanner};
 use std::collections::BinaryHeap;
 use std::os::raw::{c_int};
 use core::mem;
@@ -79,6 +79,7 @@ impl ScieScanner {
         let mut onig_string = OnigString::new(string);
         let result = self._find_next_match_sync(&mut onig_string, start_position);
         onig_string.dispose();
+
         return result;
     }
 
@@ -115,7 +116,7 @@ impl ScieScanner {
                     capture_indices.push(IOnigCaptureIndex {
                         start: start as usize,
                         end: end as usize,
-                        length: length as usize
+                        length: length as usize,
                     })
                 }
             }
@@ -219,6 +220,7 @@ mod tests {
         } else {
             assert_eq!(true, false);
         }
+
         scanner.dispose();
     }
 
@@ -236,11 +238,8 @@ mod tests {
                 "{\"index\":1,\"capture_indices\":[{\"start\":6,\"end\":7,\"length\":1}]}"
             )
         );
-        scanner.dispose();
-    }
 
-    #[test]
-    fn should_handle_unicode2() {
+        scanner.dispose();
         let mut scanner2 = ScieScanner::new(vec![String::from("\"")]);
         let result2 = scanner2
             .find_next_match_sync(String::from("{\"…\": 1}"), 1)
@@ -355,6 +354,8 @@ mod tests {
                 "{\"index\":0,\"capture_indices\":[{\"start\":5,\"end\":9,\"length\":4}]}"
             )
         );
+
+        scanner.dispose();
     }
 
     #[test]
@@ -377,80 +378,91 @@ mod tests {
         let mut scanner = ScieScanner::new(debug_regex);
         let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 0);
         assert_eq!(3, result.unwrap().capture_indices.len());
+
+        scanner.dispose();
     }
-    //
-    //     #[test]
-    //     fn should_match_makefile_special_char() {
-    //         let origin = vec!["(?=\\s|$)", "(\\$?\\$)[@%<?^+*]", "\\$?\\$\\(", "%"];
-    //         let _rules = vec![-1, 12, 14, 33];
-    //         let debug_regex = str_vec_to_string(origin);
-    //         let mut scanner = ScieScanner::new(debug_regex);
-    //         let result = scanner.find_next_match_sync(String::from("%.o"), 0);
-    //         let onig_match = result.unwrap();
-    //         assert_eq!(3, onig_match.index);
-    //         assert_eq!(0, onig_match.clone().capture_indices[0].start);
-    //         assert_eq!(1, onig_match.clone().capture_indices[0].end);
-    //     }
-    //
-    //     #[test]
-    //     fn should_match_for_scope_target() {
-    //         let origin = vec!["^(?!\\t)", "\\G", "^\\t"];
-    //         let _rules = vec![-1, 36, 39];
-    //         let debug_regex = str_vec_to_string(origin);
-    //         let mut scanner = ScieScanner::new(debug_regex);
-    //         let result = scanner.find_next_match_sync(
-    //             String::from(
-    //                 "%.o: %.c $(DEPS)
-    // ",
-    //             ),
-    //             4,
-    //         );
-    //         let onig_match = result.unwrap();
-    //         assert_eq!(1, onig_match.index);
-    //         assert_eq!(4, onig_match.capture_indices[0].start);
-    //         assert_eq!(4, onig_match.capture_indices[0].end);
-    //     }
-    //
-    //     #[test]
-    //     fn should_return_correct_index_when_for_markdown() {
-    //         let origin = vec![
-    //             "^",
-    //             "\\\n",
-    //             "%|\\*",
-    //             "(^[ \t]+)?(?=#)",
-    //             "(\\$?\\$)[@%<?^+*]",
-    //             "\\$?\\$\\(",
-    //         ];
-    //         let _rules = vec![-1, 37, 38, 2, 12, 14];
-    //         let debug_regex = str_vec_to_string(origin);
-    //         let mut scanner = ScieScanner::new(debug_regex);
-    //         let result = scanner.find_next_match_sync(
-    //             String::from(
-    //                 "%.o: %.c $(DEPS)
-    // ",
-    //             ),
-    //             4,
-    //         );
-    //         let onig_match = result.unwrap();
-    //         assert_eq!(2, onig_match.index);
-    //         assert_eq!(5, onig_match.capture_indices[0].start);
-    //         assert_eq!(6, onig_match.capture_indices[0].end);
-    //     }
-    //
-    //     #[test]
-    //     fn should_return_null_when_out_size() {
-    //         let origin = vec![
-    //             "^",
-    //             "\\\n",
-    //             "%|\\*",
-    //             "(^[ \t]+)?(?=#)",
-    //             "(\\$?\\$)[@%<?^+*]",
-    //             "\\$?\\$\\(",
-    //         ];
-    //         let _rules = vec![-1, 37, 38, 2, 12, 14];
-    //         let debug_regex = str_vec_to_string(origin);
-    //         let mut scanner = ScieScanner::new(debug_regex);
-    //         let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 16);
-    //         assert!(result.is_none());
-    //     }
+
+    #[test]
+    fn should_match_makefile_special_char() {
+        let origin = vec!["(?=\\s|$)", "(\\$?\\$)[@%<?^+*]", "\\$?\\$\\(", "%"];
+        let _rules = vec![-1, 12, 14, 33];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = ScieScanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(String::from("%.o"), 0);
+        let onig_match = result.unwrap();
+        assert_eq!(3, onig_match.index);
+        assert_eq!(0, onig_match.clone().capture_indices[0].start);
+        assert_eq!(1, onig_match.clone().capture_indices[0].end);
+
+        scanner.dispose();
+    }
+
+    #[test]
+    fn should_match_for_scope_target() {
+        let origin = vec!["^(?!\\t)", "\\G", "^\\t"];
+        let _rules = vec![-1, 36, 39];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = ScieScanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(
+            String::from(
+                "%.o: %.c $(DEPS)
+    ",
+            ),
+            4,
+        );
+        let onig_match = result.unwrap();
+        assert_eq!(1, onig_match.index);
+        assert_eq!(4, onig_match.capture_indices[0].start);
+        assert_eq!(4, onig_match.capture_indices[0].end);
+
+        scanner.dispose();
+    }
+
+    #[test]
+    fn should_return_correct_index_when_for_markdown() {
+        let origin = vec![
+            "^",
+            "\\\n",
+            "%|\\*",
+            "(^[ \t]+)?(?=#)",
+            "(\\$?\\$)[@%<?^+*]",
+            "\\$?\\$\\(",
+        ];
+        let _rules = vec![-1, 37, 38, 2, 12, 14];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = ScieScanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(
+            String::from(
+                "%.o: %.c $(DEPS)
+    ",
+            ),
+            4,
+        );
+        let onig_match = result.unwrap();
+        assert_eq!(2, onig_match.index);
+        assert_eq!(5, onig_match.capture_indices[0].start);
+        assert_eq!(6, onig_match.capture_indices[0].end);
+
+        scanner.dispose();
+    }
+
+    #[test]
+    fn should_return_null_when_out_size() {
+        let origin = vec![
+            "^",
+            "\\\n",
+            "%|\\*",
+            "(^[ \t]+)?(?=#)",
+            "(\\$?\\$)[@%<?^+*]",
+            "\\$?\\$\\(",
+        ];
+        let _rules = vec![-1, 37, 38, 2, 12, 14];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = ScieScanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)"), 16);
+        assert!(result.is_none());
+
+        scanner.dispose();
+    }
+
 }
