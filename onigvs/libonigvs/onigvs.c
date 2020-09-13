@@ -26,6 +26,12 @@ typedef struct OnigScanner_ {
     int count;
 } OnigScanner;
 
+typedef struct OnigScieResult_ {
+    int start;
+    int end;
+    int index;
+} OnigScieResult;
+
 int lastOnigStatus = 0;
 OnigErrorInfo lastOnigErrorInfo;
 
