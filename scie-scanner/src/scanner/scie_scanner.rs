@@ -1,6 +1,6 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
-use onigvs::{createOnigScanner, OnigScanner, OnigScieResult, findNextScieScanner, freeOnigScanner, findNextOnigScannerMatch};
+use onigvs::{createOnigScanner, OnigScanner, OnigScieResult, findNextScieScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS};
 use std::collections::BinaryHeap;
 use std::os::raw::{c_int};
 use core::mem;
@@ -96,17 +96,33 @@ impl ScieScanner {
                 return None;
             }
 
-            let index: *mut Vec<c_int> = result as *mut Vec<_>;
-            result = result + 1;
 
-            let capture_indices = IOnigCaptureIndex {
-                start: 0,
-                end: 0,
-                length: 0,
-            };
+            let mut index: usize;
+            let mut capture_indices = vec![];
+
+            unsafe {
+                let size = 2 * (1 + MAX_REGIONS);
+                let result = std::slice::from_raw_parts(result as *const i32, size as usize);
+                index = result[0] as usize;
+                let count = result[1];
+                let mut offset = 1;
+                for i in 0..count {
+                    offset = offset + 1;
+                    let start = string.convertUtf8OffsetToUtf16(result[offset]);
+                    offset = offset + 1;
+                    let end = string.convertUtf8OffsetToUtf16(result[offset]);
+                    let length = end - start;
+                    capture_indices.push(IOnigCaptureIndex {
+                        start: start as usize,
+                        end: end as usize,
+                        length: length as usize
+                    })
+                }
+            }
+
             return Some(IOnigMatch {
-                index: 0,
-                capture_indices: vec![capture_indices],
+                index,
+                capture_indices,
             });
         }
     }
