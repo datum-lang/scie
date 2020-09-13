@@ -4,6 +4,7 @@ use core::mem;
 use onigvs::{createOnigScanner, findNextOnigScannerMatch};
 use std::ffi::CString;
 use std::os::raw::{c_char, c_int, c_uchar};
+use std::collections::BinaryHeap;
 
 pub type Pointer = i32;
 
@@ -20,30 +21,18 @@ pub struct IOnigMatch {
     pub capture_indices: Vec<IOnigCaptureIndex>,
 }
 
+#[derive(Debug, Clone, Serialize)]
 pub struct IOnigBinding {
-    pub HEAPU8: Vec<u8>,
-    pub HEAPU32: Vec<u32>,
+    pub HEAPU8: BinaryHeap<i32>,
+    pub HEAPU32: BinaryHeap<i32>,
 }
 
 impl IOnigBinding {
     pub fn new() -> Self {
         IOnigBinding {
-            HEAPU8: vec![],
-            HEAPU32: vec![],
+            HEAPU8: BinaryHeap::new(),
+            HEAPU32: BinaryHeap::new(),
         }
-    }
-
-    // https://users.rust-lang.org/t/how-to-malloc-an-array-in-heap-like-c/27827/34
-    // https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=8a124ff92349ac5ca6356bfd832ff1be
-    pub fn _malloc<T: Copy>(&self, count: usize) -> *mut T {
-        debug_assert!(
-            mem::size_of::<T>() > 0,
-            "manually allocating a buffer of ZST is a very dangerous idea"
-        );
-        let mut vec = Vec::<T>::with_capacity(count);
-        let ret = vec.as_mut_ptr();
-        mem::forget(vec); // avoid dropping the memory
-        ret
     }
 }
 
@@ -63,10 +52,10 @@ impl ScieScanner {
 
         for i in 0..pattens.len() {
             let pattern = pattens[i].clone();
-            let utf_string = UtfString::new(pattern);
-            strLenArr[i] = utf_string.utf8length;
+            let mut utf_string = UtfString::new(pattern);
 
             unsafe {
+                strLenArr[i] = *utf_string.createString();
                 let mut _x = *pattens[i].as_ptr();
                 _pattern_ptr.push(&mut _x);
             }

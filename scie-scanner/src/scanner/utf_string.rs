@@ -10,6 +10,7 @@ pub struct UtfString {
     pub utf8value: Vec<u8>,
     pub utf16offset_to_utf8: Vec<u32>,
     pub utf8offset_to_utf16: Vec<u32>,
+    pub onig_binding: Box<IOnigBinding>
 }
 
 impl UtfString {
@@ -124,10 +125,18 @@ impl UtfString {
             utf8value,
             utf16offset_to_utf8,
             utf8offset_to_utf16,
+            onig_binding: Box::new(IOnigBinding::new())
         }
     }
 
-    pub fn createString() {}
+    pub fn createString(&mut self) -> *mut i32 {
+        let result: *mut i32 = &mut 0;
+        unsafe {
+            let result: *mut i32 = libc::malloc(self.utf8length as usize) as *mut i32;
+            self.onig_binding.HEAPU8.push(*result);
+        }
+        result
+    }
 }
 
 #[cfg(test)]
@@ -150,5 +159,11 @@ mod tests {
             vec![0, 1, 1, 1, 1, 3, 4, 5, 6],
             onig_string.utf8offset_to_utf16
         );
+    }
+
+    #[test]
+    fn should_create_string_success() {
+        let mut onig_string = UtfString::new(String::from("a💻bYX"));
+        onig_string.createString();
     }
 }
