@@ -5021,13 +5021,6 @@ pub struct OnigScanner_ {
     pub count: ::std::os::raw::c_int,
 }
 pub type OnigScanner = OnigScanner_;
-#[repr(C)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct OnigScieResult {
-    pub start: ::std::os::raw::c_int,
-    pub end: ::std::os::raw::c_int,
-    pub index: ::std::os::raw::c_int,
-}
 pub const lastOnigStatus: ::std::os::raw::c_int = 0;
 extern "C" {
     pub static mut lastOnigErrorInfo: OnigErrorInfo;
@@ -5082,21 +5075,6 @@ extern "C" {
 }
 extern "C" {
     pub fn findNextOnigScannerMatch(
-        scanner: *mut OnigScanner,
-        strCacheId: ::std::os::raw::c_int,
-        strData: *mut ::std::os::raw::c_uchar,
-        strLength: ::std::os::raw::c_int,
-        position: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn encodeOnigToScie(
-        result: *mut OnigRegion,
-        index: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn findNextScieScanner(
         scanner: *mut OnigScanner,
         strCacheId: ::std::os::raw::c_int,
         strData: *mut ::std::os::raw::c_uchar,
