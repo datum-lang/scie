@@ -1,7 +1,6 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
 use onigvs::{createOnigScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS, OnigScanner};
-use std::collections::BinaryHeap;
 use std::os::raw::{c_int};
 
 pub type Pointer = i32;
@@ -19,21 +18,6 @@ pub struct IOnigMatch {
     pub capture_indices: Vec<IOnigCaptureIndex>,
 }
 
-#[derive(Debug, Clone, Serialize)]
-pub struct IOnigBinding {
-    pub HEAPU8: BinaryHeap<u8>,
-    pub HEAPU32: BinaryHeap<u8>,
-}
-
-impl IOnigBinding {
-    pub fn new() -> Self {
-        IOnigBinding {
-            HEAPU8: BinaryHeap::new(),
-            HEAPU32: BinaryHeap::new(),
-        }
-    }
-}
-
 #[derive(Clone, Debug, Serialize)]
 pub struct ScieScanner {
     #[serde(skip_serializing)]
@@ -46,8 +30,6 @@ impl ScieScanner {
     pub fn new(patterns: Vec<String>) -> Self {
         let mut str_len_arr: Vec<c_int> = vec![0; patterns.len()];
         let mut str_ptrs_arr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
-
-        let _str_len_arr: Vec<i32> = vec![];
 
         for i in 0..patterns.len() {
             let pattern = patterns[i].clone();

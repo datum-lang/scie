@@ -1,4 +1,3 @@
-use crate::scanner::scie_scanner::IOnigBinding;
 use libc::malloc;
 
 #[derive(Clone, Debug)]
@@ -8,8 +7,7 @@ pub struct UtfString {
     pub utf16value: String,
     pub utf8value: Vec<u8>,
     pub utf16offset_to_utf8: Vec<u32>,
-    pub utf8offset_to_utf16: Vec<u32>,
-    pub onig_binding: Box<IOnigBinding>,
+    pub utf8offset_to_utf16: Vec<u32>
 }
 
 impl UtfString {
@@ -123,8 +121,7 @@ impl UtfString {
             utf16value: str.clone(),
             utf8value,
             utf16offset_to_utf8,
-            utf8offset_to_utf16,
-            onig_binding: Box::new(IOnigBinding::new()),
+            utf8offset_to_utf16
         }
     }
 
@@ -132,7 +129,6 @@ impl UtfString {
         let result: *mut u8;
         unsafe {
             result = malloc(self.utf8length as usize) as *mut u8;
-            self.onig_binding.HEAPU8.push(*result);
         }
         result
     }
