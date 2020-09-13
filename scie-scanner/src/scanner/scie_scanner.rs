@@ -98,7 +98,7 @@ impl ScieScanner {
             let onig_scie_result = *scie_result;
             let start = onig_scie_result.start.clone() as usize;
             let end = onig_scie_result.end.clone() as usize;
-            let length = end - start;
+                let length = end - start;
 
             let capture_indices = IOnigCaptureIndex {
                 start: string.convertUtf8OffsetToUtf16(start as i32) as usize,
@@ -275,15 +275,27 @@ mod tests {
             )
         );
 
-        // let result4 = scanner
-        //     .find_next_match_sync(String::from("a💻bYX"), 4)
-        //     .unwrap();
-        // assert_eq!(
-        //     serde_json::to_string(&result4).unwrap(),
-        //     String::from(
-        //         "{\"index\":1,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"
-        //     )
-        // );
+        let result4 = scanner
+            .find_next_match_sync(String::from("a💻bYX"), 4)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result4).unwrap(),
+            String::from(
+                "{\"index\":0,\"capture_indices\":[{\"start\":4,\"end\":5,\"length\":1}]}"
+            )
+        );
+
+        let result5 = scanner
+            .find_next_match_sync(String::from("a💻bYX"), 5)
+            .unwrap();
+        assert_eq!(
+            serde_json::to_string(&result5).unwrap(),
+            String::from(
+                "{\"index\":1,\"capture_indices\":[{\"start\":5,\"end\":6,\"length\":1}]}"
+            )
+        );
+
+        scanner.dispose();
     }
 
     #[test]
@@ -301,6 +313,8 @@ mod tests {
 
         let result2 = scanner.find_next_match_sync(String::from("X💻X"), 10000);
         assert!(result2.is_none());
+
+        scanner.dispose();
     }
 
     //     #[test]
