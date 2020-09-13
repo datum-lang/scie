@@ -1,4 +1,4 @@
-use libc::malloc;
+use onigvs::malloc;
 
 #[derive(Clone, Debug)]
 pub struct UtfString {
@@ -128,7 +128,7 @@ impl UtfString {
     pub fn createString(&mut self) -> *mut i32 {
         let result: *mut i32;
         unsafe {
-            result = malloc(self.utf8length as usize) as *mut i32;
+            result = malloc(self.utf8length as u64) as *mut i32;
         }
         result
     }

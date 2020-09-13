@@ -22,7 +22,7 @@ impl OnigString {
             content: str.to_string(),
             utf16length: utf_string.utf16length,
             utf8length: utf_string.utf8length,
-            ptr: ptr,
+            ptr,
             utf16offset_to_utf8: utf_string.utf16offset_to_utf8,
             utf8offset_to_utf16: utf_string.utf8offset_to_utf16,
         };
