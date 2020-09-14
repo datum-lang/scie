@@ -133,6 +133,21 @@ mod tests {
     use crate::scanner::scie_scanner::{ScieScanner, str_vec_to_string};
 
     #[test]
+    fn verify_malloc_with_rust() {
+        let vector = vec![0u64; 100]; // u64 should align with most structures
+        let slice_box = vector.into_boxed_slice();
+        let pointer: *mut [u64] = Box::into_raw(slice_box);
+
+        println!("{}", std::mem::size_of_val(&pointer));
+
+        let vector2 = vec![0u8; 100]; // u64 should align with most structures
+        let slice_box2 = vector2.into_boxed_slice();
+        let pointer2: *mut [u8] = Box::into_raw(slice_box2);
+
+        println!("{}", std::mem::size_of_val(&pointer2));
+    }
+
+    #[test]
     fn should_init_onig_scanner() {
         let mut scanner = ScieScanner::new(vec![String::from("ell"), String::from("wo")]);
         let onig = scanner.find_next_match_sync(String::from("z"), 1);
