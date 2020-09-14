@@ -131,7 +131,6 @@ pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
 #[cfg(test)]
 mod tests {
     use crate::scanner::scie_scanner::{ScieScanner, str_vec_to_string};
-    use onigvs::{malloc, __darwin_x86_avx512_state64};
 
     #[test]
     fn verify_malloc_with_rust() {

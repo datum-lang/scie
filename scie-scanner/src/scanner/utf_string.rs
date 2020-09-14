@@ -7,7 +7,7 @@ pub struct UtfString {
     pub utf16value: String,
     pub utf8value: Vec<u8>,
     pub utf16offset_to_utf8: Vec<u32>,
-    pub utf8offset_to_utf16: Vec<u32>
+    pub utf8offset_to_utf16: Vec<u32>,
 }
 
 impl UtfString {
@@ -121,7 +121,7 @@ impl UtfString {
             utf16value: str.clone(),
             utf8value,
             utf16offset_to_utf8,
-            utf8offset_to_utf16
+            utf8offset_to_utf16,
         }
     }
 
@@ -138,6 +138,7 @@ impl UtfString {
 mod tests {
     use crate::scanner::utf_string::UtfString;
     use crate::scanner::scie_scanner::{ScieScanner, str_vec_to_string};
+    use onigvs::malloc;
 
     #[test]
     fn should_convert_utf_string_success() {
@@ -165,8 +166,13 @@ mod tests {
 
     #[test]
     fn should_create_string_success() {
-        let mut onig_string = UtfString::new(String::from("a💻bYX"));
-        onig_string.createString();
+        let long_str = "\\b(AbsoluteTime|Boolean|Byte|ByteCount|ByteOffset|BytePtr|CompTimeValue|ConstLogicalAddress|ConstStrFileNameParam|ConstStringPtr|Duration|Fixed|FixedPtr|Float32|Float32Point|Float64|Float80|Float96|FourCharCode|Fract|FractPtr|Handle|ItemCount|LogicalAddress|OptionBits|OSErr|OSStatus|OSType|OSTypePtr|PhysicalAddress|ProcessSerialNumber|ProcessSerialNumberPtr|ProcHandle|Ptr|ResType|ResTypePtr|ShortFixed|ShortFixedPtr|SignedByte|SInt16|SInt32|SInt64|SInt8|Size|StrFileName|StringHandle|StringPtr|TimeBase|TimeRecord|TimeScale|TimeValue|TimeValue64|UInt16|UInt32|UInt64|UInt8|UniChar|UniCharCount|UniCharCountPtr|UniCharPtr|UnicodeScalarValue|UniversalProcHandle|UniversalProcPtr|UnsignedFixed|UnsignedFixedPtr|UnsignedWide|UTF16Char|UTF32Char|UTF8Char)\\b";
+        let mut utf_string = UtfString::new(String::from(long_str));
+        unsafe {
+            let x = malloc(utf_string.utf8length as u64) as *mut u32;
+            // let x = onig_string.createString();
+            println!("{:?}", *x);
+        }
     }
 
     #[test]
