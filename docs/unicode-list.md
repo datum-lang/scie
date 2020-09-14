@@ -1,0 +1,130 @@
+| Position | Decimal | Name | Appearance |
+|-|-|-|-|
+| 0x0000 | 0 | <control>: NULL |   |
+| 0x0001 | 1 | <control>: START OF HEADING |  |
+| 0x0002 | 2 | <control>: START OF TEXT |  |
+| 0x0003 | 3 | <control>: END OF TEXT |  |
+| 0x0004 | 4 | <control>: END OF TRANSMISSION |  |
+| 0x0005 | 5 | <control>: ENQUIRY |  |
+| 0x0006 | 6 | <control>: ACKNOWLEDGE |  |
+| 0x0007 | 7 | <control>: BELL |  |
+| 0x0008 | 8 | <control>: BACKSPACE |  |
+| 0x0009 | 9 | <control>: HORIZONTAL TABULATION |   |
+| 0x000A | 10 | <control>: LINE FEED |   |
+| 0x000B | 11 | <control>: VERTICAL TABULATION |  |
+| 0x000C | 12 | <control>: FORM FEED |  |
+| 0x000D | 13 | <control>: CARRIAGE RETURN |   |
+| 0x000E | 14 | <control>: SHIFT OUT |  |
+| 0x000F | 15 | <control>: SHIFT IN |  |
+| 0x0010 | 16 | <control>: DATA LINK ESCAPE |  |
+| 0x0011 | 17 | <control>: DEVICE CONTROL ONE |  |
+| 0x0012 | 18 | <control>: DEVICE CONTROL TWO |  |
+| 0x0013 | 19 | <control>: DEVICE CONTROL THREE |  |
+| 0x0014 | 20 | <control>: DEVICE CONTROL FOUR |  |
+| 0x0015 | 21 | <control>: NEGATIVE ACKNOWLEDGE |  |
+| 0x0016 | 22 | <control>: SYNCHRONOUS IDLE |  |
+| 0x0017 | 23 | <control>: END OF TRANSMISSION BLOCK |  |
+| 0x0018 | 24 | <control>: CANCEL |  |
+| 0x0019 | 25 | <control>: END OF MEDIUM |  |
+| 0x001A | 26 | <control>: SUBSTITUTE |  |
+| 0x001B | 27 | <control>: ESCAPE |  |
+| 0x001C | 28 | <control>: FILE SEPARATOR |  |
+| 0x001D | 29 | <control>: GROUP SEPARATOR |  |
+| 0x001E | 30 | <control>: RECORD SEPARATOR |  |
+| 0x001F | 31 | <control>: UNIT SEPARATOR |  |
+| 0x0020 | 32 | SPACE |   |
+| 0x0021 | 33 | EXCLAMATION MARK | ! |
+| 0x0022 | 34 | QUOTATION MARK | " |
+| 0x0023 | 35 | NUMBER SIGN | # |
+| 0x0024 | 36 | DOLLAR SIGN | $ |
+| 0x0025 | 37 | PERCENT SIGN | % |
+| 0x0026 | 38 | AMPERSAND | & |
+| 0x0027 | 39 | APOSTROPHE | ' |
+| 0x0028 | 40 | LEFT PARENTHESIS | ( |
+| 0x0029 | 41 | RIGHT PARENTHESIS | ) |
+| 0x002A | 42 | ASTERISK | * |
+| 0x002B | 43 | PLUS SIGN | + |
+| 0x002C | 44 | COMMA | , |
+| 0x002D | 45 | HYPHEN-MINUS | - |
+| 0x002E | 46 | FULL STOP | . |
+| 0x002F | 47 | SOLIDUS | / |
+| 0x0030 | 48 | DIGIT ZERO | 0 |
+| 0x0031 | 49 | DIGIT ONE | 1 |
+| 0x0032 | 50 | DIGIT TWO | 2 |
+| 0x0033 | 51 | DIGIT THREE | 3 |
+| 0x0034 | 52 | DIGIT FOUR | 4 |
+| 0x0035 | 53 | DIGIT FIVE | 5 |
+| 0x0036 | 54 | DIGIT SIX | 6 |
+| 0x0037 | 55 | DIGIT SEVEN | 7 |
+| 0x0038 | 56 | DIGIT EIGHT | 8 |
+| 0x0039 | 57 | DIGIT NINE | 9 |
+| 0x003A | 58 | COLON | : |
+| 0x003B | 59 | SEMICOLON | ; |
+| 0x003C | 60 | LESS-THAN SIGN | < |
+| 0x003D | 61 | EQUALS SIGN | = |
+| 0x003E | 62 | GREATER-THAN SIGN | > |
+| 0x003F | 63 | QUESTION MARK | ? |
+| 0x0040 | 64 | COMMERCIAL AT | @ |
+| 0x0041 | 65 | LATIN CAPITAL LETTER A | A |
+| 0x0042 | 66 | LATIN CAPITAL LETTER B | B |
+| 0x0043 | 67 | LATIN CAPITAL LETTER C | C |
+| 0x0044 | 68 | LATIN CAPITAL LETTER D | D |
+| 0x0045 | 69 | LATIN CAPITAL LETTER E | E |
+| 0x0046 | 70 | LATIN CAPITAL LETTER F | F |
+| 0x0047 | 71 | LATIN CAPITAL LETTER G | G |
+| 0x0048 | 72 | LATIN CAPITAL LETTER H | H |
+| 0x0049 | 73 | LATIN CAPITAL LETTER I | I |
+| 0x004A | 74 | LATIN CAPITAL LETTER J | J |
+| 0x004B | 75 | LATIN CAPITAL LETTER K | K |
+| 0x004C | 76 | LATIN CAPITAL LETTER L | L |
+| 0x004D | 77 | LATIN CAPITAL LETTER M | M |
+| 0x004E | 78 | LATIN CAPITAL LETTER N | N |
+| 0x004F | 79 | LATIN CAPITAL LETTER O | O |
+| 0x0050 | 80 | LATIN CAPITAL LETTER P | P |
+| 0x0051 | 81 | LATIN CAPITAL LETTER Q | Q |
+| 0x0052 | 82 | LATIN CAPITAL LETTER R | R |
+| 0x0053 | 83 | LATIN CAPITAL LETTER S | S |
+| 0x0054 | 84 | LATIN CAPITAL LETTER T | T |
+| 0x0055 | 85 | LATIN CAPITAL LETTER U | U |
+| 0x0056 | 86 | LATIN CAPITAL LETTER V | V |
+| 0x0057 | 87 | LATIN CAPITAL LETTER W | W |
+| 0x0058 | 88 | LATIN CAPITAL LETTER X | X |
+| 0x0059 | 89 | LATIN CAPITAL LETTER Y | Y |
+| 0x005A | 90 | LATIN CAPITAL LETTER Z | Z |
+| 0x005B | 91 | LEFT SQUARE BRACKET | [ |
+| 0x005C | 92 | REVERSE SOLIDUS | \ |
+| 0x005D | 93 | RIGHT SQUARE BRACKET | ] |
+| 0x005E | 94 | CIRCUMFLEX ACCENT | ^ |
+| 0x005F | 95 | LOW LINE | _ |
+| 0x0060 | 96 | GRAVE ACCENT | ` |
+| 0x0061 | 97 | LATIN SMALL LETTER A | a |
+| 0x0062 | 98 | LATIN SMALL LETTER B | b |
+| 0x0063 | 99 | LATIN SMALL LETTER C | c |
+| 0x0064 | 100 | LATIN SMALL LETTER D | d |
+| 0x0065 | 101 | LATIN SMALL LETTER E | e |
+| 0x0066 | 102 | LATIN SMALL LETTER F | f |
+| 0x0067 | 103 | LATIN SMALL LETTER G | g |
+| 0x0068 | 104 | LATIN SMALL LETTER H | h |
+| 0x0069 | 105 | LATIN SMALL LETTER I | i |
+| 0x006A | 106 | LATIN SMALL LETTER J | j |
+| 0x006B | 107 | LATIN SMALL LETTER K | k |
+| 0x006C | 108 | LATIN SMALL LETTER L | l |
+| 0x006D | 109 | LATIN SMALL LETTER M | m |
+| 0x006E | 110 | LATIN SMALL LETTER N | n |
+| 0x006F | 111 | LATIN SMALL LETTER O | o |
+| 0x0070 | 112 | LATIN SMALL LETTER P | p |
+| 0x0071 | 113 | LATIN SMALL LETTER Q | q |
+| 0x0072 | 114 | LATIN SMALL LETTER R | r |
+| 0x0073 | 115 | LATIN SMALL LETTER S | s |
+| 0x0074 | 116 | LATIN SMALL LETTER T | t |
+| 0x0075 | 117 | LATIN SMALL LETTER U | u |
+| 0x0076 | 118 | LATIN SMALL LETTER V | v |
+| 0x0077 | 119 | LATIN SMALL LETTER W | w |
+| 0x0078 | 120 | LATIN SMALL LETTER X | x |
+| 0x0079 | 121 | LATIN SMALL LETTER Y | y |
+| 0x007A | 122 | LATIN SMALL LETTER Z | z |
+| 0x007B | 123 | LEFT CURLY BRACKET | { |
+| 0x007C | 124 | VERTICAL LINE | | |
+| 0x007D | 125 | RIGHT CURLY BRACKET | } |
+| 0x007E | 126 | TILDE | ~ |
+| 0x007F | 127 | <control>: DELETE |  |

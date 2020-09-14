@@ -131,6 +131,7 @@ pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
 #[cfg(test)]
 mod tests {
     use crate::scanner::scie_scanner::{ScieScanner, str_vec_to_string};
+    use onigvs::{malloc, __darwin_x86_avx512_state64};
 
     #[test]
     fn verify_malloc_with_rust() {
@@ -145,6 +146,14 @@ mod tests {
         let pointer2: *mut [u8] = Box::into_raw(slice_box2);
 
         println!("{}", std::mem::size_of_val(&pointer2));
+
+        let mut vec = String::from("Hello world!");
+        let _x: *mut u8 = vec.as_mut_ptr();
+        println!("{:?}", _x);
+
+        let mut box_str = Box::new(vec);
+        let x2 = box_str.as_mut_ptr();
+        println!("{:?}", x2);
     }
 
     #[test]
