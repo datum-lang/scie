@@ -1,0 +1,5 @@
+rebuild:
+    cargo clean
+    cargo build
+test:
+    cargo test
