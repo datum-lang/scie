@@ -154,6 +154,10 @@ mod tests {
         let mut box_str = Box::new(vec);
         let x2 = box_str.as_mut_ptr();
         println!("{:?}", x2);
+
+        let regex = String::from("Hello world!");
+        let i = std::mem::size_of_val(&regex);
+        println!("{:?}", i);
     }
 
     #[test]
