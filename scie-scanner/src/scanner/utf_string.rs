@@ -170,8 +170,7 @@ mod tests {
         let mut utf_string = UtfString::new(String::from(long_str));
         unsafe {
             let x = malloc(utf_string.utf8length as u64) as *mut u32;
-            // let x = onig_string.createString();
-            println!("{:?}", *x);
+            assert_ne!(*x, 0);
         }
     }
 
