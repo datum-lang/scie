@@ -39,7 +39,7 @@ impl ScieScanner {
             let _x;
             unsafe {
                 // __variant1
-                let y = malloc(utf_string.utf8length as u64);
+                let y = malloc(utf_string.utf8length as u64) as *mut u32;
                 let z = y.clone() as *mut u8;
                 _x = y as *mut u8;
                 println!("{:?}", z);
