@@ -118,7 +118,7 @@ impl UtfString {
         UtfString {
             utf16length: utf16length as i32,
             utf8length: utf8length as i32,
-            utf16value: str.clone(),
+            utf16value: str,
             utf8value,
             utf16offset_to_utf8,
             utf8offset_to_utf16
