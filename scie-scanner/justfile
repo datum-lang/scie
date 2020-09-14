@@ -1,7 +1,14 @@
+build:
+    cargo build
+
 rebuild:
     cargo clean
     cargo build
-test-all: rebuild
+
+tests: rebuild
+    cargo test -all
+
+tests-ci: rebuild
     cargo test
 
 test TEST: rebuild
