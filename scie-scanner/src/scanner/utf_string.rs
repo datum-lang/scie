@@ -12,7 +12,7 @@ pub struct UtfString {
 
 impl UtfString {
     pub fn new(str: String) -> Self {
-        let utf16_vec: Vec<u16> = str.encode_utf16().collect();
+        let utf16_vec: Vec<u16> = str.clone().encode_utf16().collect();
         let utf16length = utf16_vec.len();
         let utf8length = str.len();
         let mut utf8value = str.clone().into_bytes();
@@ -118,7 +118,7 @@ impl UtfString {
         UtfString {
             utf16length: utf16length as i32,
             utf8length: utf8length as i32,
-            utf16value: str,
+            utf16value: str.clone(),
             utf8value,
             utf16offset_to_utf8,
             utf8offset_to_utf16
@@ -137,6 +137,7 @@ impl UtfString {
 #[cfg(test)]
 mod tests {
     use crate::scanner::utf_string::UtfString;
+    use crate::scanner::scie_scanner::{ScieScanner, str_vec_to_string};
 
     #[test]
     fn should_convert_utf_string_success() {
@@ -166,5 +167,48 @@ mod tests {
     fn should_create_string_success() {
         let mut onig_string = UtfString::new(String::from("a💻bYX"));
         onig_string.createString();
+    }
+
+    #[test]
+    fn should_convert_string_list() {
+        let lists = vec![
+            "^\\s*(#(if)\\s+(0*1)\\b)",
+            "^\\s*(#(if)\\s+(0)\\b).*",
+            "^\\s*(#\\s*(if(n?def)?)\\b.*?(?:(?=(?://|/\\*))|$))",
+            "^/\\* =(\\s*.*?)\\s*= \\*/$\\n?",
+            "/\\*",
+            "\\*/.*\\n",
+            "^// =(\\s*.*?)\\s*=\\s*$\\n?",
+            "(^[ \\t]+)?(?=//)",
+            "\\b(break|case|continue|default|do|else|for|goto|if|_Pragma|return|switch|while)\\b",
+            "\\b(asm|__asm__|auto|bool|_Bool|char|_Complex|double|enum|float|_Imaginary|int|long|short|signed|struct|typedef|union|unsigned|void)\\b",
+            "\\b(const|extern|register|restrict|static|volatile|inline)\\b",
+            "\\bk[A-Z]\\w*\\b",
+            "\\bg[A-Z]\\w*\\b",
+            "\\bs[A-Z]\\w*\\b",
+            "\\b(NULL|true|false|TRUE|FALSE)\\b",
+            "\\b(sizeof)\\b",
+            "\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\\b",
+            "\"",
+            "'",
+            "(?x)\\n        \\t\\t^\\s*\\#\\s*(define)\\s+             # define\\n        \\t\\t((?<id>[a-zA-Z_][a-zA-Z0-9_]*))  # macro name\\n        \\t\\t(?:                              # and optionally:\\n        \\t\\t    (\\()                         # an open parenthesis\\n        \\t\\t        (\\n        \\t\\t            \\s* \\g<id> \\s*       # first argument\\n        \\t\\t            ((,) \\s* \\g<id> \\s*)*  # additional arguments\\n        \\t\\t            (?:\\.\\.\\.)?          # varargs ellipsis?\\n        \\t\\t        )\\n        \\t\\t    (\\))                         # a close parenthesis\\n        \\t\\t)?\\n        \\t",
+            "^\\s*#\\s*(error|warning)\\b",
+            "^\\s*#\\s*(include|import)\\b\\s+",
+            "^\\s*(#\\s*(pragma\\s+mark)\\s+(.*))",
+            "^\\s*#\\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef)\\b",
+            "\\b(u_char|u_short|u_int|u_long|ushort|uint|u_quad_t|quad_t|qaddr_t|caddr_t|daddr_t|dev_t|fixpt_t|blkcnt_t|blksize_t|gid_t|in_addr_t|in_port_t|ino_t|key_t|mode_t|nlink_t|id_t|pid_t|off_t|segsz_t|swblk_t|uid_t|id_t|clock_t|size_t|ssize_t|time_t|useconds_t|suseconds_t)\\b",
+            "\\b(pthread_attr_t|pthread_cond_t|pthread_condattr_t|pthread_mutex_t|pthread_mutexattr_t|pthread_once_t|pthread_rwlock_t|pthread_rwlockattr_t|pthread_t|pthread_key_t)\\b",
+            "\\b(int8_t|int16_t|int32_t|int64_t|uint8_t|uint16_t|uint32_t|uint64_t|int_least8_t|int_least16_t|int_least32_t|int_least64_t|uint_least8_t|uint_least16_t|uint_least32_t|uint_least64_t|int_fast8_t|int_fast16_t|int_fast32_t|int_fast64_t|uint_fast8_t|uint_fast16_t|uint_fast32_t|uint_fast64_t|intptr_t|uintptr_t|intmax_t|intmax_t|uintmax_t|uintmax_t)\\b",
+            "\\b(noErr|kNilOptions|kInvalidID|kVariableLengthArray)\\b",
+            "\\b(AbsoluteTime|Boolean|Byte|ByteCount|ByteOffset|BytePtr|CompTimeValue|ConstLogicalAddress|ConstStrFileNameParam|ConstStringPtr|Duration|Fixed|FixedPtr|Float32|Float32Point|Float64|Float80|Float96|FourCharCode|Fract|FractPtr|Handle|ItemCount|LogicalAddress|OptionBits|OSErr|OSStatus|OSType|OSTypePtr|PhysicalAddress|ProcessSerialNumber|ProcessSerialNumberPtr|ProcHandle|Ptr|ResType|ResTypePtr|ShortFixed|ShortFixedPtr|SignedByte|SInt16|SInt32|SInt64|SInt8|Size|StrFileName|StringHandle|StringPtr|TimeBase|TimeRecord|TimeScale|TimeValue|TimeValue64|UInt16|UInt32|UInt64|UInt8|UniChar|UniCharCount|UniCharCountPtr|UniCharPtr|UnicodeScalarValue|UniversalProcHandle|UniversalProcPtr|UnsignedFixed|UnsignedFixedPtr|UnsignedWide|UTF16Char|UTF32Char|UTF8Char)\\b",
+            "\\b([a-z0-9_]+_t)\\b",
+            "\\{",
+            "(?x)\\n    \\t\\t(?:  ^                                 # begin-of-line\\n    \\t\\t  |  \\n    \\t\\t     (?: (?= \\s )           (?<!else|new|return) (?<=\\w)      #  or word + space before name\\n    \\t\\t       | (?= \\s*[A-Za-z_] ) (?<!&&)       (?<=[*&>])   #  or type modifier before name\\n    \\t\\t     )\\n    \\t\\t)\\n    \\t\\t(\\s*) (?!(while|for|do|if|else|switch|catch|enumerate|return|sizeof|[cr]?iterate)\\s*\\()\\n    \\t\\t(\\n    \\t\\t\\t(?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++ |                  # actual name\\n    \\t\\t\\t(?: (?<=operator) (?: [-*&<>=+!]+ | \\(\\) | \\[\\] ) )  # if it is a C++ operator\\n    \\t\\t)\\n    \\t\\t \\s*(?=\\()",
+        ];
+        let debug_regex = str_vec_to_string(lists);
+        for x in debug_regex {
+            let utf_string = UtfString::new(x.clone());
+            assert_eq!(x, String::from_utf8_lossy(&*utf_string.utf8value));
+        };
     }
 }
