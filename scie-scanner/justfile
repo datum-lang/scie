@@ -1,5 +1,8 @@
 rebuild:
     cargo clean
     cargo build
-test:
+test-all: rebuild
     cargo test
+
+test TEST: rebuild
+    cargo test {{TEST}}
