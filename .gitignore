@@ -12,3 +12,5 @@ Cargo.lock
 .idea
 default.profraw
 demo.json
+
+.vscode/

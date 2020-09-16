@@ -9,3 +9,5 @@ libonig.dylib
 libonigvs/src
 libonigvs/libonigvs.dylib
 install_manifest.txt
+*/build/
+rust-onig/
