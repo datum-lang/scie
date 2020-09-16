@@ -1,0 +1,3 @@
+[submodule "onigvs/libonigvs/oniguruma"]
+	path = onigvs/libonigvs/oniguruma
+	url = https://github.com/kkos/oniguruma.git
