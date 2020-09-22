@@ -21,7 +21,8 @@ pub struct IOnigMatch {
 #[derive(Clone, Debug, Serialize)]
 pub struct ScieScanner {
     #[serde(skip_serializing)]
-    pub _ptr: *mut OnigScanner
+    pub _ptr: *mut OnigScanner,
+    pub strings: Vec<UtfString>
 }
 
 pub type IntArray = Vec<i32>;
@@ -36,7 +37,7 @@ impl ScieScanner {
         for i in 0..patterns.len() {
             let mut utf_string = UtfString::new(patterns[i].clone());
 
-            str_ptrs_arr[i] = utf_string.utf8value.as_mut_ptr();
+            str_ptrs_arr[i] = patterns[i].as_ptr() as *mut u8;
             str_len_arr[i] = utf_string.utf8length;
 
             strings.push(utf_string)
@@ -50,7 +51,7 @@ impl ScieScanner {
             onig_scanner = createOnigScanner(patterns_ptr, patterns_length_ptr, patterns.len() as i32);
         }
 
-        ScieScanner { _ptr: onig_scanner as *mut OnigScanner }
+        ScieScanner { strings, _ptr: onig_scanner as *mut OnigScanner }
     }
 
     pub fn dispose(&self) {

@@ -1,6 +1,6 @@
 use onigvs::malloc;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct UtfString {
     pub utf16length: i32,
     pub utf8length: i32,
