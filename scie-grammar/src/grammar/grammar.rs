@@ -798,8 +798,9 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues2() {
-        let code = "hellomake: $(OBJ)
-\\t$(CC) -o $@ $^ $(CFLAGS)";
+        let code = "%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+";
         let mut grammar =
             to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
 
