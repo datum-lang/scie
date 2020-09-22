@@ -573,8 +573,6 @@ impl Grammar {
         self.tokenize(line_text, prev_state, false)
     }
 
-    pub fn tokenize_line2(&self, _line_text: String, _prev_state: Option<StackElement>) {}
-
     pub fn to_grammar(grammar_path: &str) -> Grammar {
         let path = Path::new(grammar_path);
         let mut file = File::open(path).unwrap();
@@ -773,7 +771,7 @@ hellomake: $(OBJ)
     #[test]
     fn should_resolve_make_file_error_issues2() {
         let code = "hellomake: $(OBJ)
-\t$(CC) -o $@ $^ $(CFLAGS)";
+	$(CC) -o $@ $^ $(CFLAGS)";
         let mut grammar =
             to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
 
