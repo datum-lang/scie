@@ -625,7 +625,6 @@ mod tests {
     use crate::inter::IRawGrammar;
     use crate::rule::abstract_rule::RuleEnum;
     use crate::rule::IRuleRegistry;
-    use std::path::Path;
     use std::path::PathBuf;
 
     pub fn to_grammar_for_test(grammar_path: &str) -> Grammar {

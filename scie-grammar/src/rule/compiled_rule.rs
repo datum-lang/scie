@@ -18,8 +18,6 @@ impl CompiledRule {
     }
 
     pub fn dispose(&self) {
-        unsafe {
-            self.scanner.dispose();
-        }
+        self.scanner.dispose();
     }
 }
