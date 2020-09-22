@@ -756,15 +756,17 @@ hellomake: $(OBJ)
         let mut grammar = to_grammar_for_test("test-cases/first-mate/fixtures/makefile.json");
         let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), &mut None);
         let tokens = result.tokens.clone();
-        assert_eq!(7, tokens.len());
+        assert_eq!(9, tokens.len());
         assert_eq!("Makefile,meta.scope.target.makefile,entity.name.function.target.makefile,constant.other.placeholder.makefile", tokens[0].scopes.join(","));
         assert_eq!(0, tokens[0].start_index);
         assert_eq!(1, tokens[1].start_index);
         assert_eq!(3, tokens[2].start_index);
         assert_eq!(4, tokens[3].start_index);
-        assert_eq!(9, tokens[4].start_index);
-        assert_eq!(11, tokens[5].start_index);
-        assert_eq!(15, tokens[6].start_index);
+        assert_eq!(5, tokens[4].start_index);
+        assert_eq!(6, tokens[5].start_index);
+        assert_eq!(9, tokens[6].start_index);
+        assert_eq!(11, tokens[7].start_index);
+        assert_eq!(15, tokens[8].start_index);
         debug_output(&grammar, String::from("program.json"));
     }
 
