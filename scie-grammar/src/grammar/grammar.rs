@@ -628,9 +628,12 @@ mod tests {
     use crate::rule::abstract_rule::RuleEnum;
     use crate::rule::IRuleRegistry;
     use std::path::Path;
+    use std::path::PathBuf;
 
     pub fn to_grammar_for_test(grammar_path: &str) -> Grammar {
-        let path = Path::new(grammar_path);
+        let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        path.push(grammar_path);
+
         let mut file = File::open(path).unwrap();
         let mut data = String::new();
         file.read_to_string(&mut data).unwrap();
