@@ -185,8 +185,11 @@ int freeOnigScanner(OnigScanner *scanner) {
         freeOnigRegExp(scanner->regexes[i]);
     }
     free(scanner->regexes);
+    scanner->regexes = NULL;
     onig_regset_free(scanner->rset);
+    scanner->rset = NULL;
     free(scanner);
+    scanner = NULL;
     return 0;
 }
 
