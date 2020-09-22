@@ -22,7 +22,7 @@ pub struct IOnigMatch {
 pub struct ScieScanner {
     #[serde(skip_serializing)]
     pub _ptr: *mut OnigScanner,
-    pub strings: Vec<UtfString>
+    pub strings: Vec<UtfString>,
 }
 
 pub type IntArray = Vec<i32>;
@@ -73,7 +73,7 @@ impl ScieScanner {
             let result = findNextOnigScannerMatch(
                 self._ptr,
                 string.id,
-                string.ptr as *mut u8,
+                string.content.as_ptr() as *mut u8,
                 string.utf8length,
                 string.convertUtf16OffsetToUtf8(start_position),
             );
@@ -150,7 +150,6 @@ mod tests {
         assert_eq!(result.capture_indices[0].end, 4);
 
         let second_result = scanner.find_next_match_sync(s, 2).unwrap();
-        println!("second_result: {:?}", second_result);
         assert_eq!(second_result.index, 1);
         assert_eq!(second_result.capture_indices[0].start, 6);
         assert_eq!(second_result.capture_indices[0].end, 8);
@@ -518,5 +517,4 @@ mod tests {
 
         scanner.dispose()
     }
-
 }
