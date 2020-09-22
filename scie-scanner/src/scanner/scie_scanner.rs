@@ -31,30 +31,22 @@ impl ScieScanner {
         let mut str_len_arr: Vec<c_int> = vec![0; patterns.len()];
         let mut str_ptrs_arr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
         str_ptrs_arr.resize_with(patterns.len(), || { &mut 0 });
+        let mut strings: Vec<UtfString> = vec![];
 
         for i in 0..patterns.len() {
             let mut utf_string = UtfString::new(patterns[i].clone());
 
-            // let mut _x = utf_string.createString();
-            let _x;
-            unsafe {
-                // __variant1
-                let y = malloc(utf_string.utf8length as u64) as *mut u32;
-                let z = y.clone() as *mut u8;
-                _x = y as *mut u8;
-                println!("{:?}", z);
-            }
-
-
-            str_ptrs_arr[i] = _x as *mut u8;
+            str_ptrs_arr[i] = utf_string.utf8value.as_mut_ptr();
             str_len_arr[i] = utf_string.utf8length;
+
+            strings.push(utf_string)
         }
 
         let onig_scanner;
 
         unsafe {
             let patterns_length_ptr = str_len_arr.as_mut_ptr();
-            let patterns_ptr: *mut *mut ::std::os::raw::c_uchar = str_ptrs_arr.as_mut_ptr();
+            let patterns_ptr: *mut *mut u8 = str_ptrs_arr.as_mut_ptr();
             onig_scanner = createOnigScanner(patterns_ptr, patterns_length_ptr, patterns.len() as i32);
         }
 
@@ -131,33 +123,6 @@ pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
 #[cfg(test)]
 mod tests {
     use crate::scanner::scie_scanner::{ScieScanner, str_vec_to_string};
-
-    #[test]
-    fn verify_malloc_with_rust() {
-        let vector = vec![0u64; 100]; // u64 should align with most structures
-        let slice_box = vector.into_boxed_slice();
-        let pointer: *mut [u64] = Box::into_raw(slice_box);
-
-        println!("{}", std::mem::size_of_val(&pointer));
-
-        let vector2 = vec![0u8; 100]; // u64 should align with most structures
-        let slice_box2 = vector2.into_boxed_slice();
-        let pointer2: *mut [u8] = Box::into_raw(slice_box2);
-
-        println!("{}", std::mem::size_of_val(&pointer2));
-
-        let mut vec = String::from("Hello world!");
-        let _x: *mut u8 = vec.as_mut_ptr();
-        println!("{:?}", _x);
-
-        let mut box_str = Box::new(vec);
-        let x2 = box_str.as_mut_ptr();
-        println!("{:?}", x2);
-
-        let regex = String::from("Hello world!");
-        let i = std::mem::size_of_val(&regex);
-        println!("{:?}", i);
-    }
 
     #[test]
     fn should_init_onig_scanner() {
