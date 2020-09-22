@@ -735,10 +735,11 @@ DEPS = hellomake.h
 OBJ = hellomake.o hellofunc.o
 
 %.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+\t$(CC) -c -o $@ $< $(CFLAGS)
 
 hellomake: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
+\t$(CC) -o $@ $^ $(CFLAGS)
+
 ";
         let mut grammar =
             to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
@@ -770,7 +771,7 @@ hellomake: $(OBJ)
     #[test]
     fn should_resolve_make_file_error_issues2() {
         let code = "hellomake: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)";
+\\t$(CC) -o $@ $^ $(CFLAGS)";
         let mut grammar =
             to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
 
@@ -779,8 +780,8 @@ hellomake: $(OBJ)
         assert_eq!(6, result.tokens.len());
         rule_stack = *result.rule_stack;
         let result2 =
-            grammar.tokenize_line(String::from("\t$(CC) -o $@ $^ $(CFLAGS)"), &mut rule_stack);
-        assert_eq!(14, result2.tokens.len());
+            grammar.tokenize_line(String::from("\\t$(CC) -o $@ $^ $(CFLAGS)"), &mut rule_stack);
+        assert_eq!(1, result2.tokens.len());
         debug_output(&grammar, String::from("program.json"));
     }
 
