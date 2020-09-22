@@ -1,6 +1,6 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
-use onigvs::{createOnigScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS, OnigScanner, malloc};
+use onigvs::{createOnigScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS, OnigScanner};
 use std::os::raw::{c_int};
 
 pub type Pointer = i32;
@@ -35,7 +35,7 @@ impl ScieScanner {
         let mut strings: Vec<UtfString> = vec![];
 
         for i in 0..patterns.len() {
-            let mut utf_string = UtfString::new(patterns[i].clone());
+            let utf_string = UtfString::new(patterns[i].clone());
 
             str_ptrs_arr[i] = patterns[i].as_ptr() as *mut u8;
             str_len_arr[i] = utf_string.utf8length;

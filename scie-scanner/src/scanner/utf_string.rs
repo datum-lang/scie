@@ -137,8 +137,6 @@ impl UtfString {
 #[cfg(test)]
 mod tests {
     use crate::scanner::utf_string::UtfString;
-    use crate::scanner::scie_scanner::{str_vec_to_string};
-    use onigvs::malloc;
 
     #[test]
     fn should_convert_utf_string_success() {
