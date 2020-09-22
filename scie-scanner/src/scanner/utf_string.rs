@@ -1,5 +1,3 @@
-use onigvs::malloc;
-
 #[derive(Clone, Debug, Serialize)]
 pub struct UtfString {
     pub utf16length: i32,
@@ -124,14 +122,6 @@ impl UtfString {
             utf8offset_to_utf16,
         }
     }
-
-    pub fn createString(&mut self) -> *mut u8 {
-        let result: *mut u8;
-        unsafe {
-            result = malloc(self.utf8length as u64) as *mut u8;
-        }
-        result
-    }
 }
 
 #[cfg(test)]
@@ -156,7 +146,7 @@ mod tests {
     }
 
     #[test]
-    fn should_handle_normal_String() {
+    fn should_handle_normal_string() {
         let onig_string = UtfString::new(String::from("12"));
         assert_eq!(2, onig_string.utf16length.clone());
         assert_eq!(2, onig_string.utf8length.clone());
