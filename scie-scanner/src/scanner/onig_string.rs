@@ -11,10 +11,10 @@ pub struct OnigString {
 }
 
 impl OnigString {
-    pub fn new(str: String) -> Self {
+    pub fn new(str: String, id: i32) -> Self {
         let utf_string = UtfString::new(str.clone());
         let onig_string = OnigString {
-            id: 0,
+            id,
             content: str,
             utf16length: utf_string.utf16length,
             utf8length: utf_string.utf8length,
@@ -23,12 +23,6 @@ impl OnigString {
         };
 
         onig_string
-    }
-
-    pub fn dispose(&self) {
-        // unsafe {
-        //     free(self.ptr as *mut c_void);
-        // }
     }
 
     pub fn convertUtf8OffsetToUtf16(&self, utf8Offset: i32) -> i32 {

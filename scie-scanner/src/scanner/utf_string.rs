@@ -35,8 +35,6 @@ impl UtfString {
             let mut code_point = char_code.clone() as usize;
             let mut was_surrogate_pair = false;
             if char_code >= 0xd800 && char_code <= 0xdbff {
-                // todo: update logic
-                // was_surrogate_pair = true;
                 if i16 + 1 <= utf16length {
                     let next_char_code = utf16_vec[i16 + 1].clone();
                     if next_char_code >= 0xdc00 && next_char_code <= 0xdfff {
@@ -151,5 +149,4 @@ mod tests {
         assert_eq!(2, onig_string.utf16length.clone());
         assert_eq!(2, onig_string.utf8length.clone());
     }
-
 }

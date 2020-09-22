@@ -23,6 +23,7 @@ pub struct ScieScanner {
     #[serde(skip_serializing)]
     pub _ptr: *mut OnigScanner,
     pub strings: Vec<UtfString>,
+    pub last_onig_id: i32,
 }
 
 pub type IntArray = Vec<i32>;
@@ -51,7 +52,7 @@ impl ScieScanner {
             onig_scanner = createOnigScanner(patterns_ptr, patterns_length_ptr, patterns.len() as i32);
         }
 
-        ScieScanner { strings, _ptr: onig_scanner as *mut OnigScanner }
+        ScieScanner { last_onig_id: 0, strings, _ptr: onig_scanner as *mut OnigScanner }
     }
 
     pub fn dispose(&self) {
@@ -61,10 +62,9 @@ impl ScieScanner {
     }
 
     pub fn find_next_match_sync(&mut self, string: String, start_position: i32) -> Option<IOnigMatch> {
-        let mut onig_string = OnigString::new(string);
+        let mut onig_string = OnigString::new(string, self.last_onig_id);
         let result = self._find_next_match_sync(&mut onig_string, start_position);
-        onig_string.dispose();
-
+        self.last_onig_id = self.last_onig_id + 1;
         return result;
     }
 
@@ -81,7 +81,6 @@ impl ScieScanner {
             if result == 0 {
                 return None;
             }
-
 
             let index: usize;
             let mut capture_indices = vec![];
