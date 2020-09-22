@@ -529,10 +529,6 @@ impl Grammar {
         let mut rule = stack.get_rule(self);
         let rule_info = rule.clone().get_rule_instance();
 
-        if rule.get_rule().id == 36 {
-            println!("{:?}", line_pos);
-        }
-
         let mut rule_scanner;
         match rule_info {
             RuleEnum::BeginEndRule(mut begin_end_rule) => {
