@@ -515,6 +515,8 @@ mod tests {
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
         scanner.find_next_match_sync(String::from("asm"), 0);
+
+        scanner.dispose()
     }
 
 }
