@@ -112,22 +112,20 @@ impl StackElement {
     }
 
     pub fn reset(&mut self) {
-        let mut has_parent = true;
-        if let None = self.parent {
-            has_parent = false;
-            self.enter_pos = -1;
-            self.anchor_pos = -1;
+        self.enter_pos = -1;
+        self.anchor_pos = -1;
+
+        if let Some(mut parent) = self.parent.clone() {
+            self._reset(&mut parent);
         }
+    }
 
-        while has_parent {
-            self.enter_pos = -1;
-            self.anchor_pos = -1;
+    pub fn _reset(&self, node: &mut Box<StackElement>) {
+        node.enter_pos = -1;
+        node.anchor_pos = -1;
 
-            if let None = self.parent {
-                has_parent = false;
-            } else {
-                self.parent = None;
-            }
+        if let Some(mut parent) = node.parent.clone() {
+            node._reset(&mut parent);
         }
     }
 }
