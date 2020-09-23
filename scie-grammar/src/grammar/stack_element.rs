@@ -129,3 +129,26 @@ impl StackElement {
         }
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use crate::grammar::{StackElement, ScopeListElement};
+
+    #[test]
+    fn should_reset_parent() {
+        let mut node = StackElement::null();
+        node.anchor_pos = 1;
+        node.enter_pos = 1;
+
+        let element = ScopeListElement::new(None, String::from("scope"));
+        let mut new_node = node.push(1, 0, 0, false, None, element.clone(), element.clone());
+
+        new_node.reset();
+
+        assert_eq!(new_node.enter_pos, -1);
+        assert_eq!(new_node.anchor_pos, -1);
+
+        assert_eq!(new_node.parent.unwrap().anchor_pos, -1);
+    }
+}
