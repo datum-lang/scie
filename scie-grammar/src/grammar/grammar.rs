@@ -794,11 +794,8 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues2() {
-        let code = "%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-";
         let mut grammar =
-            to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
+            to_grammar_for_test("test-cases/first-mate/fixtures/makefile.json");
 
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line(String::from("hellomake: $(OBJ)"), &mut rule_stack);
