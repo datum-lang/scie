@@ -281,7 +281,7 @@ impl Grammar {
                         stack = stack.set_content_name_scopes_list(_content_name_scopes_list);
                     }
                     RuleEnum::BeginWhileRule(_while_rule) => {
-                        println!("todo: RuleEnum - BeginWhileRule");
+                        panic!("todo: RuleEnum - BeginWhileRule");
                         _stop = true;
                         return Some(stack.clone());
                     }
@@ -301,7 +301,7 @@ impl Grammar {
                         }
                     }
                     _ => {
-                        println!("todo: RuleEnum - Others");
+                        panic!("todo: RuleEnum - Others");
                         _stop = true;
                         return Some(stack.clone());
                     }
@@ -487,7 +487,7 @@ impl Grammar {
                     break;
                 }
                 Some(_) => {
-                    println!("todo: check_while_conditions");
+                    panic!("todo: check_while_conditions");
                 }
             }
         }
