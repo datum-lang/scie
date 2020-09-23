@@ -3,7 +3,6 @@
  *--------------------------------------------------------*/
 
 #include "stdlib.h"
-#include "stdio.h"
 #include "string.h"
 #include "oniguruma/src/oniguruma.h"
 #include <stdbool.h>
