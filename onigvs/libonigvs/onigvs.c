@@ -92,11 +92,15 @@ OnigRegExp *createOnigRegExp(unsigned char *data, int length) {
     return result;
 }
 
-void freeOnigRegExp(OnigRegExp *regex) {
+void freeOnigRegExp(OnigRegExp **regex_ptr) {
+    OnigRegExp *regex = *regex_ptr;
     // regex->regex will be freed separately / as part of the regset
     free(regex->strData);
+    regex->strData = NULL;
     onig_region_free(regex->region, 1);
+    regex->region = NULL;
     free(regex);
+    regex = NULL;
 }
 
 OnigRegion *_searchOnigRegExp(OnigRegExp *regex, unsigned char *strData, int strLength, int position) {
@@ -159,7 +163,7 @@ long createOnigScanner(unsigned char **patterns, int *lengths, int count) {
             // parsing this regex failed, so clean up all the ones created so far
             for (j = 0; j < i; j++) {
                 free(regs[i]);
-                freeOnigRegExp(regexes[i]);
+                freeOnigRegExp(&regexes[i]);
             }
             free(regexes);
             free(regs);
@@ -182,7 +186,7 @@ int freeOnigScanner(OnigScanner **scanner_ptr) {
     int i;
     OnigScanner *scanner = *scanner_ptr;
     for (i = 0; i < scanner->count; i++) {
-        freeOnigRegExp(scanner->regexes[i]);
+        freeOnigRegExp(&scanner->regexes[i]);
     }
     free(scanner->regexes);
     scanner->regexes = NULL;
