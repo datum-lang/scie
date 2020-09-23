@@ -43,3 +43,9 @@ registry.loadGrammar('source.makefile').then(grammar => {
         ruleStack = lineTokens.ruleStack;
     }
 });
+
+console.log("____________________________");
+
+let onigScanner = new oniguruma.OnigScanner(["^(?!\t)", "\G","^\t"]);
+let result = onigScanner.findNextMatchSync("\t$(CC) -o $@ $^ $(CFLAGS)\n", 0);
+console.log(result)
