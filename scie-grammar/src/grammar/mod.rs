@@ -34,5 +34,4 @@ mod tests {
         let mut grammar =
             to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", &*code);
     }
-
 }

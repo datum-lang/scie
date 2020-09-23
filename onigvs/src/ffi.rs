@@ -13,8 +13,8 @@ impl<Storage, Align> __BindgenBitfieldUnit<Storage, Align> {
     }
 }
 impl<Storage, Align> __BindgenBitfieldUnit<Storage, Align>
-    where
-        Storage: AsRef<[u8]> + AsMut<[u8]>,
+where
+    Storage: AsRef<[u8]> + AsMut<[u8]>,
 {
     #[inline]
     pub fn get_bit(&self, index: usize) -> bool {
@@ -3853,7 +3853,7 @@ pub type OnigApplyAllCaseFoldFunc = ::std::option::Option<
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct OnigEncodingTypeST {
     pub mbc_enc_len:
-    ::std::option::Option<unsafe extern "C" fn(p: *const OnigUChar) -> ::std::os::raw::c_int>,
+        ::std::option::Option<unsafe extern "C" fn(p: *const OnigUChar) -> ::std::os::raw::c_int>,
     pub name: *const ::std::os::raw::c_char,
     pub max_enc_len: ::std::os::raw::c_int,
     pub min_enc_len: ::std::os::raw::c_int,
@@ -3864,7 +3864,7 @@ pub struct OnigEncodingTypeST {
         unsafe extern "C" fn(p: *const OnigUChar, end: *const OnigUChar) -> OnigCodePoint,
     >,
     pub code_to_mbclen:
-    ::std::option::Option<unsafe extern "C" fn(code: OnigCodePoint) -> ::std::os::raw::c_int>,
+        ::std::option::Option<unsafe extern "C" fn(code: OnigCodePoint) -> ::std::os::raw::c_int>,
     pub code_to_mbc: ::std::option::Option<
         unsafe extern "C" fn(code: OnigCodePoint, buf: *mut OnigUChar) -> ::std::os::raw::c_int,
     >,
@@ -4197,7 +4197,7 @@ pub struct OnigRepeatRange {
     pub upper: ::std::os::raw::c_int,
 }
 pub type OnigWarnFunc =
-::std::option::Option<unsafe extern "C" fn(s: *const ::std::os::raw::c_char)>;
+    ::std::option::Option<unsafe extern "C" fn(s: *const ::std::os::raw::c_char)>;
 extern "C" {
     pub fn onig_null_warn(s: *const ::std::os::raw::c_char);
 }

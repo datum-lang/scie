@@ -121,10 +121,9 @@ impl StackElement {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
-    use crate::grammar::{StackElement, ScopeListElement};
+    use crate::grammar::{ScopeListElement, StackElement};
 
     #[test]
     fn should_reset_parent() {

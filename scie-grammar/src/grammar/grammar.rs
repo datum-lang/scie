@@ -7,15 +7,15 @@ use std::path::PathBuf;
 
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
-use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
 use crate::grammar::line_tokens::{IToken, LineTokens, TokenTypeMatcher};
 use crate::grammar::local_stack_element::LocalStackElement;
+use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
+use crate::rule::abstract_rule::RuleEnum;
+use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{
     AbstractRule, BeginWhileRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry,
 };
-use crate::rule::abstract_rule::RuleEnum;
-use crate::rule::rule_factory::RuleFactory;
 
 pub trait Matcher {}
 
@@ -282,8 +282,8 @@ impl Grammar {
                     }
                     RuleEnum::BeginWhileRule(_while_rule) => {
                         panic!("todo: RuleEnum - BeginWhileRule");
-                        _stop = true;
-                        return Some(stack.clone());
+                        // _stop = true;
+                        // return Some(stack.clone());
                     }
                     RuleEnum::MatchRule(match_rule) => {
                         Grammar::handle_captures(
@@ -302,8 +302,8 @@ impl Grammar {
                     }
                     _ => {
                         panic!("todo: RuleEnum - Others");
-                        _stop = true;
-                        return Some(stack.clone());
+                        // _stop = true;
+                        // return Some(stack.clone());
                     }
                 }
             }
@@ -549,7 +549,9 @@ impl Grammar {
             }
         }
 
-        let r = rule_scanner.scanner.find_next_match_sync(line_text, line_pos);
+        let r = rule_scanner
+            .scanner
+            .find_next_match_sync(line_text, line_pos);
 
         if let Some(result) = r {
             let match_rule_result = MatchRuleResult {
@@ -652,14 +654,13 @@ pub fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
     grammar
 }
 
-
 #[cfg(test)]
 mod tests {
     use std::fs::File;
     use std::io::{Read, Write};
 
-    use crate::grammar::{Grammar, StackElement};
     use crate::grammar::grammar::{to_grammar_for_test, to_grammar_with_code};
+    use crate::grammar::{Grammar, StackElement};
     use crate::rule::abstract_rule::RuleEnum;
     use crate::rule::IRuleRegistry;
 
@@ -794,8 +795,7 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues2() {
-        let mut grammar =
-            to_grammar_for_test("test-cases/first-mate/fixtures/makefile.json");
+        let mut grammar = to_grammar_for_test("test-cases/first-mate/fixtures/makefile.json");
 
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line(String::from("hellomake: $(OBJ)"), &mut rule_stack);

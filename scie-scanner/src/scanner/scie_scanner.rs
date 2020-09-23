@@ -1,8 +1,10 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
-use onigvs::{createOnigScanner, freeOnigScanner, findNextOnigScannerMatch, MAX_REGIONS, OnigScanner};
-use std::os::raw::{c_int};
+use onigvs::{
+    createOnigScanner, findNextOnigScannerMatch, freeOnigScanner, OnigScanner, MAX_REGIONS,
+};
 use std::ffi::CString;
+use std::os::raw::c_int;
 
 pub type Pointer = i32;
 
@@ -33,7 +35,7 @@ impl ScieScanner {
     pub fn new(patterns: Vec<String>) -> Self {
         let mut str_len_arr: Vec<c_int> = vec![0; patterns.len()];
         let mut str_ptrs_arr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
-        str_ptrs_arr.resize_with(patterns.len(), || { &mut 0 });
+        str_ptrs_arr.resize_with(patterns.len(), || &mut 0);
         let mut strings: Vec<CString> = vec![];
 
         for i in 0..patterns.len() {
@@ -41,10 +43,8 @@ impl ScieScanner {
             let string = patterns[i].clone();
             let c_to_print = CString::new(string).expect("CString::new failed");
 
-            unsafe {
-                str_ptrs_arr[i] = c_to_print.as_ptr() as *mut u8;
-                strings.push(c_to_print);
-            }
+            str_ptrs_arr[i] = c_to_print.as_ptr() as *mut u8;
+            strings.push(c_to_print);
 
             str_len_arr[i] = utf_string.utf8length;
         }
@@ -54,10 +54,15 @@ impl ScieScanner {
         unsafe {
             let patterns_length_ptr = str_len_arr.as_mut_ptr();
             let patterns_ptr: *mut *mut u8 = str_ptrs_arr.as_mut_ptr();
-            onig_scanner = createOnigScanner(patterns_ptr, patterns_length_ptr, patterns.len() as i32);
+            onig_scanner =
+                createOnigScanner(patterns_ptr, patterns_length_ptr, patterns.len() as i32);
         }
 
-        ScieScanner { last_onig_id: 0, strings, _ptr: onig_scanner as *mut OnigScanner }
+        ScieScanner {
+            last_onig_id: 0,
+            strings,
+            _ptr: onig_scanner as *mut OnigScanner,
+        }
     }
 
     pub fn dispose(&self) {
@@ -68,14 +73,22 @@ impl ScieScanner {
         }
     }
 
-    pub fn find_next_match_sync(&mut self, string: String, start_position: i32) -> Option<IOnigMatch> {
+    pub fn find_next_match_sync(
+        &mut self,
+        string: String,
+        start_position: i32,
+    ) -> Option<IOnigMatch> {
         let mut onig_string = OnigString::new(string, self.last_onig_id);
         let result = self._find_next_match_sync(&mut onig_string, start_position);
         self.last_onig_id = self.last_onig_id + 1;
         return result;
     }
 
-    pub fn _find_next_match_sync(&self, string: &mut OnigString, start_position: i32) -> Option<IOnigMatch> {
+    pub fn _find_next_match_sync(
+        &self,
+        string: &mut OnigString,
+        start_position: i32,
+    ) -> Option<IOnigMatch> {
         unsafe {
             let result = findNextOnigScannerMatch(
                 self._ptr,
@@ -120,16 +133,16 @@ impl ScieScanner {
 }
 
 pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
-    where
-        I: IntoIterator<Item=T>,
-        T: Into<String>,
+where
+    I: IntoIterator<Item = T>,
+    T: Into<String>,
 {
     iter.into_iter().map(Into::into).collect()
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::scie_scanner::{ScieScanner, str_vec_to_string};
+    use crate::scanner::scie_scanner::{str_vec_to_string, ScieScanner};
 
     #[test]
     fn should_init_onig_scanner() {
@@ -475,7 +488,8 @@ mod tests {
         ];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
-        let result = scanner.find_next_match_sync(String::from("    while (i < len && f(array[i]))"), 0);
+        let result =
+            scanner.find_next_match_sync(String::from("    while (i < len && f(array[i]))"), 0);
         assert!(result.is_none());
 
         scanner.dispose();
@@ -526,11 +540,7 @@ mod tests {
 
     #[test]
     fn should_compile_markdown_rule36() {
-        let origin = vec![
-            "^(?!\t)",
-            "\\G",
-            "^\t"
-        ];
+        let origin = vec!["^(?!\t)", "\\G", "^\t"];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
         let result = scanner.find_next_match_sync(String::from("\t$(CC) -o $@ $^ $(CFLAGS)\n"), 0);
@@ -542,5 +552,4 @@ mod tests {
         // assert_eq!(onig_match.capture_indices[0].length, 1);
         scanner.dispose();
     }
-
 }
