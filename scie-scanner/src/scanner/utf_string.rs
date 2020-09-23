@@ -149,4 +149,11 @@ mod tests {
         assert_eq!(2, onig_string.utf16length.clone());
         assert_eq!(2, onig_string.utf8length.clone());
     }
+
+    #[test]
+    fn should_handle_tab_string() {
+        let onig_string = UtfString::new(String::from("\t"));
+        assert_eq!(1, onig_string.utf16length.clone());
+        assert_eq!(1, onig_string.utf8length.clone());
+    }
 }
