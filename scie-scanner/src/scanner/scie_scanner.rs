@@ -3,7 +3,6 @@ use crate::scanner::utf_string::UtfString;
 use onigvs::{
     createOnigScanner, findNextOnigScannerMatch, freeOnigScanner, OnigScanner, MAX_REGIONS,
 };
-use std::ffi::CString;
 use std::os::raw::c_int;
 
 pub type Pointer = i32;
@@ -25,7 +24,7 @@ pub struct IOnigMatch {
 pub struct ScieScanner {
     #[serde(skip_serializing)]
     pub _ptr: *mut OnigScanner,
-    pub strings: Vec<CString>,
+    pub strings: Vec<UtfString>,
     pub last_onig_id: i32,
 }
 
@@ -36,17 +35,15 @@ impl ScieScanner {
         let mut str_len_arr: Vec<c_int> = vec![0; patterns.len()];
         let mut str_ptrs_arr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
         str_ptrs_arr.resize_with(patterns.len(), || &mut 0);
-        let mut strings: Vec<CString> = vec![];
+        let mut strings: Vec<UtfString> = vec![];
 
         for i in 0..patterns.len() {
             let utf_string = UtfString::new(patterns[i].clone());
-            let string = patterns[i].clone();
-            let c_to_print = CString::new(string).expect("CString::new failed");
 
-            str_ptrs_arr[i] = c_to_print.as_ptr() as *mut u8;
-            strings.push(c_to_print);
-
+            str_ptrs_arr[i] = patterns[i].as_ptr() as *mut u8;
             str_len_arr[i] = utf_string.utf8length;
+
+            strings.push(utf_string)
         }
 
         let onig_scanner;
