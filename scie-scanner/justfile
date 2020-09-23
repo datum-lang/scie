@@ -11,8 +11,7 @@ rebuild:
 tests-ci rebuild=true:
     #!/usr/bin/env sh
     if {{rebuild}}; then
-        cargo clean
-        cargo build
+        just rebuild
     fi
 
     cargo test -- --test-threads=1
