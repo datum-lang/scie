@@ -1,3 +1,5 @@
+true := "true"
+
 build:
     cargo build
 
@@ -5,7 +7,14 @@ rebuild:
     cargo clean
     cargo build
 
-tests-ci: rebuild
+# tests-ci with rebuild? true|false, default is true
+tests-ci rebuild=true:
+    #!/usr/bin/env sh
+    if {{rebuild}}; then
+        cargo clean
+        cargo build
+    fi
+
     cargo test -- --test-threads=1
 
 test TEST: rebuild
