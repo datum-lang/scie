@@ -501,22 +501,22 @@ impl Grammar {
         }
     }
 
-    pub fn match_rule_or_injections(
-        &mut self,
-        line_text: String,
-        is_first_line: bool,
-        line_pos: i32,
-        stack: &mut StackElement,
-        anchor_position: i32,
-    ) {
-        let match_result =
-            self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
-        if let Some(_result) = match_result {
-        } else {
-            // None
-        };
-        // todo: get injections logic
-    }
+    // pub fn match_rule_or_injections(
+    //     &mut self,
+    //     line_text: String,
+    //     is_first_line: bool,
+    //     line_pos: i32,
+    //     stack: &mut StackElement,
+    //     anchor_position: i32,
+    // ) {
+    //     let match_result =
+    //         self.match_rule(line_text, is_first_line, line_pos, stack, anchor_position);
+    //     if let Some(_result) = match_result {
+    //     } else {
+    //         // None
+    //     };
+    //     // todo: get injections logic
+    // }
 
     pub fn match_rule(
         &mut self,
