@@ -179,8 +179,9 @@ long createOnigScanner(unsigned char **patterns, int *lengths, int count) {
 }
 
 
-int freeOnigScanner(OnigScanner *scanner) {
+int freeOnigScanner(OnigScanner **scanner_ptr) {
     int i;
+    OnigScanner *scanner = *scanner_ptr;
     for (i = 0; i < scanner->count; i++) {
         freeOnigRegExp(scanner->regexes[i]);
     }
@@ -188,6 +189,7 @@ int freeOnigScanner(OnigScanner *scanner) {
     scanner->regexes = NULL;
     onig_regset_free(scanner->rset);
     scanner->rset = NULL;
+    scanner->count = 0;
     free(scanner);
     scanner = NULL;
     return 0;

@@ -5071,7 +5071,7 @@ extern "C" {
     ) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    pub fn freeOnigScanner(scanner: *mut OnigScanner) -> ::std::os::raw::c_int;
+    pub fn freeOnigScanner(scanner_ptr: *mut *mut OnigScanner) -> ::std::os::raw::c_int;
 }
 extern "C" {
     pub fn findNextOnigScannerMatch(
