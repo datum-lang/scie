@@ -5,11 +5,8 @@ rebuild:
     cargo clean
     cargo build
 
-tests: rebuild
-    cargo test -all
-
 tests-ci: rebuild
-    cargo test
+    cargo test -- --test-threads=1
 
 test TEST: rebuild
     cargo test {{TEST}}
