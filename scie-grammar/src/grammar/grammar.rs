@@ -802,7 +802,7 @@ hellomake: $(OBJ)
         assert_eq!(6, result.tokens.len());
         rule_stack = *result.rule_stack;
         let result2 =
-            grammar.tokenize_line(String::from("\\t$(CC) -o $@ $^ $(CFLAGS)"), &mut rule_stack);
+            grammar.tokenize_line(String::from("\t$(CC) -o $@ $^ $(CFLAGS)"), &mut rule_stack);
         assert_eq!(1, result2.tokens.len());
         debug_output(&grammar, String::from("program.json"));
     }

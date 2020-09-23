@@ -518,4 +518,23 @@ mod tests {
 
         scanner.dispose()
     }
+
+    #[test]
+    fn should_compile_markdown_rule36() {
+        let origin = vec![
+            "^(?!\t)",
+            "\\G",
+            "^\t"
+        ];
+        let debug_regex = str_vec_to_string(origin);
+        let mut scanner = ScieScanner::new(debug_regex);
+        let result = scanner.find_next_match_sync(String::from("\t$(CC) -o $@ $^ $(CFLAGS)\n"), 0);
+
+        let onig_match = result.unwrap();
+        println!("{:?}", onig_match);
+        assert_eq!(onig_match.index, 1);
+        // assert_eq!(onig_match.capture_indices[0].end, 1);
+        scanner.dispose();
+    }
+
 }
