@@ -115,17 +115,8 @@ impl StackElement {
         self.enter_pos = -1;
         self.anchor_pos = -1;
 
-        if let Some(mut parent) = self.parent.clone() {
-            self._reset(&mut parent);
-        }
-    }
-
-    pub fn _reset(&self, node: &mut Box<StackElement>) {
-        node.enter_pos = -1;
-        node.anchor_pos = -1;
-
-        if let Some(mut parent) = node.parent.clone() {
-            node._reset(&mut parent);
+        if let Some(parent) = self.parent.clone() {
+            self.parent.as_mut().unwrap().reset();
         }
     }
 }
@@ -149,6 +140,8 @@ mod tests {
         assert_eq!(new_node.enter_pos, -1);
         assert_eq!(new_node.anchor_pos, -1);
 
-        assert_eq!(new_node.parent.unwrap().anchor_pos, -1);
+        let parent = new_node.parent.unwrap();
+        assert_eq!(parent.anchor_pos, -1);
+        assert_eq!(parent.enter_pos, -1);
     }
 }
