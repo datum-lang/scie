@@ -53,3 +53,16 @@ impl OnigString {
         return utf16Offset;
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use crate::scanner::onig_string::OnigString;
+
+    #[test]
+    fn should_handle_offset() {
+        let onig_string = OnigString::new(String::from("a💻bYX"), 1);
+        let x = onig_string.convertUtf8OffsetToUtf16(2);
+        assert_eq!(1, x);
+    }
+}
