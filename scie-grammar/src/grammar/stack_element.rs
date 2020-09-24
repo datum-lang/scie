@@ -115,7 +115,7 @@ impl StackElement {
         self.enter_pos = -1;
         self.anchor_pos = -1;
 
-        if let Some(parent) = self.parent.clone() {
+        if let Some(_parent) = self.parent.clone() {
             self.parent.as_mut().unwrap().reset();
         }
     }
