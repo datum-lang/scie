@@ -28,7 +28,6 @@ typedef struct OnigScanner_ {
 int lastOnigStatus = 0;
 OnigErrorInfo lastOnigErrorInfo;
 
-
 char *getLastOnigError() {
     static char s[ONIG_MAX_ERROR_MESSAGE_LEN];
     onig_error_code_to_str((UChar *) s, lastOnigStatus, &lastOnigErrorInfo);
@@ -244,3 +243,18 @@ long findNextOnigScannerMatch(OnigScanner *scanner, int strCacheId, unsigned cha
 
 #pragma endregion
 
+void testMakefileGAnchorIssue() {
+//    unsigned char* patterns[] = {
+//            "^(?!\\t)",
+//            "\\G",
+//            "^\t"
+//    };
+//    unsigned char** ptr = patterns;
+//
+//    int lengths[] = {6, 2, 2};
+//
+//    unsigned char text[26] = "\t$(CC) -o $@ $^ $(CFLAGS)\n";
+//
+//    long scanner = createOnigScanner(ptr, lengths, 3);
+//    findNextOnigScannerMatch(scanner, 0, text, 27, 0);
+}
