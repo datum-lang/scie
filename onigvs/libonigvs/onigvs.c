@@ -70,6 +70,13 @@ OnigRegExp *createOnigRegExp(unsigned char *data, int length) {
     OnigRegExp *result;
     regex_t *regex;
 
+//    if(data[0] == '\\') {
+//        if (data[1] == 'G') {
+//            char c = '\G';
+//            *data = c;
+//        }
+//    }
+
     lastOnigStatus = onig_new(&regex, data, data + length,
                               ONIG_OPTION_CAPTURE_GROUP, ONIG_ENCODING_UTF8,
                               ONIG_SYNTAX_DEFAULT, &lastOnigErrorInfo);
