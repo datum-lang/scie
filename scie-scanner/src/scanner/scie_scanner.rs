@@ -398,13 +398,13 @@ mod tests {
 
     #[test]
     fn should_match_for_scope_target() {
-        let origin = vec!["^(?!\\t)", "\\G", "^\\t"];
+        let origin = vec!["^(?!\t)", "\\G", "^\t"];
         let _rules = vec![-1, 36, 39];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
         let result = scanner.find_next_match_sync(
             String::from(
-                "%.o: %.c $(DEPS)
+    "%.o: %.c $(DEPS)
     ",
             ),
             4,
