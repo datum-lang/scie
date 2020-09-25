@@ -46,6 +46,10 @@ registry.loadGrammar('source.makefile').then(grammar => {
 
 console.log("____________________________");
 
-let onigScanner = new oniguruma.OnigScanner(["^(?!\t)", "\G","^\t"]);
+let onigScanner = new oniguruma.OnigScanner(["\\G"]);
 let result = onigScanner.findNextMatchSync("\t$(CC) -o $@ $^ $(CFLAGS)\n", 0);
 console.log(result)
+
+let onigScanner2 = new oniguruma.OnigScanner(["\G"]);
+let result2 = onigScanner2.findNextMatchSync("\t$(CC) -o $@ $^ $(CFLAGS)\n", 0);
+console.log(result2)
