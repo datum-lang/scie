@@ -140,7 +140,6 @@ where
 #[cfg(test)]
 mod tests {
     use crate::scanner::scie_scanner::{str_vec_to_string, ScieScanner};
-    use std::ascii;
 
     #[test]
     fn should_init_onig_scanner() {
@@ -538,8 +537,7 @@ mod tests {
 
     #[test]
     fn should_compile_markdown_rule36() {
-        // todo: figure out why /\\G works
-        let origin = vec!["^(?!\t)", "/\\G", "^\t"];
+        let origin = vec!["^(?!\t)", "\\G", "^\t"];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
         let result = scanner.find_next_match_sync(String::from("\t$(CC) -o $@ $^ $(CFLAGS)\n"), 0);
