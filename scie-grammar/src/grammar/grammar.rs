@@ -791,7 +791,6 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues() {
-        let _code = "%.o: %.c $(DEPS)";
         let mut grammar = to_grammar_for_test("test-cases/first-mate/fixtures/makefile.json");
         let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), &mut None);
         let tokens = result.tokens.clone();

@@ -72,7 +72,7 @@ OnigRegExp *createOnigRegExp(unsigned char *data, int length) {
 
 //    if(data[0] == '\\') {
 //        if (data[1] == 'G' && length == 2) {
-//            char c = '\G';
+//            char c = '\\G';
 //            *data = c;
 //        }
 //    }

@@ -26,8 +26,17 @@ const registry = new vsctm.Registry({
 });
 
 registry.loadGrammar('source.makefile').then(grammar => {
-    const text = `%.o: %.c $(DEPS)
+    const text = `CC=gcc
+CFLAGS=-I.
+DEPS = hellomake.h
+OBJ = hellomake.o hellofunc.o
+
+%.o: %.c $(DEPS)
 \t$(CC) -c -o $@ $< $(CFLAGS)
+
+hellomake: $(OBJ)
+\t$(CC) -o $@ $^ $(CFLAGS)
+
 `.split("\n");
     let ruleStack = vsctm.INITIAL;
     for (let i = 0; i < text.length; i++) {
@@ -43,13 +52,13 @@ registry.loadGrammar('source.makefile').then(grammar => {
         ruleStack = lineTokens.ruleStack;
     }
 });
-
-console.log("____________________________");
-
-let onigScanner = new oniguruma.OnigScanner(["\\G"]);
-let result = onigScanner.findNextMatchSync("\t$(CC) -o $@ $^ $(CFLAGS)\n", 0);
-console.log(result)
-
-let onigScanner2 = new oniguruma.OnigScanner(["\G"]);
-let result2 = onigScanner2.findNextMatchSync("\t$(CC) -o $@ $^ $(CFLAGS)\n", 0);
-console.log(result2)
+//
+// console.log("____________________________");
+//
+// let onigScanner = new oniguruma.OnigScanner(["\\G"]);
+// let result = onigScanner.findNextMatchSync("\t$(CC) -o $@ $^ $(CFLAGS)\n", 0);
+// console.log(result)
+//
+// let onigScanner2 = new oniguruma.OnigScanner(["\G"]);
+// let result2 = onigScanner2.findNextMatchSync("\t$(CC) -o $@ $^ $(CFLAGS)\n", 0);
+// console.log(result2)
