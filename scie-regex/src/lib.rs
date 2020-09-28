@@ -1,4 +1,9 @@
 use regex::Regex;
+#[macro_use]
+extern crate serde_derive;
+
+
+pub mod scanner;
 
 fn test_regex() {
     const TO_SEARCH: &'static str = "
