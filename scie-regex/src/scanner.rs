@@ -1,5 +1,5 @@
 use unicode_segmentation::UnicodeSegmentation;
-use onig::Regex;
+use regex::Regex;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct IOnigCaptureIndex {
@@ -62,7 +62,7 @@ impl Scanner {
 
             let _regex = Regex::new(pattern.as_str());
             if let Err(_err) = _regex {
-                return None;
+                panic!(_err.to_string());
             }
 
             let regex = _regex.unwrap();
@@ -70,10 +70,10 @@ impl Scanner {
             let _captures = regex.captures(after_pos_str.as_str());
 
             if let Some(captures) = _captures {
-                for (_, pos) in captures.iter_pos().enumerate() {
-                    if let Some((start, end)) = pos {
-                        let length = end - start;
-                        let x1 = after_pos_str.split_at(end).0;
+                for (size, result_match) in captures.iter().enumerate() {
+                    if let Some(_match) = result_match {
+                        let length = _match.end() - _match.start();
+                        let x1 = after_pos_str.split_at(_match.end()).0;
                         let utf8_end =
                             before_vec.len() + x1.graphemes(true).collect::<Vec<&str>>().len();
                         let utf8_start = utf8_end - length;
@@ -112,7 +112,7 @@ impl Scanner {
 
 pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
     where
-        I: IntoIterator<Item = T>,
+        I: IntoIterator<Item=T>,
         T: Into<String>,
 {
     iter.into_iter().map(Into::into).collect()
@@ -394,6 +394,4 @@ mod tests {
         assert_eq!(onig_match.capture_indices[0].length, 1);
         scanner.dispose();
     }
-
-
 }
