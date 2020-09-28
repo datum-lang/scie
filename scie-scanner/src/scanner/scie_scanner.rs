@@ -537,6 +537,7 @@ mod tests {
 
     #[test]
     fn should_compile_markdown_rule36() {
+        // let format_g = format!("{}", "\\G");
         let origin = vec!["^(?!\t)", "\\G", "^\t"];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
