@@ -1,5 +1,5 @@
-use unicode_segmentation::UnicodeSegmentation;
 use onig::Regex;
+use unicode_segmentation::UnicodeSegmentation;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct IOnigCaptureIndex {
@@ -115,16 +115,16 @@ impl Scanner {
 }
 
 pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
-    where
-        I: IntoIterator<Item=T>,
-        T: Into<String>,
+where
+    I: IntoIterator<Item = T>,
+    T: Into<String>,
 {
     iter.into_iter().map(Into::into).collect()
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::scanner::{Scanner, str_vec_to_string};
+    use crate::scanner::{str_vec_to_string, Scanner};
     use std::iter::Scan;
 
     #[test]
@@ -350,8 +350,13 @@ mod tests {
         let rules = vec![-1, 36, 39];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = Scanner::new(debug_regex);
-        let result = scanner.find_next_match_sync(String::from("%.o: %.c $(DEPS)
-"), 4);
+        let result = scanner.find_next_match_sync(
+            String::from(
+                "%.o: %.c $(DEPS)
+",
+            ),
+            4,
+        );
         let onig_match = result.unwrap();
         assert_eq!(1, onig_match.index);
         assert_eq!(4, onig_match.capture_indices[0].start);

@@ -54,7 +54,6 @@ impl OnigString {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::scanner::onig_string::OnigString;

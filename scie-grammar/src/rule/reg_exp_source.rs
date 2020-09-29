@@ -15,7 +15,7 @@ impl Default for IRegExpSourceListAnchorCache {
             a0_g0: None,
             a0_g1: None,
             a1_g0: None,
-            a1_g1: None
+            a1_g1: None,
         }
     }
 }
@@ -102,24 +102,24 @@ impl RegExpSourceList {
                     if let None = self._anchor_cache.a1_g1.clone() {
                         self._anchor_cache.a1_g1 = Some(self.resolve_anchors(allow_a, allow_g));
                     }
-                    return self._anchor_cache.a1_g1.clone().unwrap()
+                    return self._anchor_cache.a1_g1.clone().unwrap();
                 } else {
                     if let None = self._anchor_cache.a1_g0.clone() {
                         self._anchor_cache.a1_g0 = Some(self.resolve_anchors(allow_a, allow_g));
                     }
-                    return self._anchor_cache.a1_g0.clone().unwrap()
+                    return self._anchor_cache.a1_g0.clone().unwrap();
                 }
             } else {
                 if allow_g {
                     if let None = self._anchor_cache.a0_g1.clone() {
                         self._anchor_cache.a0_g1 = Some(self.resolve_anchors(allow_a, allow_g));
                     }
-                    return self._anchor_cache.a0_g1.clone().unwrap()
+                    return self._anchor_cache.a0_g1.clone().unwrap();
                 } else {
                     if let None = self._anchor_cache.a0_g0.clone() {
                         self._anchor_cache.a0_g0 = Some(self.resolve_anchors(allow_a, allow_g));
                     }
-                    return self._anchor_cache.a0_g0.clone().unwrap()
+                    return self._anchor_cache.a0_g0.clone().unwrap();
                 }
             }
         }
@@ -133,7 +133,7 @@ impl RegExpSourceList {
         for x in self._items.clone() {
             reg_exps.push(x.resolve_anchors(allow_a, allow_g));
             rules.push(x.rule_id);
-        };
+        }
 
         Box::from(CompiledRule::new(reg_exps, rules))
     }
@@ -280,7 +280,6 @@ impl RegExpSource {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::rule::RegExpSource;
@@ -319,12 +318,17 @@ mod tests {
 
     #[test]
     fn should_build_anchor_cache_for_long() {
-        let source = RegExpSource::new(String::from("(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)"), 1);
+        let source = RegExpSource::new(
+            String::from("(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)"),
+            1,
+        );
         let cache = source._anchor_cache.unwrap();
-        assert_eq!("(^[ ]*|\\\u{ffff}\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)", cache.a0_g0);
+        assert_eq!(
+            "(^[ ]*|\\\u{ffff}\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)",
+            cache.a0_g0
+        );
         assert_eq!("(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)", cache.a0_g1);
         assert_eq!("(^[ ]*|\\￿\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)", cache.a1_g0);
         assert_eq!("(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)", cache.a1_g1);
     }
 }
-

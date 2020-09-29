@@ -404,7 +404,7 @@ mod tests {
         let mut scanner = ScieScanner::new(debug_regex);
         let result = scanner.find_next_match_sync(
             String::from(
-    "%.o: %.c $(DEPS)
+                "%.o: %.c $(DEPS)
     ",
             ),
             4,

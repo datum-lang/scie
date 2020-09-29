@@ -20,6 +20,4 @@ pub struct MatchRuleResult {
 }
 
 #[cfg(test)]
-mod tests {
-
-}
+mod tests {}

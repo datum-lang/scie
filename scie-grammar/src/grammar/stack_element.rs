@@ -6,18 +6,18 @@ use crate::rule::{AbstractRule, IRuleRegistry};
 pub struct StackElement {
     pub parent: Option<Box<StackElement>>,
     pub depth: i32,
-    #[serde(rename="RuleId")]
+    #[serde(rename = "RuleId")]
     pub rule_id: i32,
     pub enter_pos: i32,
-    #[serde(rename="_anchorPos")]
+    #[serde(rename = "_anchorPos")]
     pub anchor_pos: i32,
-    #[serde(rename="beginRuleCapturedEOL")]
+    #[serde(rename = "beginRuleCapturedEOL")]
     pub begin_rule_captured_eol: bool,
-    #[serde(rename="endRule")]
+    #[serde(rename = "endRule")]
     pub end_rule: Option<String>,
-    #[serde(rename="nameScopesList")]
+    #[serde(rename = "nameScopesList")]
     pub name_scopes_list: ScopeListElement,
-    #[serde(rename="contentNameScopesList")]
+    #[serde(rename = "contentNameScopesList")]
     pub content_name_scopes_list: ScopeListElement,
     // todo: remove stringify
     pub stringify: String,

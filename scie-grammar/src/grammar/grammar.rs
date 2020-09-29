@@ -685,7 +685,7 @@ pub fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
 #[cfg(test)]
 mod tests {
     use std::fs::File;
-    use std::io::{Write};
+    use std::io::Write;
 
     use crate::grammar::grammar::{to_grammar_for_test, to_grammar_with_code};
     use crate::grammar::{Grammar, StackElement};
