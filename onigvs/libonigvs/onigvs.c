@@ -70,13 +70,6 @@ OnigRegExp *createOnigRegExp(unsigned char *data, int length) {
     OnigRegExp *result;
     regex_t *regex;
 
-//    if(data[0] == '\\') {
-//        if (data[1] == 'G' && length == 2) {
-//            char c = '\\G';
-//            *data = c;
-//        }
-//    }
-
     lastOnigStatus = onig_new(&regex, data, data + length,
                               ONIG_OPTION_CAPTURE_GROUP, ONIG_ENCODING_UTF8,
                               ONIG_SYNTAX_DEFAULT, &lastOnigErrorInfo);
@@ -249,19 +242,3 @@ long findNextOnigScannerMatch(OnigScanner *scanner, int strCacheId, unsigned cha
 }
 
 #pragma endregion
-
-void testMakefileGAnchorIssue() {
-//    unsigned char* patterns[] = {
-//            "^(?!\\t)",
-//            "\\G",
-//            "^\t"
-//    };
-//    unsigned char** ptr = patterns;
-//
-//    int lengths[] = {6, 2, 2};
-//
-//    unsigned char text[26] = "\t$(CC) -o $@ $^ $(CFLAGS)\n";
-//
-//    long scanner = createOnigScanner(ptr, lengths, 3);
-//    findNextOnigScannerMatch(scanner, 0, text, 27, 0);
-}
