@@ -1,5 +1,5 @@
 use unicode_segmentation::UnicodeSegmentation;
-use regex::Regex;
+use onig::Regex;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct IOnigCaptureIndex {
@@ -72,8 +72,11 @@ impl Scanner {
             if let Some(captures) = _captures {
                 for (size, result_match) in captures.iter().enumerate() {
                     if let Some(_match) = result_match {
-                        let length = _match.end() - _match.start();
-                        let x1 = after_pos_str.split_at(_match.end()).0;
+                        let end = _match.end();
+                        let start = _match.start();
+
+                        let length = end - start;
+                        let x1 = after_pos_str.split_at(end).0;
                         let utf8_end =
                             before_vec.len() + x1.graphemes(true).collect::<Vec<&str>>().len();
                         let utf8_start = utf8_end - length;
@@ -112,7 +115,7 @@ impl Scanner {
 
 pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
     where
-        I: IntoIterator<Item=T>,
+        I: IntoIterator<Item = T>,
         T: Into<String>,
 {
     iter.into_iter().map(Into::into).collect()
