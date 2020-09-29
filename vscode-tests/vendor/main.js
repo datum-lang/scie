@@ -919,10 +919,8 @@ function matchRule(grammar, lineText, isFirstLine, linePos, stack, anchorPositio
             console.log("matched rule id: " + ruleScanner.rules[r.index] + " from " + r.captureIndices[0].start + " to " + r.captureIndices[0].end);
         }
     }
-    if(rule.id === 36) {
-        console.log(lineText, linePos, stack.depth);
-        console.log(JSON.stringify(ruleScanner));
-        console.log(JSON.stringify(r));
+    if(rule.id === 36 || rule.id === 28) {
+        console.log(ruleScanner.debugRegExps)
     }
     if (r) {
         let result = {
