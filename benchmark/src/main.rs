@@ -1,14 +1,13 @@
 use std::env;
-use std::ffi::OsStr;
 use std::fs::File;
 use std::io::Read;
-use std::path::{Path, PathBuf};
+use std::path::{PathBuf};
 use std::time::SystemTime;
 
 use scie_grammar::grammar::{Grammar, StackElement};
 
 fn main() {
-    let mut root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+    let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .parent()
         .unwrap()
         .to_path_buf();
