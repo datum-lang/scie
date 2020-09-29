@@ -72,7 +72,7 @@ impl BeginWhileRule {
             self._cached_compiled_patterns = Option::from(compiled_patterns);
         }
 
-        return self
+        return *self
             ._cached_compiled_patterns
             .clone()
             .unwrap()
@@ -132,8 +132,7 @@ impl AbstractRule for BeginWhileRule {
             cached_compiled_patterns = self._cached_compiled_patterns.as_ref().unwrap().clone();
         }
 
-        return cached_compiled_patterns
-            .compile(grammar, allow_a, allow_g)
-            .clone();
+        return *cached_compiled_patterns
+            .compile(grammar, allow_a, allow_g);
     }
 }

@@ -2,6 +2,25 @@ use crate::grammar::Grammar;
 use crate::rule::CompiledRule;
 
 #[derive(Clone, Debug, Serialize)]
+pub struct IRegExpSourceListAnchorCache {
+    a0_g0: Option<Box<CompiledRule>>,
+    a0_g1: Option<Box<CompiledRule>>,
+    a1_g0: Option<Box<CompiledRule>>,
+    a1_g1: Option<Box<CompiledRule>>,
+}
+
+impl Default for IRegExpSourceListAnchorCache {
+    fn default() -> Self {
+        IRegExpSourceListAnchorCache {
+            a0_g0: None,
+            a0_g1: None,
+            a1_g0: None,
+            a1_g1: None
+        }
+    }
+}
+
+#[derive(Clone, Debug, Serialize)]
 pub struct AnchorCache {
     a0_g0: String,
     a0_g1: String,
@@ -24,7 +43,7 @@ impl Default for AnchorCache {
 pub struct RegExpSourceList {
     pub _has_anchors: bool,
     pub _cached: Option<CompiledRule>,
-    pub _anchor_cache: AnchorCache,
+    pub _anchor_cache: IRegExpSourceListAnchorCache,
     pub _items: Vec<Box<RegExpSource>>,
 }
 
@@ -56,9 +75,9 @@ impl RegExpSourceList {
     pub fn compile(
         &mut self,
         _grammar: &mut Grammar,
-        _allow_a: bool,
-        _allow_g: bool,
-    ) -> CompiledRule {
+        allow_a: bool,
+        allow_g: bool,
+    ) -> Box<CompiledRule> {
         if !self._has_anchors {
             if let None = self._cached {
                 let reg_exps = self
@@ -76,12 +95,47 @@ impl RegExpSourceList {
                 let compiled_rule = CompiledRule::new(reg_exps, rules);
                 self._cached = Some(compiled_rule.clone());
             };
-            return self._cached.clone().unwrap();
+            return Box::from(self._cached.clone().unwrap());
         } else {
-            println!("// todo: cached {:?}", self._items);
+            if allow_a {
+                if allow_g {
+                    if let None = self._anchor_cache.a1_g1.clone() {
+                        self._anchor_cache.a1_g1 = Some(self.resolve_anchors(allow_a, allow_g));
+                    }
+                    return self._anchor_cache.a1_g1.clone().unwrap()
+                } else {
+                    if let None = self._anchor_cache.a1_g0.clone() {
+                        self._anchor_cache.a1_g0 = Some(self.resolve_anchors(allow_a, allow_g));
+                    }
+                    return self._anchor_cache.a1_g0.clone().unwrap()
+                }
+            } else {
+                if allow_g {
+                    if let None = self._anchor_cache.a0_g1.clone() {
+                        self._anchor_cache.a0_g1 = Some(self.resolve_anchors(allow_a, allow_g));
+                    }
+                    return self._anchor_cache.a0_g1.clone().unwrap()
+                } else {
+                    if let None = self._anchor_cache.a0_g0.clone() {
+                        self._anchor_cache.a0_g0 = Some(self.resolve_anchors(allow_a, allow_g));
+                    }
+                    return self._anchor_cache.a0_g0.clone().unwrap()
+                }
+            }
         }
 
-        CompiledRule::new(vec![], vec![])
+        Box::from(CompiledRule::new(vec![], vec![]))
+    }
+
+    fn resolve_anchors(&self, allow_a: bool, allow_g: bool) -> Box<CompiledRule> {
+        let mut reg_exps = vec![];
+        let mut rules = vec![];
+        for x in self._items.clone() {
+            reg_exps.push(x.resolve_anchors(allow_a, allow_g));
+            rules.push(x.rule_id);
+        };
+
+        Box::from(CompiledRule::new(reg_exps, rules))
     }
 }
 
@@ -144,6 +198,7 @@ impl RegExpSource {
 
         reg_exp_source
     }
+
     fn build_cache(&self) -> AnchorCache {
         let length = self.source.len();
 
@@ -201,6 +256,27 @@ impl RegExpSource {
             a1_g0: a1_g0_result.join(""),
             a1_g1: a1_g1_result.join(""),
         };
+    }
+
+    fn resolve_anchors(&self, allow_a: bool, allow_g: bool) -> String {
+        if !self.has_anchor || self._anchor_cache.is_none() {
+            return self.source.clone();
+        }
+
+        let cached = self._anchor_cache.as_ref().unwrap();
+        if allow_a {
+            if allow_g {
+                return cached.a1_g1.clone();
+            } else {
+                return cached.a1_g0.clone();
+            }
+        } else {
+            if allow_g {
+                return cached.a0_g1.clone();
+            } else {
+                return cached.a0_g0.clone();
+            }
+        }
     }
 }
 

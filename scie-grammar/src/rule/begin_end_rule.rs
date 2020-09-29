@@ -131,6 +131,6 @@ impl AbstractRule for BeginEndRule {
         // println!("todo: support for hasBackReferences");
         let compiled_rule = cached_compiled_patterns.compile(grammar, allow_a, allow_g);
         self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
-        compiled_rule
+        *compiled_rule
     }
 }
