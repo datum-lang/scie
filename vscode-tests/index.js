@@ -26,14 +26,7 @@ const registry = new vsctm.Registry({
 });
 
 registry.loadGrammar('source.makefile').then(grammar => {
-    const text = `CC=gcc
-CFLAGS=-I.
-DEPS = hellomake.h
-OBJ = hellomake.o hellofunc.o
-
-%.o: %.c $(DEPS)
-\t$(CC) -c -o $@ $< $(CFLAGS)
-
+    const text = `
 hellomake: $(OBJ)
 \t$(CC) -o $@ $^ $(CFLAGS)
 
