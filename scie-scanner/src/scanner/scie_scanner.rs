@@ -546,9 +546,9 @@ mod tests {
         let onig_match = result.unwrap();
 
         // todo: fix it
-        assert_eq!(onig_match.index, 2);
-        assert_eq!(onig_match.capture_indices[0].end, 1);
-        assert_eq!(onig_match.capture_indices[0].length, 1);
+        assert_eq!(onig_match.index, 1);
+        assert_eq!(onig_match.capture_indices[0].end, 0);
+        assert_eq!(onig_match.capture_indices[0].length, 0);
         scanner.dispose();
     }
 }
