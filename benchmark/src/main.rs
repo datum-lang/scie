@@ -8,23 +8,23 @@ use std::time::SystemTime;
 use scie_grammar::grammar::{Grammar, StackElement};
 
 fn main() {
-    let target_dir = get_target_dir();
-    let root_dir = get_top_dir(&*target_dir);
-
-    let lang_spec_dir = root_dir
+    let mut root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).parent().unwrap().to_path_buf();
+    let lang_spec_dir = root_dir.clone()
         .join("extensions")
         .join("json")
         .join("syntaxes")
         .join("JSON.tmLanguage.json");
-    let lang_test_dir = Path::new("fixtures").join("JavaScript.tmLanguage.json.txt");
-
+    let lang_test_dir = root_dir
+        .join("benchmark")
+        .join("fixtures")
+        .join("JavaScript.tmLanguage.json.txt");
     let code = read_code(&lang_test_dir);
 
     let mut grammar = Grammar::from_file(lang_spec_dir.to_str().unwrap());
 
     let mut rule_stack = Some(StackElement::null());
-
     let start = SystemTime::now();
+
     for line in code.lines() {
         // println!("{:?}", line);
         let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
