@@ -101,7 +101,8 @@ impl RegExpSource {
         let mut output: Vec<String> = vec![];
         let mut last_pushed_pos = 0;
 
-        for mut pos in 0..length {
+        let mut pos = 0;
+        while pos < length {
             let ch = exp_source.chars().nth(pos).unwrap();
             if ch == '\\' {
                 if pos + 1 < length {
@@ -117,6 +118,8 @@ impl RegExpSource {
                     pos = pos + 1;
                 }
             }
+
+            pos = pos + 1;
         }
 
         if last_pushed_pos == 0 {
@@ -133,3 +136,22 @@ impl RegExpSource {
         }
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use crate::rule::RegExpSource;
+
+    #[test]
+    fn should_change_resource_for_g() {
+        let source = RegExpSource::new(String::from("\\G"), 1);
+        assert!(source.has_anchor);
+    }
+
+    #[test]
+    fn should_change_resource_for_z() {
+        let source = RegExpSource::new(String::from("\\z"), 1);
+        assert_eq!("$(?!\n)(?<!\n)", source.source);
+    }
+}
+

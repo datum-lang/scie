@@ -21,17 +21,5 @@ pub struct MatchRuleResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::grammar::grammar::to_grammar_with_code;
-    use std::fs;
-    use std::path::PathBuf;
 
-    #[test]
-    fn should_parse_in_markdown_file() {
-        let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        path.push("test-cases/e2e/makefile/Makefile");
-
-        let code = fs::read_to_string(path).unwrap();
-        let grammar =
-            to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", &*code);
-    }
 }
