@@ -237,10 +237,10 @@ impl RegExpSource {
                         a1_g0_result[pos + 1] = String::from("\u{FFFF}");
                         a1_g1_result[pos + 1] = String::from("G");
                     } else {
-                        a0_g0_result[pos] = String::from(next_char.clone());
-                        a0_g1_result[pos] = String::from(next_char.clone());
-                        a1_g0_result[pos] = String::from(next_char.clone());
-                        a1_g1_result[pos] = String::from(next_char.clone());
+                        a0_g0_result[pos + 1] = String::from(next_char.clone());
+                        a0_g1_result[pos + 1] = String::from(next_char.clone());
+                        a1_g0_result[pos + 1] = String::from(next_char.clone());
+                        a1_g1_result[pos + 1] = String::from(next_char.clone());
                     }
 
                     pos = pos + 1;
@@ -306,6 +306,7 @@ mod tests {
         assert_eq!("\\\u{ffff}", cache.a1_g0);
         assert_eq!("\\G", cache.a1_g1);
     }
+
     #[test]
     fn should_build_anchor_cache_for_g_source() {
         let source = RegExpSource::new(String::from("\\G(?!\n)"), 1);
@@ -314,6 +315,16 @@ mod tests {
         assert_eq!("\\G(?!\n)", cache.a0_g1);
         assert_eq!("\\\u{ffff}(?!\n)", cache.a1_g0);
         assert_eq!("\\G(?!\n)", cache.a1_g1);
+    }
+
+    #[test]
+    fn should_build_anchor_cache_for_long() {
+        let source = RegExpSource::new(String::from("(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)"), 1);
+        let cache = source._anchor_cache.unwrap();
+        assert_eq!("(^[ ]*|\\\u{ffff}\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)", cache.a0_g0);
+        assert_eq!("(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)", cache.a0_g1);
+        assert_eq!("(^[ ]*|\\￿\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)", cache.a1_g0);
+        assert_eq!("(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)", cache.a1_g1);
     }
 }
 
