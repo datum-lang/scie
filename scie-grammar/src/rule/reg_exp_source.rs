@@ -123,8 +123,6 @@ impl RegExpSourceList {
                 }
             }
         }
-
-        Box::from(CompiledRule::new(vec![], vec![]))
     }
 
     fn resolve_anchors(&self, allow_a: bool, allow_g: bool) -> Box<CompiledRule> {

@@ -456,8 +456,8 @@ impl Grammar {
     pub fn check_while_conditions(
         &mut self,
         line_text: String,
-        is_first_line: bool,
-        line_pos: i32,
+        mut is_first_line: bool,
+        mut line_pos: i32,
         mut stack: StackElement,
         mut line_tokens: LineTokens,
     ) -> CheckWhileConditionResult {
@@ -509,12 +509,19 @@ impl Grammar {
                     }
 
                     if r.capture_indices.len() > 0 {
-                        println!("todo: capture_indices.len > 0");
-                        // line_tokens.produce(&mut while_rule.stack, r.capture_indices[0].start as i32);
-                        // Grammar::handle_captures(self, line_text.clone(), is_first_line,
-                        // &mut line_tokens,
-                        //
-                        // )
+                        line_tokens.produce(&mut while_rule.stack, r.capture_indices[0].start as i32);
+                        Grammar::handle_captures(self, line_text.clone(), is_first_line,
+                                                 &mut *while_rule.stack,
+                                                 &mut line_tokens,
+                                                 while_rule.rule.while_captures.clone(),
+                                                 r.capture_indices.clone(),
+                        );
+                        line_tokens.produce(&mut while_rule.stack, r.capture_indices[0].end as i32);
+                        anchor_position = r.capture_indices[0].end.clone() as i32;
+                        if r.capture_indices[0].end > line_pos as usize {
+                            line_pos = r.capture_indices[0].end.clone() as i32;
+                            is_first_line = false;
+                        }
                     }
                 }
             }
@@ -691,6 +698,7 @@ mod tests {
     use crate::grammar::{Grammar, StackElement};
     use crate::rule::abstract_rule::RuleEnum;
     use crate::rule::IRuleRegistry;
+    use crate::grammar::line_tokens::IToken;
 
     #[test]
     fn should_build_grammar_json() {
@@ -782,13 +790,34 @@ OBJ = hellomake.o hellofunc.o
 
 hellomake: $(OBJ)
 \t$(CC) -o $@ $^ $(CFLAGS)
-
 ";
         let mut grammar =
             to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 82);
         assert_eq!(grammar.get_rule(1).patterns_length(), 4);
-        debug_output(&grammar, String::from("program.json"));
+
+        let tokens = get_all_tokens("test-cases/first-mate/fixtures/makefile.json", code.clone());
+        assert_eq!(10, tokens.len());
+
+        let x: Vec<String> = tokens.iter().map(|token| token.len().to_string()).collect();
+        println!("{:?}", x);
+        assert_eq!(String::from("3,3,4,4,1,9,14,1,4,14"), x.join(","));
+    }
+
+
+    pub fn get_all_tokens(grammar_path: &str, code: &str) -> Vec<Vec<IToken>> {
+        let mut grammar = to_grammar_for_test(grammar_path);
+        let c_code = String::from(code);
+        let mut rule_stack = Some(StackElement::null());
+        let mut all_tokens: Vec<Vec<IToken>> = vec![];
+
+        for line in c_code.lines() {
+            let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
+            rule_stack = *result.rule_stack;
+            all_tokens.push(result.tokens);
+        }
+
+        all_tokens
     }
 
     #[test]
