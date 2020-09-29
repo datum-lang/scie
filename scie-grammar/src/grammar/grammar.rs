@@ -459,7 +459,7 @@ impl Grammar {
         is_first_line: bool,
         line_pos: i32,
         mut stack: StackElement,
-        _line_tokens: LineTokens,
+        mut line_tokens: LineTokens,
     ) -> CheckWhileConditionResult {
         let mut anchor_position = -1;
         if stack.begin_rule_captured_eol {
@@ -485,7 +485,7 @@ impl Grammar {
             }
         }
 
-        for while_rule in while_rules.clone() {
+        for mut while_rule in while_rules.clone() {
             let allow_g = anchor_position == line_pos;
             let mut rule_scanner = while_rule.clone().rule.compile_while(
                 self,
@@ -502,8 +502,20 @@ impl Grammar {
                     stack = while_rule.stack.pop().unwrap();
                     break;
                 }
-                Some(_) => {
-                    panic!("todo: check_while_conditions");
+                Some(r) => {
+                    if rule_scanner.rules[r.index] != -2 {
+                        stack = while_rule.stack.pop().unwrap();
+                        break;
+                    }
+
+                    if r.capture_indices.len() > 0 {
+                        println!("todo: capture_indices.len > 0");
+                        // line_tokens.produce(&mut while_rule.stack, r.capture_indices[0].start as i32);
+                        // Grammar::handle_captures(self, line_text.clone(), is_first_line,
+                        // &mut line_tokens,
+                        //
+                        // )
+                    }
                 }
             }
         }
@@ -711,15 +723,6 @@ return 0;
         assert_eq!(17, result.tokens[5].start_index);
     }
 
-    #[test]
-    fn should_build_text_grammar() {
-        let code = "
-GitHub 漫游指南
-";
-        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/text.json", code);
-        assert_eq!(grammar.rule_id2desc.len(), 8);
-    }
-
     fn debug_output(grammar: &Grammar, path: String) {
         let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
         let mut file = File::create(path).unwrap();
@@ -768,7 +771,6 @@ OBJ = hellomake.o hellofunc.o
     }
 
     #[test]
-    #[ignore]
     fn should_build_makefile_grammar() {
         let code = "CC=gcc
 CFLAGS=-I.
