@@ -93,11 +93,33 @@ pub struct RegExpSource {
 }
 
 impl RegExpSource {
-    pub fn new(reg_exp_source: String, rule_id: i32) -> RegExpSource {
+    pub fn new(source: String, rule_id: i32) -> RegExpSource {
+        let mut has_anchor = false;
+
+        let length = source.len();
+        let mut output: Vec<String> = vec![];
+        let lastPushedPos = 0;
+
+        for mut pos in 0..length {
+            let ch = source.chars().nth(pos).unwrap();
+            if ch == '\\' {
+                if pos + 1 < length {
+                    let next_char = source.chars().nth(pos + 1).unwrap();
+                    if next_char == 'z' {
+                        // output.push()
+                    } else if next_char == 'G' || next_char == 'A' {
+                        has_anchor = true
+                    }
+
+                    pos = pos + 1;
+                }
+            }
+        }
+
         RegExpSource {
-            source: reg_exp_source,
+            source,
             rule_id,
-            has_anchor: false,
+            has_anchor,
         }
     }
 }
