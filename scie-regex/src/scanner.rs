@@ -70,11 +70,12 @@ impl Scanner {
             let _captures = regex.captures(after_pos_str.as_str());
 
             if let Some(captures) = _captures {
-                for (size, result_match) in captures.iter().enumerate() {
-                    if let Some(_match) = result_match {
-                        let end = _match.end();
-                        let start = _match.start();
-
+                // for (size, result_match) in captures.iter().enumerate() {
+                //     if let Some(_match) = result_match {
+                //         let end = _match.end();
+                //         let start = _match.start();
+                for (_, pos) in captures.iter_pos().enumerate() {
+                    if let Some((start, end)) = pos {
                         let length = end - start;
                         let x1 = after_pos_str.split_at(end).0;
                         let utf8_end =
@@ -115,7 +116,7 @@ impl Scanner {
 
 pub fn str_vec_to_string<I, T>(iter: I) -> Vec<String>
     where
-        I: IntoIterator<Item = T>,
+        I: IntoIterator<Item=T>,
         T: Into<String>,
 {
     iter.into_iter().map(Into::into).collect()
