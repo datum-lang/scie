@@ -798,9 +798,7 @@ hellomake: $(OBJ)
         let tokens = get_all_tokens("test-cases/first-mate/fixtures/makefile.json", code.clone());
         assert_eq!(10, tokens.len());
         let x: Vec<String> = tokens.iter().map(|token| token.len().to_string()).collect();
-        println!("{:?}", x);
         assert_eq!(String::from("3,3,4,4,1,9,14,1,4,14"), x.join(","));
-        // assert_eq!(String::from("3,3,4,4,1,9,14,1,6,14"), x.join(","));
     }
 
 
@@ -812,6 +810,7 @@ hellomake: $(OBJ)
 
         for line in c_code.lines() {
             let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
+            println!("{:?}", rule_stack.unwrap().rule_id.clone());
             rule_stack = *result.rule_stack;
             all_tokens.push(result.tokens);
         }

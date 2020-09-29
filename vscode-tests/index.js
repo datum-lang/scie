@@ -10,7 +10,7 @@ function readFile(path) {
 
 let promise = readFile('./syntaxes/json/c.json').then(data => vsctm.parseRawGrammar(data.toString(), "c.json"));
 promise.then((grammar) => {
-    console.log(grammar.patterns.length);
+    // console.log(grammar.patterns.length);
 })
 
 
@@ -26,22 +26,29 @@ const registry = new vsctm.Registry({
 });
 
 registry.loadGrammar('source.makefile').then(grammar => {
-    const text = `
-hellomake: $(OBJ)
-\t$(CC) -o $@ $^ $(CFLAGS)
+    const text = `CC=gcc
+CFLAGS=-I.
+DEPS = hellomake.h
+OBJ = hellomake.o hellofunc.o
 
-`.split("\n");
+%.o: %.c $(DEPS)
+\t$(CC) -c -o $@ $< $(CFLAGS)
+
+hellomake: $(OBJ)
+\t$(CC) -o $@ $^ $(CFLAGS)`.split("\n");
     let ruleStack = vsctm.INITIAL;
     for (let i = 0; i < text.length; i++) {
         const line = text[i];
         const lineTokens = grammar.tokenizeLine(line, ruleStack);
-        for (let j = 0; j < lineTokens.tokens.length; j++) {
-            const token = lineTokens.tokens[j];
-            console.log(` - token from ${token.startIndex} to ${token.endIndex} ` +
-                `(${line.substring(token.startIndex, token.endIndex)}) ` +
-                `with scopes ${token.scopes.join(', ')}`
-            );
-        }
+        // console.log(lineTokens.tokens.length);
+        // for (let j = 0; j < lineTokens.tokens.length; j++) {
+        //     const token = lineTokens.tokens[j];
+        //     console.log(` - token from ${token.startIndex} to ${token.endIndex} ` +
+        //         `(${line.substring(token.startIndex, token.endIndex)}) ` +
+        //         `with scopes ${token.scopes.join(', ')}`
+        //     );
+        // }
+        console.log(ruleStack.ruleId);
         ruleStack = lineTokens.ruleStack;
     }
 });
