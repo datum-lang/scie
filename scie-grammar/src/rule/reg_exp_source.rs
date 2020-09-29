@@ -97,7 +97,7 @@ impl RegExpSource {
     pub fn new(exp_source: String, rule_id: i32) -> RegExpSource {
         let mut has_anchor = false;
 
-        let mut result: String = "".to_string();
+        let result: String;
         let length = exp_source.len();
         let mut output: Vec<String> = vec![];
         let mut last_pushed_pos = 0;
@@ -229,6 +229,15 @@ mod tests {
         assert_eq!("\\G", cache.a0_g1);
         assert_eq!("\\\u{ffff}", cache.a1_g0);
         assert_eq!("\\G", cache.a1_g1);
+    }
+    #[test]
+    fn should_build_anchor_cache_for_g_source() {
+        let source = RegExpSource::new(String::from("\\G(?!\n)"), 1);
+        let cache = source._anchor_cache.unwrap();
+        assert_eq!("\\\u{ffff}(?!\n)", cache.a0_g0);
+        assert_eq!("\\G(?!\n)", cache.a0_g1);
+        assert_eq!("\\\u{ffff}(?!\n)", cache.a1_g0);
+        assert_eq!("\\G(?!\n)", cache.a1_g1);
     }
 }
 
