@@ -789,8 +789,7 @@ OBJ = hellomake.o hellofunc.o
 \t$(CC) -c -o $@ $< $(CFLAGS)
 
 hellomake: $(OBJ)
-\t$(CC) -o $@ $^ $(CFLAGS)
-";
+\t$(CC) -o $@ $^ $(CFLAGS)";
         let mut grammar =
             to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 82);
@@ -798,10 +797,10 @@ hellomake: $(OBJ)
 
         let tokens = get_all_tokens("test-cases/first-mate/fixtures/makefile.json", code.clone());
         assert_eq!(10, tokens.len());
-
         let x: Vec<String> = tokens.iter().map(|token| token.len().to_string()).collect();
         println!("{:?}", x);
         assert_eq!(String::from("3,3,4,4,1,9,14,1,4,14"), x.join(","));
+        // assert_eq!(String::from("3,3,4,4,1,9,14,1,6,14"), x.join(","));
     }
 
 
@@ -851,5 +850,15 @@ hellomake: $(OBJ)
         let result2 =
             grammar.tokenize_line(String::from("\t$(CC) -o $@ $^ $(CFLAGS)"), &mut rule_stack);
         assert_eq!(14, result2.tokens.len());
+    }
+
+    #[test]
+    fn should_success_token_for_short_code() {
+        let code = "hellomake: $(OBJ)
+\t$(CC) -o $@ $^ $(CFLAGS)";
+        let tokens = get_all_tokens("test-cases/first-mate/fixtures/makefile.json", code.clone());
+        assert_eq!(2, tokens.len());
+        let x: Vec<String> = tokens.iter().map(|token| token.len().to_string()).collect();
+        assert_eq!(String::from("6,14"), x.join(","));
     }
 }
