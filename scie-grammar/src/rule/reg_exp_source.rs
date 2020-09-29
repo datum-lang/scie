@@ -93,20 +93,23 @@ pub struct RegExpSource {
 }
 
 impl RegExpSource {
-    pub fn new(source: String, rule_id: i32) -> RegExpSource {
+    pub fn new(exp_source: String, rule_id: i32) -> RegExpSource {
         let mut has_anchor = false;
 
-        let length = source.len();
+        let mut result: String = "".to_string();
+        let length = exp_source.len();
         let mut output: Vec<String> = vec![];
-        let lastPushedPos = 0;
+        let mut last_pushed_pos = 0;
 
         for mut pos in 0..length {
-            let ch = source.chars().nth(pos).unwrap();
+            let ch = exp_source.chars().nth(pos).unwrap();
             if ch == '\\' {
                 if pos + 1 < length {
-                    let next_char = source.chars().nth(pos + 1).unwrap();
+                    let next_char = exp_source.chars().nth(pos + 1).unwrap();
                     if next_char == 'z' {
-                        // output.push()
+                        output.push(exp_source[last_pushed_pos..pos].to_string());
+                        output.push(String::from("$(?!\n)(?<!\n)"));
+                        last_pushed_pos = pos + 2;
                     } else if next_char == 'G' || next_char == 'A' {
                         has_anchor = true
                     }
@@ -116,8 +119,15 @@ impl RegExpSource {
             }
         }
 
+        if last_pushed_pos == 0 {
+            result = exp_source.clone()
+        } else {
+            output.push(exp_source[last_pushed_pos..length].to_string());
+            result = output.join("");
+        }
+
         RegExpSource {
-            source,
+            source: result,
             rule_id,
             has_anchor,
         }

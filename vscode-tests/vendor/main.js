@@ -920,7 +920,7 @@ function matchRule(grammar, lineText, isFirstLine, linePos, stack, anchorPositio
         }
     }
     if(rule.id === 36 || rule.id === 28) {
-        console.log(ruleScanner.debugRegExps)
+        // console.log(ruleScanner.debugRegExps)
     }
     if (r) {
         let result = {
@@ -3155,7 +3155,7 @@ var RegExpSource = /** @class */ (function () {
         }
         this.ruleId = ruleId;
         this.hasBackReferences = HAS_BACK_REFERENCES.test(this.source);
-        // console.log('input: ' + regExpSource + ' => ' + this.source + ', ' + this.hasAnchor);
+        console.log('input: ' + regExpSource + ' => ' + this.source + ', ' + this.hasAnchor);
     }
     RegExpSource.prototype.clone = function () {
         return new RegExpSource(this.source, this.ruleId, true);
