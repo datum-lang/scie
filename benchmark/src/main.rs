@@ -8,8 +8,12 @@ use std::time::SystemTime;
 use scie_grammar::grammar::{Grammar, StackElement};
 
 fn main() {
-    let mut root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).parent().unwrap().to_path_buf();
-    let lang_spec_dir = root_dir.clone()
+    let mut root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .unwrap()
+        .to_path_buf();
+    let lang_spec_dir = root_dir
+        .clone()
         .join("extensions")
         .join("json")
         .join("syntaxes")
@@ -45,18 +49,4 @@ fn read_code(lang_test_dir: &PathBuf) -> String {
     let mut code = String::new();
     file.read_to_string(&mut code).unwrap();
     code
-}
-
-// https://github.com/rust-lang/cargo/issues/2841
-fn get_target_dir() -> PathBuf {
-    let bin = env::current_exe().expect("exe path");
-    let mut target_dir = PathBuf::from(bin.parent().expect("bin parent"));
-    while target_dir.file_name() != Some(OsStr::new("target")) {
-        target_dir.pop();
-    }
-    target_dir
-}
-
-fn get_top_dir<'a>(target_dir: &'a Path) -> &'a Path {
-    target_dir.parent().expect("target parent")
 }

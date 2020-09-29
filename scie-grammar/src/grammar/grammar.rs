@@ -509,12 +509,16 @@ impl Grammar {
                     }
 
                     if r.capture_indices.len() > 0 {
-                        line_tokens.produce(&mut while_rule.stack, r.capture_indices[0].start as i32);
-                        Grammar::handle_captures(self, line_text.clone(), is_first_line,
-                                                 &mut *while_rule.stack,
-                                                 &mut line_tokens,
-                                                 while_rule.rule.while_captures.clone(),
-                                                 r.capture_indices.clone(),
+                        line_tokens
+                            .produce(&mut while_rule.stack, r.capture_indices[0].start as i32);
+                        Grammar::handle_captures(
+                            self,
+                            line_text.clone(),
+                            is_first_line,
+                            &mut *while_rule.stack,
+                            &mut line_tokens,
+                            while_rule.rule.while_captures.clone(),
+                            r.capture_indices.clone(),
                         );
                         line_tokens.produce(&mut while_rule.stack, r.capture_indices[0].end as i32);
                         anchor_position = r.capture_indices[0].end.clone() as i32;
@@ -695,10 +699,10 @@ mod tests {
     use std::io::Write;
 
     use crate::grammar::grammar::{to_grammar_for_test, to_grammar_with_code};
+    use crate::grammar::line_tokens::IToken;
     use crate::grammar::{Grammar, StackElement};
     use crate::rule::abstract_rule::RuleEnum;
     use crate::rule::IRuleRegistry;
-    use crate::grammar::line_tokens::IToken;
 
     #[test]
     fn should_build_grammar_json() {
@@ -800,7 +804,6 @@ hellomake: $(OBJ)
         let x: Vec<String> = tokens.iter().map(|token| token.len().to_string()).collect();
         assert_eq!(String::from("3,3,4,4,1,9,14,1,4,14"), x.join(","));
     }
-
 
     pub fn get_all_tokens(grammar_path: &str, code: &str) -> Vec<Vec<IToken>> {
         let mut grammar = to_grammar_for_test(grammar_path);
