@@ -19,6 +19,4 @@ members = [
  "scie-grammar",
  "onigvs",
  "benchmark",
- "onigdemo",
- "scie-regex"
 ]
