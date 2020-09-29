@@ -589,7 +589,7 @@ impl Grammar {
         self.tokenize(line_text, prev_state, false)
     }
 
-    pub fn to_grammar(grammar_path: &str) -> Grammar {
+    pub fn from_file(grammar_path: &str) -> Grammar {
         let path = Path::new(grammar_path);
         let mut file = File::open(path).unwrap();
         let mut data = String::new();
@@ -673,7 +673,7 @@ pub fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
 #[cfg(test)]
 mod tests {
     use std::fs::File;
-    use std::io::{Read, Write};
+    use std::io::{Write};
 
     use crate::grammar::grammar::{to_grammar_for_test, to_grammar_with_code};
     use crate::grammar::{Grammar, StackElement};

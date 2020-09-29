@@ -20,7 +20,7 @@ fn main() {
 
     let code = read_code(&lang_test_dir);
 
-    let mut grammar = Grammar::to_grammar(lang_spec_dir.to_str().unwrap());
+    let mut grammar = Grammar::from_file(lang_spec_dir.to_str().unwrap());
 
     let mut rule_stack = Some(StackElement::null());
 

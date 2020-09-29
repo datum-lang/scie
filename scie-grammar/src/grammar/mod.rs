@@ -31,7 +31,7 @@ mod tests {
         path.push("test-cases/e2e/makefile/Makefile");
 
         let code = fs::read_to_string(path).unwrap();
-        let mut grammar =
+        let grammar =
             to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", &*code);
     }
 }
