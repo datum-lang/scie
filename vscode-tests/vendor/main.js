@@ -3159,6 +3159,8 @@ var RegExpSource = /** @class */ (function () {
         return new RegExpSource(this.source, this.ruleId, true);
     };
     RegExpSource.prototype.setSource = function (newSource) {
+        console.log("setSource: "  + newSource);
+
         if (this.source === newSource) {
             return;
         }
@@ -3168,6 +3170,7 @@ var RegExpSource = /** @class */ (function () {
         }
     };
     RegExpSource.prototype.resolveBackReferences = function (lineText, captureIndices) {
+        console.log("resolveBackReferences");
         var capturedValues = captureIndices.map(function (capture) {
             return lineText.substring(capture.start, capture.end);
         });

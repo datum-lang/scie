@@ -45,13 +45,13 @@ registry.loadGrammar('source.json').then(grammar => {
     for (let i = 0; i < text.length; i++) {
         const line = text[i];
         const lineTokens = grammar.tokenizeLine(line, ruleStack);
-        for (let j = 0; j < lineTokens.tokens.length; j++) {
-            const token = lineTokens.tokens[j];
-            console.log(` - token from ${token.startIndex} to ${token.endIndex} ` +
-                `(${line.substring(token.startIndex, token.endIndex)}) ` +
-                `with scopes ${token.scopes.join(', ')}`
-            );
-        }
+        // for (let j = 0; j < lineTokens.tokens.length; j++) {
+        //     const token = lineTokens.tokens[j];
+        //     console.log(` - token from ${token.startIndex} to ${token.endIndex} ` +
+        //         `(${line.substring(token.startIndex, token.endIndex)}) ` +
+        //         `with scopes ${token.scopes.join(', ')}`
+        //     );
+        // }
         // console.log(ruleStack.ruleId);
         ruleStack = lineTokens.ruleStack;
     }

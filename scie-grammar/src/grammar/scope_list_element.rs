@@ -4,8 +4,6 @@ use crate::grammar::Grammar;
 pub struct ScopeListElement {
     pub parent: Option<Box<ScopeListElement>>,
     pub scope: String,
-    // todo: remove stringify
-    pub stringify: String,
     // pub metadata: i32,
 }
 
@@ -14,14 +12,8 @@ impl ScopeListElement {
         let mut list_element = ScopeListElement {
             parent,
             scope,
-            stringify: String::from(""),
         };
-        list_element.stringify = list_element.clone().stringify();
         list_element
-    }
-
-    pub fn stringify(self) -> String {
-        serde_json::to_string(&self).unwrap()
     }
 
     pub fn generate_scopes(&self) -> Vec<String> {
@@ -74,8 +66,7 @@ impl Default for ScopeListElement {
     fn default() -> Self {
         ScopeListElement {
             parent: None,
-            scope: "".to_string(),
-            stringify: "".to_string(),
+            scope: "".to_string()
         }
     }
 }

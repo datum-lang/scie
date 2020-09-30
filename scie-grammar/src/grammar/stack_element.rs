@@ -19,8 +19,6 @@ pub struct StackElement {
     pub name_scopes_list: ScopeListElement,
     #[serde(rename = "contentNameScopesList")]
     pub content_name_scopes_list: ScopeListElement,
-    // todo: remove stringify
-    pub stringify: String,
 }
 
 impl StackElement {
@@ -35,7 +33,6 @@ impl StackElement {
             end_rule: None,
             name_scopes_list: Default::default(),
             content_name_scopes_list: Default::default(),
-            stringify: "".to_string(),
         }
     }
 
@@ -71,11 +68,9 @@ impl StackElement {
             begin_rule_captured_eol,
             end_rule,
             name_scopes_list,
-            content_name_scopes_list,
-            stringify: "".to_string(),
+            content_name_scopes_list
         };
 
-        element.stringify = element.clone().stringify();
         element
     }
 
