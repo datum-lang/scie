@@ -18,8 +18,8 @@ fn main() {
         .join("syntaxes")
         .join("JSON.tmLanguage.json");
     let lang_test_dir = root_dir
-        .join("benchmark")
         .join("fixtures")
+        .join("tmlanguage")
         .join("JavaScript.tmLanguage.json.txt");
     let code = read_code(&lang_test_dir);
 
