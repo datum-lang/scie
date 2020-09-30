@@ -418,7 +418,6 @@ impl Grammar {
                         line_tokens,
                         false,
                     );
-                    // todo: find the next_text_not_switch_issues
                     continue;
                 }
 

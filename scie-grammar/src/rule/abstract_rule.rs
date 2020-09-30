@@ -40,7 +40,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
             return name;
         }
 
-        println!("todo: AbstractRule.get_name");
+        panic!("todo: AbstractRule.get_name");
         return Some(String::from(""));
     }
 

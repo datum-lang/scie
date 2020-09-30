@@ -113,7 +113,7 @@ impl StackElement {
             return self;
         }
 
-        println!("todo: set_content_name_scopes_list");
+        panic!("todo: set_content_name_scopes_list");
         return self;
     }
 

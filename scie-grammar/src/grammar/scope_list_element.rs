@@ -63,7 +63,7 @@ impl ScopeListElement {
         return match scope.iter().position(|s| s == " ") {
             None => ScopeListElement::_push(self.clone(), grammar, vec![scope_name]),
             Some(_) => {
-                println!("todo: ScopeListElement push");
+                panic!("todo: ScopeListElement push");
                 self.clone()
             }
         };
