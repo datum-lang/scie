@@ -20,4 +20,33 @@ pub struct MatchRuleResult {
 }
 
 #[cfg(test)]
-mod tests {}
+mod tests {
+    use crate::grammar::grammar::to_grammar_with_code;
+    use std::path::PathBuf;
+    use std::fs::File;
+    use std::io::Read;
+
+    fn read_code(lang_test_dir: &PathBuf) -> String {
+        let mut file = File::open(lang_test_dir).unwrap();
+        let mut code = String::new();
+        file.read_to_string(&mut code).unwrap();
+        code
+    }
+
+    #[test]
+    fn should_build_from_simple_json() {
+        let code = "";
+        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).parent().unwrap().to_path_buf();
+        let lang_test_dir = root_dir
+            .join("scie-grammar")
+            .join("test-cases")
+            .join("e2e")
+            .join("json")
+            .join("simple-json.json");
+        let code = read_code(&lang_test_dir);
+
+        let mut grammar =
+            to_grammar_with_code("test-cases/first-mate/fixtures/json.json", &*code);
+        assert_eq!(grammar.rule_id2desc.len(), 22);
+    }
+}
