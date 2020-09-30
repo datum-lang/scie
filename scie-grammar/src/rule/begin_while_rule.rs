@@ -31,15 +31,10 @@ impl BeginWhileRule {
         content_name: Option<String>,
         _begin: Option<String>,
         begin_captures: Vec<Box<dyn AbstractRule>>,
-        _while: Option<String>,
+        _while: String,
         while_captures: Vec<Box<dyn AbstractRule>>,
         patterns: ICompilePatternsResult,
     ) -> BeginWhileRule {
-        let mut while_str = String::from("");
-        if let Some(str) = _while {
-            while_str = str;
-        }
-
         BeginWhileRule {
             rule: Rule {
                 _type: String::from("BeginWhileRule"),
@@ -50,7 +45,7 @@ impl BeginWhileRule {
             },
             _begin: RegExpSource::new(_begin.unwrap().clone(), id.clone()),
             begin_captures,
-            _while: RegExpSource::new(while_str, -2),
+            _while: RegExpSource::new(_while, -2),
             while_captures,
             apply_end_pattern_last: false,
             has_missing_patterns: patterns.clone().has_missing_patterns,

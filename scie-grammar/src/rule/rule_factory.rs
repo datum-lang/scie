@@ -301,7 +301,7 @@ impl RuleFactory {
                     desc.content_name.clone(),
                     desc.begin,
                     begin_rule_factory,
-                    desc.end,
+                    desc.while_s.unwrap(),
                     end_rule_factory,
                     pattern_factory,
                 );

@@ -470,9 +470,9 @@ impl Grammar {
         let mut node = stack.clone();
         while has_node {
             let rule = node.clone().get_rule(self);
-            if let RuleEnum::BeginWhileRule(begin_rule) = rule.get_rule_instance() {
+            if let RuleEnum::BeginWhileRule(begin_while_rule) = rule.get_rule_instance() {
                 while_rules.push(CheckWhileRuleResult {
-                    rule: Box::from(begin_rule),
+                    rule: Box::from(begin_while_rule),
                     stack: Box::from(node.clone()),
                 })
             }
@@ -804,7 +804,7 @@ hellomake: $(OBJ)
         let tokens = get_all_tokens("test-cases/first-mate/fixtures/makefile.json", code.clone());
         assert_eq!(10, tokens.len());
         let x: Vec<String> = tokens.iter().map(|token| token.len().to_string()).collect();
-        assert_eq!(String::from("3,3,4,4,1,9,14,1,4,14"), x.join(","));
+        assert_eq!(String::from("3,3,4,4,1,9,14,1,6,14"), x.join(","));
     }
 
     pub fn get_all_tokens(grammar_path: &str, code: &str) -> Vec<Vec<IToken>> {
