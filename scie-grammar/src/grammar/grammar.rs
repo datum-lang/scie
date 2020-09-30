@@ -485,9 +485,9 @@ impl Grammar {
             }
         }
 
-        for mut while_rule in while_rules.clone() {
+        for mut while_rule in while_rules {
             let allow_g = anchor_position == line_pos;
-            let mut rule_scanner = while_rule.clone().rule.compile_while(
+            let mut rule_scanner = while_rule.rule.compile_while(
                 self,
                 while_rule.clone().stack.end_rule,
                 is_first_line,
@@ -503,7 +503,9 @@ impl Grammar {
                     break;
                 }
                 Some(r) => {
-                    if rule_scanner.rules[r.index] != -2 {
+                    let matched_rule_id = rule_scanner.rules[r.index];
+                    if matched_rule_id != -2 {
+                        // we shouldn't end up here
                         stack = while_rule.stack.pop().unwrap();
                         break;
                     }
