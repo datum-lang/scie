@@ -49,7 +49,7 @@ mod tests {
         let code = read_code(&lang_test_dir);
 
         let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", &*code);
-        assert_eq!(grammar.rule_id2desc.len(), 22);
+        assert_eq!(grammar.rule_id2desc.len(), 82);
     }
 
     #[test]

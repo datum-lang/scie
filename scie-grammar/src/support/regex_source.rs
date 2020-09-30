@@ -17,11 +17,13 @@ impl RegexSource {
     }
 
     pub fn replace_captures(
-        _regex_source: String,
-        _capture_source: String,
-        _capture_indices: Vec<IOnigCaptureIndex>,
-    ) -> String {
-        String::from("")
+        regex_source: String,
+        capture_source: String,
+        capture_indices: Vec<IOnigCaptureIndex>,
+    ) {
+        let capturing_regex_source = r"\$(\d+)|\$\{(\d+):/(downcase|upcase)\}";
+        println!("{:?}", regex_source);
+        println!("......");
     }
 }
 
