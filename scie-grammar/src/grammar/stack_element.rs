@@ -68,7 +68,7 @@ impl StackElement {
             begin_rule_captured_eol,
             end_rule,
             name_scopes_list,
-            content_name_scopes_list
+            content_name_scopes_list,
         };
 
         element

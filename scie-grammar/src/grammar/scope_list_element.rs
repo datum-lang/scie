@@ -9,10 +9,7 @@ pub struct ScopeListElement {
 
 impl ScopeListElement {
     pub fn new(parent: Option<Box<ScopeListElement>>, scope: String) -> Self {
-        let mut list_element = ScopeListElement {
-            parent,
-            scope,
-        };
+        let mut list_element = ScopeListElement { parent, scope };
         list_element
     }
 
@@ -66,7 +63,7 @@ impl Default for ScopeListElement {
     fn default() -> Self {
         ScopeListElement {
             parent: None,
-            scope: "".to_string()
+            scope: "".to_string(),
         }
     }
 }

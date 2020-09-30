@@ -1,7 +1,7 @@
 use std::env;
 use std::fs::File;
 use std::io::Read;
-use std::path::{PathBuf};
+use std::path::PathBuf;
 use std::time::SystemTime;
 
 use scie_grammar::grammar::{Grammar, StackElement};
