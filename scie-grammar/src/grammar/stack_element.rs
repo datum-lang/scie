@@ -109,7 +109,7 @@ impl StackElement {
         }
 
         panic!("todo: set_content_name_scopes_list");
-        return self;
+        // return self;
     }
 
     pub fn reset(&mut self) {

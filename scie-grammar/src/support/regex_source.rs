@@ -26,9 +26,8 @@ impl RegexSource {
         let expr2 = r"\$(?P<index>\d+)|\$\{(?P<commandIndex>\d+):/(?P<command>downcase|upcase)\}";
         let re = Regex::new(expr2).unwrap();
 
-        let caps = re.captures(&*regex_source);
-        if let Some(capts) = caps {
-            let mut capture_str = "";
+        let res = re.replace_all(&*regex_source, |capts: &Captures| {
+            let mut capture_str;
             if capts.name("index").is_none() {
                 capture_str = &capts["commandIndex"];
             } else {
@@ -36,33 +35,36 @@ impl RegexSource {
             }
             let capture_index = (capture_str).parse::<usize>().unwrap();
             if capture_index > capture_indices.len() {
-                return capts[0].to_string();
+                return format!("{}", "aa");
             }
-
             let capture: IOnigCaptureIndex = capture_indices[capture_index].clone();
             let mut result = &capture_source[capture.start..capture.end];
             while result.as_bytes()[0] as char == '.' {
                 result = &result.clone()[1..result.len()];
             }
 
+            let mut command;
             if capts.name("command").is_none() {
+                command = String::from(result);
                 return String::from(result);
             }
 
-            return match &capts["command"] {
+             match &capts["command"] {
                 "downcase" => {
-                    result.to_uppercase()
+                    command = result.to_uppercase();
                 }
                 "lowcase" => {
-                    result.to_lowercase()
+                    command = result.to_lowercase();
                 }
                 _ => {
-                    String::from(result)
+                    command = String::from(result);
                 }
-            }
-        }
+            };
 
-        return String::from("");
+            return command;
+        });
+
+        return String::from(res);
     }
 }
 
@@ -70,7 +72,6 @@ impl RegexSource {
 mod tests {
     use crate::support::regex_source::RegexSource;
     use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
-    use crate::registry::grammar_registry::StandardTokenType::RegEx;
 
     #[test]
     fn should_replace_captures_for_upcase() {

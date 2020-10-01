@@ -54,7 +54,6 @@ mod tests {
 
     #[test]
     fn should_build_from_simple_json() {
-        let code = "";
         let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .parent()
             .unwrap()

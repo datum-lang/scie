@@ -53,7 +53,7 @@ impl ScopeListElement {
             None => ScopeListElement::_push(self.clone(), grammar, vec![scope_name]),
             Some(_) => {
                 panic!("todo: ScopeListElement push");
-                self.clone()
+                // self.clone()
             }
         };
     }
