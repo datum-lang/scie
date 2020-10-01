@@ -6,6 +6,9 @@ goal: build a better code figure engine for code refactoring.
 
 Todo:
 
+ - [ ] process todo
+    - [ ] back references
+    - [ ] multiple languages
  - [ ] rewrite VSCode-textmate with Rust
     - [ ] language for testing
        - [ ] makefile
