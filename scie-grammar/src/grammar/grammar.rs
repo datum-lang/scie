@@ -754,8 +754,8 @@ return 0;
     }
 
     #[test]
-    fn should_build_html_grammar() {
-        let code = "<html><html>";
+    fn should_build_html_grammar_for_back_refs() {
+        let code = "<html></html>";
         let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/html.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 101);
         // debug_output(&grammar, String::from("program.json"));
