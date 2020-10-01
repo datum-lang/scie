@@ -1,6 +1,6 @@
 use crate::scanner::onig_string::OnigString;
 use crate::scanner::utf_string::UtfString;
-use onigvs::{
+use scie_onig::{
     createOnigScanner, findNextOnigScannerMatch, freeOnigScanner, OnigScanner, MAX_REGIONS,
 };
 use std::os::raw::c_int;

@@ -2,7 +2,7 @@
 extern crate serde_derive;
 
 extern crate libc;
-extern crate onigvs;
+extern crate scie_onig;
 
 #[cfg(not(feature = "generate"))]
 #[allow(non_upper_case_globals)]

@@ -17,6 +17,6 @@ path = "scie-scanner"
 [workspace]
 members = [
  "scie-grammar",
- "onigvs",
+ "scie-onig",
  "benchmark",
 ]
