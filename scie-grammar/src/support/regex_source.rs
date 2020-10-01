@@ -1,6 +1,5 @@
 use regex::{Regex, Captures};
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
-use std::num::ParseIntError;
 
 pub struct RegexSource {}
 
@@ -27,7 +26,7 @@ impl RegexSource {
         let re = Regex::new(expr2).unwrap();
 
         let res = re.replace_all(&*regex_source, |capts: &Captures| {
-            let mut capture_str;
+            let capture_str;
             if capts.name("index").is_none() {
                 capture_str = &capts["commandIndex"];
             } else {
@@ -35,17 +34,17 @@ impl RegexSource {
             }
             let capture_index = (capture_str).parse::<usize>().unwrap();
             if capture_index > capture_indices.len() {
-                return format!("{}", "aa");
+                return regex_source.clone();
             }
+
             let capture: IOnigCaptureIndex = capture_indices[capture_index].clone();
             let mut result = &capture_source[capture.start..capture.end];
             while result.as_bytes()[0] as char == '.' {
                 result = &result.clone()[1..result.len()];
             }
 
-            let mut command;
+            let command;
             if capts.name("command").is_none() {
-                command = String::from(result);
                 return String::from(result);
             }
 

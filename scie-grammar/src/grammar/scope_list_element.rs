@@ -9,8 +9,7 @@ pub struct ScopeListElement {
 
 impl ScopeListElement {
     pub fn new(parent: Option<Box<ScopeListElement>>, scope: String) -> Self {
-        let mut list_element = ScopeListElement { parent, scope };
-        list_element
+        ScopeListElement { parent, scope }
     }
 
     pub fn generate_scopes(&self) -> Vec<String> {

@@ -59,7 +59,8 @@ impl StackElement {
         if let Some(iparent) = parent.clone() {
             depth = iparent.depth + 1
         }
-        let mut element = StackElement {
+
+        StackElement {
             parent,
             depth,
             rule_id,
@@ -69,9 +70,7 @@ impl StackElement {
             end_rule,
             name_scopes_list,
             content_name_scopes_list,
-        };
-
-        element
+        }
     }
 
     pub fn stringify(self) -> String {

@@ -35,7 +35,6 @@ mod tests {
 
     #[test]
     fn should_build_oniguruma_makefile() {
-        let code = "";
         let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .parent()
             .unwrap()
@@ -48,7 +47,7 @@ mod tests {
             .join("Makefile");
         let code = read_code(&lang_test_dir);
 
-        let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", &*code);
+        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 82);
     }
 
@@ -66,7 +65,7 @@ mod tests {
             .join("simple-json.json");
         let code = read_code(&lang_test_dir);
 
-        let mut grammar = to_grammar_with_code("test-cases/first-mate/fixtures/json.json", &*code);
+        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/json.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 22);
     }
 }
