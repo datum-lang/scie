@@ -29,7 +29,6 @@ fn main() {
     let start = SystemTime::now();
 
     for line in code.lines() {
-        // println!("{:?}", line);
         let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
         rule_stack = *result.rule_stack;
     }

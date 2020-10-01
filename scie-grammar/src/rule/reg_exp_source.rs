@@ -128,7 +128,7 @@ impl RegExpSourceList {
     fn resolve_anchors(&self, allow_a: bool, allow_g: bool) -> Box<CompiledRule> {
         let mut reg_exps = vec![];
         let mut rules = vec![];
-        for x in self._items.clone() {
+        for x in self._items.iter() {
             reg_exps.push(x.resolve_anchors(allow_a, allow_g));
             rules.push(x.rule_id);
         }
