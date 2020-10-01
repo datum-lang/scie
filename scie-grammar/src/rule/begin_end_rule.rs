@@ -118,7 +118,7 @@ impl AbstractRule for BeginEndRule {
         if let None = self._cached_compiled_patterns {
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
             if self.apply_end_pattern_last {
-                cached_compiled_patterns.unshift(Box::new(self._end.clone()));
+                cached_compiled_patterns.push(Box::new(self._end.clone()));
             } else {
                 cached_compiled_patterns.unshift(Box::new(self._end.clone()));
             }
