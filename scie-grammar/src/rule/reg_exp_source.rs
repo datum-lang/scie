@@ -141,6 +141,35 @@ impl RegExpSourceList {
 
         Box::from(CompiledRule::new(reg_exps, rules))
     }
+
+    pub fn length(&self) -> usize {
+        return self._items.len()
+    }
+
+    pub fn dispose_caches(&mut self) {
+        if self._cached.is_some() {
+            self._cached = None;
+        }
+        if self._anchor_cache.a0_g0.is_some() {
+            self._anchor_cache.a0_g0 = None;
+        }
+        if self._anchor_cache.a0_g1.is_some() {
+            self._anchor_cache.a0_g1 = None;
+        }
+        if self._anchor_cache.a1_g0.is_some() {
+            self._anchor_cache.a1_g0 = None;
+        }
+        if self._anchor_cache.a1_g1.is_some() {
+            self._anchor_cache.a1_g1 = None;
+        }
+    }
+
+    pub fn set_source(&mut self, index: usize, new_source: String) {
+        if self._items[index].source != new_source {
+           self.dispose_caches();
+            self._items[index].set_source(new_source);
+        }
+    }
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -286,6 +315,18 @@ impl RegExpSource {
             } else {
                 return cached.a0_g0.clone();
             }
+        }
+    }
+
+    fn set_source(&mut self, new_source: String) {
+        if self.source == new_source {
+            return;
+        }
+
+        self.source = new_source;
+
+        if self.has_anchor {
+            self._anchor_cache = Some(Box::from(self.build_cache()));
         }
     }
 }

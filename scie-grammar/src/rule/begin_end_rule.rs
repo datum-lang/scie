@@ -15,8 +15,7 @@ pub struct BeginEndRule {
     pub _end: RegExpSource,
     pub end_has_back_references: bool,
     pub end_captures: Vec<Box<dyn AbstractRule>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub apply_end_pattern_last: Option<bool>,
+    pub apply_end_pattern_last: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub _cached_compiled_patterns: Option<RegExpSourceList>,
     pub patterns: Vec<i32>,
@@ -37,6 +36,14 @@ impl BeginEndRule {
         patterns: ICompilePatternsResult,
     ) -> BeginEndRule {
         let end = RegExpSource::new(_end.clone(), -1);
+
+        let apply_end;
+        if apply_end_pattern_last.is_none() {
+            apply_end = false;
+        } else {
+            apply_end = apply_end_pattern_last.unwrap()
+        }
+
         BeginEndRule {
             rule: Rule {
                 _type: String::from("BeginEndRule"),
@@ -47,11 +54,10 @@ impl BeginEndRule {
             },
             _begin: RegExpSource::new(begin.clone(), id.clone()),
             begin_captures,
-            // todo new RegExpSource(end ? end : '\uFFFF', -1);
             end_has_back_references: end.has_back_references.clone(),
             _end: end,
             end_captures,
-            apply_end_pattern_last,
+            apply_end_pattern_last: apply_end,
             has_missing_patterns: patterns.clone().has_missing_patterns,
             patterns: patterns.patterns,
             _cached_compiled_patterns: None,
@@ -63,9 +69,11 @@ impl AbstractRule for BeginEndRule {
     fn id(&self) -> i32 {
         self.rule.id
     }
+
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }
+
     fn get_rule(&self) -> Rule {
         self.rule.clone()
     }
@@ -77,6 +85,7 @@ impl AbstractRule for BeginEndRule {
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns
     }
+
     fn patterns_length(&self) -> i32 {
         self.patterns.clone().len() as i32
     }
@@ -90,14 +99,6 @@ impl AbstractRule for BeginEndRule {
         if is_first {
             for x in self.patterns.clone() {
                 let mut rule = grammar.get_rule(x);
-                // match rule.get_rule_instance() {
-                //     RuleEnum::BeginEndRule(rule) => {println!("{:?}", rule)},
-                //     RuleEnum::BeginWhileRule(rule) => {println!("{:?}", rule)},
-                //     RuleEnum::CaptureRule(rule) => {println!("{:?}", rule)},
-                //     RuleEnum::MatchRule(rule) => {println!("{:?}", rule)},
-                //     RuleEnum::EmptyRule(rule) => {println!("{:?}", rule)},
-                //     RuleEnum::IncludeOnlyRule(rule) => {println!("{:?}", rule)},
-                // }
                 rule.collect_patterns_recursive(grammar, &mut out, false);
             }
         } else {
@@ -108,7 +109,7 @@ impl AbstractRule for BeginEndRule {
     fn compile(
         &mut self,
         grammar: &mut Grammar,
-        _end_regex_source: Option<String>,
+        end_regex_source: Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
@@ -116,12 +117,8 @@ impl AbstractRule for BeginEndRule {
 
         if let None = self._cached_compiled_patterns {
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
-            if let Some(apply_end) = self.apply_end_pattern_last {
-                if apply_end {
-                    cached_compiled_patterns.push(Box::new(self._end.clone()));
-                } else {
-                    cached_compiled_patterns.unshift(Box::new(self._end.clone()));
-                }
+            if self.apply_end_pattern_last {
+                cached_compiled_patterns.unshift(Box::new(self._end.clone()));
             } else {
                 cached_compiled_patterns.unshift(Box::new(self._end.clone()));
             }
@@ -129,8 +126,15 @@ impl AbstractRule for BeginEndRule {
             cached_compiled_patterns = self._cached_compiled_patterns.as_ref().unwrap().clone();
         }
 
-        // self._end.has_anchor
-        // println!("todo: support for hasBackReferences");
+
+        if self._end.has_back_references {
+            if self.apply_end_pattern_last {
+                cached_compiled_patterns.set_source(cached_compiled_patterns.length() - 1, end_regex_source.unwrap())
+            } else {
+                cached_compiled_patterns.set_source(0, end_regex_source.unwrap())
+            }
+        }
+
         let compiled_rule = cached_compiled_patterns.compile(grammar, allow_a, allow_g);
         self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
         *compiled_rule
