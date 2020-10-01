@@ -114,18 +114,15 @@ impl AbstractRule for BeginEndRule {
         allow_g: bool,
     ) -> CompiledRule {
         let mut cached_compiled_patterns = RegExpSourceList::new();
-
-        if let None = self._cached_compiled_patterns {
+        if self._cached_compiled_patterns.is_none() {
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
+
             if self.apply_end_pattern_last {
                 cached_compiled_patterns.push(Box::new(self._end.clone()));
             } else {
                 cached_compiled_patterns.unshift(Box::new(self._end.clone()));
             }
-        } else {
-            cached_compiled_patterns = self._cached_compiled_patterns.as_ref().unwrap().clone();
         }
-
 
         if self._end.has_back_references {
             if self.apply_end_pattern_last {
