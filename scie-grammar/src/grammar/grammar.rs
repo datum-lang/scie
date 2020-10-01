@@ -685,7 +685,7 @@ pub fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
                 .collect();
             let token_str: String = token.scopes.join(", ");
             println!(
-                " - token from {:?} to {:?} ({:?}) with scopes {:?}",
+                " - token from {} to {} ({}) with scopes {}",
                 token.start_index, token.end_index, new_line, token_str
             )
         }

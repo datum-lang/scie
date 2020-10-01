@@ -6,7 +6,7 @@
 		"OCamlMakefile",
 		"mk"
 	],
-	"name": "Makefile",
+	"name": "source.makefile",
 	"patterns": [
 		{
 			"include": "#comment"
