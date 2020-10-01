@@ -203,8 +203,7 @@ impl RegExpSource {
         reg_exp_source._anchor_cache = Some(Box::from(cache));
 
         if HAS_BACK_REFERENCES.is_match(reg_exp_source.source.clone().as_str()) {
-            println!("HAS_BACK_REFERENCES: {:?}", reg_exp_source.source.clone());
-            panic!("HAS_BACK_REFERENCES")
+            reg_exp_source.has_back_references = true;
         }
 
         reg_exp_source
@@ -341,5 +340,11 @@ mod tests {
         assert_eq!("(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)", cache.a0_g1);
         assert_eq!("(^[ ]*|\\￿\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)", cache.a1_g0);
         assert_eq!("(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)", cache.a1_g1);
+    }
+
+    #[test]
+    fn should_return_true_when_has_back_refs() {
+        let source = RegExpSource::new(String::from("(>(<)/)(\\2)(>)"), 1);
+        assert_eq!(true, source.has_back_references);
     }
 }

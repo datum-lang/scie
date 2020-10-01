@@ -758,7 +758,7 @@ return 0;
         let code = "<html><html>";
         let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/html.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 101);
-        debug_output(&grammar, String::from("program.json"));
+        // debug_output(&grammar, String::from("program.json"));
     }
 
     #[test]
