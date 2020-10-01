@@ -814,7 +814,7 @@ hellomake: $(OBJ)
 
         for line in c_code.lines() {
             let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
-            println!("{:?}", rule_stack.unwrap().rule_id.clone());
+            // println!("{:?}", rule_stack.unwrap().rule_id.clone());
             rule_stack = *result.rule_stack;
             all_tokens.push(result.tokens);
         }
