@@ -1,5 +1,6 @@
-use regex::Regex;
+use regex::{Regex, Captures};
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
+use std::num::ParseIntError;
 
 pub struct RegexSource {}
 
@@ -20,16 +21,70 @@ impl RegexSource {
         regex_source: String,
         capture_source: String,
         capture_indices: Vec<IOnigCaptureIndex>,
-    ) {
-        let capturing_regex_source = r"\$(\d+)|\$\{(\d+):/(downcase|upcase)\}";
-        println!("{:?}", regex_source);
-        println!("......");
+    ) -> String {
+        //  origin match strings: r"\$(\d+)|\$\{(\d+):/(downcase|upcase)\}";
+        let expr2 = r"\$(?P<index>\d+)|\$\{(?P<commandIndex>\d+):/(?P<command>downcase|upcase)\}";
+        let re = Regex::new(expr2).unwrap();
+
+        let caps = re.captures(&*regex_source);
+        if let Some(capts) = caps {
+            let mut capture_str = "";
+            if capts.name("index").is_none() {
+                capture_str = &capts["commandIndex"];
+            } else {
+                capture_str = &capts["index"];
+            }
+            let capture_index = (capture_str).parse::<usize>().unwrap();
+            if capture_index > capture_indices.len() {
+                return capts[0].to_string();
+            }
+
+            let capture: IOnigCaptureIndex = capture_indices[capture_index].clone();
+            let mut result = &capture_source[capture.start..capture.end];
+            while result.as_bytes()[0] as char == '.' {
+                result = &result.clone()[1..result.len()];
+            }
+
+            if capts.name("command").is_none() {
+                return String::from(result);
+            }
+
+            return match &capts["command"] {
+                "downcase" => {
+                    result.to_uppercase()
+                }
+                "lowcase" => {
+                    result.to_lowercase()
+                }
+                _ => {
+                    String::from(result)
+                }
+            }
+        }
+
+        return String::from("");
     }
 }
 
 #[cfg(test)]
 mod tests {
     use crate::support::regex_source::RegexSource;
+    use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
+    use crate::registry::grammar_registry::StandardTokenType::RegEx;
+
+    #[test]
+    fn should_replace_captures_for_upcase() {
+        let source = String::from("support.function.target.$1.makefile");
+        let capture_source = String::from(".SUFFIXES");
+
+        let mut capture_indices = vec![];
+        capture_indices.push(IOnigCaptureIndex { start: 0, end: 9, length: 9 });
+        capture_indices.push(IOnigCaptureIndex { start: 0, end: 9, length: 9 });
+        capture_indices.push(IOnigCaptureIndex { start: 1, end: 9, length: 8 });
+
+        let string = RegexSource::replace_captures(source, capture_source, capture_indices);
+        assert_eq!("support.function.target.SUFFIXES.makefile", string);
+    }
 
     #[test]
     fn should_return_true_when_has_captures() {
