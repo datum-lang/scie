@@ -3,15 +3,16 @@ use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
 pub struct RegexSource {}
 
+lazy_static! {
+    static ref CAPTURING_REGEX_SOURCE: Regex = Regex::new(r"\$(?P<index>\d+)|\$\{(?P<commandIndex>\d+):/(?P<command>downcase|upcase)\}").unwrap();
+}
+
 impl RegexSource {
     pub fn has_captures(regex_source: Option<String>) -> bool {
-        let capturing_regex_source = r"\$(\d+)|\$\{(\d+):/(downcase|upcase)\}";
-
         match regex_source {
             None => false,
             Some(source) => {
-                let re = Regex::new(capturing_regex_source).unwrap();
-                re.is_match(source.as_str())
+                CAPTURING_REGEX_SOURCE.is_match(source.as_str())
             }
         }
     }
@@ -21,11 +22,7 @@ impl RegexSource {
         capture_source: String,
         capture_indices: Vec<IOnigCaptureIndex>,
     ) -> String {
-        //  origin match strings: r"\$(\d+)|\$\{(\d+):/(downcase|upcase)\}";
-        let expr2 = r"\$(?P<index>\d+)|\$\{(?P<commandIndex>\d+):/(?P<command>downcase|upcase)\}";
-        let re = Regex::new(expr2).unwrap();
-
-        let res = re.replace_all(&*regex_source, |capts: &Captures| {
+        let res = CAPTURING_REGEX_SOURCE.replace_all(&*regex_source, |capts: &Captures| {
             let capture_str;
             if capts.name("index").is_none() {
                 capture_str = &capts["commandIndex"];

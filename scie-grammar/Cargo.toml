@@ -18,5 +18,7 @@ dyn-clone = "1.0"
 
 regex = "1"
 
+lazy_static = "1.4.0"
+
 [dependencies.scie_scanner]
 path = "../scie-scanner"
