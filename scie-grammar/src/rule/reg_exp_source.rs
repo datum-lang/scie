@@ -1,5 +1,11 @@
 use crate::grammar::Grammar;
 use crate::rule::CompiledRule;
+use regex::{Regex};
+
+lazy_static! {
+    static ref HAS_BACK_REFERENCES: Regex = Regex::new(r"\\(\d+)").unwrap();
+    static ref BACK_REFERENCING_END: Regex = Regex::new(r"\\(\d+)").unwrap();
+}
 
 #[derive(Clone, Debug, Serialize)]
 pub struct IRegExpSourceListAnchorCache {
@@ -142,7 +148,8 @@ pub struct RegExpSource {
     pub source: String,
     pub rule_id: i32,
     pub has_anchor: bool,
-    pub _anchor_cache: Option<Box<AnchorCache>>,
+    _anchor_cache: Option<Box<AnchorCache>>,
+    pub has_back_references: bool,
 }
 
 impl RegExpSource {
@@ -189,10 +196,16 @@ impl RegExpSource {
             rule_id,
             has_anchor,
             _anchor_cache: anchor_cache,
+            has_back_references: false
         };
 
         let cache = reg_exp_source.build_cache();
         reg_exp_source._anchor_cache = Some(Box::from(cache));
+
+        if HAS_BACK_REFERENCES.is_match(reg_exp_source.source.clone().as_str()) {
+            println!("HAS_BACK_REFERENCES: {:?}", reg_exp_source.source.clone());
+            panic!("HAS_BACK_REFERENCES")
+        }
 
         reg_exp_source
     }
