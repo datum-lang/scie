@@ -1,4 +1,4 @@
-use regex::{Regex, Captures};
+use regex::{Captures, Regex};
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
 pub struct RegexSource {}
@@ -48,7 +48,7 @@ impl RegexSource {
                 return String::from(result);
             }
 
-             match &capts["command"] {
+            match &capts["command"] {
                 "downcase" => {
                     command = result.to_uppercase();
                 }
@@ -78,9 +78,21 @@ mod tests {
         let capture_source = String::from(".SUFFIXES");
 
         let mut capture_indices = vec![];
-        capture_indices.push(IOnigCaptureIndex { start: 0, end: 9, length: 9 });
-        capture_indices.push(IOnigCaptureIndex { start: 0, end: 9, length: 9 });
-        capture_indices.push(IOnigCaptureIndex { start: 1, end: 9, length: 8 });
+        capture_indices.push(IOnigCaptureIndex {
+            start: 0,
+            end: 9,
+            length: 9,
+        });
+        capture_indices.push(IOnigCaptureIndex {
+            start: 0,
+            end: 9,
+            length: 9,
+        });
+        capture_indices.push(IOnigCaptureIndex {
+            start: 1,
+            end: 9,
+            length: 8,
+        });
 
         let string = RegexSource::replace_captures(source, capture_source, capture_indices);
         assert_eq!("support.function.target.SUFFIXES.makefile", string);

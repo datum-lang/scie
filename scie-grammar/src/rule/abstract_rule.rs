@@ -40,7 +40,11 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
             return name;
         }
 
-        RegexSource::replace_captures(self.get_rule()._name.unwrap(), line_text.unwrap(), capture_indices.unwrap());
+        RegexSource::replace_captures(
+            self.get_rule()._name.unwrap(),
+            line_text.unwrap(),
+            capture_indices.unwrap(),
+        );
         return Some(String::from(""));
     }
 
