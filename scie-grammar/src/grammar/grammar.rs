@@ -74,11 +74,11 @@ pub fn init_grammar(grammar: IRawGrammar, _base: Option<IRawRule>) -> IRawGramma
 }
 
 impl Grammar {
-    pub fn new(grammar: IRawGrammar) -> Grammar {
-        let _grammar = init_grammar(grammar.clone(), None);
+    pub fn new(raw_grammar: IRawGrammar) -> Grammar {
+        let grammar = init_grammar(raw_grammar.clone(), None);
         Grammar {
             last_rule_id: 0,
-            grammar: _grammar,
+            grammar,
             root_id: -1,
             rule_id2desc: Map::new(),
             _token_type_matchers: vec![],
@@ -541,7 +541,6 @@ impl Grammar {
             }
         }
 
-        // println!("{:?}", while_rules);
         CheckWhileConditionResult {
             stack: Box::new(stack),
             line_pos,
