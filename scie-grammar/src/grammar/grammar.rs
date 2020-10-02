@@ -14,7 +14,7 @@ use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{
-    AbstractRule, BeginWhileRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry,
+    AbstractRule, BeginWhileRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry,
 };
 
 pub trait Matcher {}
@@ -622,7 +622,7 @@ impl Grammar {
     }
 
     pub fn dispose(&self) {
-        for (key, rule) in self.rule_id2desc.iter() {
+        for (_key, _rule) in self.rule_id2desc.iter() {
             // rule.dispose();
         }
     }
@@ -660,7 +660,7 @@ impl IRuleRegistry for Grammar {
         if let Some(rule) = self.rule_id2desc.get_mut(&pattern_id) {
             return rule.to_owned();
         }
-        Box::from(EmptyRule {})
+        panic!("EmptyRule");
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
@@ -787,7 +787,7 @@ OBJ = hellomake.o hellofunc.o
         let mut grammar =
             to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
         let mut end_rule_count = 0;
-        for (_x, rule) in grammar.rule_id2desc.clone() {
+        for (_x, rule) in grammar.rule_id2desc.iter() {
             let rule_instance = rule.get_rule_instance();
             if let RuleEnum::BeginEndRule(rule) = rule_instance {
                 assert_eq!(rule._end.rule_id, -1);

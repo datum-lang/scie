@@ -3,8 +3,8 @@ use crate::grammar::Grammar;
 use std::collections::BTreeMap as Map;
 
 trait IGrammarRepository {
-    fn lookup(&self, scope_name: String) -> IRawGrammar;
-    fn injections(&self, scope_name: String) -> Vec<String>;
+    fn lookup(&self, scope_name: String) -> Box<IRawGrammar>;
+    fn injections(&self, target_scope: String) -> Vec<String>;
 }
 
 pub struct SyncRegister {
@@ -23,7 +23,7 @@ impl SyncRegister {
     }
 
     pub fn dispose(&self) {
-        for (key, grammar) in self.grammars.iter() {
+        for (_, grammar) in self.grammars.iter() {
             grammar.dispose();
         }
     }
@@ -35,19 +35,19 @@ impl SyncRegister {
             self.injection_grammars.insert(scope_name, injection_scope_names.unwrap());
         }
     }
-    //
-    // fn injections(&self, target_scope: String) {
-    //     let option = self.injection_grammars.get(target_scope.as_str());
-    // }
 }
 
 impl IGrammarRepository for SyncRegister {
-    fn lookup(&self, scope_name: String) -> IRawGrammar {
-        unimplemented!()
+    fn lookup(&self, scope_name: String) -> Box<IRawGrammar> {
+        let result = self.raw_grammars.get(scope_name.as_str());
+        let x = result.unwrap();
+        x.clone()
     }
 
-    fn injections(&self, scope_name: String) -> Vec<String> {
-        unimplemented!()
+    fn injections(&self, target_scope: String) -> Vec<String> {
+        let result = self.injection_grammars.get(target_scope.as_str());
+        let x = result.unwrap();
+        x.clone()
     }
 }
 
