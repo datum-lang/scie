@@ -99,16 +99,20 @@ impl StackElement {
         )
     }
 
-    pub fn set_content_name_scopes_list(
-        self,
-        content_name_scopes_list: ScopeListElement,
-    ) -> StackElement {
+    pub fn set_content_name_scopes_list(&mut self, content_name_scopes_list: ScopeListElement, ) -> StackElement {
         if self.content_name_scopes_list == content_name_scopes_list {
-            return self;
+            return self.to_owned();
         }
 
-        panic!("todo: set_content_name_scopes_list");
-        // return self;
+        self.parent.as_mut().unwrap().push(
+            self.rule_id,
+            self.enter_pos,
+            self.anchor_pos,
+            self.begin_rule_captured_eol,
+            self.end_rule.clone(),
+            self.name_scopes_list.clone(),
+            content_name_scopes_list,
+        )
     }
 
     pub fn reset(&mut self) {
