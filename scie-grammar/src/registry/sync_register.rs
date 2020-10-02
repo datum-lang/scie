@@ -1,6 +1,8 @@
 use crate::inter::IRawGrammar;
 use crate::grammar::Grammar;
 use std::collections::BTreeMap as Map;
+use crate::IEmbeddedLanguagesMap;
+use crate::registry::grammar_registry::ITokenTypeMap;
 
 trait IGrammarRepository {
     fn lookup(&self, scope_name: String) -> Box<IRawGrammar>;
@@ -35,6 +37,22 @@ impl SyncRegister {
             self.injection_grammars.insert(scope_name, injection_scope_names.unwrap());
         }
     }
+
+    pub fn grammar_for_scope_name(&self, scope_name: String,
+                                  _initial_language: usize,
+                                  _embedded_languages: Option<IEmbeddedLanguagesMap>,
+                                  _token_types: Option<ITokenTypeMap>) -> Option<Box<Grammar>> {
+        let grammar = self.grammars.get(scope_name.as_str());
+        if grammar.is_none() {
+            if self.raw_grammars.get(scope_name.as_str()).is_none() {
+                return None;
+            }
+
+            // self.grammars[scope_name] =
+        }
+
+        return Some(grammar.unwrap().clone());
+    }
 }
 
 impl IGrammarRepository for SyncRegister {
@@ -67,6 +85,6 @@ mod tests {
         register.add_grammar(Box::from(grammar), None);
         let get_grammar = register.lookup(String::from("demo"));
 
-        assert_eq!("comment",get_grammar.comment.unwrap());
+        assert_eq!("comment", get_grammar.comment.unwrap());
     }
 }
