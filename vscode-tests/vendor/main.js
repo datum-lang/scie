@@ -1115,6 +1115,7 @@ function _tokenizeString(grammar, lineText, isFirstLine, linePos, stack, lineTok
                     stack = stack.setEndRule(pushedRule.getWhileWithResolvedBackReferences(lineText.content, captureIndices));
                 }
                 if (!hasAdvanced && beforePush.hasSameRuleAs(stack)) {
+                    console.log("hasAdvanced");
                     // Grammar pushed the same rule without advancing
                     if (debug_1.DebugFlags.InDebugMode) {
                         console.error('[3] - Grammar is in an endless loop - Grammar pushed the same rule without advancing');
@@ -3151,7 +3152,7 @@ var RegExpSource = /** @class */ (function () {
         this.ruleId = ruleId;
         this.hasBackReferences = HAS_BACK_REFERENCES.test(this.source);
         if (this.hasBackReferences) {
-            console.log("hasBackReferences: " + this.source);
+            console.log(this.source);
         }
         // console.log('input: ' + regExpSource + ' => ' + this.source + ', ' + this.hasAnchor);
     }
