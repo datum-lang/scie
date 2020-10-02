@@ -281,7 +281,12 @@ impl Grammar {
                         stack = stack.set_content_name_scopes_list(_content_name_scopes_list);
 
                         if push_rule.end_has_back_references {
-                            stack = stack.set_end_rule(push_rule.get_end_with_resolved_back_references(line_text.clone(), capture_indices.clone()));
+                            stack = stack.set_end_rule(
+                                push_rule.get_end_with_resolved_back_references(
+                                    line_text.clone(),
+                                    capture_indices.clone(),
+                                ),
+                            );
                         }
                     }
                     RuleEnum::BeginWhileRule(_while_rule) => {
@@ -762,7 +767,9 @@ return 0;
         let code = "<html></html>";
         let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/html.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 101);
-        // debug_output(&grammar, String::from("program.json"));
+
+        let tokens = get_all_tokens("test-cases/first-mate/fixtures/html.json", code.clone());
+        assert_eq!(1, tokens.len());
     }
 
     #[test]
@@ -818,7 +825,6 @@ hellomake: $(OBJ)
 
         for line in c_code.lines() {
             let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
-            // println!("{:?}", rule_stack.unwrap().rule_id.clone());
             rule_stack = *result.rule_stack;
             all_tokens.push(result.tokens);
         }

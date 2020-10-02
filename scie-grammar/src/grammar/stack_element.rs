@@ -136,7 +136,7 @@ impl StackElement {
             self.begin_rule_captured_eol,
             Option::from(end_rule.clone()),
             self.name_scopes_list.clone(),
-            self.content_name_scopes_list.clone()
+            self.content_name_scopes_list.clone(),
         );
     }
 }

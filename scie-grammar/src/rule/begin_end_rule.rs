@@ -65,8 +65,14 @@ impl BeginEndRule {
         }
     }
 
-    pub fn get_end_with_resolved_back_references(&self, line_text: String, capture_indices: Vec<IOnigCaptureIndex>) -> String {
-        return self._end.resolve_back_references(line_text, capture_indices);
+    pub fn get_end_with_resolved_back_references(
+        &self,
+        line_text: String,
+        capture_indices: Vec<IOnigCaptureIndex>,
+    ) -> String {
+        return self
+            ._end
+            .resolve_back_references(line_text, capture_indices);
     }
 }
 
@@ -131,7 +137,10 @@ impl AbstractRule for BeginEndRule {
 
         if self._end.has_back_references {
             if self.apply_end_pattern_last {
-                cached_compiled_patterns.set_source(cached_compiled_patterns.length() - 1, end_regex_source.unwrap())
+                cached_compiled_patterns.set_source(
+                    cached_compiled_patterns.length() - 1,
+                    end_regex_source.unwrap(),
+                )
             } else {
                 cached_compiled_patterns.set_source(0, end_regex_source.unwrap())
             }

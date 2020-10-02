@@ -1,6 +1,6 @@
 use crate::grammar::Grammar;
 use crate::rule::CompiledRule;
-use regex::{Regex, Captures};
+use regex::{Captures, Regex};
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
 lazy_static! {
@@ -332,20 +332,29 @@ impl RegExpSource {
         }
     }
 
-    pub fn resolve_back_references(&self, line_text: String, capture_indices: Vec<IOnigCaptureIndex>) -> String {
-        let captured_values: Vec<String> = capture_indices.into_iter().map(|x| {
-            return (line_text[x.start..x.end].to_string()).clone();
-        }).collect();
+    pub fn resolve_back_references(
+        &self,
+        line_text: String,
+        capture_indices: Vec<IOnigCaptureIndex>,
+    ) -> String {
+        let captured_values: Vec<String> = capture_indices
+            .into_iter()
+            .map(|x| {
+                return (line_text[x.start..x.end].to_string()).clone();
+            })
+            .collect();
 
-        let result = BACK_REFERENCING_END.replace(&*self.source, |caps: &Captures| {
-            let index = caps.get(1).unwrap().as_str().parse::<usize>().unwrap();
-            let mut chars = String::from("");
-            if captured_values.get(index).is_some() {
-                chars = captured_values[index].clone();
-            };
+        let result = BACK_REFERENCING_END
+            .replace(&*self.source, |caps: &Captures| {
+                let index = caps.get(1).unwrap().as_str().parse::<usize>().unwrap();
+                let mut chars = String::from("");
+                if captured_values.get(index).is_some() {
+                    chars = captured_values[index].clone();
+                };
 
-            return REG_EXP_REGEX.replace(&chars, "\\$&").to_string();
-        }).to_string();
+                return REG_EXP_REGEX.replace(&chars, "\\$&").to_string();
+            })
+            .to_string();
 
         return String::from(result);
     }

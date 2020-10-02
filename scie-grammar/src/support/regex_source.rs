@@ -4,16 +4,16 @@ use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 pub struct RegexSource {}
 
 lazy_static! {
-    static ref CAPTURING_REGEX_SOURCE: Regex = Regex::new(r"\$(?P<index>\d+)|\$\{(?P<commandIndex>\d+):/(?P<command>downcase|upcase)\}").unwrap();
+    static ref CAPTURING_REGEX_SOURCE: Regex =
+        Regex::new(r"\$(?P<index>\d+)|\$\{(?P<commandIndex>\d+):/(?P<command>downcase|upcase)\}")
+            .unwrap();
 }
 
 impl RegexSource {
     pub fn has_captures(regex_source: Option<String>) -> bool {
         match regex_source {
             None => false,
-            Some(source) => {
-                CAPTURING_REGEX_SOURCE.is_match(source.as_str())
-            }
+            Some(source) => CAPTURING_REGEX_SOURCE.is_match(source.as_str()),
         }
     }
 
