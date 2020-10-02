@@ -119,6 +119,26 @@ impl StackElement {
             self.parent.as_mut().unwrap().reset();
         }
     }
+
+    pub fn set_end_rule(&self, end_rule: String) -> StackElement {
+        if self.end_rule.is_some() {
+            let current_end_rule = self.end_rule.as_ref().unwrap().clone();
+            if current_end_rule == end_rule.clone() {
+                return self.clone();
+            }
+        }
+
+        return StackElement::new(
+            self.parent.clone(),
+            self.rule_id,
+            self.enter_pos,
+            self.anchor_pos,
+            self.begin_rule_captured_eol,
+            Option::from(end_rule.clone()),
+            self.name_scopes_list.clone(),
+            self.content_name_scopes_list.clone()
+        );
+    }
 }
 
 #[cfg(test)]

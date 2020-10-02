@@ -4,6 +4,7 @@ use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
+use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
@@ -62,6 +63,10 @@ impl BeginEndRule {
             patterns: patterns.patterns,
             _cached_compiled_patterns: None,
         }
+    }
+
+    pub fn get_end_with_resolved_back_references(&self, line_text: String, capture_indices: Vec<IOnigCaptureIndex>) -> String {
+        return self._end.resolve_back_references(line_text, capture_indices);
     }
 }
 

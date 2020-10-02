@@ -1,10 +1,12 @@
 use crate::grammar::Grammar;
 use crate::rule::CompiledRule;
-use regex::{Regex};
+use regex::{Regex, Captures};
+use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
 lazy_static! {
     static ref HAS_BACK_REFERENCES: Regex = Regex::new(r"\\(\d+)").unwrap();
     static ref BACK_REFERENCING_END: Regex = Regex::new(r"\\(\d+)").unwrap();
+    static ref REG_EXP_REGEX: Regex = Regex::new(r"[\-\\\{\}\*\+\?\|\^\$.,\[\]\(\)\#\s]").unwrap();
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -143,7 +145,7 @@ impl RegExpSourceList {
     }
 
     pub fn length(&self) -> usize {
-        return self._items.len()
+        return self._items.len();
     }
 
     pub fn dispose_caches(&mut self) {
@@ -166,7 +168,7 @@ impl RegExpSourceList {
 
     pub fn set_source(&mut self, index: usize, new_source: String) {
         if self._items[index].source != new_source {
-           self.dispose_caches();
+            self.dispose_caches();
             self._items[index].set_source(new_source);
         }
     }
@@ -225,7 +227,7 @@ impl RegExpSource {
             rule_id,
             has_anchor,
             _anchor_cache: anchor_cache,
-            has_back_references: false
+            has_back_references: false,
         };
 
         let cache = reg_exp_source.build_cache();
@@ -328,6 +330,24 @@ impl RegExpSource {
         if self.has_anchor {
             self._anchor_cache = Some(Box::from(self.build_cache()));
         }
+    }
+
+    pub fn resolve_back_references(&self, line_text: String, capture_indices: Vec<IOnigCaptureIndex>) -> String {
+        let captured_values: Vec<String> = capture_indices.into_iter().map(|x| {
+            return (line_text[x.start..x.end].to_string()).clone();
+        }).collect();
+
+        let result = BACK_REFERENCING_END.replace(&*self.source, |caps: &Captures| {
+            let index = caps.get(1).unwrap().as_str().parse::<usize>().unwrap();
+            let mut chars = String::from("");
+            if captured_values.get(index).is_some() {
+                chars = captured_values[index].clone();
+            };
+
+            return REG_EXP_REGEX.replace(&chars, "\\$&").to_string();
+        }).to_string();
+
+        return String::from(result);
     }
 }
 

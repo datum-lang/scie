@@ -279,6 +279,10 @@ impl Grammar {
                         );
                         let _content_name_scopes_list = name_scopes_list.push(self, content_name);
                         stack = stack.set_content_name_scopes_list(_content_name_scopes_list);
+
+                        if push_rule.end_has_back_references {
+                            stack = stack.set_end_rule(push_rule.get_end_with_resolved_back_references(line_text.clone(), capture_indices.clone()));
+                        }
                     }
                     RuleEnum::BeginWhileRule(_while_rule) => {
                         let push_rule = _while_rule.clone();
