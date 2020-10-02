@@ -13,9 +13,7 @@ use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::RuleFactory;
-use crate::rule::{
-    AbstractRule, BeginWhileRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry,
-};
+use crate::rule::{AbstractRule, BeginWhileRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, EmptyRule};
 
 pub trait Matcher {}
 
@@ -660,7 +658,7 @@ impl IRuleRegistry for Grammar {
         if let Some(rule) = self.rule_id2desc.get_mut(&pattern_id) {
             return rule.to_owned();
         }
-        panic!("EmptyRule");
+        Box::from(EmptyRule {})
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
@@ -672,7 +670,10 @@ impl IRuleRegistry for Grammar {
 
 pub fn to_grammar_for_test(grammar_path: &str) -> Grammar {
     let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    path = PathBuf::from(path.parent().unwrap());
     path.push(grammar_path);
+
+    println!("{:?}", path);
 
     let mut file = File::open(path).unwrap();
     let mut data = String::new();
@@ -728,7 +729,7 @@ printf(\"Hello, World!\");
 return 0;
 }
 ";
-        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/c.json", code);
+        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/c.json", code);
         let first_rule = grammar.rule_id2desc.get(&1).unwrap();
         assert_eq!(28, first_rule.clone().patterns_length());
         debug_output(&grammar, String::from("program.json"));
@@ -737,7 +738,7 @@ return 0;
     #[test]
     fn should_identify_c_include() {
         let code = "#include <stdio.h>";
-        let mut grammar = to_grammar_for_test("test-cases/first-mate/fixtures/c.json");
+        let mut grammar = to_grammar_for_test("fixtures/test-cases/first-mate/fixtures/c.json");
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line(String::from(code), &mut rule_stack);
 
@@ -762,7 +763,7 @@ return 0;
     #[test]
     fn should_build_json_grammar() {
         let code = "{}";
-        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/json.json", code);
+        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/json.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 22);
         debug_output(&grammar, String::from("program.json"));
     }
@@ -770,10 +771,10 @@ return 0;
     #[test]
     fn should_build_html_grammar_for_back_refs() {
         let code = "<html></html>";
-        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/html.json", code);
+        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/html.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 101);
 
-        let tokens = get_all_tokens("test-cases/first-mate/fixtures/html.json", code.clone());
+        let tokens = get_all_tokens("fixtures/test-cases/first-mate/fixtures/html.json", code.clone());
         assert_eq!(1, tokens.len());
     }
 
@@ -785,7 +786,7 @@ DEPS = hellomake.h
 OBJ = hellomake.o hellofunc.o
 ";
         let mut grammar =
-            to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
+            to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/makefile.json", code);
         let mut end_rule_count = 0;
         for (_x, rule) in grammar.rule_id2desc.iter() {
             let rule_instance = rule.get_rule_instance();
@@ -812,11 +813,11 @@ OBJ = hellomake.o hellofunc.o
 hellomake: $(OBJ)
 \t$(CC) -o $@ $^ $(CFLAGS)";
         let mut grammar =
-            to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", code);
+            to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/makefile.json", code);
         assert_eq!(grammar.rule_id2desc.len(), 82);
         assert_eq!(grammar.get_rule(1).patterns_length(), 4);
 
-        let tokens = get_all_tokens("test-cases/first-mate/fixtures/makefile.json", code.clone());
+        let tokens = get_all_tokens("fixtures/test-cases/first-mate/fixtures/makefile.json", code.clone());
         assert_eq!(10, tokens.len());
         let x: Vec<String> = tokens.iter().map(|token| token.len().to_string()).collect();
         assert_eq!(String::from("3,3,4,4,1,9,14,1,6,14"), x.join(","));
@@ -839,7 +840,7 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues() {
-        let mut grammar = to_grammar_for_test("test-cases/first-mate/fixtures/makefile.json");
+        let mut grammar = to_grammar_for_test("fixtures/test-cases/first-mate/fixtures/makefile.json");
         let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), &mut None);
         let tokens = result.tokens.clone();
         assert_eq!(9, tokens.len());
@@ -858,7 +859,7 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues2() {
-        let mut grammar = to_grammar_for_test("test-cases/first-mate/fixtures/makefile.json");
+        let mut grammar = to_grammar_for_test("fixtures/test-cases/first-mate/fixtures/makefile.json");
 
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line(String::from("hellomake: $(OBJ)"), &mut rule_stack);
@@ -874,7 +875,7 @@ hellomake: $(OBJ)
     fn should_success_token_for_short_code() {
         let code = "hellomake: $(OBJ)
 \t$(CC) -o $@ $^ $(CFLAGS)";
-        let tokens = get_all_tokens("test-cases/first-mate/fixtures/makefile.json", code.clone());
+        let tokens = get_all_tokens("fixtures/test-cases/first-mate/fixtures/makefile.json", code.clone());
         assert_eq!(2, tokens.len());
         let x: Vec<String> = tokens.iter().map(|token| token.len().to_string()).collect();
         assert_eq!(String::from("6,14"), x.join(","));

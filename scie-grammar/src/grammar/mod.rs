@@ -47,7 +47,7 @@ mod tests {
             .join("Makefile");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/makefile.json", &*code);
+        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/makefile.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 82);
     }
 
@@ -58,14 +58,14 @@ mod tests {
             .unwrap()
             .to_path_buf();
         let lang_test_dir = root_dir
-            .join("scie-grammar")
+            .join("fixtures")
             .join("test-cases")
             .join("e2e")
             .join("json")
             .join("simple-json.json");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code("test-cases/first-mate/fixtures/json.json", &*code);
+        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/json.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 22);
     }
 }

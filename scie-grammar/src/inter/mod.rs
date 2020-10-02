@@ -168,7 +168,7 @@ mod tests {
 
     #[test]
     fn should_convert_json_file() {
-        let path = "test-cases/first-mate/fixtures/c.json";
+        let path = "../fixtures/test-cases/first-mate/fixtures/c.json";
         let mut file = File::open(path).unwrap();
         let mut data = String::new();
         file.read_to_string(&mut data).unwrap();
@@ -178,7 +178,7 @@ mod tests {
 
     #[test]
     fn should_convert_json_files_list() {
-        let path = Path::new("test-cases/first-mate/fixtures/");
+        let path = Path::new("../fixtures/test-cases/first-mate/fixtures/");
         for entry in fs::read_dir(path).expect("Unable to list") {
             let entry = entry.expect("unable to get entry");
 
@@ -199,7 +199,7 @@ mod tests {
 
     #[test]
     fn should_read_java_repository() {
-        let path = Path::new("test-cases/first-mate/fixtures/java.json");
+        let path = Path::new("../fixtures/test-cases/first-mate/fixtures/java.json");
 
         let mut file = File::open(path).unwrap();
         let mut data = String::new();
