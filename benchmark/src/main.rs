@@ -11,18 +11,44 @@ fn main() {
         .parent()
         .unwrap()
         .to_path_buf();
+    // run_for_json(root_dir);
+    run_for_javascript(root_dir);
+}
+
+fn run_for_javascript(root_dir: PathBuf) {
+    let lang_spec_dir = root_dir
+        .clone()
+        .join("extensions")
+        .join("javascript")
+        .join("JavaScript.tmLanguage.json");
+    let code_dir = root_dir
+        .join("fixtures")
+        .join("test-cases")
+        .join("onigtests")
+        .join("fixtures")
+        .join("typescript.js");
+    let code = read_code(&code_dir);
+
+    run_execute(lang_spec_dir, code)
+}
+
+fn run_for_json(root_dir: PathBuf) {
     let lang_spec_dir = root_dir
         .clone()
         .join("extensions")
         .join("json")
         .join("syntaxes")
         .join("JSON.tmLanguage.json");
-    let lang_test_dir = root_dir
+    let code_dir = root_dir
         .join("fixtures")
         .join("tmlanguage")
         .join("JavaScript.tmLanguage.json.txt");
-    let code = read_code(&lang_test_dir);
+    let code = read_code(&code_dir);
 
+    run_execute(lang_spec_dir, code)
+}
+
+fn run_execute(lang_spec_dir: PathBuf, code: String) {
     let mut grammar = Grammar::from_file(lang_spec_dir.to_str().unwrap());
 
     let mut rule_stack = Some(StackElement::null());
