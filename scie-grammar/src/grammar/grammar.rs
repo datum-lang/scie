@@ -621,6 +621,12 @@ impl Grammar {
         self.tokenize(line_text, prev_state, false)
     }
 
+    pub fn dispose(&self) {
+        for (key, rule) in self.rule_id2desc.iter() {
+            // rule.dispose();
+        }
+    }
+
     pub fn from_file(grammar_path: &str) -> Grammar {
         let path = Path::new(grammar_path);
         let mut file = File::open(path).unwrap();
