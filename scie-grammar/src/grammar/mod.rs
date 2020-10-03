@@ -68,4 +68,22 @@ mod tests {
         let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/json.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 22);
     }
+
+    #[test]
+    fn should_build_from_simple_javascript() {
+        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .to_path_buf();
+        let lang_test_dir = root_dir
+            .join("fixtures")
+            .join("test-cases")
+            .join("e2e")
+            .join("javascript")
+            .join("pairs.js");
+        let code = read_code(&lang_test_dir);
+
+        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/javascript.json", &*code);
+        assert_eq!(grammar.rule_id2desc.len(), 113);
+    }
 }
