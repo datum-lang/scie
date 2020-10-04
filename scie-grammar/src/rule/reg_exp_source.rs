@@ -91,18 +91,12 @@ impl RegExpSourceList {
     ) -> Box<CompiledRule> {
         if !self._has_anchors {
             if self._cached.is_none() {
-                let reg_exps = self
-                    ._items
-                    .clone()
-                    .into_iter()
-                    .map(|x| x.source)
-                    .collect::<Vec<String>>();
-                let rules = self
-                    ._items
-                    .clone()
-                    .into_iter()
-                    .map(|x| x.rule_id)
-                    .collect::<Vec<i32>>();
+                let mut reg_exps = vec![];
+                let mut rules = vec![];
+                for x in self._items.iter() {
+                    reg_exps.push(x.resolve_anchors(allow_a, allow_g));
+                    rules.push(x.rule_id);
+                }
 
                 self._cached = Some(CompiledRule::new(reg_exps, rules));
             };
