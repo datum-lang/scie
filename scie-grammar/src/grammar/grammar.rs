@@ -50,8 +50,8 @@ pub fn init_grammar(grammar: IRawGrammar, _base: Option<IRawRule>) -> IRawGramma
     let mut _grammar = grammar.clone();
 
     let mut new_based: IRawRule = IRawRule::new();
-    if let Some(repo) = grammar.clone().repository {
-        new_based.location = repo.clone().location;
+    if grammar.repository.is_some() {
+        new_based.location = grammar.repository.clone().unwrap().location;
     }
     new_based.patterns = Some(grammar.clone().patterns.clone());
     new_based.name = grammar.clone().name;
@@ -430,7 +430,8 @@ impl Grammar {
 
                 let capture_scope_name =
                     capture_rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
-                if let Some(_name) = capture_scope_name.clone() {
+                if capture_scope_name.is_some() {
+                    let _name = capture_scope_name.clone().unwrap();
                     let mut base = stack.content_name_scopes_list.clone();
                     if local_stack.len() > 0 {
                         base = local_stack[local_stack.len() - 1].scopes.clone();

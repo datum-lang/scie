@@ -87,7 +87,7 @@ impl RegExpSourceList {
         allow_g: bool,
     ) -> Box<CompiledRule> {
         if !self._has_anchors {
-            if let None = self._cached {
+            if self._cached.is_none() {
                 let reg_exps = self
                     ._items
                     .clone()

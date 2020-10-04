@@ -56,8 +56,8 @@ impl StackElement {
         content_name_scopes_list: ScopeListElement,
     ) -> Self {
         let mut depth = 1;
-        if let Some(iparent) = parent.clone() {
-            depth = iparent.depth + 1
+        if parent.is_some() {
+            depth = parent.clone().unwrap().depth + 1
         }
 
         StackElement {
@@ -99,7 +99,7 @@ impl StackElement {
         )
     }
 
-    pub fn set_content_name_scopes_list(&mut self, content_name_scopes_list: ScopeListElement, ) -> StackElement {
+    pub fn set_content_name_scopes_list(&mut self, content_name_scopes_list: ScopeListElement) -> StackElement {
         if self.content_name_scopes_list == content_name_scopes_list {
             return self.to_owned();
         }

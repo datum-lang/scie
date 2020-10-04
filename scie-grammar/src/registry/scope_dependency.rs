@@ -54,14 +54,14 @@ impl ScopeDependencyCollector {
         match dep {
             ScopeDependency::Full(full_dep) => {
                 let scope_name = &*full_dep.scope_name.clone();
-                if let None = self._seen_full.get(scope_name.clone()) {
+                if self._seen_full.get(scope_name.clone()).is_none() {
                     self._seen_full.insert(String::from(scope_name));
                     self.full.push(full_dep);
                 }
             }
             ScopeDependency::Partial(partial_dep) => {
                 let key = &*partial_dep.to_key();
-                if let None = self._seen_partial.get(key) {
+                if self._seen_partial.get(key).is_none() {
                     self._seen_partial.insert(String::from(key));
                     self.partial.push(partial_dep);
                 }

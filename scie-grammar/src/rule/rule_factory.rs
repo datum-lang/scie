@@ -27,7 +27,8 @@ impl RuleFactory {
         repository: &mut IRawRepository,
     ) -> Vec<Box<dyn AbstractRule>> {
         let mut r: Vec<Box<dyn AbstractRule>> = vec![];
-        if let Some(capts) = captures.clone() {
+        if captures.is_some() {
+            let capts = captures.unwrap();
             let mut maximum_capture_id = 0;
             for (id_str, _value) in capts.clone().map.capture_map {
                 let id: i32 = id_str.parse().unwrap_or(0);
@@ -48,7 +49,8 @@ impl RuleFactory {
                 let options_patterns = capts.map.capture_map.get(&*numeric_capture_id.to_string());
 
                 if let Some(rule) = options_patterns {
-                    if let Some(_patterns) = rule.clone().patterns {
+                    if rule.patterns.is_some() {
+                        let _patterns = rule.patterns.clone();
                         retokenize_captured_with_rule_id = RuleFactory::get_compiled_rule_id(
                             desc.clone(),
                             helper,
@@ -100,7 +102,8 @@ impl RuleFactory {
         if let Some(patterns) = origin_patterns.clone() {
             for pattern in patterns {
                 let mut pattern_id = -1;
-                if let Some(include_s) = pattern.clone().include {
+                if pattern.include.is_some() {
+                    let include_s = pattern.include.clone().unwrap();
                     if include_s.starts_with("#") {
                         let first = remove_first(include_s.as_str());
                         let local_included_rule = repository.map.name_map.get_mut(first);
@@ -119,13 +122,13 @@ impl RuleFactory {
                         }
                     } else if include_s == "$base" || include_s == "$self" {
                         pattern_id = 1;
-                    // let mut local_included_rule = repository.map.base_s.clone();
-                    // pattern_id = RuleFactory::get_compiled_rule_id(
-                    //     *local_included_rule.unwrap(),
-                    //     helper,
-                    //     repository,
-                    //     String::from(include_s.as_str()),
-                    // );
+                        // let mut local_included_rule = repository.map.base_s.clone();
+                        // pattern_id = RuleFactory::get_compiled_rule_id(
+                        //     *local_included_rule.unwrap(),
+                        //     helper,
+                        //     repository,
+                        //     String::from(include_s.as_str()),
+                        // );
                     } else {
                         println!("todo: external grammar {:?}", pattern.include);
                         let mut _external_grammar_name: Option<String> = None;
