@@ -44,10 +44,6 @@ impl LineTokens {
         if self._last_token_end_index >= end_index {
             return;
         }
-        //
-        // if self.emit_binary_tokens {
-        //     let meta_data = scopes_list.metadata;
-        // }
 
         let scopes = scopes_list.generate_scopes();
         self._tokens.push(IToken {
