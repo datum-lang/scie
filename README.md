@@ -7,17 +7,17 @@ goal: build a better code figure engine for code refactoring.
 Todo:
 
  - [ ] process todo
-    - [ ] back references
+    - [x] back references
     - [ ] multiple languages
  - [ ] rewrite VSCode-textmate with Rust
-    - [ ] language for testing
-       - [ ] makefile
-       - [ ] json
-       - [ ] html
+    - [x] language for testing
+       - [x] makefile
+       - [x] json
+       - [x] html
     - [ ] languages main support
        - [ ] lua
-       - [ ] javascript
-       - [ ] java
+       - [x] javascript
+       - [x] java
        - [ ] typescript
        - [ ] groovy
        - [ ] kotlin
@@ -28,7 +28,8 @@ Todo:
        - [ ] swift
        - [ ] c/c++
     - [ ] support others language
- - [ ] benchmark
+ - [x] benchmark
+    - [ ] fast than VSCode version
  - [ ] multiple languages one project support
  - [ ] analyser
     - [ ] line counts
