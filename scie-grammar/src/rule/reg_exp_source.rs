@@ -100,31 +100,32 @@ impl RegExpSourceList {
                     .into_iter()
                     .map(|x| x.rule_id)
                     .collect::<Vec<i32>>();
-                let compiled_rule = CompiledRule::new(reg_exps, rules);
-                self._cached = Some(compiled_rule.clone());
+
+                self._cached = Some(CompiledRule::new(reg_exps, rules));
             };
+
             return Box::from(self._cached.clone().unwrap());
         } else {
             if allow_a {
                 if allow_g {
-                    if let None = self._anchor_cache.a1_g1.clone() {
+                    if self._anchor_cache.a1_g1.is_none() {
                         self._anchor_cache.a1_g1 = Some(self.resolve_anchors(allow_a, allow_g));
                     }
                     return self._anchor_cache.a1_g1.clone().unwrap();
                 } else {
-                    if let None = self._anchor_cache.a1_g0.clone() {
+                    if self._anchor_cache.a1_g0.is_none() {
                         self._anchor_cache.a1_g0 = Some(self.resolve_anchors(allow_a, allow_g));
                     }
                     return self._anchor_cache.a1_g0.clone().unwrap();
                 }
             } else {
                 if allow_g {
-                    if let None = self._anchor_cache.a0_g1.clone() {
+                    if self._anchor_cache.a0_g1.is_none() {
                         self._anchor_cache.a0_g1 = Some(self.resolve_anchors(allow_a, allow_g));
                     }
                     return self._anchor_cache.a0_g1.clone().unwrap();
                 } else {
-                    if let None = self._anchor_cache.a0_g0.clone() {
+                    if self._anchor_cache.a0_g0.is_none() {
                         self._anchor_cache.a0_g0 = Some(self.resolve_anchors(allow_a, allow_g));
                     }
                     return self._anchor_cache.a0_g0.clone().unwrap();
