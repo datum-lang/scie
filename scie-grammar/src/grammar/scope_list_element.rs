@@ -28,7 +28,7 @@ impl ScopeListElement {
         }
 
         result.reverse();
-        return result.clone();
+        return result;
     }
 
     pub fn _push(
@@ -43,7 +43,7 @@ impl ScopeListElement {
         target
     }
     pub fn push(&self, grammar: &mut Grammar, scope: Option<String>) -> ScopeListElement {
-        if let None = scope {
+        if scope.is_none() {
             return self.clone();
         }
 
