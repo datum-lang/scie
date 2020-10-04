@@ -1,3 +1,4 @@
 extensions/* linguist-vendored=true
 scie-grammar/test-cases/* linguist-vendored=true
 vscode-tests linguist-vendored=true
+benchmark/* linguist-vendored=true
