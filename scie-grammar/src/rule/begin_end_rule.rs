@@ -13,7 +13,7 @@ pub struct BeginEndRule {
     pub _begin: RegExpSource,
     // todo: refactor to RuleEnum
     pub begin_captures: Vec<Box<dyn AbstractRule>>,
-    pub _end: RegExpSource,
+    pub _end: Box<RegExpSource>,
     pub end_has_back_references: bool,
     pub end_captures: Vec<Box<dyn AbstractRule>>,
     pub apply_end_pattern_last: bool,
@@ -56,7 +56,7 @@ impl BeginEndRule {
             _begin: RegExpSource::new(begin.clone(), id.clone()),
             begin_captures,
             end_has_back_references: end.has_back_references.clone(),
-            _end: end,
+            _end: Box::from(end),
             end_captures,
             apply_end_pattern_last: apply_end,
             has_missing_patterns: patterns.clone().has_missing_patterns,
@@ -129,9 +129,9 @@ impl AbstractRule for BeginEndRule {
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
 
             if self.apply_end_pattern_last {
-                cached_compiled_patterns.push(Box::new(self._end.clone()));
+                cached_compiled_patterns.push(self._end.clone());
             } else {
-                cached_compiled_patterns.unshift(Box::new(self._end.clone()));
+                cached_compiled_patterns.unshift(self._end.clone());
             }
         }
 

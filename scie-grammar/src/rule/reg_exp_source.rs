@@ -66,18 +66,21 @@ impl RegExpSourceList {
     }
 
     pub fn push(&mut self, item: Box<RegExpSource>) {
-        self._items.push(item.clone());
-        if item.clone().has_anchor {
-            self._has_anchors = self._has_anchors || item.has_anchor;
-        }
+        let item_has_anchor = item.has_anchor.clone();
+        self._items.push(item);
+
+        let has_anchor = self._has_anchors || item_has_anchor;
+        self._has_anchors = has_anchor;
     }
 
     pub fn unshift(&mut self, item: Box<RegExpSource>) {
-        self._items.push(item.clone());
+        let item_has_anchor = item.has_anchor.clone();
+
+        self._items.push(item);
         self._items.rotate_right(1);
-        if item.clone().has_anchor {
-            self._has_anchors = self._has_anchors || item.has_anchor;
-        }
+
+        let has_anchor = self._has_anchors || item_has_anchor;
+        self._has_anchors = has_anchor;
     }
 
     pub fn compile(
