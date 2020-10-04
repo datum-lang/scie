@@ -21,14 +21,37 @@ const registry = new vsctm.Registry({
         createOnigString: (str) => new oniguruma.OnigString(str)
     }),
     loadGrammar: (scopeName) => {
-        return readFile('./syntaxes/json/html.json').then(data => vsctm.parseRawGrammar(data.toString(), "c.json"))
+        return readFile('./syntaxes/json/rust.json').then(data => vsctm.parseRawGrammar(data.toString(), "c.json"))
     }
 });
 
-registry.loadGrammar('text.html.basic').then(grammar => {
-    const text = `<html>
+registry.loadGrammar('source.rust').then(grammar => {
+    const text = `impl Foo<A,B>
+    where A: B
+{ }
 
-</html>`.split("\n");
+impl Foo<A,B> for C
+    where A: B
+{ }
+
+impl Foo<A,B> for C
+{
+    fn foo<A,B> -> C
+        where A: B
+    { }
+}
+
+fn foo<A,B> -> C
+    where A: B
+{ }
+
+struct Foo<A,B>
+    where A: B
+{ }
+
+trait Foo<A,B> : C
+    where A: B
+{ }`.split("\n");
     let ruleStack = vsctm.INITIAL;
     for (let i = 0; i < text.length; i++) {
         const line = text[i];

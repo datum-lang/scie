@@ -11,38 +11,23 @@ fn main() {
         .parent()
         .unwrap()
         .to_path_buf();
-    // run_for_json(root_dir);
-    run_for_javascript(root_dir);
+
+    run(root_dir.clone(), "json", "JSON.tmLanguage.json", "JavaScript.tmLanguage.json.txt");
+    run(root_dir.clone(), "javascript", "JavaScript.tmLanguage.json", "large.min.js.txt");
+    run(root_dir.clone(), "javascript", "JavaScript.tmLanguage.json", "large.js.txt");
 }
 
-fn run_for_javascript(root_dir: PathBuf) {
+fn run(root_dir: PathBuf, lang: &str, lang_file: &str, code_file: &str) {
     let lang_spec_dir = root_dir
         .clone()
         .join("extensions")
-        .join("javascript")
-        .join("JavaScript.tmLanguage.json");
-    let code_dir = root_dir
-        .join("fixtures")
-        .join("test-cases")
-        .join("onigtests")
-        .join("fixtures")
-        .join("typescript.js");
-    let code = read_code(&code_dir);
-
-    run_execute(lang_spec_dir, code)
-}
-
-fn run_for_json(root_dir: PathBuf) {
-    let lang_spec_dir = root_dir
-        .clone()
-        .join("extensions")
-        .join("json")
+        .join(lang)
         .join("syntaxes")
-        .join("JSON.tmLanguage.json");
+        .join(lang_file);
     let code_dir = root_dir
-        .join("fixtures")
-        .join("tmlanguage")
-        .join("JavaScript.tmLanguage.json.txt");
+        .join("benchmark")
+        .join("samples")
+        .join(code_file);
     let code = read_code(&code_dir);
 
     run_execute(lang_spec_dir, code)
