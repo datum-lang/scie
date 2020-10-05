@@ -42,9 +42,11 @@ impl StackElement {
             Some(parents) => Some(*parents.clone()),
         }
     }
+
     pub fn get_rule(&self, grammar: &mut Grammar) -> Box<dyn AbstractRule> {
         grammar.get_rule(self.rule_id)
     }
+
     pub fn new(
         parent: Option<Box<StackElement>>,
         rule_id: i32,
@@ -119,15 +121,14 @@ impl StackElement {
         self.enter_pos = -1;
         self.anchor_pos = -1;
 
-        if let Some(_parent) = self.parent.clone() {
+        if self.parent.is_some() {
             self.parent.as_mut().unwrap().reset();
         }
     }
 
     pub fn set_end_rule(&self, end_rule: String) -> StackElement {
         if self.end_rule.is_some() {
-            let current_end_rule = self.end_rule.as_ref().unwrap().clone();
-            if current_end_rule == end_rule.clone() {
+            if *self.end_rule.as_ref().unwrap() == end_rule {
                 return self.clone();
             }
         }
