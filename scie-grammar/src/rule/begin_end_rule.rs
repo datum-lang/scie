@@ -147,7 +147,6 @@ impl AbstractRule for BeginEndRule {
             }
         }
 
-        let compiled_rule = self._cached_compiled_patterns.as_mut().unwrap().compile(grammar, allow_a, allow_g);
-        *compiled_rule
+        return *self._cached_compiled_patterns.as_mut().unwrap().compile(grammar, allow_a, allow_g);
     }
 }
