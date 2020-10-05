@@ -222,7 +222,7 @@ impl RuleFactory {
             // rules. it will cause stackoverflow in our version, so I decide change repository id
             // by name.
             if desc_name != "" {
-                if let Some(_) = repository.map.name_map.get(desc_name.as_str()).clone() {
+                if repository.map.name_map.get(desc_name.as_str()).is_some() {
                     repository
                         .map
                         .name_map
@@ -235,11 +235,7 @@ impl RuleFactory {
             if let Some(match_s) = desc.match_s {
                 let rule_factory = RuleFactory::compile_captures(desc.captures, helper, repository);
                 let match_rule = MatchRule::new(
-                    desc.location.clone(),
-                    id.clone(),
-                    desc.name.clone(),
-                    match_s.clone(),
-                    rule_factory,
+                    desc.location, id, desc.name, match_s, rule_factory,
                 );
 
                 return helper.register_rule(Box::new(match_rule));
@@ -265,10 +261,10 @@ impl RuleFactory {
 
                 let rule_factory = RuleFactory::compile_patterns(patterns, helper, repository);
                 let include_only_rule = IncludeOnlyRule::new(
-                    desc.location.clone(),
+                    desc.location,
                     id.clone(),
-                    desc.name.clone(),
-                    desc.content_name.clone(),
+                    desc.name,
+                    desc.content_name,
                     rule_factory,
                 );
 
@@ -296,8 +292,8 @@ impl RuleFactory {
                 let begin_while_rule = BeginWhileRule::new(
                     desc.location,
                     id.clone(),
-                    desc.name.clone(),
-                    desc.content_name.clone(),
+                    desc.name,
+                    desc.content_name,
                     desc.begin,
                     begin_rule_factory,
                     desc.while_s.unwrap(),
@@ -315,13 +311,13 @@ impl RuleFactory {
             let pattern_factory = RuleFactory::compile_patterns(desc.patterns, helper, repository);
 
             let begin_end_rule = BeginEndRule::new(
-                desc.location.clone(),
+                desc.location,
                 id.clone(),
-                desc.name.clone(),
-                desc.content_name.clone(),
-                desc.begin.unwrap().clone(),
+                desc.name,
+                desc.content_name,
+                desc.begin.unwrap(),
                 begin_rule_factory,
-                desc.end.unwrap().clone(),
+                desc.end.unwrap(),
                 end_rule_factory,
                 desc.apply_end_pattern_last,
                 pattern_factory,

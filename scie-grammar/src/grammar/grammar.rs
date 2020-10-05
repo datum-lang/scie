@@ -172,7 +172,7 @@ impl Grammar {
         line_tokens: &mut LineTokens,
         check_while_conditions: bool,
     ) -> Option<StackElement> {
-        let _line_length = line_text.len();
+        let _line_length = line_text.clone().len();
         let mut _stop = false;
         let mut anchor_position = -1;
         let mut line_pos = origin_line_pos.clone();
@@ -238,7 +238,6 @@ impl Grammar {
             } else {
                 let rule = self.get_rule(matched_rule_id);
                 line_tokens.produce(&mut stack, capture_indices[0].start as i32);
-                // let before_push = stack.clone();
                 let scope_name =
                     rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
                 let name_scopes_list = stack.content_name_scopes_list.push(self, scope_name);
