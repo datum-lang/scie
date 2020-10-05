@@ -47,6 +47,10 @@ impl StackElement {
         grammar.get_rule(self.rule_id)
     }
 
+    pub fn update_rule(&self, grammar: &mut Grammar, rule: Box<dyn AbstractRule>) -> i32 {
+        grammar.register_rule(rule)
+    }
+
     pub fn new(
         parent: Option<Box<StackElement>>,
         rule_id: i32,

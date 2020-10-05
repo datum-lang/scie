@@ -1,5 +1,5 @@
 use core::cmp;
-use std::collections::BTreeMap as Map;
+use std::collections::HashMap as Map;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
@@ -580,6 +580,8 @@ impl Grammar {
             is_first_line,
             line_pos == anchor_position,
         );
+
+        stack.update_rule(self, rule);
 
         let r = rule_scanner
             .scanner
