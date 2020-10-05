@@ -53,6 +53,7 @@ impl BeginWhileRule {
             _cached_compiled_patterns: None,
         }
     }
+
     pub fn compile_while(
         &mut self,
         grammar: &mut Grammar,
@@ -60,13 +61,11 @@ impl BeginWhileRule {
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
-        let mut cached_compiled_patterns: RegExpSourceList;
         if let None = self._cached_compiled_patterns {
             let mut compiled_patterns = RegExpSourceList::new();
             compiled_patterns.push(Box::new(self._while.clone()));
-            cached_compiled_patterns = compiled_patterns;
-        } else {
-            cached_compiled_patterns = self._cached_compiled_patterns.clone().unwrap();
+
+            self._cached_compiled_patterns = Some(compiled_patterns.clone());
         }
 
         if self._while.has_back_references {
@@ -77,11 +76,10 @@ impl BeginWhileRule {
                 end_regex = end_regex_source.unwrap().clone();
             }
 
-            cached_compiled_patterns.set_source(0, String::from(end_regex));
+            self._cached_compiled_patterns.as_mut().unwrap().set_source(0, String::from(end_regex));
         }
 
-        self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
-        return *cached_compiled_patterns.compile(grammar, allow_a, allow_g);
+        return *self._cached_compiled_patterns.as_mut().unwrap().compile(grammar, allow_a, allow_g);
     }
 }
 
@@ -128,15 +126,13 @@ impl AbstractRule for BeginWhileRule {
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
-        let mut cached_compiled_patterns = RegExpSourceList::new();
-
         if let None = self._cached_compiled_patterns {
+            let mut cached_compiled_patterns = RegExpSourceList::new();
+
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
             self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
-        } else {
-            cached_compiled_patterns = self._cached_compiled_patterns.as_ref().unwrap().clone();
         }
 
-        return *cached_compiled_patterns.compile(grammar, allow_a, allow_g);
+        return *self._cached_compiled_patterns.as_mut().unwrap().compile(grammar, allow_a, allow_g);
     }
 }
