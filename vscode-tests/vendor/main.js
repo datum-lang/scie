@@ -3308,6 +3308,8 @@ var RegExpSourceList = /** @class */ (function () {
             if (!this._cached) {
                 var regExps = this._items.map(function (e) { return e.source; });
                 this._cached = new CompiledRule(onigLib, regExps, this._items.map(function (e) { return e.ruleId; }));
+            } else {
+                console.log("has cached");
             }
             return this._cached;
         }
