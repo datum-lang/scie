@@ -96,8 +96,8 @@ impl RegExpSourceList {
                 }
 
                 self._cached = Some(CompiledRule::new(reg_exps, rules));
-            } else {
-                println!("has cached");
+            // } else {
+            //     println!("has cached");
             }
 
             return Box::from(self._cached.clone().unwrap());

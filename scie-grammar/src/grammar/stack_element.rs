@@ -37,10 +37,10 @@ impl StackElement {
     }
 
     pub fn pop(&self) -> Option<StackElement> {
-        match self.parent.clone() {
-            None => None,
-            Some(parents) => Some(*parents.clone()),
+        if self.parent.is_some() {
+            return Some(*self.parent.to_owned().unwrap());
         }
+        return None;
     }
 
     pub fn get_rule(&self, grammar: &mut Grammar) -> Box<dyn AbstractRule> {

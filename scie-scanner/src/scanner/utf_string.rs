@@ -10,10 +10,10 @@ pub struct UtfString {
 
 impl UtfString {
     pub fn new(str: String) -> Self {
-        let utf16_vec: Vec<u16> = str.clone().encode_utf16().collect();
+        let utf16_vec: Vec<u16> = str.to_owned().encode_utf16().collect();
         let utf16length = utf16_vec.len();
         let utf8length = str.len();
-        let mut utf8value = str.clone().into_bytes();
+        let mut utf8value = str.to_owned().into_bytes();
 
         let compute_indices_mapping = utf8length != utf16length;
 
@@ -21,22 +21,22 @@ impl UtfString {
         let mut utf8offset_to_utf16: Vec<u32> = vec![];
 
         if compute_indices_mapping {
-            utf16offset_to_utf8 = vec![0; utf16length.clone() + 1];
-            utf16offset_to_utf8[utf16length] = utf8length.clone() as u32;
+            utf16offset_to_utf8 = vec![0; utf16length.to_owned() + 1];
+            utf16offset_to_utf8[utf16length] = utf8length.to_owned() as u32;
 
-            utf8offset_to_utf16 = vec![0; utf8length.clone() + 1];
-            utf8offset_to_utf16[utf8length] = utf16length.clone() as u32;
+            utf8offset_to_utf16 = vec![0; utf8length.to_owned() + 1];
+            utf8offset_to_utf16[utf8length] = utf16length.to_owned() as u32;
         }
 
         let mut i8: usize = 0;
         let mut i16 = 0;
         while i16 < utf16_vec.len() {
-            let char_code = utf16_vec[i16].clone();
-            let mut code_point = char_code.clone() as usize;
+            let char_code = utf16_vec[i16].to_owned();
+            let mut code_point = char_code.to_owned() as usize;
             let mut was_surrogate_pair = false;
             if char_code >= 0xd800 && char_code <= 0xdbff {
                 if i16 + 1 <= utf16length {
-                    let next_char_code = utf16_vec[i16 + 1].clone();
+                    let next_char_code = utf16_vec[i16 + 1].to_owned();
                     if next_char_code >= 0xdc00 && next_char_code <= 0xdfff {
                         let temp = ((char_code - 0xd800) << 10) as usize + 0x10000;
                         code_point = (temp as usize) | (next_char_code as usize - 0xdc00);
@@ -114,7 +114,7 @@ impl UtfString {
         UtfString {
             utf16length: utf16length as i32,
             utf8length: utf8length as i32,
-            utf16value: str.clone(),
+            utf16value: str.to_owned(),
             utf8value,
             utf16offset_to_utf8,
             utf8offset_to_utf16,

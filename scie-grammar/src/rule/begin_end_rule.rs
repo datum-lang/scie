@@ -55,11 +55,11 @@ impl BeginEndRule {
             },
             _begin: RegExpSource::new(begin.clone(), id.clone()),
             begin_captures,
-            end_has_back_references: end.has_back_references.clone(),
+            end_has_back_references: end.has_back_references.to_owned(),
             _end: Box::from(end),
             end_captures,
             apply_end_pattern_last: apply_end,
-            has_missing_patterns: patterns.clone().has_missing_patterns,
+            has_missing_patterns: patterns.to_owned().has_missing_patterns,
             patterns: patterns.patterns,
             _cached_compiled_patterns: None,
         }

@@ -47,7 +47,7 @@ pub struct Grammar {
 }
 
 pub fn init_grammar(raw_grammar: IRawGrammar, _base: Option<IRawRule>) -> IRawGrammar {
-    let mut grammar = raw_grammar.clone();
+    let mut grammar = raw_grammar.to_owned();
 
     let mut new_based: IRawRule = IRawRule::new();
     if raw_grammar.repository.is_some() {
