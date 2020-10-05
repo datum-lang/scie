@@ -124,8 +124,8 @@ impl AbstractRule for BeginEndRule {
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
-        let mut cached_compiled_patterns = RegExpSourceList::new();
         if self._cached_compiled_patterns.is_none() {
+            let mut cached_compiled_patterns = RegExpSourceList::new();
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
 
             if self.apply_end_pattern_last {
@@ -133,21 +133,21 @@ impl AbstractRule for BeginEndRule {
             } else {
                 cached_compiled_patterns.unshift(self._end.clone());
             }
+
+            self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
         }
 
         if self._end.has_back_references {
             if self.apply_end_pattern_last {
-                cached_compiled_patterns.set_source(
-                    cached_compiled_patterns.length() - 1,
-                    end_regex_source.unwrap(),
-                )
+                let length = self._cached_compiled_patterns.as_ref().unwrap().length().clone();
+
+                self._cached_compiled_patterns.as_mut().unwrap().set_source(length - 1, end_regex_source.unwrap())
             } else {
-                cached_compiled_patterns.set_source(0, end_regex_source.unwrap())
+                self._cached_compiled_patterns.as_mut().unwrap().set_source(0, end_regex_source.unwrap())
             }
         }
 
-        let compiled_rule = cached_compiled_patterns.compile(grammar, allow_a, allow_g);
-        self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
+        let compiled_rule = self._cached_compiled_patterns.as_mut().unwrap().compile(grammar, allow_a, allow_g);
         *compiled_rule
     }
 }
