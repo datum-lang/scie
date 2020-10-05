@@ -647,10 +647,10 @@ impl IRuleRegistry for Grammar {
         Box::from(EmptyRule {})
     }
 
-    fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule> {
-        self.rule_id2desc
-            .insert(result.id().clone(), result.clone());
-        result
+    fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32 {
+        let id = result.id().clone();
+        self.rule_id2desc.insert(id, result);
+        id
     }
 }
 

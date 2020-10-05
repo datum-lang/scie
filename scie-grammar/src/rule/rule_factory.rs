@@ -88,6 +88,7 @@ impl RuleFactory {
             content_name,
             retokenize_captured_with_rule_id,
         );
+
         helper.register_rule(Box::from(rule));
         return helper.get_rule(id);
     }
@@ -241,8 +242,7 @@ impl RuleFactory {
                     rule_factory,
                 );
 
-                helper.register_rule(Box::new(match_rule));
-                return id.clone();
+                return helper.register_rule(Box::new(match_rule));
             };
 
             if let None = desc.begin {
@@ -272,8 +272,7 @@ impl RuleFactory {
                     rule_factory,
                 );
 
-                helper.register_rule(Box::new(include_only_rule));
-                return id.clone();
+                return helper.register_rule(Box::new(include_only_rule));
             }
 
             let begin_captures = desc.begin_captures.clone();
@@ -306,8 +305,7 @@ impl RuleFactory {
                     pattern_factory,
                 );
 
-                helper.register_rule(Box::new(begin_while_rule));
-                return id.clone();
+                return helper.register_rule(Box::new(begin_while_rule));
             }
 
             let begin_rule_factory =
@@ -329,8 +327,7 @@ impl RuleFactory {
                 pattern_factory,
             );
 
-            helper.register_rule(Box::new(begin_end_rule));
-            return id.clone();
+            return helper.register_rule(Box::new(begin_end_rule));
         }
 
         desc.id.unwrap()

@@ -30,7 +30,7 @@ use crate::inter::{IRawGrammar, IRawRepository};
 pub trait IRuleRegistry {
     fn register_id(&mut self) -> i32;
     fn get_rule(&mut self, pattern_id: i32) -> Box<dyn AbstractRule>;
-    fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> Box<dyn AbstractRule>;
+    fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32;
 }
 
 pub trait IGrammarRegistry {
