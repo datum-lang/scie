@@ -5,6 +5,7 @@ use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
+use std::any::Any;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
@@ -91,6 +92,10 @@ impl AbstractRule for BeginEndRule {
 
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::BeginEndRule(self.clone())
+    }
+
+    fn get_instance(&self) -> &dyn Any {
+        self
     }
 
     fn has_missing_pattern(&self) -> bool {

@@ -7,6 +7,7 @@ use crate::support::regex_source::RegexSource;
 use core::fmt;
 use dyn_clone::{clone_trait_object, DynClone};
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
+use std::any::Any;
 
 pub enum RuleEnum {
     BeginEndRule(BeginEndRule),
@@ -26,6 +27,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     // todo: add support for this;
     fn get_rule(&self) -> Rule;
     fn get_rule_instance(&self) -> RuleEnum;
+    fn get_instance(&self) -> &dyn Any;
     fn get_name(
         &self,
         line_text: Option<String>,

@@ -476,13 +476,15 @@ impl Grammar {
         let mut has_node = true;
         let mut node = stack.clone();
         while has_node {
-            let rule = node.clone().get_rule(self);
-            if let RuleEnum::BeginWhileRule(begin_while_rule) = rule.get_rule_instance() {
+            let rule = node.get_rule(self);
+
+            if rule.display() == "BeginWhileRule" {
+                let instance = rule.get_instance().downcast_ref::<BeginWhileRule>().unwrap();
                 while_rules.push(CheckWhileRuleResult {
-                    rule: Box::from(begin_while_rule),
+                    rule: Box::from(instance.clone()),
                     stack: Box::from(node.clone()),
                 })
-            }
+            };
 
             match node.pop() {
                 None => has_node = false,

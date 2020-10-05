@@ -4,6 +4,7 @@ use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
+use std::any::Any;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginWhileRule {
@@ -94,6 +95,9 @@ impl AbstractRule for BeginWhileRule {
     }
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::BeginWhileRule(self.clone())
+    }
+    fn get_instance(&self) -> &dyn Any {
+        self
     }
     fn has_missing_pattern(&self) -> bool {
         self.has_missing_patterns

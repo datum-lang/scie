@@ -1,6 +1,7 @@
 use crate::grammar::Grammar;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, CompiledRule, RegExpSourceList, Rule};
+use std::any::Any;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct EmptyRule {}
@@ -23,6 +24,9 @@ impl AbstractRule for EmptyRule {
     }
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::EmptyRule(self.clone())
+    }
+    fn get_instance(&self) -> &dyn Any {
+        self
     }
     fn collect_patterns_recursive(
         &mut self,

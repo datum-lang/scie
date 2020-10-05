@@ -3,6 +3,7 @@ use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, CompiledRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
+use std::any::Any;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct MatchRule {
@@ -50,6 +51,9 @@ impl AbstractRule for MatchRule {
     }
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::MatchRule(self.clone())
+    }
+    fn get_instance(&self) -> &dyn Any {
+        self
     }
     fn collect_patterns_recursive(
         &mut self,
