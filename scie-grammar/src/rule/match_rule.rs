@@ -67,10 +67,10 @@ impl AbstractRule for MatchRule {
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
-        if let None = self._cached_compiled_patterns {
+        if self._cached_compiled_patterns.is_none() {
             let mut cached_compiled_patterns = RegExpSourceList::new();
             self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
-            self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
+            self._cached_compiled_patterns = Some(cached_compiled_patterns);
         }
 
         return *self._cached_compiled_patterns.as_mut().unwrap().compile(allow_a, allow_g);

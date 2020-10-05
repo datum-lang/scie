@@ -134,7 +134,7 @@ impl AbstractRule for BeginEndRule {
                 cached_compiled_patterns.unshift(self._end.clone());
             }
 
-            self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
+            self._cached_compiled_patterns = Some(cached_compiled_patterns);
         }
 
         if self._end.has_back_references {
