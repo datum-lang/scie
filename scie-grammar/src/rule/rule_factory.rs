@@ -242,7 +242,7 @@ impl RuleFactory {
             };
 
             if let None = desc.begin {
-                if let Some(_) = desc.repository.clone() {
+                if desc.repository.is_some() {
                     desc.repository
                         .unwrap()
                         .map
@@ -291,7 +291,7 @@ impl RuleFactory {
 
                 let begin_while_rule = BeginWhileRule::new(
                     desc.location,
-                    id.clone(),
+                    id,
                     desc.name,
                     desc.content_name,
                     desc.begin,
@@ -312,7 +312,7 @@ impl RuleFactory {
 
             let begin_end_rule = BeginEndRule::new(
                 desc.location,
-                id.clone(),
+                id,
                 desc.name,
                 desc.content_name,
                 desc.begin.unwrap(),

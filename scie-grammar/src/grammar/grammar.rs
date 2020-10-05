@@ -573,7 +573,9 @@ impl Grammar {
         stack: &mut StackElement,
         anchor_position: i32,
     ) -> Option<MatchRuleResult> {
-        let mut rule = stack.get_rule(self);
+        // todo: replace cache logic
+        let mut rule = self.rule_id2desc[&stack.rule_id].to_owned();
+        // let mut rule = stack.get_rule(self);
 
         let mut rule_scanner= rule.compile(
             self,
@@ -582,6 +584,7 @@ impl Grammar {
             line_pos == anchor_position,
         );
 
+        // todo: update rule logic
         stack.update_rule(self, rule);
 
         let r = rule_scanner
