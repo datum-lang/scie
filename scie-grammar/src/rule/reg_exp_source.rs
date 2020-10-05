@@ -1,4 +1,3 @@
-use crate::grammar::Grammar;
 use crate::rule::CompiledRule;
 use regex::{Captures, Regex};
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
@@ -79,13 +78,11 @@ impl RegExpSourceList {
         self._items.push(item);
         self._items.rotate_right(1);
 
-        let has_anchor = self._has_anchors || item_has_anchor;
-        self._has_anchors = has_anchor;
+        self._has_anchors = self._has_anchors || item_has_anchor;
     }
 
     pub fn compile(
         &mut self,
-        _grammar: &mut Grammar,
         allow_a: bool,
         allow_g: bool,
     ) -> Box<CompiledRule> {
@@ -99,7 +96,9 @@ impl RegExpSourceList {
                 }
 
                 self._cached = Some(CompiledRule::new(reg_exps, rules));
-            };
+            } else {
+                println!("has cached");
+            }
 
             return Box::from(self._cached.clone().unwrap());
         } else {

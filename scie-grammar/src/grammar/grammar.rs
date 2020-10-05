@@ -495,7 +495,6 @@ impl Grammar {
         for mut while_rule in while_rules {
             let allow_g = anchor_position == line_pos;
             let mut rule_scanner = while_rule.rule.compile_while(
-                self,
                 while_rule.clone().stack.end_rule,
                 is_first_line,
                 allow_g,

@@ -56,7 +56,6 @@ impl BeginWhileRule {
 
     pub fn compile_while(
         &mut self,
-        grammar: &mut Grammar,
         end_regex_source: Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -79,7 +78,7 @@ impl BeginWhileRule {
             self._cached_compiled_patterns.as_mut().unwrap().set_source(0, String::from(end_regex));
         }
 
-        return *self._cached_compiled_patterns.as_mut().unwrap().compile(grammar, allow_a, allow_g);
+        return *self._cached_compiled_patterns.as_mut().unwrap().compile(allow_a, allow_g);
     }
 }
 
@@ -133,6 +132,6 @@ impl AbstractRule for BeginWhileRule {
             self._cached_compiled_patterns = Some(cached_compiled_patterns.clone());
         }
 
-        return *self._cached_compiled_patterns.as_mut().unwrap().compile(grammar, allow_a, allow_g);
+        return *self._cached_compiled_patterns.as_mut().unwrap().compile(allow_a, allow_g);
     }
 }
