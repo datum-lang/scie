@@ -46,34 +46,34 @@ pub struct Grammar {
     pub _token_type_matchers: Vec<TokenTypeMatcher>,
 }
 
-pub fn init_grammar(grammar: IRawGrammar, _base: Option<IRawRule>) -> IRawGrammar {
-    let mut _grammar = grammar.clone();
+pub fn init_grammar(raw_grammar: IRawGrammar, _base: Option<IRawRule>) -> IRawGrammar {
+    let mut grammar = raw_grammar.clone();
 
     let mut new_based: IRawRule = IRawRule::new();
-    if grammar.repository.is_some() {
-        new_based.location = grammar.repository.clone().unwrap().location;
+    if raw_grammar.repository.is_some() {
+        new_based.location = raw_grammar.repository.clone().unwrap().location;
     }
-    new_based.patterns = Some(grammar.clone().patterns.clone());
-    new_based.name = grammar.clone().name;
+    new_based.patterns = Some(raw_grammar.patterns.clone());
+    new_based.name = raw_grammar.name.clone();
 
     let mut repository_map = IRawRepositoryMap::new();
     repository_map.base_s = Some(Box::from(new_based.clone()));
     repository_map.self_s = Some(Box::from(new_based.clone()));
-    if let Some(repo) = grammar.clone().repository {
-        repository_map.name_map = repo.clone().map.name_map.clone();
+    if raw_grammar.repository.is_some() {
+        repository_map.name_map = raw_grammar.repository.unwrap().clone().map.name_map;
     }
 
-    _grammar.repository = Some(IRawRepository {
+    grammar.repository = Some(IRawRepository {
         map: Box::new(repository_map.clone()),
         location: None,
     });
 
-    _grammar
+    grammar
 }
 
 impl Grammar {
     pub fn new(raw_grammar: IRawGrammar) -> Grammar {
-        let grammar = init_grammar(raw_grammar.clone(), None);
+        let grammar = init_grammar(raw_grammar, None);
         Grammar {
             last_rule_id: 0,
             grammar,
