@@ -38,7 +38,7 @@ impl ScieScanner {
         let mut strings: Vec<UtfString> = vec![];
 
         for i in 0..patterns.len() {
-            let utf_string = UtfString::new(patterns[i].clone());
+            let utf_string = UtfString::new(String::from(patterns[i].as_str()));
 
             str_ptrs_arr[i] = patterns[i].as_ptr() as *mut u8;
             str_len_arr[i] = utf_string.utf8length;
