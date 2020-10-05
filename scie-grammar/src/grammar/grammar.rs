@@ -202,7 +202,7 @@ impl Grammar {
             if let None = r {
                 line_tokens.produce(&mut stack, _line_length as i32);
                 _stop = true;
-                return Some(stack.clone());
+                return Some(stack);
             }
 
             let capture_result = r.unwrap();
@@ -233,7 +233,7 @@ impl Grammar {
                 } else {
                     println!("_popped_rule {:?}", _popped_rule.clone());
                     _stop = true;
-                    return Some(stack.clone());
+                    return Some(stack);
                 }
             } else {
                 let rule = self.get_rule(matched_rule_id);
@@ -336,7 +336,7 @@ impl Grammar {
                 is_first_line = false;
             }
         }
-        Some(stack.clone())
+        Some(stack)
     }
 
     pub fn handle_captures(
