@@ -103,7 +103,7 @@ impl AbstractRule for BeginEndRule {
     }
 
     fn patterns_length(&self) -> i32 {
-        self.patterns.clone().len() as i32
+        self.patterns.len() as i32
     }
 
     fn collect_patterns_recursive(
@@ -113,8 +113,8 @@ impl AbstractRule for BeginEndRule {
         is_first: bool,
     ) {
         if is_first {
-            for x in self.patterns.clone() {
-                let mut rule = grammar.get_rule(x);
+            for pattern_id in self.patterns.iter() {
+                let mut rule = grammar.get_rule(*pattern_id);
                 rule.collect_patterns_recursive(grammar, &mut out, false);
             }
         } else {
