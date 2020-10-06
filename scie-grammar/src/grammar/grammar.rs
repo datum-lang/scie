@@ -130,7 +130,7 @@ impl Grammar {
                 false,
                 None,
                 scope_list.clone(),
-                scope_list.clone(),
+                scope_list,
             );
 
             current_state = state;
@@ -145,8 +145,10 @@ impl Grammar {
             line_text,
             self._token_type_matchers.clone(),
         );
+
+        let line_length = format_line_text.clone().len();
         let next_state = self.tokenize_string(
-            format_line_text.clone(),
+            format_line_text,
             is_first_line,
             0,
             current_state,
@@ -154,12 +156,11 @@ impl Grammar {
             true,
         );
 
-        let line_length = format_line_text.clone().len();
         let stack = &mut next_state.clone().unwrap();
         let vec = line_tokens.get_result(stack, line_length as i32);
         TokenizeResult {
             tokens: vec,
-            rule_stack: Box::new(next_state.clone()),
+            rule_stack: Box::new(next_state),
         }
     }
 
@@ -574,8 +575,7 @@ impl Grammar {
         anchor_position: i32,
     ) -> Option<MatchRuleResult> {
         // todo: replace cache logic
-        let mut rule = self.rule_id2desc[&stack.rule_id].to_owned();
-        // let mut rule = stack.get_rule(self);
+        let mut rule = stack.get_rule(self);
 
         let mut rule_scanner= rule.compile(
             self,
