@@ -180,7 +180,7 @@ impl Grammar {
 
         if check_while_conditions {
             let while_check_result = self.check_while_conditions(
-                String::from(line_text),
+                line_text,
                 is_first_line.clone(),
                 origin_line_pos.clone(),
                 stack.clone(),
@@ -459,7 +459,7 @@ impl Grammar {
      */
     pub fn check_while_conditions(
         &mut self,
-        line_text: String,
+        line_text: &str,
         mut is_first_line: bool,
         mut line_pos: i32,
         mut stack: StackElement,
@@ -498,7 +498,7 @@ impl Grammar {
             );
             let match_result = rule_scanner
                 .scanner
-                .find_next_match_sync(&*line_text, line_pos);
+                .find_next_match_sync(line_text, line_pos);
 
             match match_result {
                 None => {
@@ -518,7 +518,7 @@ impl Grammar {
                             .produce(&mut while_rule.stack, r.capture_indices[0].start as i32);
                         Grammar::handle_captures(
                             self,
-                            &*line_text,
+                            line_text,
                             is_first_line,
                             &mut *while_rule.stack,
                             &mut line_tokens,
