@@ -6,6 +6,7 @@ goal: build a better code figure engine for code refactoring.
 
 Todo:
 
+ - [ ] replace with [fancy-regex](https://github.com/fancy-regex/fancy-regex)
  - [ ] process todo
     - [x] back references
     - [ ] multiple languages
