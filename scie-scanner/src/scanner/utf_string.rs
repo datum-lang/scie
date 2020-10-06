@@ -9,11 +9,11 @@ pub struct UtfString {
 }
 
 impl UtfString {
-    pub fn new(str: String) -> Self {
-        let utf16_vec: Vec<u16> = str.to_owned().encode_utf16().collect();
+    pub fn new(str: &str) -> Self {
+        let utf16_vec: Vec<u16> = str.encode_utf16().collect();
         let utf16length = utf16_vec.len();
         let utf8length = str.len();
-        let mut utf8value = str.to_owned().into_bytes();
+        let mut utf8value = str.to_string().into_bytes();
 
         let compute_indices_mapping = utf8length != utf16length;
 
@@ -128,7 +128,7 @@ mod tests {
 
     #[test]
     fn should_convert_utf_string_success() {
-        let onig_string = UtfString::new(String::from("a💻bYX"));
+        let onig_string = UtfString::new("a💻bYX");
 
         assert_eq!(6, onig_string.utf16length);
         assert_eq!(8, onig_string.utf8length);
@@ -145,14 +145,14 @@ mod tests {
 
     #[test]
     fn should_handle_normal_string() {
-        let onig_string = UtfString::new(String::from("12"));
+        let onig_string = UtfString::new("12");
         assert_eq!(2, onig_string.utf16length.clone());
         assert_eq!(2, onig_string.utf8length.clone());
     }
 
     #[test]
     fn should_handle_tab_string() {
-        let onig_string = UtfString::new(String::from("\t"));
+        let onig_string = UtfString::new("12");
         assert_eq!(1, onig_string.utf16length.clone());
         assert_eq!(1, onig_string.utf8length.clone());
     }

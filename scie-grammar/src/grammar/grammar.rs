@@ -500,7 +500,7 @@ impl Grammar {
             );
             let match_result = rule_scanner
                 .scanner
-                .find_next_match_sync(line_text.clone(), line_pos);
+                .find_next_match_sync(&*line_text, line_pos);
 
             match match_result {
                 None => {
@@ -586,7 +586,7 @@ impl Grammar {
 
         let r = rule_scanner
             .scanner
-            .find_next_match_sync(line_text, line_pos);
+            .find_next_match_sync(&*line_text, line_pos);
 
         if let Some(result) = r {
             let match_rule_result = MatchRuleResult {
