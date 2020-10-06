@@ -66,8 +66,8 @@ impl AbstractRule for IncludeOnlyRule {
         out: &mut RegExpSourceList,
         _is_first: bool,
     ) {
-        for x in self.patterns.clone() {
-            let mut rule = grammar.get_rule(x);
+        for x in self.patterns.iter() {
+            let mut rule = grammar.get_rule(*x);
             rule.collect_patterns_recursive(grammar, out, false);
         }
     }
