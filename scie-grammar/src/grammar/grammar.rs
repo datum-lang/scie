@@ -473,15 +473,13 @@ impl Grammar {
         let mut has_node = true;
         let mut node = stack.clone();
         while has_node {
-            let rule = node.get_rule(self);
-
-            if rule.display() == "BeginWhileRule" {
-                let instance = rule.get_instance().downcast_ref::<BeginWhileRule>().unwrap();
+            let rule = node.clone().get_rule(self);
+            if let RuleEnum::BeginWhileRule(begin_while_rule) = rule.get_rule_instance() {
                 while_rules.push(CheckWhileRuleResult {
-                    rule: Box::from(instance.clone()),
+                    rule: Box::from(begin_while_rule),
                     stack: Box::from(node.clone()),
                 })
-            };
+            }
 
             match node.pop() {
                 None => has_node = false,
@@ -729,7 +727,7 @@ return 0;
         let code = "#include <stdio.h>";
         let mut grammar = to_grammar_for_test("fixtures/test-cases/first-mate/fixtures/c.json");
         let mut rule_stack = Some(StackElement::null());
-        let result = grammar.tokenize_line(String::from(code), &mut rule_stack);
+        let result = grammar.tokenize_line(code, &mut rule_stack);
 
         assert_eq!(6, result.tokens.len());
         assert_eq!(0, result.tokens[0].start_index);
@@ -819,7 +817,7 @@ hellomake: $(OBJ)
         let mut all_tokens: Vec<Vec<IToken>> = vec![];
 
         for line in c_code.lines() {
-            let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
+            let result = grammar.tokenize_line(line, &mut rule_stack);
             rule_stack = *result.rule_stack;
             all_tokens.push(result.tokens);
         }
@@ -830,7 +828,7 @@ hellomake: $(OBJ)
     #[test]
     fn should_resolve_make_file_error_issues() {
         let mut grammar = to_grammar_for_test("fixtures/test-cases/first-mate/fixtures/makefile.json");
-        let result = grammar.tokenize_line(String::from("%.o: %.c $(DEPS)"), &mut None);
+        let result = grammar.tokenize_line("%.o: %.c $(DEPS)", &mut None);
         let tokens = result.tokens.clone();
         assert_eq!(9, tokens.len());
         assert_eq!("Makefile,meta.scope.target.makefile,entity.name.function.target.makefile,constant.other.placeholder.makefile", tokens[0].scopes.join(","));
@@ -851,12 +849,12 @@ hellomake: $(OBJ)
         let mut grammar = to_grammar_for_test("fixtures/test-cases/first-mate/fixtures/makefile.json");
 
         let mut rule_stack = Some(StackElement::null());
-        let result = grammar.tokenize_line(String::from("hellomake: $(OBJ)"), &mut rule_stack);
+        let result = grammar.tokenize_line("hellomake: $(OBJ)", &mut rule_stack);
         assert_eq!(6, result.tokens.len());
 
         rule_stack = *result.rule_stack;
         let result2 =
-            grammar.tokenize_line(String::from("\t$(CC) -o $@ $^ $(CFLAGS)"), &mut rule_stack);
+            grammar.tokenize_line("\t$(CC) -o $@ $^ $(CFLAGS)", &mut rule_stack);
         assert_eq!(14, result2.tokens.len());
     }
 
