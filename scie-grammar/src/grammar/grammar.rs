@@ -173,7 +173,7 @@ impl Grammar {
         line_tokens: &mut LineTokens,
         check_while_conditions: bool,
     ) -> Option<StackElement> {
-        let _line_length = line_text.clone().len();
+        let line_length = line_text.clone().len();
         let mut _stop = false;
         let mut anchor_position = -1;
         let mut line_pos = origin_line_pos.clone();
@@ -201,7 +201,7 @@ impl Grammar {
                 anchor_position,
             );
             if let None = r {
-                line_tokens.produce(&mut stack, _line_length as i32);
+                line_tokens.produce(&mut stack, line_length as i32);
                 _stop = true;
                 return Some(stack);
             }
@@ -212,7 +212,7 @@ impl Grammar {
             if matched_rule_id == -1 {
                 let _popped_rule = stack.get_rule(self);
                 if let RuleEnum::BeginEndRule(popped_rule) = _popped_rule.get_rule_instance() {
-                    let name_scopes_list = stack.clone().name_scopes_list;
+                    let name_scopes_list = stack.name_scopes_list.clone();
                     line_tokens.produce(&mut stack, capture_indices[0].start.clone() as i32);
                     stack = stack.set_content_name_scopes_list(name_scopes_list);
                     Grammar::handle_captures(
@@ -243,7 +243,7 @@ impl Grammar {
                     rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
                 let name_scopes_list = stack.content_name_scopes_list.push(self, scope_name);
                 let mut begin_rule_capture_eol = false;
-                if capture_indices[0].end == _line_length {
+                if capture_indices[0].end == line_length {
                     begin_rule_capture_eol = true;
                 }
                 stack = stack.push(
@@ -287,15 +287,14 @@ impl Grammar {
                             );
                         }
                     }
-                    RuleEnum::BeginWhileRule(_while_rule) => {
-                        let push_rule = _while_rule.clone();
+                    RuleEnum::BeginWhileRule(push_rule) => {
                         Grammar::handle_captures(
                             self,
                             line_text.clone(),
                             is_first_line,
                             &mut stack,
                             line_tokens,
-                            _while_rule.begin_captures,
+                            push_rule.begin_captures.clone(),
                             capture_indices.clone(),
                         );
 
@@ -305,8 +304,9 @@ impl Grammar {
                             Some(line_text.clone()),
                             Some(capture_indices.clone()),
                         );
-                        let _content_name_scopes_list = name_scopes_list.push(self, content_name);
-                        stack = stack.set_content_name_scopes_list(_content_name_scopes_list);
+
+                        let content_name_scopes_list = name_scopes_list.push(self, content_name);
+                        stack = stack.set_content_name_scopes_list(content_name_scopes_list);
                     }
                     RuleEnum::MatchRule(match_rule) => {
                         Grammar::handle_captures(
@@ -325,8 +325,6 @@ impl Grammar {
                     }
                     _ => {
                         panic!("todo: RuleEnum - Others");
-                        // _stop = true;
-                        // return Some(stack.clone());
                     }
                 }
             }
@@ -348,7 +346,7 @@ impl Grammar {
         captures: Vec<Box<dyn AbstractRule>>,
         capture_indices: Vec<IOnigCaptureIndex>,
     ) -> Option<LineTokens> {
-        let captures_len = captures.clone().len();
+        let captures_len = captures.len().clone();
         if captures_len == 0 {
             return None;
         }
@@ -359,7 +357,7 @@ impl Grammar {
         for i in 0..len {
             let capture_rule = captures[i].clone();
             if let RuleEnum::CaptureRule(capture) = capture_rule.get_rule_instance() {
-                if capture.clone().rule._type == "" {
+                if capture.rule._type == "" {
                     continue;
                 }
 
@@ -431,7 +429,6 @@ impl Grammar {
                 let capture_scope_name =
                     capture_rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
                 if capture_scope_name.is_some() {
-                    let _name = capture_scope_name.clone().unwrap();
                     let mut base = stack.content_name_scopes_list.clone();
                     if local_stack.len() > 0 {
                         base = local_stack[local_stack.len() - 1].scopes.clone();
