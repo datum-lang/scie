@@ -11,24 +11,24 @@ pub struct IToken {
 }
 
 #[derive(Debug, Clone)]
-pub struct LineTokens {
+pub struct LineTokens<'a> {
     pub emit_binary_tokens: bool,
-    pub _line_text: String,
+    pub _line_text: &'a str,
     pub _tokens: Vec<IToken>,
     pub _binary_tokens: Vec<IToken>,
     pub _last_token_end_index: i32,
     pub _token_type_overrides: Vec<TokenTypeMatcher>,
 }
 
-impl LineTokens {
+impl<'a> LineTokens<'a> {
     pub fn new(
         emit_binary_tokens: bool,
-        _line_text: String,
+        line_text: &'a str,
         _token_type_overrides: Vec<TokenTypeMatcher>,
-    ) -> Self {
+    ) -> LineTokens<'a> {
         LineTokens {
             emit_binary_tokens,
-            _line_text,
+            _line_text: line_text,
             _tokens: vec![],
             _binary_tokens: vec![],
             _last_token_end_index: 0,

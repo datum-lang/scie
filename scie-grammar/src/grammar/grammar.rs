@@ -85,7 +85,7 @@ impl Grammar {
 
     fn tokenize(
         &mut self,
-        line_text: String,
+        line_text: &str,
         prev_state: &mut Option<StackElement>,
         emit_binary_tokens: bool,
     ) -> TokenizeResult {
@@ -139,7 +139,7 @@ impl Grammar {
             current_state.reset();
         }
 
-        let format_line_text = line_text.clone() + "\n";
+        let format_line_text: String = String::from(line_text) + "\n";
         let mut line_tokens = LineTokens::new(
             emit_binary_tokens,
             line_text,
@@ -148,7 +148,7 @@ impl Grammar {
 
         let line_length = format_line_text.clone().len();
         let next_state = self.tokenize_string(
-            format_line_text,
+            &*format_line_text,
             is_first_line,
             0,
             current_state,
@@ -164,9 +164,9 @@ impl Grammar {
         }
     }
 
-    pub fn tokenize_string(
+    pub fn tokenize_string<'a>(
         &mut self,
-        line_text: String,
+        line_text: &'a str,
         mut is_first_line: bool,
         origin_line_pos: i32,
         mut stack: StackElement,
@@ -180,7 +180,7 @@ impl Grammar {
 
         if check_while_conditions {
             let while_check_result = self.check_while_conditions(
-                line_text.clone(),
+                String::from(line_text),
                 is_first_line.clone(),
                 origin_line_pos.clone(),
                 stack.clone(),
@@ -194,7 +194,7 @@ impl Grammar {
 
         while !_stop {
             let r = self.match_rule(
-                line_text.clone(),
+                String::from(line_text),
                 is_first_line,
                 line_pos,
                 &mut stack,
@@ -217,7 +217,7 @@ impl Grammar {
                     stack = stack.set_content_name_scopes_list(name_scopes_list);
                     Grammar::handle_captures(
                         self,
-                        line_text.clone(),
+                        line_text,
                         is_first_line,
                         &mut stack,
                         line_tokens,
@@ -240,7 +240,7 @@ impl Grammar {
                 let rule = self.get_rule(matched_rule_id);
                 line_tokens.produce(&mut stack, capture_indices[0].start as i32);
                 let scope_name =
-                    rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                    rule.get_name(Some(String::from(line_text)), Some(capture_indices.clone()));
                 let name_scopes_list = stack.content_name_scopes_list.push(self, scope_name);
                 let mut begin_rule_capture_eol = false;
                 if capture_indices[0].end == line_length {
@@ -272,7 +272,7 @@ impl Grammar {
                         line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
                         anchor_position = capture_indices[0].end.clone() as i32;
                         let content_name = push_rule.get_content_name(
-                            Some(line_text.clone()),
+                            Some(String::from(line_text)),
                             Some(capture_indices.clone()),
                         );
                         let _content_name_scopes_list = name_scopes_list.push(self, content_name);
@@ -281,7 +281,7 @@ impl Grammar {
                         if push_rule.end_has_back_references {
                             stack = stack.set_end_rule(
                                 push_rule.get_end_with_resolved_back_references(
-                                    line_text.clone(),
+                                    String::from(line_text),
                                     capture_indices.clone(),
                                 ),
                             );
@@ -301,7 +301,7 @@ impl Grammar {
                         line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
                         anchor_position = capture_indices[0].end.clone() as i32;
                         let content_name = push_rule.get_content_name(
-                            Some(line_text.clone()),
+                            Some(String::from(line_text)),
                             Some(capture_indices.clone()),
                         );
 
@@ -337,15 +337,15 @@ impl Grammar {
         Some(stack)
     }
 
-    pub fn handle_captures(
+    pub fn handle_captures<'a>(
         grammar: &mut Grammar,
-        line_text: String,
+        line_text: &'a str,
         is_first_line: bool,
         stack: &mut StackElement,
-        line_tokens: &mut LineTokens,
+        line_tokens: &'a mut LineTokens,
         captures: Vec<Box<dyn AbstractRule>>,
         capture_indices: Vec<IOnigCaptureIndex>,
-    ) -> Option<LineTokens> {
+    ) -> Option<LineTokens <'a>> {
         let captures_len = captures.len().clone();
         if captures_len == 0 {
             return None;
@@ -393,10 +393,10 @@ impl Grammar {
 
                 if capture.retokenize_captured_with_rule_id != 0 {
                     let scope_name =
-                        capture.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                        capture.get_name(Some(String::from(line_text)), Some(capture_indices.clone()));
                     let name_scopes_list = stack.content_name_scopes_list.push(grammar, scope_name);
                     let content_name = capture
-                        .get_content_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                        .get_content_name(Some(String::from(line_text)), Some(capture_indices.clone()));
                     let content_name_scopes_list = name_scopes_list.push(grammar, content_name);
 
                     let stack_clone = stack.clone().push(
@@ -416,7 +416,7 @@ impl Grammar {
                     }
                     Grammar::tokenize_string(
                         grammar,
-                        String::from(sub_text),
+                        sub_text,
                         sub_is_first_line,
                         capture_index.start as i32,
                         stack_clone,
@@ -427,7 +427,7 @@ impl Grammar {
                 }
 
                 let capture_scope_name =
-                    capture_rule.get_name(Some(line_text.clone()), Some(capture_indices.clone()));
+                    capture_rule.get_name(Some(String::from(line_text)), Some(capture_indices.clone()));
                 if capture_scope_name.is_some() {
                     let mut base = stack.content_name_scopes_list.clone();
                     if local_stack.len() > 0 {
@@ -520,7 +520,7 @@ impl Grammar {
                             .produce(&mut while_rule.stack, r.capture_indices[0].start as i32);
                         Grammar::handle_captures(
                             self,
-                            line_text.clone(),
+                            &*line_text,
                             is_first_line,
                             &mut *while_rule.stack,
                             &mut line_tokens,
@@ -602,7 +602,7 @@ impl Grammar {
 
     pub fn tokenize_line(
         &mut self,
-        line_text: String,
+        line_text: &str,
         prev_state: &mut Option<StackElement>,
     ) -> TokenizeResult {
         self.tokenize(line_text, prev_state, false)
@@ -677,7 +677,7 @@ pub fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
     let c_code = String::from(code);
     let mut rule_stack = Some(StackElement::null());
     for line in c_code.lines() {
-        let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
+        let result = grammar.tokenize_line(line, &mut rule_stack);
         rule_stack = *result.rule_stack;
         for token in result.tokens {
             let start = token.start_index.clone() as usize;

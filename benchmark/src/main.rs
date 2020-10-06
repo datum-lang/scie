@@ -40,7 +40,7 @@ fn run_execute(lang_spec_dir: PathBuf, code: String) {
     let start = SystemTime::now();
 
     for line in code.lines() {
-        let result = grammar.tokenize_line(String::from(line), &mut rule_stack);
+        let result = grammar.tokenize_line(line, &mut rule_stack);
         rule_stack = *result.rule_stack;
     }
 
