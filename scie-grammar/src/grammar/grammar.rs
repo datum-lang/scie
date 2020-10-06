@@ -644,14 +644,14 @@ impl IRuleRegistry for Grammar {
     }
 
     fn get_rule(&mut self, pattern_id: i32) -> Box<dyn AbstractRule> {
-        if let Some(rule) = self.rule_id2desc.get_mut(&pattern_id) {
+        if let Some(rule) = self.rule_id2desc.get(&pattern_id) {
             return rule.to_owned();
         }
         Box::from(EmptyRule {})
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32 {
-        let id = result.id().clone();
+        let id = result.id();
         self.rule_id2desc.insert(id, result);
         id
     }

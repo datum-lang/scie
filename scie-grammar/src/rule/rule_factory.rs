@@ -100,15 +100,14 @@ impl RuleFactory {
     ) -> ICompilePatternsResult {
         let mut r: Vec<i32> = vec![];
 
-        if let Some(patterns) = origin_patterns.clone() {
-            for pattern in patterns {
+        if origin_patterns.is_some() {
+            for pattern in origin_patterns.clone().unwrap().iter() {
                 let mut pattern_id = -1;
                 if pattern.include.is_some() {
                     let include_s = pattern.include.clone().unwrap();
                     if include_s.starts_with("#") {
                         let first = remove_first(include_s.as_str());
-                        let local_included_rule = repository.map.name_map.get_mut(first);
-                        if let Some(rule) = local_included_rule.cloned() {
+                        if let Some(rule) = repository.map.name_map.get_mut(first).cloned() {
                             pattern_id = RuleFactory::get_compiled_rule_id(
                                 *rule,
                                 helper,
@@ -134,7 +133,7 @@ impl RuleFactory {
                         println!("todo: external grammar {:?}", pattern.include);
                         let mut _external_grammar_name: Option<String> = None;
                         let mut _external_grammar_include: Option<String> = None;
-                        let include_string = pattern.include.unwrap();
+                        let include_string = pattern.include.as_ref().unwrap();
                         let sharp_index = include_string.find("#");
 
                         if let Some(index) = sharp_index {
@@ -152,7 +151,7 @@ impl RuleFactory {
                     }
                 } else {
                     pattern_id = RuleFactory::get_compiled_rule_id(
-                        pattern,
+                        pattern.clone(),
                         helper,
                         repository,
                         String::from(""),
