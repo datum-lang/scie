@@ -183,8 +183,8 @@ impl Grammar {
                 line_text,
                 is_first_line.clone(),
                 origin_line_pos.clone(),
-                stack.clone(),
-                line_tokens.clone(),
+                stack,
+                line_tokens,
             );
             stack = *while_check_result.stack;
             line_pos = while_check_result.line_pos;
@@ -463,7 +463,7 @@ impl Grammar {
         mut is_first_line: bool,
         mut line_pos: i32,
         mut stack: StackElement,
-        mut line_tokens: LineTokens,
+        line_tokens: &mut LineTokens,
     ) -> CheckWhileConditionResult {
         let mut anchor_position = -1;
         if stack.begin_rule_captured_eol {
@@ -520,8 +520,8 @@ impl Grammar {
                             self,
                             line_text,
                             is_first_line,
-                            &mut *while_rule.stack,
-                            &mut line_tokens,
+                            while_rule.stack.as_mut(),
+                            line_tokens,
                             while_rule.rule.while_captures.clone(),
                             r.capture_indices.clone(),
                         );
