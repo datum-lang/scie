@@ -1,5 +1,3 @@
-use crate::grammar::Grammar;
-
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct ScopeListElement {
     pub parent: Option<Box<ScopeListElement>>,
@@ -33,7 +31,6 @@ impl ScopeListElement {
 
     pub fn _push(
         origin_target: ScopeListElement,
-        _grammar: &mut Grammar,
         scopes: Vec<String>,
     ) -> ScopeListElement {
         let mut target = origin_target.clone();
@@ -42,14 +39,14 @@ impl ScopeListElement {
         }
         target
     }
-    pub fn push(&self, grammar: &mut Grammar, scope: Option<String>) -> ScopeListElement {
+    pub fn push(&self, scope: Option<String>) -> ScopeListElement {
         if scope.is_none() {
             return self.clone();
         }
 
         let scope_name = scope.clone().unwrap();
         return match scope.iter().position(|s| s == " ") {
-            None => ScopeListElement::_push(self.clone(), grammar, vec![scope_name]),
+            None => ScopeListElement::_push(self.clone(), vec![scope_name]),
             Some(_) => {
                 panic!("todo: ScopeListElement push");
                 // self.clone()

@@ -71,9 +71,9 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn patterns_length(&self) -> i32 {
         -1
     }
-    fn collect_patterns_recursive(
+    fn collect_patterns_recursive<'a>(
         &mut self,
-        grammar: &mut Grammar,
+        grammar: &'a mut Grammar,
         out: &mut RegExpSourceList,
         is_first: bool,
     );
