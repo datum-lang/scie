@@ -68,7 +68,7 @@ impl BeginEndRule {
 
     pub fn get_end_with_resolved_back_references(
         &self,
-        line_text: String,
+        line_text: &str,
         capture_indices: Vec<IOnigCaptureIndex>,
     ) -> String {
         return self

@@ -331,7 +331,7 @@ impl RegExpSource {
 
     pub fn resolve_back_references(
         &self,
-        line_text: String,
+        line_text: &str,
         capture_indices: Vec<IOnigCaptureIndex>,
     ) -> String {
         let captured_values: Vec<String> = capture_indices
@@ -344,16 +344,16 @@ impl RegExpSource {
         let result = BACK_REFERENCING_END
             .replace(&*self.source, |caps: &Captures| {
                 let index = caps.get(1).unwrap().as_str().parse::<usize>().unwrap();
-                let mut chars = String::from("");
+                let mut chars = "";
                 if captured_values.get(index).is_some() {
-                    chars = captured_values[index].clone();
+                    chars = &*captured_values[index];
                 };
 
                 return REG_EXP_REGEX.replace(&chars, "\\$&").to_string();
             })
             .to_string();
 
-        return String::from(result);
+        return result;
     }
 }
 

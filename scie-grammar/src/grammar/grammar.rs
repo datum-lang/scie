@@ -84,9 +84,9 @@ impl Grammar {
             root_id: -1,
             rule_id2desc: Map::new(),
             _token_type_matchers: vec![],
-            _empty_rule
+            _empty_rule,
         };
-        grammar._empty_rule.insert(-2, Box::new(EmptyRule{}));
+        grammar._empty_rule.insert(-2, Box::new(EmptyRule {}));
 
         grammar
     }
@@ -155,14 +155,7 @@ impl Grammar {
         );
 
         let line_length = format_line_text.clone().len();
-        let next_state = self.tokenize_string(
-            &*format_line_text,
-            is_first_line,
-            0,
-            current_state,
-            &mut line_tokens,
-            true,
-        );
+        let next_state = self.tokenize_string(&*format_line_text, is_first_line, 0, current_state, &mut line_tokens, true,);
 
         let stack = &mut next_state.clone().unwrap();
         let vec = line_tokens.get_result(stack, line_length as i32);
@@ -176,7 +169,7 @@ impl Grammar {
         &mut self,
         line_text: &'a str,
         mut is_first_line: bool,
-        origin_line_pos: i32,
+        mut line_pos: i32,
         mut stack: StackElement,
         line_tokens: &mut LineTokens,
         check_while_conditions: bool,
@@ -184,13 +177,12 @@ impl Grammar {
         let line_length = line_text.clone().len();
         let mut _stop = false;
         let mut anchor_position = -1;
-        let mut line_pos = origin_line_pos.clone();
 
         if check_while_conditions {
             let while_check_result = self.check_while_conditions(
                 line_text,
-                is_first_line.clone(),
-                origin_line_pos.clone(),
+                is_first_line,
+                line_pos,
                 stack,
                 line_tokens,
             );
@@ -221,7 +213,8 @@ impl Grammar {
                 let _popped_rule = self.get_rule(stack.rule_id);
                 if let RuleEnum::BeginEndRule(popped_rule) = _popped_rule.get_rule_instance() {
                     let name_scopes_list = stack.name_scopes_list.clone();
-                    line_tokens.produce(&mut stack, capture_indices[0].start.clone() as i32);
+                    line_tokens.produce(&mut stack, capture_indices[0].start as i32);
+
                     stack = stack.set_content_name_scopes_list(name_scopes_list);
                     Grammar::handle_captures(
                         self,
@@ -269,7 +262,7 @@ impl Grammar {
                         let push_rule = begin_rule.clone();
                         Grammar::handle_captures(
                             self,
-                            line_text.clone(),
+                            line_text,
                             is_first_line,
                             &mut stack,
                             line_tokens,
@@ -277,8 +270,8 @@ impl Grammar {
                             capture_indices.clone(),
                         );
 
-                        line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
-                        anchor_position = capture_indices[0].end.clone() as i32;
+                        line_tokens.produce(&mut stack, capture_indices[0].end as i32);
+                        anchor_position = capture_indices[0].end as i32;
                         let content_name = push_rule.get_content_name(
                             Some(String::from(line_text)),
                             Some(capture_indices.clone()),
@@ -289,7 +282,7 @@ impl Grammar {
                         if push_rule.end_has_back_references {
                             stack = stack.set_end_rule(
                                 push_rule.get_end_with_resolved_back_references(
-                                    String::from(line_text),
+                                    line_text,
                                     capture_indices.clone(),
                                 ),
                             );
@@ -319,7 +312,7 @@ impl Grammar {
                     RuleEnum::MatchRule(match_rule) => {
                         Grammar::handle_captures(
                             self,
-                            line_text.clone(),
+                            line_text,
                             is_first_line,
                             &mut stack,
                             line_tokens,
@@ -353,13 +346,12 @@ impl Grammar {
         line_tokens: &'a mut LineTokens,
         captures: Vec<Box<dyn AbstractRule>>,
         capture_indices: Vec<IOnigCaptureIndex>,
-    ) -> Option<LineTokens <'a>> {
-        let captures_len = captures.len().clone();
-        if captures_len == 0 {
+    ) -> Option<LineTokens<'a>> {
+        if captures.len() == 0 {
             return None;
         }
 
-        let len = cmp::min(captures_len, capture_indices.len());
+        let len = cmp::min(captures.len(), capture_indices.len());
         let mut local_stack: Vec<LocalStackElement> = vec![];
         let max_end = capture_indices[0].end;
         for i in 0..len {
@@ -409,7 +401,7 @@ impl Grammar {
 
                     let stack_clone = stack.clone().push(
                         capture.retokenize_captured_with_rule_id,
-                        capture_index.start.clone() as i32,
+                        capture_index.start as i32,
                         -1,
                         false,
                         None,
@@ -577,8 +569,8 @@ impl Grammar {
         anchor_position: i32,
     ) -> Option<MatchRuleResult> {
         // todo: replace cache logic
-        let mut rule = self.get_rule(stack.rule_id.clone()).clone();
-        let mut rule_scanner= rule.compile(
+        let mut rule = self.get_rule(stack.rule_id).clone();
+        let mut rule_scanner = rule.compile(
             self,
             stack.end_rule.clone(),
             is_first_line,
