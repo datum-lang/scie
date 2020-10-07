@@ -41,7 +41,7 @@ fn run_execute(lang_spec_dir: PathBuf, code: String) {
 
     for line in code.lines() {
         let result = grammar.tokenize_line(line, &mut rule_stack);
-        rule_stack = *result.rule_stack;
+        rule_stack = result.rule_stack;
     }
 
     if let Ok(n) = SystemTime::now().duration_since(start) {

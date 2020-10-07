@@ -25,7 +25,7 @@ pub struct CheckWhileRuleResult {
 
 #[derive(Debug, Clone)]
 pub struct CheckWhileConditionResult {
-    pub stack: Box<StackElement>,
+    pub stack: StackElement,
     pub line_pos: i32,
     pub anchor_position: i32,
     pub is_first_line: bool,
@@ -34,7 +34,7 @@ pub struct CheckWhileConditionResult {
 #[derive(Debug, Clone)]
 pub struct TokenizeResult {
     pub tokens: Vec<IToken>,
-    pub rule_stack: Box<Option<StackElement>>,
+    pub rule_stack: Option<StackElement>,
 }
 
 #[derive(Debug, Clone)]
@@ -161,7 +161,7 @@ impl Grammar {
         let vec = line_tokens.get_result(stack, line_length as i32);
         TokenizeResult {
             tokens: vec.clone(),
-            rule_stack: Box::new(next_state),
+            rule_stack: next_state,
         }
     }
 
@@ -186,7 +186,7 @@ impl Grammar {
                 stack,
                 line_tokens,
             );
-            stack = *while_check_result.stack;
+            stack = while_check_result.stack;
             line_pos = while_check_result.line_pos;
             is_first_line = while_check_result.is_first_line;
             anchor_position = while_check_result.anchor_position;
@@ -536,7 +536,7 @@ impl Grammar {
         }
 
         CheckWhileConditionResult {
-            stack: Box::new(stack),
+            stack,
             line_pos,
             anchor_position,
             is_first_line,
@@ -670,7 +670,7 @@ pub fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
     let mut rule_stack = Some(StackElement::null());
     for line in c_code.lines() {
         let result = grammar.tokenize_line(line, &mut rule_stack);
-        rule_stack = *result.rule_stack;
+        rule_stack = result.rule_stack;
         for token in result.tokens {
             let start = token.start_index.clone() as usize;
             let end = token.end_index.clone() as usize;
