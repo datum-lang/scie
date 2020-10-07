@@ -639,11 +639,7 @@ impl IRuleRegistry for Grammar {
     }
 
     fn get_rule(&mut self, pattern_id: i32) -> &mut Box<dyn AbstractRule> {
-        if self.rule_id2desc.get_mut(&pattern_id).is_some() {
-            return self.rule_id2desc.get_mut(&pattern_id).unwrap();
-        }
-
-        return self._empty_rule.get_mut(&-2).unwrap();
+        self.rule_id2desc.get_mut(&pattern_id).unwrap_or(self._empty_rule.get_mut(&-2).unwrap())
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32 {
