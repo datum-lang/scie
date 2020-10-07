@@ -228,11 +228,11 @@ impl Grammar {
                     );
 
                     line_tokens.produce(&mut stack, capture_indices[0].end as i32);
-                    let popped = stack.clone();
+                    let popped_anchor_pos = stack.anchor_pos.clone();
                     if let Some(_stack) = stack.pop() {
                         stack = _stack;
                     }
-                    anchor_position = popped.anchor_pos;
+                    anchor_position = popped_anchor_pos;
                 } else {
                     println!("_popped_rule {:?}", _popped_rule.clone());
                     _stop = true;
