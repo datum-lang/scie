@@ -14,7 +14,7 @@ impl CaptureRule {
     pub fn empty() -> Self {
         CaptureRule {
             rule: Rule {
-                _type: "".to_string(),
+                _type: "CaptureRule".to_string(),
                 _location: None,
                 id: 0,
                 _name: None,
@@ -48,7 +48,7 @@ impl AbstractRule for CaptureRule {
         self.rule.id
     }
     fn type_of(&self) -> String {
-        String::from(self.rule.clone()._type)
+        String::from(self.rule._type.clone())
     }
     fn get_rule(&self) -> &Rule {
         &self.rule

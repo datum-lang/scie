@@ -13,7 +13,7 @@ use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::RuleFactory;
-use crate::rule::{AbstractRule, BeginWhileRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, EmptyRule, BeginEndRule};
+use crate::rule::{AbstractRule, BeginWhileRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, EmptyRule, BeginEndRule, CaptureRule};
 
 pub trait Matcher {}
 
@@ -155,7 +155,7 @@ impl Grammar {
         );
 
         let line_length = format_line_text.len();
-        let next_state = self.tokenize_string(&*format_line_text, is_first_line, 0, current_state, &mut line_tokens, true,);
+        let next_state = self.tokenize_string(&*format_line_text, is_first_line, 0, current_state, &mut line_tokens, true);
 
         let stack = &mut next_state.clone().unwrap();
         let vec = line_tokens.get_result(stack, line_length as i32);
@@ -320,7 +320,7 @@ impl Grammar {
                             match_rule.captures,
                             capture_indices.clone(),
                         );
-                        line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
+                        line_tokens.produce(&mut stack, capture_indices[0].end as i32);
                         if let Some(_stack) = stack.pop() {
                             stack = _stack;
                         }
@@ -356,10 +356,8 @@ impl Grammar {
         let mut local_stack: Vec<LocalStackElement> = vec![];
         let max_end = capture_indices[0].end;
         for i in 0..len {
-            if let RuleEnum::CaptureRule(capture) = captures[i].get_rule_instance() {
-                if capture.rule._type == "" {
-                    continue;
-                }
+            if captures[i].type_of() == "CaptureRule" {
+                let capture = captures[i].get_instance().downcast_ref::<CaptureRule>().unwrap();
 
                 let capture_index = &capture_indices[i];
                 if capture_index.length == 0 {
