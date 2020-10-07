@@ -50,7 +50,7 @@ impl AbstractRule for MatchRule {
         &self.rule
     }
     fn get_rule_instance(&self) -> RuleEnum {
-        RuleEnum::MatchRule(self.clone())
+        RuleEnum::MatchRule(self)
     }
     fn get_instance(&self) -> &dyn Any {
         self

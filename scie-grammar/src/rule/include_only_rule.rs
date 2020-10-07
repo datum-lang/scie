@@ -48,7 +48,7 @@ impl AbstractRule for IncludeOnlyRule {
         &self.rule
     }
     fn get_rule_instance(&self) -> RuleEnum {
-        RuleEnum::IncludeOnlyRule(self.clone())
+        RuleEnum::IncludeOnlyRule(self)
     }
     fn get_instance(&self) -> &dyn Any {
         self

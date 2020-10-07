@@ -259,7 +259,8 @@ impl Grammar {
                 );
 
                 match rule.get_rule_instance() {
-                    RuleEnum::BeginEndRule(begin_rule) => {
+                    RuleEnum::BeginEndRule(rule) => {
+                        let begin_rule = rule.clone();
                         Grammar::handle_captures(
                             self,
                             line_text,
@@ -288,7 +289,8 @@ impl Grammar {
                             );
                         }
                     }
-                    RuleEnum::BeginWhileRule(push_rule) => {
+                    RuleEnum::BeginWhileRule(rule) => {
+                        let push_rule = rule.clone();
                         Grammar::handle_captures(
                             self,
                             line_text,
@@ -309,7 +311,8 @@ impl Grammar {
                         let content_name_scopes_list = name_scopes_list.push(content_name);
                         stack = stack.set_content_name_scopes_list(content_name_scopes_list);
                     }
-                    RuleEnum::MatchRule(match_rule) => {
+                    RuleEnum::MatchRule(rule) => {
+                        let match_rule = rule.clone();
                         Grammar::handle_captures(
                             self,
                             line_text,
@@ -474,7 +477,7 @@ impl Grammar {
             if rule.get_rule()._type == "BeginWhileRule" {
                 if let RuleEnum::BeginWhileRule(begin_while_rule) = rule.get_rule_instance() {
                     while_rules.push(CheckWhileRuleResult {
-                        rule: Box::from(begin_while_rule),
+                        rule: Box::from(begin_while_rule.clone()),
                         stack: Box::from(node.clone()),
                     })
                 }

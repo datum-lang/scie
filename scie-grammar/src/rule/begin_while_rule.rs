@@ -94,7 +94,7 @@ impl AbstractRule for BeginWhileRule {
         &self.rule
     }
     fn get_rule_instance(&self) -> RuleEnum {
-        RuleEnum::BeginWhileRule(self.clone())
+        RuleEnum::BeginWhileRule(self)
     }
     fn get_instance(&self) -> &dyn Any {
         self

@@ -9,13 +9,13 @@ use dyn_clone::{clone_trait_object, DynClone};
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 use std::any::Any;
 
-pub enum RuleEnum {
-    BeginEndRule(BeginEndRule),
-    BeginWhileRule(BeginWhileRule),
-    CaptureRule(CaptureRule),
-    MatchRule(MatchRule),
-    EmptyRule(EmptyRule),
-    IncludeOnlyRule(IncludeOnlyRule),
+pub enum RuleEnum<'r> {
+    BeginEndRule(&'r BeginEndRule),
+    BeginWhileRule(&'r BeginWhileRule),
+    CaptureRule(&'r CaptureRule),
+    MatchRule(&'r MatchRule),
+    EmptyRule(&'r EmptyRule),
+    IncludeOnlyRule(&'r IncludeOnlyRule),
 }
 
 pub trait AbstractRule: DynClone + erased_serde::Serialize {

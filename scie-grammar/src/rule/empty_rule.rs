@@ -28,7 +28,7 @@ impl AbstractRule for EmptyRule {
         &EMPTY_RULE
     }
     fn get_rule_instance(&self) -> RuleEnum {
-        RuleEnum::EmptyRule(self.clone())
+        RuleEnum::EmptyRule(self)
     }
     fn get_instance(&self) -> &dyn Any {
         self

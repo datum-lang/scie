@@ -54,7 +54,7 @@ impl AbstractRule for CaptureRule {
         &self.rule
     }
     fn get_rule_instance(&self) -> RuleEnum {
-        RuleEnum::CaptureRule(self.clone())
+        RuleEnum::CaptureRule(self)
     }
     fn get_instance(&self) -> &dyn Any {
         self
