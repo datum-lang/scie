@@ -1,6 +1,5 @@
 use crate::grammar::Grammar;
 use crate::inter::{ILocation, IRawCaptures, IRawRepository, IRawRule};
-use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{
     AbstractRule, BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule,
     MatchRule,
@@ -166,12 +165,12 @@ impl RuleFactory {
                         || rule.type_of() == "BeginWhileRule"
                     {
                         if rule.has_missing_pattern() && rule.patterns_length() == 0 {
-                            match rule.get_rule_instance() {
-                                RuleEnum::BeginEndRule(r) => {
-                                    println!("missing patterns -> {:?}", r);
-                                }
-                                _ => {}
-                            }
+                            // match rule.get_rule_instance() {
+                            //     RuleEnum::BeginEndRule(r) => {
+                            //         println!("missing patterns -> {:?}", r);
+                            //     }
+                            //     _ => {}
+                            // }
                             skip_rule = true;
                         }
                     }
@@ -186,7 +185,7 @@ impl RuleFactory {
         }
 
         let mut has_missing_patterns = false;
-        match origin_patterns.clone() {
+        match origin_patterns {
             None => {
                 if 0 != r.len() {
                     has_missing_patterns = true
