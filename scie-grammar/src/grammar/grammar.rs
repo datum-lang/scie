@@ -154,7 +154,7 @@ impl Grammar {
             self._token_type_matchers.clone(),
         );
 
-        let line_length = format_line_text.clone().len();
+        let line_length = format_line_text.len();
         let next_state = self.tokenize_string(&*format_line_text, is_first_line, 0, current_state, &mut line_tokens, true,);
 
         let stack = &mut next_state.clone().unwrap();
@@ -174,7 +174,7 @@ impl Grammar {
         line_tokens: &mut LineTokens,
         check_while_conditions: bool,
     ) -> Option<StackElement> {
-        let line_length = line_text.clone().len();
+        let line_length = line_text.len().clone();
         let mut _stop = false;
         let mut anchor_position = -1;
 
@@ -291,7 +291,7 @@ impl Grammar {
                     RuleEnum::BeginWhileRule(push_rule) => {
                         Grammar::handle_captures(
                             self,
-                            line_text.clone(),
+                            line_text,
                             is_first_line,
                             &mut stack,
                             line_tokens,
