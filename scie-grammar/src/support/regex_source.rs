@@ -20,7 +20,7 @@ impl RegexSource {
     pub fn replace_captures(
         regex_source: String,
         capture_source: String,
-        capture_indices: Vec<IOnigCaptureIndex>,
+        capture_indices: &Vec<IOnigCaptureIndex>,
     ) -> String {
         let res = CAPTURING_REGEX_SOURCE.replace_all(&*regex_source, |capts: &Captures| {
             let capture_str;
@@ -91,7 +91,7 @@ mod tests {
             length: 8,
         });
 
-        let string = RegexSource::replace_captures(source, capture_source, capture_indices);
+        let string = RegexSource::replace_captures(source, capture_source, &capture_indices);
         assert_eq!("support.function.target.SUFFIXES.makefile", string);
     }
 

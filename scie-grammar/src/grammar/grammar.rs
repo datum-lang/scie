@@ -242,7 +242,7 @@ impl Grammar {
                 let rule = self.get_rule(matched_rule_id);
                 line_tokens.produce(&mut stack, capture_indices[0].start as i32);
                 let scope_name =
-                    rule.get_name(Some(String::from(line_text)), Some(capture_indices.clone()));
+                    rule.get_name(Some(String::from(line_text)), Some(&capture_indices));
                 let name_scopes_list = stack.content_name_scopes_list.push(scope_name);
                 let mut begin_rule_capture_eol = false;
                 if capture_indices[0].end == line_length {
@@ -390,7 +390,7 @@ impl Grammar {
 
                 if capture.retokenize_captured_with_rule_id != 0 {
                     let scope_name =
-                        capture.get_name(Some(String::from(line_text)), Some(capture_indices.clone()));
+                        capture.get_name(Some(String::from(line_text)), Some(&capture_indices));
                     let name_scopes_list = stack.content_name_scopes_list.push(scope_name);
                     let content_name = capture
                         .get_content_name(Some(String::from(line_text)), Some(&capture_indices));
@@ -424,7 +424,7 @@ impl Grammar {
                 }
 
                 let capture_scope_name =
-                    captures[i].clone().get_name(Some(String::from(line_text)), Some(capture_indices.clone()));
+                    captures[i].clone().get_name(Some(String::from(line_text)), Some(&capture_indices));
                 if capture_scope_name.is_some() {
                     let mut base = stack.content_name_scopes_list.clone();
                     if local_stack.len() > 0 {
