@@ -40,7 +40,7 @@ impl<'a> LineTokens<'a> {
         self.produce_from_scopes(&mut stack.content_name_scopes_list, end_index)
     }
 
-    pub fn produce_from_scopes(&mut self, scopes_list: &mut ScopeListElement, end_index: i32) {
+    pub fn produce_from_scopes(&mut self, scopes_list: &ScopeListElement, end_index: i32) {
         if self._last_token_end_index >= end_index {
             return;
         }

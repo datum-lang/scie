@@ -440,13 +440,13 @@ impl Grammar {
                     ));
                 }
             } else {
-                println!("lose rule: {:?}", captures[i].clone().clone());
+                println!("lose rule: {:?}", captures[i].clone());
             }
         }
 
         while local_stack.len() > 0 {
-            let mut last_stack = local_stack[local_stack.len() - 1].clone();
-            line_tokens.produce_from_scopes(&mut last_stack.scopes, last_stack.end_pos);
+            let last_stack = &local_stack[local_stack.len() - 1];
+            line_tokens.produce_from_scopes(&last_stack.scopes, last_stack.end_pos);
             local_stack.pop();
         }
 

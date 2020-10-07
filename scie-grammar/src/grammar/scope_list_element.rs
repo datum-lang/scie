@@ -11,16 +11,16 @@ impl ScopeListElement {
     }
 
     pub fn generate_scopes(&self) -> Vec<String> {
-        let mut result = vec![];
+        let mut result: Vec<String> = vec![];
 
-        let mut scope_list = self.clone();
+        let mut scope_list = self;
         let mut is_scope_list_none = false;
         while !is_scope_list_none {
             result.push(scope_list.scope.clone());
-            match scope_list.parent {
+            match &scope_list.parent {
                 None => is_scope_list_none = true,
                 Some(scope_value) => {
-                    scope_list = *scope_value.clone();
+                    scope_list = &*scope_value;
                 }
             }
         }
