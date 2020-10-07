@@ -42,10 +42,10 @@ impl StackElement {
         }
         return None;
     }
-
-    pub fn get_rule(&self, grammar: &mut Grammar) -> Box<dyn AbstractRule> {
-        grammar.get_rule(self.rule_id)
-    }
+    //
+    // pub fn get_rule<'a, 'b: 'a>(&self, grammar: &'b mut Grammar) -> &'b Option<&mut Box<dyn AbstractRule>> {
+    //     grammar.get_rule(self.rule_id)
+    // }
 
     pub fn update_rule(&self, grammar: &mut Grammar, rule: Box<dyn AbstractRule>) -> i32 {
         grammar.register_rule(rule)
