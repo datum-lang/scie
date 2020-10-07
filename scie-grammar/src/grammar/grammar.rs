@@ -426,9 +426,9 @@ impl Grammar {
                 let capture_scope_name =
                     captures[i].clone().get_name(Some(String::from(line_text)), Some(&capture_indices));
                 if capture_scope_name.is_some() {
-                    let mut base = stack.content_name_scopes_list.clone();
+                    let mut base = &stack.content_name_scopes_list;
                     if local_stack.len() > 0 {
-                        base = local_stack[local_stack.len() - 1].scopes.clone();
+                        base = &local_stack[local_stack.len() - 1].scopes;
                     }
                     let capture_rule_scopes_list = base.push(capture_scope_name.clone());
                     local_stack.push(LocalStackElement::new(
