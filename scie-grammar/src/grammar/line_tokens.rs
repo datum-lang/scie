@@ -54,7 +54,7 @@ impl<'a> LineTokens<'a> {
         self._last_token_end_index = end_index
     }
 
-    pub fn get_result(&mut self, stack: &mut StackElement, line_length: i32) -> Vec<IToken> {
+    pub fn get_result(&mut self, stack: &mut StackElement, line_length: i32) -> &Vec<IToken> {
         let tokens_len = self._tokens.len();
         if tokens_len > 0 && self._tokens[tokens_len - 1].start_index == line_length - 1 {
             self._tokens.pop();
@@ -68,6 +68,6 @@ impl<'a> LineTokens<'a> {
             self._tokens[new_tokens_len - 1].start_index = 0;
         }
 
-        self._tokens.clone()
+        &self._tokens
     }
 }

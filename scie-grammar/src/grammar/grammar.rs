@@ -97,7 +97,7 @@ impl Grammar {
         prev_state: &mut Option<StackElement>,
         emit_binary_tokens: bool,
     ) -> TokenizeResult {
-        if self.root_id.clone() == -1 {
+        if self.root_id == -1 {
             let repository = self.grammar.repository.clone().unwrap();
             let based = repository.clone().map.self_s.unwrap();
             self.root_id = RuleFactory::get_compiled_rule_id(
@@ -123,7 +123,7 @@ impl Grammar {
         }
 
         if is_first_line {
-            let _root_scope_name = self.get_rule(self.root_id.clone()).get_name(None, None);
+            let _root_scope_name = self.get_rule(self.root_id).get_name(None, None);
             let mut root_scope_name = String::from("unknown");
             if let Some(name) = _root_scope_name {
                 root_scope_name = name
@@ -132,7 +132,7 @@ impl Grammar {
             let scope_list = ScopeListElement::new(None, root_scope_name);
             let state = StackElement::new(
                 None,
-                self.root_id.clone(),
+                self.root_id,
                 -1,
                 -1,
                 false,
@@ -160,7 +160,7 @@ impl Grammar {
         let stack = &mut next_state.clone().unwrap();
         let vec = line_tokens.get_result(stack, line_length as i32);
         TokenizeResult {
-            tokens: vec,
+            tokens: vec.clone(),
             rule_stack: Box::new(next_state),
         }
     }
