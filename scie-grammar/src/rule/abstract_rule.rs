@@ -54,7 +54,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn get_content_name(
         &self,
         _line_text: Option<String>,
-        _capture_indices: Option<Vec<IOnigCaptureIndex>>,
+        _capture_indices: Option<&Vec<IOnigCaptureIndex>>,
     ) -> Option<String> {
         let _content_name = self.get_rule()._content_name.clone();
         let has_captures = RegexSource::has_captures(_content_name.clone());

@@ -274,7 +274,7 @@ impl Grammar {
                         anchor_position = capture_indices[0].end as i32;
                         let content_name = begin_rule.get_content_name(
                             Some(String::from(line_text)),
-                            Some(capture_indices.clone()),
+                            Some(&capture_indices),
                         );
                         let _content_name_scopes_list = name_scopes_list.push(content_name);
                         stack = stack.set_content_name_scopes_list(_content_name_scopes_list);
@@ -303,7 +303,7 @@ impl Grammar {
                         anchor_position = capture_indices[0].end.clone() as i32;
                         let content_name = push_rule.get_content_name(
                             Some(String::from(line_text)),
-                            Some(capture_indices.clone()),
+                            Some(&capture_indices),
                         );
 
                         let content_name_scopes_list = name_scopes_list.push(content_name);
@@ -393,7 +393,7 @@ impl Grammar {
                         capture.get_name(Some(String::from(line_text)), Some(capture_indices.clone()));
                     let name_scopes_list = stack.content_name_scopes_list.push(scope_name);
                     let content_name = capture
-                        .get_content_name(Some(String::from(line_text)), Some(capture_indices.clone()));
+                        .get_content_name(Some(String::from(line_text)), Some(&capture_indices));
                     let content_name_scopes_list = name_scopes_list.push(content_name);
 
                     let stack_clone = stack.clone().push(
