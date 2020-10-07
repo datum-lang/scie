@@ -254,14 +254,15 @@ impl RuleFactory {
                     if let Some(include) = desc.include {
                         let mut raw_rule = IRawRule::new();
                         raw_rule.include = Some(include);
-                        patterns = Some(vec![raw_rule.clone()])
+
+                        patterns = Some(vec![raw_rule])
                     }
                 }
 
                 let rule_factory = RuleFactory::compile_patterns(patterns, helper, repository);
                 let include_only_rule = IncludeOnlyRule::new(
                     desc.location,
-                    id.clone(),
+                    id,
                     desc.name,
                     desc.content_name,
                     rule_factory,
@@ -272,12 +273,12 @@ impl RuleFactory {
 
             let begin_captures = desc.begin_captures.clone();
             if let None = begin_captures {
-                desc.begin_captures = desc.clone().captures
+                desc.begin_captures = desc.captures.clone()
             }
 
             let end_captures = desc.end_captures.clone();
             if let None = end_captures {
-                desc.end_captures = desc.clone().captures
+                desc.end_captures = desc.captures.clone()
             }
 
             if let Some(_) = desc.while_s {
