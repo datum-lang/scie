@@ -55,7 +55,7 @@ impl RuleFactory {
                             desc.clone(),
                             helper,
                             repository,
-                            String::from(""),
+                            "",
                         );
                     }
                 }
@@ -112,7 +112,7 @@ impl RuleFactory {
                                 *rule,
                                 helper,
                                 repository,
-                                String::from(first),
+                                first,
                             );
                         } else {
                             println!(
@@ -154,7 +154,7 @@ impl RuleFactory {
                         pattern.clone(),
                         helper,
                         repository,
-                        String::from(""),
+                        "",
                     );
                 }
 
@@ -211,7 +211,7 @@ impl RuleFactory {
         mut desc: IRawRule,
         helper: &mut Grammar,
         repository: &mut IRawRepository,
-        desc_name: String,
+        desc_name: &str,
     ) -> i32 {
         if let None = desc.id {
             let id = helper.register_id();
@@ -221,11 +221,11 @@ impl RuleFactory {
             // rules. it will cause stackoverflow in our version, so I decide change repository id
             // by name.
             if desc_name != "" {
-                if repository.map.name_map.get(desc_name.as_str()).is_some() {
+                if repository.map.name_map.get(desc_name).is_some() {
                     repository
                         .map
                         .name_map
-                        .get_mut(desc_name.as_str())
+                        .get_mut(desc_name)
                         .unwrap()
                         .id = Some(id);
                 }

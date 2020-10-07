@@ -104,7 +104,7 @@ impl Grammar {
                 *based.clone(),
                 self,
                 &mut repository.clone(),
-                String::from(""),
+                "",
             );
         }
 
@@ -497,11 +497,10 @@ impl Grammar {
         }
 
         for mut while_rule in while_rules {
-            let allow_g = anchor_position == line_pos;
             let mut rule_scanner = while_rule.rule.compile_while(
-                while_rule.clone().stack.end_rule,
+                while_rule.stack.end_rule.clone(),
                 is_first_line,
-                allow_g,
+                anchor_position == line_pos,
             );
             let match_result = rule_scanner
                 .scanner
