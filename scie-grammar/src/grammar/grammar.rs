@@ -260,29 +260,28 @@ impl Grammar {
 
                 match rule.get_rule_instance() {
                     RuleEnum::BeginEndRule(begin_rule) => {
-                        let push_rule = begin_rule.clone();
                         Grammar::handle_captures(
                             self,
                             line_text,
                             is_first_line,
                             &mut stack,
                             line_tokens,
-                            begin_rule.begin_captures,
+                            begin_rule.begin_captures.clone(),
                             capture_indices.clone(),
                         );
 
                         line_tokens.produce(&mut stack, capture_indices[0].end as i32);
                         anchor_position = capture_indices[0].end as i32;
-                        let content_name = push_rule.get_content_name(
+                        let content_name = begin_rule.get_content_name(
                             Some(String::from(line_text)),
                             Some(capture_indices.clone()),
                         );
                         let _content_name_scopes_list = name_scopes_list.push(content_name);
                         stack = stack.set_content_name_scopes_list(_content_name_scopes_list);
 
-                        if push_rule.end_has_back_references {
+                        if begin_rule.end_has_back_references {
                             stack = stack.set_end_rule(
-                                push_rule.get_end_with_resolved_back_references(
+                                begin_rule.get_end_with_resolved_back_references(
                                     line_text,
                                     capture_indices.clone(),
                                 ),
