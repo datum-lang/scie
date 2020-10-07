@@ -572,7 +572,7 @@ impl Grammar {
         let mut rule = self.get_rule(stack.rule_id).clone();
         let mut rule_scanner = rule.compile(
             self,
-            stack.end_rule.clone(),
+            &stack.end_rule,
             is_first_line,
             line_pos == anchor_position,
         );

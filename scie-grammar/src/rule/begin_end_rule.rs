@@ -125,7 +125,7 @@ impl AbstractRule for BeginEndRule {
     fn compile(
         &mut self,
         grammar: &mut Grammar,
-        end_regex_source: Option<String>,
+        end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
@@ -146,9 +146,9 @@ impl AbstractRule for BeginEndRule {
             if self.apply_end_pattern_last {
                 let length = self._cached_compiled_patterns.as_ref().unwrap().length().clone();
 
-                self._cached_compiled_patterns.as_mut().unwrap().set_source(length - 1, end_regex_source.unwrap())
+                self._cached_compiled_patterns.as_mut().unwrap().set_source(length - 1, end_regex_source.as_ref().unwrap())
             } else {
-                self._cached_compiled_patterns.as_mut().unwrap().set_source(0, end_regex_source.unwrap())
+                self._cached_compiled_patterns.as_mut().unwrap().set_source(0, end_regex_source.as_ref().unwrap())
             }
         }
 

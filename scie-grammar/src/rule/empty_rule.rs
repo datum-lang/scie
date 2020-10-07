@@ -45,7 +45,7 @@ impl AbstractRule for EmptyRule {
     fn compile(
         &mut self,
         _grammar: &mut Grammar,
-        _end_regex_source: Option<String>,
+        _end_regex_source: &Option<String>,
         _allow_a: bool,
         _allow_g: bool,
     ) -> CompiledRule {

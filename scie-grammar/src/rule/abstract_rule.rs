@@ -81,7 +81,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn compile(
         &mut self,
         grammar: &mut Grammar,
-        end_regex_source: Option<String>,
+        end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule;

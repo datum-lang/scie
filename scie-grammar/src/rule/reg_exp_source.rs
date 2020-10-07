@@ -163,7 +163,7 @@ impl RegExpSourceList {
         }
     }
 
-    pub fn set_source(&mut self, index: usize, new_source: String) {
+    pub fn set_source(&mut self, index: usize, new_source: &str) {
         if self._items[index].source != new_source {
             self.dispose_caches();
             self._items[index].set_source(new_source);
@@ -317,12 +317,13 @@ impl RegExpSource {
         }
     }
 
-    fn set_source(&mut self, new_source: String) {
+    fn set_source(&mut self, new_source: &str) {
         if self.source == new_source {
             return;
         }
 
-        self.source = new_source;
+        // todo: refactor
+        self.source = String::from(new_source);
 
         if self.has_anchor {
             self._anchor_cache = Some(Box::from(self.build_cache()));

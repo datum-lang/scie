@@ -75,7 +75,7 @@ impl AbstractRule for IncludeOnlyRule {
     fn compile(
         &mut self,
         grammar: &mut Grammar,
-        _end_regex_source: Option<String>,
+        _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {

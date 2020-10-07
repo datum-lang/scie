@@ -76,7 +76,7 @@ impl BeginWhileRule {
                 end_regex = end_regex_source.unwrap().clone();
             }
 
-            self._cached_compiled_patterns.as_mut().unwrap().set_source(0, String::from(end_regex));
+            self._cached_compiled_patterns.as_mut().unwrap().set_source(0, end_regex.as_str());
         }
 
         return *self._cached_compiled_patterns.as_mut().unwrap().compile(allow_a, allow_g);
@@ -125,7 +125,7 @@ impl AbstractRule for BeginWhileRule {
     fn compile(
         &mut self,
         grammar: &mut Grammar,
-        _end_regex_source: Option<String>,
+        _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
