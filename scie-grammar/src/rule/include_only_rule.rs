@@ -44,8 +44,8 @@ impl AbstractRule for IncludeOnlyRule {
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }
-    fn get_rule(&self) -> Rule {
-        self.rule.clone()
+    fn get_rule(&self) -> &Rule {
+        &self.rule
     }
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::IncludeOnlyRule(self.clone())
@@ -57,7 +57,7 @@ impl AbstractRule for IncludeOnlyRule {
         self.has_missing_patterns
     }
     fn patterns_length(&self) -> i32 {
-        self.patterns.clone().len() as i32
+        self.patterns.len() as i32
     }
 
     fn collect_patterns_recursive(

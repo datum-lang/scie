@@ -50,8 +50,8 @@ impl AbstractRule for CaptureRule {
     fn type_of(&self) -> String {
         String::from(self.rule.clone()._type)
     }
-    fn get_rule(&self) -> Rule {
-        self.rule.clone()
+    fn get_rule(&self) -> &Rule {
+        &self.rule
     }
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::CaptureRule(self.clone())

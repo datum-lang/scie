@@ -25,7 +25,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
         String::from("AbstractRule")
     }
     // todo: add support for this;
-    fn get_rule(&self) -> Rule;
+    fn get_rule(&self) -> &Rule;
     fn get_rule_instance(&self) -> RuleEnum;
     fn get_instance(&self) -> &dyn Any;
     fn get_name(
@@ -43,10 +43,11 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
         }
 
         RegexSource::replace_captures(
-            self.get_rule()._name.unwrap(),
+            String::from((self.get_rule()._name).as_ref().unwrap()),
             line_text.unwrap(),
             capture_indices.unwrap(),
         );
+
         return Some(String::from(""));
     }
 

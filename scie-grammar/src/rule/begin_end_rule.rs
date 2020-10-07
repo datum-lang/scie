@@ -86,8 +86,8 @@ impl AbstractRule for BeginEndRule {
         String::from(self.rule.clone()._type)
     }
 
-    fn get_rule(&self) -> Rule {
-        self.rule.clone()
+    fn get_rule(&self) -> &Rule {
+        &self.rule
     }
 
     fn get_rule_instance(&self) -> RuleEnum {

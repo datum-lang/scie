@@ -6,6 +6,17 @@ use std::any::Any;
 #[derive(Clone, Debug, Serialize)]
 pub struct EmptyRule {}
 
+lazy_static! {
+    static ref EMPTY_RULE: Rule = Rule {
+            _type: "".to_string(),
+            _location: None,
+            id: 0,
+            _name: None,
+            _content_name: None,
+        };
+}
+
+
 impl AbstractRule for EmptyRule {
     fn id(&self) -> i32 {
         0
@@ -13,14 +24,8 @@ impl AbstractRule for EmptyRule {
     fn type_of(&self) -> String {
         String::from("EmptyRule")
     }
-    fn get_rule(&self) -> Rule {
-        Rule {
-            _type: "".to_string(),
-            _location: None,
-            id: 0,
-            _name: None,
-            _content_name: None,
-        }
+    fn get_rule(&self) -> &Rule {
+        &EMPTY_RULE
     }
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::EmptyRule(self.clone())
