@@ -13,7 +13,7 @@ use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::RuleFactory;
-use crate::rule::{AbstractRule, BeginWhileRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, EmptyRule};
+use crate::rule::{AbstractRule, BeginWhileRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, EmptyRule, BeginEndRule};
 
 pub trait Matcher {}
 
@@ -211,7 +211,8 @@ impl Grammar {
             let matched_rule_id = capture_result.matched_rule_id;
             if matched_rule_id == -1 {
                 let _popped_rule = self.get_rule(stack.rule_id);
-                if let RuleEnum::BeginEndRule(popped_rule) = _popped_rule.get_rule_instance() {
+                if _popped_rule.get_rule()._type == "BeginEndRule" {
+                    let popped_rule = _popped_rule.get_instance().downcast_ref::<BeginEndRule>().unwrap().clone();
                     let name_scopes_list = stack.name_scopes_list.clone();
                     line_tokens.produce(&mut stack, capture_indices[0].start as i32);
 
@@ -222,7 +223,7 @@ impl Grammar {
                         is_first_line,
                         &mut stack,
                         line_tokens,
-                        popped_rule.end_captures,
+                        popped_rule.end_captures.clone(),
                         capture_indices.clone(),
                     );
 
@@ -355,13 +356,12 @@ impl Grammar {
         let mut local_stack: Vec<LocalStackElement> = vec![];
         let max_end = capture_indices[0].end;
         for i in 0..len {
-            let capture_rule = captures[i].clone();
-            if let RuleEnum::CaptureRule(capture) = capture_rule.get_rule_instance() {
+            if let RuleEnum::CaptureRule(capture) = captures[i].get_rule_instance() {
                 if capture.rule._type == "" {
                     continue;
                 }
 
-                let capture_index = capture_indices[i].clone();
+                let capture_index = &capture_indices[i];
                 if capture_index.length == 0 {
                     continue;
                 }
@@ -427,7 +427,7 @@ impl Grammar {
                 }
 
                 let capture_scope_name =
-                    capture_rule.get_name(Some(String::from(line_text)), Some(capture_indices.clone()));
+                    captures[i].clone().get_name(Some(String::from(line_text)), Some(capture_indices.clone()));
                 if capture_scope_name.is_some() {
                     let mut base = stack.content_name_scopes_list.clone();
                     if local_stack.len() > 0 {
@@ -440,7 +440,7 @@ impl Grammar {
                     ));
                 }
             } else {
-                println!("lose rule: {:?}", capture_rule.clone());
+                println!("lose rule: {:?}", captures[i].clone().clone());
             }
         }
 
