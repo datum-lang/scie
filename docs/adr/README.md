@@ -6,3 +6,4 @@
 * [4. cache-compiled](0004-cache-compiled.md)
 * [5. switch-to-onig-sys-api](0005-switch-to-onig-sys-api.md)
 * [6. add-rust-onig-to-source-code](0006-add-rust-onig-to-source-code.md)
+* [7. use-bin-data-for-languages](0007-use-bin-data-for-languages.md)
