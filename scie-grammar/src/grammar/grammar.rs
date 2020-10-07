@@ -301,8 +301,8 @@ impl Grammar {
                             &capture_indices,
                         );
 
-                        line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
-                        anchor_position = capture_indices[0].end.clone() as i32;
+                        line_tokens.produce(&mut stack, capture_indices[0].end as i32);
+                        anchor_position = capture_indices[0].end as i32;
                         let content_name = push_rule.get_content_name(
                             Some(String::from(line_text)),
                             Some(&capture_indices),
@@ -311,15 +311,15 @@ impl Grammar {
                         let content_name_scopes_list = name_scopes_list.push(content_name);
                         stack = stack.set_content_name_scopes_list(content_name_scopes_list);
                     }
-                    RuleEnum::MatchRule(rule) => {
-                        let match_rule = rule.clone();
+                    RuleEnum::MatchRule(match_rule) => {
+                        let captures = &match_rule.captures.clone();
                         Grammar::handle_captures(
                             self,
                             line_text,
                             is_first_line,
                             &mut stack,
                             line_tokens,
-                            &match_rule.captures,
+                            captures,
                             &capture_indices,
                         );
                         line_tokens.produce(&mut stack, capture_indices[0].end as i32);

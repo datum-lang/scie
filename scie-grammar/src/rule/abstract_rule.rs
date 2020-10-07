@@ -34,10 +34,11 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
         capture_indices: Option<&Vec<IOnigCaptureIndex>>,
     ) -> Option<String> {
         let name = self.get_rule()._name.clone();
-        let has_captures = RegexSource::has_captures(name.clone());
+        let has_captures = RegexSource::has_captures(&name);
         if let None = capture_indices {
             return name;
         }
+
         if !has_captures || name == None || line_text == None {
             return name;
         }
@@ -57,7 +58,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
         _capture_indices: Option<&Vec<IOnigCaptureIndex>>,
     ) -> Option<String> {
         let _content_name = self.get_rule()._content_name.clone();
-        let has_captures = RegexSource::has_captures(_content_name.clone());
+        let has_captures = RegexSource::has_captures(&_content_name);
         if !has_captures || _content_name == None {
             return _content_name;
         }

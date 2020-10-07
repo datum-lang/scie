@@ -10,7 +10,7 @@ lazy_static! {
 }
 
 impl RegexSource {
-    pub fn has_captures(regex_source: Option<String>) -> bool {
+    pub fn has_captures(regex_source: &Option<String>) -> bool {
         match regex_source {
             None => false,
             Some(source) => CAPTURING_REGEX_SOURCE.is_match(source.as_str()),
@@ -98,14 +98,14 @@ mod tests {
     #[test]
     fn should_return_true_when_has_captures() {
         let captures =
-            RegexSource::has_captures(Some(String::from("support.function.$1.makefile")));
+            RegexSource::has_captures(&Some(String::from("support.function.$1.makefile")));
         assert!(captures);
     }
 
     #[test]
     fn should_return_true_when_has_downcase() {
         let captures =
-            RegexSource::has_captures(Some(String::from("storage.type.class.${1:/downcase}")));
+            RegexSource::has_captures(&Some(String::from("storage.type.class.${1:/downcase}")));
         assert!(captures);
     }
 }
