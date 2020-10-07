@@ -202,7 +202,7 @@ impl Grammar {
 
         while !_stop {
             let r = self.match_rule(
-                String::from(line_text),
+                line_text,
                 is_first_line,
                 line_pos,
                 &mut stack,
@@ -568,9 +568,9 @@ impl Grammar {
     //     // todo: get injections logic
     // }
 
-    pub fn match_rule(
+    pub fn match_rule<'a>(
         &mut self,
-        line_text: String,
+        line_text: &'a str,
         is_first_line: bool,
         line_pos: i32,
         stack: &mut StackElement,
@@ -589,7 +589,7 @@ impl Grammar {
 
         let r = rule_scanner
             .scanner
-            .find_next_match_sync(&*line_text, line_pos);
+            .find_next_match_sync(line_text, line_pos);
 
         if let Some(result) = r {
             let match_rule_result = MatchRuleResult {
