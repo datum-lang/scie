@@ -13,7 +13,7 @@ use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::RuleFactory;
-use crate::rule::{AbstractRule, BeginWhileRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, EmptyRule, BeginEndRule, CaptureRule};
+use crate::rule::{AbstractRule, BeginWhileRule, IGrammarRegistry, IRuleFactoryHelper, IRuleRegistry, EmptyRule, BeginEndRule};
 
 pub trait Matcher {}
 
@@ -359,9 +359,7 @@ impl Grammar {
         let mut local_stack: Vec<LocalStackElement> = vec![];
         let max_end = capture_indices[0].end;
         for i in 0..len {
-            if captures[i].type_of() == "CaptureRule" {
-                let capture = captures[i].get_instance().downcast_ref::<CaptureRule>().unwrap();
-
+            if let RuleEnum::CaptureRule(capture) = captures[i].get_rule_instance() {
                 let capture_index = &capture_indices[i];
                 if capture_index.length == 0 {
                     continue;
