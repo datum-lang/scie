@@ -212,18 +212,19 @@ impl Grammar {
             if matched_rule_id == -1 {
                 let _popped_rule = self.get_rule(stack.rule_id);
                 if _popped_rule.get_rule()._type == "BeginEndRule" {
-                    let popped_rule = _popped_rule.get_instance().downcast_ref::<BeginEndRule>().unwrap().clone();
+                    let popped_rule = _popped_rule.get_instance().downcast_ref::<BeginEndRule>().unwrap();
                     let name_scopes_list = stack.name_scopes_list.clone();
                     line_tokens.produce(&mut stack, capture_indices[0].start as i32);
 
                     stack = stack.set_content_name_scopes_list(name_scopes_list);
+                    let end_captures = &popped_rule.end_captures.clone();
                     Grammar::handle_captures(
                         self,
                         line_text,
                         is_first_line,
                         &mut stack,
                         line_tokens,
-                        &popped_rule.end_captures,
+                        end_captures,
                         &capture_indices,
                     );
 
