@@ -481,8 +481,7 @@ impl Grammar {
         let mut has_node = true;
         let mut node = stack.clone();
         while has_node {
-            let rule = self.get_rule(node.rule_id);
-            if let RuleEnum::BeginWhileRule(begin_while_rule) = rule.get_rule_instance() {
+            if let RuleEnum::BeginWhileRule(begin_while_rule) = self.get_rule(node.rule_id).get_rule_instance() {
                 while_rules.push(CheckWhileRuleResult {
                     rule: Box::from(begin_while_rule),
                     stack: Box::from(node.clone()),
@@ -533,10 +532,11 @@ impl Grammar {
                             while_rule.rule.while_captures.clone(),
                             r.capture_indices.clone(),
                         );
-                        line_tokens.produce(&mut while_rule.stack, r.capture_indices[0].end as i32);
-                        anchor_position = r.capture_indices[0].end.clone() as i32;
-                        if r.capture_indices[0].end > line_pos as usize {
-                            line_pos = r.capture_indices[0].end.clone() as i32;
+                        let end_index = r.capture_indices[0].end;
+                        line_tokens.produce(&mut while_rule.stack, end_index as i32);
+                        anchor_position = end_index as i32;
+                        if end_index > line_pos as usize {
+                            line_pos = end_index as i32;
                             is_first_line = false;
                         }
                     }
