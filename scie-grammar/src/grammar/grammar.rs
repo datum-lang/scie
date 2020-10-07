@@ -350,9 +350,9 @@ impl Grammar {
         line_tokens: &'a mut LineTokens,
         captures: &Vec<Box<dyn AbstractRule>>,
         capture_indices: &Vec<IOnigCaptureIndex>,
-    ) -> Option<LineTokens<'a>> {
+    )  {
         if captures.len() == 0 {
-            return None;
+            return;
         }
 
         let len = cmp::min(captures.len(), capture_indices.len());
@@ -448,8 +448,6 @@ impl Grammar {
             line_tokens.produce_from_scopes(&last_stack.scopes, last_stack.end_pos);
             local_stack.pop();
         }
-
-        return Some(line_tokens.to_owned());
     }
     /**
      * Walk the stack from bottom to top, and check each while condition in this order.
