@@ -372,18 +372,18 @@ impl Grammar {
                 while local_stack.len() > 0
                     && local_stack[local_stack.len() - 1].end_pos <= capture_index.start as i32
                 {
-                    let mut local_stack_element = local_stack[local_stack.len() - 1].clone();
+                    let local_stack_element = &local_stack[local_stack.len() - 1];
                     line_tokens.produce_from_scopes(
-                        &mut local_stack_element.scopes,
+                        &local_stack_element.scopes,
                         local_stack_element.end_pos,
                     );
                     local_stack.pop();
                 }
 
                 if local_stack.len() > 0 {
-                    let mut local_stack_element = local_stack[local_stack.len() - 1].clone();
+                    let local_stack_element = &local_stack[local_stack.len() - 1];
                     line_tokens.produce_from_scopes(
-                        &mut local_stack_element.scopes,
+                        &local_stack_element.scopes,
                         capture_index.start as i32,
                     );
                 } else {
