@@ -67,7 +67,7 @@ impl AbstractRule for IncludeOnlyRule {
         _is_first: bool,
     ) {
         for x in self.patterns.iter() {
-            let mut rule = grammar.get_rule(*x).unwrap();
+            let mut rule = grammar.get_rule(*x).clone();
             rule.collect_patterns_recursive(grammar, out, false);
         }
     }

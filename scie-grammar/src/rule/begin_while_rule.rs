@@ -114,7 +114,7 @@ impl AbstractRule for BeginWhileRule {
     ) {
         if is_first {
             for x in self.patterns.iter() {
-                let mut rule = grammar.get_rule(*x).unwrap();
+                let mut rule = grammar.get_rule(*x).clone();
                 rule.collect_patterns_recursive(grammar, out, false);
             }
         } else {

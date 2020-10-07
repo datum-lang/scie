@@ -42,6 +42,7 @@ pub struct Grammar {
     root_id: i32,
     grammar: IRawGrammar,
     pub last_rule_id: i32,
+    pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
     pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
     pub _token_type_matchers: Vec<TokenTypeMatcher>,
 }
@@ -73,14 +74,21 @@ pub fn init_grammar(raw_grammar: IRawGrammar, _base: Option<IRawRule>) -> IRawGr
 
 impl Grammar {
     pub fn new(raw_grammar: IRawGrammar) -> Grammar {
-        let grammar = init_grammar(raw_grammar, None);
-        Grammar {
+        let inited_grammar = init_grammar(raw_grammar, None);
+
+        let mut _empty_rule = Map::new();
+
+        let mut grammar = Grammar {
             last_rule_id: 0,
-            grammar,
+            grammar: inited_grammar,
             root_id: -1,
             rule_id2desc: Map::new(),
             _token_type_matchers: vec![],
-        }
+            _empty_rule
+        };
+        grammar._empty_rule.insert(-2, Box::new(EmptyRule{}));
+
+        grammar
     }
 
     fn tokenize(
@@ -115,7 +123,7 @@ impl Grammar {
         }
 
         if is_first_line {
-            let _root_scope_name = self.get_rule(self.root_id.clone()).unwrap().get_name(None, None);
+            let _root_scope_name = self.get_rule(self.root_id.clone()).get_name(None, None);
             let mut root_scope_name = String::from("unknown");
             if let Some(name) = _root_scope_name {
                 root_scope_name = name
@@ -210,7 +218,7 @@ impl Grammar {
             let capture_indices = capture_result.capture_indices;
             let matched_rule_id = capture_result.matched_rule_id;
             if matched_rule_id == -1 {
-                let _popped_rule = self.get_rule(stack.rule_id).unwrap();
+                let _popped_rule = self.get_rule(stack.rule_id);
                 if let RuleEnum::BeginEndRule(popped_rule) = _popped_rule.get_rule_instance() {
                     let name_scopes_list = stack.name_scopes_list.clone();
                     line_tokens.produce(&mut stack, capture_indices[0].start.clone() as i32);
@@ -237,7 +245,7 @@ impl Grammar {
                     return Some(stack);
                 }
             } else {
-                let rule = self.get_rule(matched_rule_id).unwrap();
+                let rule = self.get_rule(matched_rule_id);
                 line_tokens.produce(&mut stack, capture_indices[0].start as i32);
                 let scope_name =
                     rule.get_name(Some(String::from(line_text)), Some(capture_indices.clone()));
@@ -473,7 +481,7 @@ impl Grammar {
         let mut has_node = true;
         let mut node = stack.clone();
         while has_node {
-            let rule = self.get_rule(node.rule_id).unwrap();
+            let rule = self.get_rule(node.rule_id);
             if let RuleEnum::BeginWhileRule(begin_while_rule) = rule.get_rule_instance() {
                 while_rules.push(CheckWhileRuleResult {
                     rule: Box::from(begin_while_rule),
@@ -571,7 +579,7 @@ impl Grammar {
     ) -> Option<MatchRuleResult> {
         // todo: replace cache logic
         // let mut rule = stack.get_rule(self).unwrap();
-        let rule = self.get_rule(stack.rule_id.clone()).unwrap();
+        let mut rule = self.get_rule(stack.rule_id.clone()).clone();
         let mut rule_scanner= rule.compile(
             self,
             stack.end_rule.clone(),
@@ -641,8 +649,12 @@ impl IRuleRegistry for Grammar {
         self.last_rule_id.clone()
     }
 
-    fn get_rule(&mut self, pattern_id: i32) -> Option<&mut Box<dyn AbstractRule>> {
-        return self.rule_id2desc.get_mut(&pattern_id)
+    fn get_rule(&mut self, pattern_id: i32) -> &mut Box<dyn AbstractRule> {
+        if self.rule_id2desc.get_mut(&pattern_id).is_some() {
+            return self.rule_id2desc.get_mut(&pattern_id).unwrap();
+        }
+
+        return self._empty_rule.get_mut(&-2).unwrap();
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32 {

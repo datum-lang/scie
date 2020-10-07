@@ -65,7 +65,7 @@ impl RuleFactory {
                     desc.clone().name,
                     desc.clone().content_name,
                     retokenize_captured_with_rule_id,
-                ).unwrap().clone();
+                ).clone();
             }
             // todo: remove first element, because it's filled & empty.
         };
@@ -79,7 +79,7 @@ impl RuleFactory {
         name: Option<String>,
         content_name: Option<String>,
         retokenize_captured_with_rule_id: i32,
-    ) -> Option<&mut Box<dyn AbstractRule>> {
+    ) -> &mut Box<dyn AbstractRule> {
         let id = helper.register_id();
         let rule = CaptureRule::new(
             location,
@@ -159,7 +159,7 @@ impl RuleFactory {
                 }
 
                 if pattern_id != -1 {
-                    let rule = helper.get_rule(pattern_id).unwrap();
+                    let rule = helper.get_rule(pattern_id);
                     let mut skip_rule = false;
                     if rule.type_of() == "IncludeOnlyRule"
                         || rule.type_of() == "BeginEndRule"

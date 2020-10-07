@@ -29,7 +29,7 @@ use crate::inter::{IRawGrammar, IRawRepository};
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2
 pub trait IRuleRegistry {
     fn register_id(&mut self) -> i32;
-    fn get_rule(&mut self, pattern_id: i32) -> Option<&mut Box<dyn AbstractRule>>;
+    fn get_rule(&mut self, pattern_id: i32) -> &mut Box<dyn AbstractRule>;
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32;
 }
 
