@@ -19,8 +19,8 @@ pub trait Matcher {}
 
 #[derive(Debug, Clone)]
 pub struct CheckWhileRuleResult {
-    pub rule: Box<BeginWhileRule>,
-    pub stack: Box<StackElement>,
+    pub rule: BeginWhileRule,
+    pub stack: StackElement,
 }
 
 #[derive(Debug, Clone)]
@@ -474,8 +474,8 @@ impl Grammar {
             if rule.get_rule()._type == "BeginWhileRule" {
                 if let RuleEnum::BeginWhileRule(begin_while_rule) = rule.get_rule_instance() {
                     while_rules.push(CheckWhileRuleResult {
-                        rule: Box::from(begin_while_rule.clone()),
-                        stack: Box::from(node.clone()),
+                        rule: begin_while_rule.clone(),
+                        stack: node.clone(),
                     })
                 }
             }
@@ -518,7 +518,7 @@ impl Grammar {
                             self,
                             line_text,
                             is_first_line,
-                            while_rule.stack.as_mut(),
+                            &mut while_rule.stack,
                             line_tokens,
                             &while_rule.rule.while_captures,
                             &r.capture_indices,
