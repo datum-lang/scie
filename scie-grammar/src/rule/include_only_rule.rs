@@ -41,8 +41,8 @@ impl AbstractRule for IncludeOnlyRule {
     fn id(&self) -> i32 {
         self.rule.id
     }
-    fn type_of(&self) -> String {
-        String::from(self.rule.clone()._type)
+    fn type_of(&self) -> &'static str {
+        "IncludeOnlyRule"
     }
     fn get_rule(&self) -> &Rule {
         &self.rule

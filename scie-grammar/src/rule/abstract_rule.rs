@@ -20,11 +20,9 @@ pub enum RuleEnum<'r> {
 
 pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn id(&self) -> i32;
-    fn type_of(&self) -> String;
-    fn display(&self) -> String {
-        String::from("AbstractRule")
+    fn type_of(&self) -> &'static str {
+        "AbstractRule"
     }
-    // todo: add support for this;
     fn get_rule(&self) -> &Rule;
     fn get_rule_instance(&self) -> RuleEnum;
     fn get_instance(&self) -> &dyn Any;

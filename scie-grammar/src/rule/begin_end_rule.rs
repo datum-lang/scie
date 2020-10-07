@@ -82,8 +82,8 @@ impl AbstractRule for BeginEndRule {
         self.rule.id
     }
 
-    fn type_of(&self) -> String {
-        String::from(self.rule.clone()._type)
+    fn type_of(&self) -> &'static str {
+        "BeginEndRule"
     }
 
     fn get_rule(&self) -> &Rule {

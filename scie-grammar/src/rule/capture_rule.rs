@@ -47,8 +47,8 @@ impl AbstractRule for CaptureRule {
     fn id(&self) -> i32 {
         self.rule.id
     }
-    fn type_of(&self) -> String {
-        String::from(self.rule._type.clone())
+    fn type_of(&self) -> &'static str {
+        "CaptureRule"
     }
     fn get_rule(&self) -> &Rule {
         &self.rule

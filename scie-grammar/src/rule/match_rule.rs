@@ -40,11 +40,8 @@ impl AbstractRule for MatchRule {
     fn id(&self) -> i32 {
         self.rule.id
     }
-    fn type_of(&self) -> String {
-        String::from(self.rule.clone()._type)
-    }
-    fn display(&self) -> String {
-        serde_json::to_string(&self).unwrap()
+    fn type_of(&self) -> &'static str {
+        "MatchRule"
     }
     fn get_rule(&self) -> &Rule {
         &self.rule

@@ -22,7 +22,7 @@ impl RegexSource {
         capture_source: String,
         capture_indices: &Vec<IOnigCaptureIndex>,
     ) -> String {
-        let res = CAPTURING_REGEX_SOURCE.replace_all(&*regex_source, |capts: &Captures| {
+        let res = CAPTURING_REGEX_SOURCE.replace_all(regex_source.as_str(), |capts: &Captures| {
             let capture_str;
             if capts.name("index").is_none() {
                 capture_str = &capts["commandIndex"];
