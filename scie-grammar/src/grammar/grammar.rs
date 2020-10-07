@@ -223,8 +223,8 @@ impl Grammar {
                         is_first_line,
                         &mut stack,
                         line_tokens,
-                        popped_rule.end_captures.clone(),
-                        capture_indices.clone(),
+                        &popped_rule.end_captures,
+                        &capture_indices,
                     );
 
                     line_tokens.produce(&mut stack, capture_indices[0].end as i32);
@@ -266,8 +266,8 @@ impl Grammar {
                             is_first_line,
                             &mut stack,
                             line_tokens,
-                            begin_rule.begin_captures.clone(),
-                            capture_indices.clone(),
+                            &begin_rule.begin_captures,
+                            &capture_indices,
                         );
 
                         line_tokens.produce(&mut stack, capture_indices[0].end as i32);
@@ -295,8 +295,8 @@ impl Grammar {
                             is_first_line,
                             &mut stack,
                             line_tokens,
-                            push_rule.begin_captures.clone(),
-                            capture_indices.clone(),
+                            &push_rule.begin_captures,
+                            &capture_indices,
                         );
 
                         line_tokens.produce(&mut stack, capture_indices[0].end.clone() as i32);
@@ -316,8 +316,8 @@ impl Grammar {
                             is_first_line,
                             &mut stack,
                             line_tokens,
-                            match_rule.captures,
-                            capture_indices.clone(),
+                            &match_rule.captures,
+                            &capture_indices,
                         );
                         line_tokens.produce(&mut stack, capture_indices[0].end as i32);
                         if let Some(_stack) = stack.pop() {
@@ -344,8 +344,8 @@ impl Grammar {
         is_first_line: bool,
         stack: &mut StackElement,
         line_tokens: &'a mut LineTokens,
-        captures: Vec<Box<dyn AbstractRule>>,
-        capture_indices: Vec<IOnigCaptureIndex>,
+        captures: &Vec<Box<dyn AbstractRule>>,
+        capture_indices: &Vec<IOnigCaptureIndex>,
     ) -> Option<LineTokens<'a>> {
         if captures.len() == 0 {
             return None;
@@ -424,13 +424,13 @@ impl Grammar {
                 }
 
                 let capture_scope_name =
-                    captures[i].clone().get_name(Some(String::from(line_text)), Some(&capture_indices));
+                    captures[i].get_name(Some(String::from(line_text)), Some(&capture_indices));
                 if capture_scope_name.is_some() {
                     let mut base = &stack.content_name_scopes_list;
                     if local_stack.len() > 0 {
                         base = &local_stack[local_stack.len() - 1].scopes;
                     }
-                    let capture_rule_scopes_list = base.push(capture_scope_name.clone());
+                    let capture_rule_scopes_list = base.push(capture_scope_name);
                     local_stack.push(LocalStackElement::new(
                         capture_rule_scopes_list,
                         capture_index.end as i32,
@@ -520,8 +520,8 @@ impl Grammar {
                             is_first_line,
                             while_rule.stack.as_mut(),
                             line_tokens,
-                            while_rule.rule.while_captures.clone(),
-                            r.capture_indices.clone(),
+                            &while_rule.rule.while_captures,
+                            &r.capture_indices,
                         );
                         let end_index = r.capture_indices[0].end;
                         line_tokens.produce(&mut while_rule.stack, end_index as i32);
