@@ -316,7 +316,6 @@ impl RegExpSource {
             return;
         }
 
-        // todo: refactor
         self.source = String::from(new_source);
 
         if self.has_anchor {
