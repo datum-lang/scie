@@ -145,11 +145,7 @@ impl AbstractRule for BeginEndRule {
 
         if self._end.has_back_references {
             if self.apply_end_pattern_last {
-                let length = self
-                    ._cached_compiled_patterns
-                    .as_ref()
-                    .unwrap()
-                    .length();
+                let length = self._cached_compiled_patterns.as_ref().unwrap().length();
 
                 self._cached_compiled_patterns
                     .as_mut()

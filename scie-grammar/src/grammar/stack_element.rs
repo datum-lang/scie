@@ -157,8 +157,8 @@ impl StackElement {
 #[cfg(test)]
 mod tests {
     use crate::grammar::{ScopeListElement, StackElement};
-    use std::rc::Rc;
     use std::cell::RefCell;
+    use std::rc::Rc;
 
     pub struct TreeNode {
         pub children: Vec<Rc<RefCell<TreeNode>>>,
@@ -172,7 +172,7 @@ mod tests {
             TreeNode {
                 value,
                 children: vec![],
-                parent: None
+                parent: None,
             }
         }
     }
@@ -182,7 +182,7 @@ mod tests {
         let root_nd = Rc::new(RefCell::new(TreeNode::new(5.0)));
         let child_nd = Rc::new(RefCell::new(TreeNode::new(2.0)));
 
-        child_nd.borrow_mut().parent = Some(root_nd.clone());  // use Rc::clone to create a new reference to root_nd
+        child_nd.borrow_mut().parent = Some(root_nd.clone()); // use Rc::clone to create a new reference to root_nd
         root_nd.borrow_mut().children.push(child_nd.clone());
     }
 
