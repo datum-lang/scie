@@ -4,6 +4,7 @@ use crate::rule::{AbstractRule, IRuleRegistry};
 // todo: change to rccall https://stackoverflow.com/questions/36167160/how-do-i-express-mutually-recursive-data-structures-in-safe-rust
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct StackElement {
+    // todo: change to really parent: https://stackoverflow.com/questions/58683326/how-to-have-multiple-references-for-a-single-node-in-a-tree-structure-using-rust
     pub parent: Option<Box<StackElement>>,
     pub depth: i32,
     #[serde(rename = "RuleId")]
