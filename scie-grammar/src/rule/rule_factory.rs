@@ -253,9 +253,11 @@ impl RuleFactory {
                 return helper.register_rule(Box::new(include_only_rule));
             }
 
-            let begin_captures = desc.begin_captures.clone();
-            if let None = begin_captures {
+            let begin_captures;
+            if let None = desc.begin_captures {
                 desc.begin_captures = desc.captures.clone()
+            } else {
+                begin_captures = desc.begin_captures.clone()
             }
 
             if let Some(_) = desc.while_s {
