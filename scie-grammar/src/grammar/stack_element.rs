@@ -94,7 +94,7 @@ impl StackElement {
         content_name_scopes_list: ScopeListElement,
     ) -> StackElement {
         StackElement::new(
-            Some(Box::from(self.clone())),
+            Some(Box::from(self.to_owned())),
             rule_id,
             enter_pos,
             anchor_pos,
