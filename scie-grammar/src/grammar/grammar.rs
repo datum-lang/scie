@@ -834,7 +834,7 @@ hellomake: $(OBJ)
 
         for line in c_code.lines() {
             let result = grammar.tokenize_line(line, &mut rule_stack);
-            rule_stack = *result.rule_stack;
+            rule_stack = result.rule_stack;
             all_tokens.push(result.tokens);
         }
 
@@ -870,7 +870,7 @@ hellomake: $(OBJ)
         let result = grammar.tokenize_line("hellomake: $(OBJ)", &mut rule_stack);
         assert_eq!(6, result.tokens.len());
 
-        rule_stack = *result.rule_stack;
+        rule_stack = result.rule_stack;
         let result2 = grammar.tokenize_line("\t$(CC) -o $@ $^ $(CFLAGS)", &mut rule_stack);
         assert_eq!(14, result2.tokens.len());
     }

@@ -157,6 +157,34 @@ impl StackElement {
 #[cfg(test)]
 mod tests {
     use crate::grammar::{ScopeListElement, StackElement};
+    use std::rc::Rc;
+    use std::cell::RefCell;
+
+    pub struct TreeNode {
+        pub children: Vec<Rc<RefCell<TreeNode>>>,
+        pub parent: Option<Rc<RefCell<TreeNode>>>,
+        pub value: f32,
+    }
+
+    impl TreeNode {
+        #[inline]
+        pub fn new(value: f32) -> Self {
+            TreeNode {
+                value,
+                children: vec![],
+                parent: None
+            }
+        }
+    }
+
+    #[test]
+    fn test_parent_node_in_ref_cell() {
+        let mut root_nd = Rc::new(RefCell::new(TreeNode::new(5.0)));
+        let mut child_nd = Rc::new(RefCell::new(TreeNode::new(2.0)));
+
+        child_nd.borrow_mut().parent = Some(root_nd.clone());  // use Rc::clone to create a new reference to root_nd
+        root_nd.borrow_mut().children.push(child_nd.clone());
+    }
 
     #[test]
     fn should_reset_parent() {
