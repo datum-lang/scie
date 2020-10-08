@@ -179,8 +179,8 @@ mod tests {
 
     #[test]
     fn test_parent_node_in_ref_cell() {
-        let mut root_nd = Rc::new(RefCell::new(TreeNode::new(5.0)));
-        let mut child_nd = Rc::new(RefCell::new(TreeNode::new(2.0)));
+        let root_nd = Rc::new(RefCell::new(TreeNode::new(5.0)));
+        let child_nd = Rc::new(RefCell::new(TreeNode::new(2.0)));
 
         child_nd.borrow_mut().parent = Some(root_nd.clone());  // use Rc::clone to create a new reference to root_nd
         root_nd.borrow_mut().children.push(child_nd.clone());
