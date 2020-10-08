@@ -63,7 +63,7 @@ impl StackElement {
     ) -> Self {
         let mut depth = 1;
         if parent.is_some() {
-            depth = parent.clone().unwrap().depth + 1
+            depth = parent.as_ref().unwrap().depth.clone() + 1
         }
 
         StackElement {
