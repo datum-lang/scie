@@ -1,9 +1,9 @@
 use crate::scanner::onig_string::OnigString;
-use crate::scanner::utf_string::UtfString;
 use scie_onig::{
     createOnigScanner, findNextOnigScannerMatch, freeOnigScanner, OnigScanner, MAX_REGIONS,
 };
 use std::os::raw::c_int;
+use core::ptr;
 
 pub type Pointer = i32;
 
@@ -30,16 +30,14 @@ pub struct ScieScanner {
 pub type IntArray = Vec<i32>;
 
 impl ScieScanner {
-    pub fn new(patterns: Vec<String>) -> Self {
+    pub fn new(mut patterns: Vec<String>) -> Self {
         let mut str_len_arr: Vec<c_int> = vec![0; patterns.len()];
         let mut str_ptrs_arr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
-        str_ptrs_arr.resize_with(patterns.len(), || &mut 0);
+        str_ptrs_arr.resize_with(patterns.len(), || ptr::null_mut());
 
         for i in 0..patterns.len() {
-            let utf_string = UtfString::new(patterns[i].as_str());
-
-            str_ptrs_arr[i] = patterns[i].as_ptr() as *mut u8;
-            str_len_arr[i] = utf_string.utf8length;
+            str_ptrs_arr[i] = patterns[i].as_mut_ptr() as *mut u8;
+            str_len_arr[i] = patterns[i].len() as i32;
         }
 
         let onig_scanner;
