@@ -23,32 +23,32 @@ impl<'a> OnigString<'a> {
         }
     }
 
-    pub fn convertUtf8OffsetToUtf16(&self, utf8Offset: i32) -> i32 {
+    pub fn convert_utf8offset_to_utf16(&self, utf8offset: i32) -> i32 {
         if self.utf8offset_to_utf16.len() > 0 {
-            if utf8Offset < 0 {
+            if utf8offset < 0 {
                 return 0;
             }
-            if utf8Offset > self.utf8length {
+            if utf8offset > self.utf8length {
                 return self.utf16length;
             }
-            return self.utf8offset_to_utf16[utf8Offset as usize] as i32;
+            return self.utf8offset_to_utf16[utf8offset as usize] as i32;
         }
-        return utf8Offset;
+        return utf8offset;
     }
 
-    pub fn convertUtf16OffsetToUtf8(&self, utf16Offset: i32) -> i32 {
+    pub fn convert_utf16offset_to_utf8(&self, utf16offset: i32) -> i32 {
         if self.utf16offset_to_utf8.len() > 0 {
-            if utf16Offset < 0 {
+            if utf16offset < 0 {
                 return 0;
             }
-            if utf16Offset > self.utf16length {
+            if utf16offset > self.utf16length {
                 return self.utf8length;
             }
 
-            return self.utf16offset_to_utf8[utf16Offset as usize] as i32;
+            return self.utf16offset_to_utf8[utf16offset as usize] as i32;
         }
 
-        return utf16Offset;
+        return utf16offset;
     }
 }
 
@@ -59,7 +59,7 @@ mod tests {
     #[test]
     fn should_handle_offset() {
         let onig_string = OnigString::new("a💻bYX", 1);
-        let x = onig_string.convertUtf8OffsetToUtf16(2);
+        let x = onig_string.convert_utf8offset_to_utf16(2);
         assert_eq!(1, x);
     }
 }

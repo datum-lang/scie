@@ -92,7 +92,7 @@ impl ScieScanner {
                 string.id,
                 string.content.as_ptr() as *mut u8,
                 string.utf8length,
-                string.convertUtf16OffsetToUtf8(start_position),
+                string.convert_utf16offset_to_utf8(start_position),
             );
 
             if result == 0 {
@@ -109,9 +109,9 @@ impl ScieScanner {
             let mut offset = 1;
             for _i in 0..count {
                 offset = offset + 1;
-                let start = string.convertUtf8OffsetToUtf16(result[offset]);
+                let start = string.convert_utf8offset_to_utf16(result[offset]);
                 offset = offset + 1;
-                let end = string.convertUtf8OffsetToUtf16(result[offset]);
+                let end = string.convert_utf8offset_to_utf16(result[offset]);
                 let length = end - start;
 
                 capture_indices.push(IOnigCaptureIndex {
