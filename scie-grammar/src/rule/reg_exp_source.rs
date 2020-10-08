@@ -170,7 +170,7 @@ pub struct RegExpSource {
     pub source: String,
     pub rule_id: i32,
     pub has_anchor: bool,
-    _anchor_cache: Option<Box<AnchorCache>>,
+    _anchor_cache: Option<AnchorCache>,
     pub has_back_references: bool,
 }
 
@@ -204,7 +204,7 @@ impl RegExpSource {
             pos = pos + 1;
         }
 
-        let anchor_cache: Option<Box<AnchorCache>> = None;
+        let anchor_cache: Option<AnchorCache> = None;
 
         if last_pushed_pos == 0 {
             result = exp_source.clone()
@@ -221,8 +221,8 @@ impl RegExpSource {
             has_back_references: false,
         };
 
-        let cache = reg_exp_source.build_cache();
-        reg_exp_source._anchor_cache = Some(Box::from(cache));
+        let cache = reg_exp_source.build_anchor_cache();
+        reg_exp_source._anchor_cache = Some(cache);
 
         if HAS_BACK_REFERENCES.is_match(reg_exp_source.source.clone().as_str()) {
             reg_exp_source.has_back_references = true;
@@ -231,7 +231,7 @@ impl RegExpSource {
         reg_exp_source
     }
 
-    fn build_cache(&self) -> AnchorCache {
+    fn build_anchor_cache(&self) -> AnchorCache {
         let length = self.source.len();
 
         let mut a0_g0_result: Vec<String> = vec![];
@@ -249,7 +249,7 @@ impl RegExpSource {
         let mut next_char: char;
 
         while pos < length {
-            ch = self.source.clone().chars().nth(pos).unwrap();
+            ch = self.source.chars().nth(pos).unwrap();
             a0_g0_result[pos] = ch.to_string();
             a0_g1_result[pos] = ch.to_string();
             a1_g0_result[pos] = ch.to_string();
@@ -257,7 +257,7 @@ impl RegExpSource {
 
             if ch == '\\' {
                 if pos + 1 < length {
-                    next_char = self.source.clone().chars().nth(pos + 1).unwrap();
+                    next_char = self.source.chars().nth(pos + 1).unwrap();
                     if next_char == 'A' {
                         a0_g0_result[pos + 1] = String::from("\u{FFFF}");
                         a0_g1_result[pos + 1] = String::from("\u{FFFF}");
@@ -320,7 +320,7 @@ impl RegExpSource {
         self.source = String::from(new_source);
 
         if self.has_anchor {
-            self._anchor_cache = Some(Box::from(self.build_cache()));
+            self._anchor_cache = Some(self.build_anchor_cache());
         }
     }
 
