@@ -8,14 +8,13 @@ pub struct EmptyRule {}
 
 lazy_static! {
     static ref EMPTY_RULE: Rule = Rule {
-            _type: "".to_string(),
-            _location: None,
-            id: 0,
-            _name: None,
-            _content_name: None,
-        };
+        _type: "".to_string(),
+        _location: None,
+        id: 0,
+        _name: None,
+        _content_name: None,
+    };
 }
-
 
 impl AbstractRule for EmptyRule {
     fn id(&self) -> i32 {

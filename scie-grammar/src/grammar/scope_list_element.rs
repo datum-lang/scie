@@ -29,10 +29,7 @@ impl ScopeListElement {
         return result;
     }
 
-    pub fn _push(
-        origin_target: ScopeListElement,
-        scopes: Vec<String>,
-    ) -> ScopeListElement {
+    pub fn _push(origin_target: ScopeListElement, scopes: Vec<String>) -> ScopeListElement {
         let mut target = origin_target.clone();
         for scope in scopes {
             target = ScopeListElement::new(Some(Box::new(target)), scope);

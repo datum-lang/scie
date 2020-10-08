@@ -47,7 +47,10 @@ mod tests {
             .join("Makefile");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/makefile.json", &*code);
+        let grammar = to_grammar_with_code(
+            "fixtures/test-cases/first-mate/fixtures/makefile.json",
+            &*code,
+        );
         assert_eq!(grammar.rule_id2desc.len(), 82);
     }
 
@@ -65,7 +68,8 @@ mod tests {
             .join("simple-json.json");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/json.json", &*code);
+        let grammar =
+            to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/json.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 22);
     }
 
@@ -83,7 +87,10 @@ mod tests {
             .join("pairs.js");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/javascript.json", &*code);
+        let grammar = to_grammar_with_code(
+            "fixtures/test-cases/first-mate/fixtures/javascript.json",
+            &*code,
+        );
         assert_eq!(grammar.rule_id2desc.len(), 113);
     }
 
@@ -101,7 +108,10 @@ mod tests {
             .join("test.cs");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/csharp.json", &*code);
+        let grammar = to_grammar_with_code(
+            "fixtures/test-cases/first-mate/fixtures/csharp.json",
+            &*code,
+        );
         assert_eq!(grammar.rule_id2desc.len(), 690);
     }
 

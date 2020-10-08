@@ -183,9 +183,7 @@ mod tests {
             assert_eq!(true, false);
         }
 
-        let result = scanner
-            .find_next_match_sync("xxaxxbxxc", 0)
-            .unwrap();
+        let result = scanner.find_next_match_sync("xxaxxbxxc", 0).unwrap();
         assert_eq!(
             serde_json::to_string(&result).unwrap(),
             String::from(
@@ -193,9 +191,7 @@ mod tests {
             )
         );
 
-        let result2 = scanner
-            .find_next_match_sync("xxaxxbxxc", 4)
-            .unwrap();
+        let result2 = scanner.find_next_match_sync("xxaxxbxxc", 4).unwrap();
         assert_eq!(
             serde_json::to_string(&result2).unwrap(),
             String::from(
@@ -203,9 +199,7 @@ mod tests {
             )
         );
 
-        let result3 = scanner
-            .find_next_match_sync("xxaxxbxxc", 7)
-            .unwrap();
+        let result3 = scanner.find_next_match_sync("xxaxxbxxc", 7).unwrap();
         assert_eq!(
             serde_json::to_string(&result3).unwrap(),
             String::from(
@@ -227,9 +221,7 @@ mod tests {
         let regex = vec![String::from("1"), String::from("2")];
         let mut scanner = ScieScanner::new(regex);
 
-        let result = scanner
-            .find_next_match_sync("ab…cde21", 5)
-            .unwrap();
+        let result = scanner.find_next_match_sync("ab…cde21", 5).unwrap();
         assert_eq!(
             serde_json::to_string(&result).unwrap(),
             String::from(
@@ -239,9 +231,7 @@ mod tests {
 
         scanner.dispose();
         let mut scanner2 = ScieScanner::new(vec![String::from("\"")]);
-        let result2 = scanner2
-            .find_next_match_sync("{\"…\": 1}", 1)
-            .unwrap();
+        let result2 = scanner2.find_next_match_sync("{\"…\": 1}", 1).unwrap();
         assert_eq!(
             serde_json::to_string(&result2).unwrap(),
             String::from(
@@ -255,9 +245,7 @@ mod tests {
     fn should_handle_unicode3() {
         let regex = vec![String::from("Y"), String::from("X")];
         let mut scanner = ScieScanner::new(regex);
-        let result = scanner
-            .find_next_match_sync("a💻bYX", 0)
-            .unwrap();
+        let result = scanner.find_next_match_sync("a💻bYX", 0).unwrap();
         assert_eq!(
             serde_json::to_string(&result).unwrap(),
             String::from(
@@ -265,9 +253,7 @@ mod tests {
             )
         );
 
-        let result1 = scanner
-            .find_next_match_sync("a💻bYX", 1)
-            .unwrap();
+        let result1 = scanner.find_next_match_sync("a💻bYX", 1).unwrap();
         assert_eq!(
             serde_json::to_string(&result1).unwrap(),
             String::from(
@@ -275,9 +261,7 @@ mod tests {
             )
         );
 
-        let result2 = scanner
-            .find_next_match_sync("a💻bYX", 2)
-            .unwrap();
+        let result2 = scanner.find_next_match_sync("a💻bYX", 2).unwrap();
         assert_eq!(
             serde_json::to_string(&result2).unwrap(),
             String::from(
@@ -285,9 +269,7 @@ mod tests {
             )
         );
 
-        let result3 = scanner
-            .find_next_match_sync("a💻bYX", 3)
-            .unwrap();
+        let result3 = scanner.find_next_match_sync("a💻bYX", 3).unwrap();
         assert_eq!(
             serde_json::to_string(&result3).unwrap(),
             String::from(
@@ -295,9 +277,7 @@ mod tests {
             )
         );
 
-        let result4 = scanner
-            .find_next_match_sync("a💻bYX", 4)
-            .unwrap();
+        let result4 = scanner.find_next_match_sync("a💻bYX", 4).unwrap();
         assert_eq!(
             serde_json::to_string(&result4).unwrap(),
             String::from(
@@ -305,9 +285,7 @@ mod tests {
             )
         );
 
-        let result5 = scanner
-            .find_next_match_sync("a💻bYX", 5)
-            .unwrap();
+        let result5 = scanner.find_next_match_sync("a💻bYX", 5).unwrap();
         assert_eq!(
             serde_json::to_string(&result5).unwrap(),
             String::from(
@@ -321,9 +299,7 @@ mod tests {
     #[test]
     fn should_out_of_bounds() {
         let mut scanner = ScieScanner::new(vec![String::from("X")]);
-        let result = scanner
-            .find_next_match_sync("X💻X", -10000)
-            .unwrap();
+        let result = scanner.find_next_match_sync("X💻X", -10000).unwrap();
         assert_eq!(
             serde_json::to_string(&result).unwrap(),
             String::from(
@@ -343,9 +319,7 @@ mod tests {
         let result = scanner.find_next_match_sync("first-and-second", 0);
         assert_eq!(format!("{:?}", result), "None");
 
-        let result2 = scanner
-            .find_next_match_sync("first-and-second", 5)
-            .unwrap();
+        let result2 = scanner.find_next_match_sync("first-and-second", 5).unwrap();
         assert_eq!(
             serde_json::to_string(&result2).unwrap(),
             String::from(
@@ -401,7 +375,8 @@ mod tests {
         let _rules = vec![-1, 36, 39];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
-        let result = scanner.find_next_match_sync("%.o: %.c $(DEPS)
+        let result = scanner.find_next_match_sync(
+            "%.o: %.c $(DEPS)
     ",
             4,
         );
@@ -426,7 +401,8 @@ mod tests {
         let _rules = vec![-1, 37, 38, 2, 12, 14];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
-        let result = scanner.find_next_match_sync("%.o: %.c $(DEPS)
+        let result = scanner.find_next_match_sync(
+            "%.o: %.c $(DEPS)
     ",
             4,
         );
@@ -478,8 +454,7 @@ mod tests {
         ];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
-        let result =
-            scanner.find_next_match_sync("    while (i < len && f(array[i]))", 0);
+        let result = scanner.find_next_match_sync("    while (i < len && f(array[i]))", 0);
         assert!(result.is_none());
 
         scanner.dispose();

@@ -81,11 +81,7 @@ impl RegExpSourceList {
         self._has_anchors = self._has_anchors || item_has_anchor;
     }
 
-    pub fn compile(
-        &mut self,
-        allow_a: bool,
-        allow_g: bool,
-    ) -> Box<CompiledRule> {
+    pub fn compile(&mut self, allow_a: bool, allow_g: bool) -> Box<CompiledRule> {
         if !self._has_anchors {
             if self._cached.is_none() {
                 let mut reg_exps = vec![];
@@ -96,8 +92,8 @@ impl RegExpSourceList {
                 }
 
                 self._cached = Some(CompiledRule::new(reg_exps, rules));
-            // } else {
-            //     println!("has cached");
+                // } else {
+                //     println!("has cached");
             }
 
             return Box::from(self._cached.clone().unwrap());

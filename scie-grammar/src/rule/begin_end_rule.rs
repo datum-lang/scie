@@ -144,14 +144,29 @@ impl AbstractRule for BeginEndRule {
 
         if self._end.has_back_references {
             if self.apply_end_pattern_last {
-                let length = self._cached_compiled_patterns.as_ref().unwrap().length().clone();
+                let length = self
+                    ._cached_compiled_patterns
+                    .as_ref()
+                    .unwrap()
+                    .length()
+                    .clone();
 
-                self._cached_compiled_patterns.as_mut().unwrap().set_source(length - 1, end_regex_source.as_ref().unwrap())
+                self._cached_compiled_patterns
+                    .as_mut()
+                    .unwrap()
+                    .set_source(length - 1, end_regex_source.as_ref().unwrap())
             } else {
-                self._cached_compiled_patterns.as_mut().unwrap().set_source(0, end_regex_source.as_ref().unwrap())
+                self._cached_compiled_patterns
+                    .as_mut()
+                    .unwrap()
+                    .set_source(0, end_regex_source.as_ref().unwrap())
             }
         }
 
-        return *self._cached_compiled_patterns.as_mut().unwrap().compile(allow_a, allow_g);
+        return *self
+            ._cached_compiled_patterns
+            .as_mut()
+            .unwrap()
+            .compile(allow_a, allow_g);
     }
 }

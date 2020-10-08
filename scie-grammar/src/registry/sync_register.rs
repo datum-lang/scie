@@ -1,8 +1,8 @@
-use crate::inter::IRawGrammar;
 use crate::grammar::Grammar;
-use std::collections::BTreeMap as Map;
-use crate::IEmbeddedLanguagesMap;
+use crate::inter::IRawGrammar;
 use crate::registry::grammar_registry::ITokenTypeMap;
+use crate::IEmbeddedLanguagesMap;
+use std::collections::BTreeMap as Map;
 
 trait IGrammarRepository {
     fn lookup(&self, scope_name: String) -> Box<IRawGrammar>;
@@ -30,18 +30,26 @@ impl SyncRegister {
         }
     }
 
-    pub fn add_grammar(&mut self, grammar: Box<IRawGrammar>, injection_scope_names: Option<Vec<String>>) {
+    pub fn add_grammar(
+        &mut self,
+        grammar: Box<IRawGrammar>,
+        injection_scope_names: Option<Vec<String>>,
+    ) {
         let scope_name = grammar.scope_name.clone().unwrap();
         self.raw_grammars.insert(scope_name.clone(), grammar);
         if injection_scope_names.is_some() {
-            self.injection_grammars.insert(scope_name, injection_scope_names.unwrap());
+            self.injection_grammars
+                .insert(scope_name, injection_scope_names.unwrap());
         }
     }
 
-    pub fn grammar_for_scope_name(&self, scope_name: String,
-                                  _initial_language: usize,
-                                  _embedded_languages: Option<IEmbeddedLanguagesMap>,
-                                  _token_types: Option<ITokenTypeMap>) -> Option<Box<Grammar>> {
+    pub fn grammar_for_scope_name(
+        &self,
+        scope_name: String,
+        _initial_language: usize,
+        _embedded_languages: Option<IEmbeddedLanguagesMap>,
+        _token_types: Option<ITokenTypeMap>,
+    ) -> Option<Box<Grammar>> {
         let grammar = self.grammars.get(scope_name.as_str());
         if grammar.is_none() {
             if self.raw_grammars.get(scope_name.as_str()).is_none() {
@@ -69,11 +77,10 @@ impl IGrammarRepository for SyncRegister {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
-    use crate::registry::sync_register::{SyncRegister, IGrammarRepository};
     use crate::inter::IRawGrammar;
+    use crate::registry::sync_register::{IGrammarRepository, SyncRegister};
 
     #[test]
     fn should_add_grammar() {

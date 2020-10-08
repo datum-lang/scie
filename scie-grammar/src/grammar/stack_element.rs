@@ -105,7 +105,10 @@ impl StackElement {
         )
     }
 
-    pub fn set_content_name_scopes_list(&mut self, content_name_scopes_list: ScopeListElement) -> StackElement {
+    pub fn set_content_name_scopes_list(
+        &mut self,
+        content_name_scopes_list: ScopeListElement,
+    ) -> StackElement {
         if self.content_name_scopes_list == content_name_scopes_list {
             return self.to_owned();
         }

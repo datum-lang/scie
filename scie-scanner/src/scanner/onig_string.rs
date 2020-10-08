@@ -10,7 +10,7 @@ pub struct OnigString<'a> {
     pub utf8offset_to_utf16: Vec<u32>,
 }
 
-impl <'a> OnigString <'a> {
+impl<'a> OnigString<'a> {
     pub fn new(str: &str, id: i32) -> OnigString {
         let utf_string = UtfString::new(str);
         OnigString {

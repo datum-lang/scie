@@ -86,6 +86,10 @@ impl AbstractRule for IncludeOnlyRule {
             self._cached_compiled_patterns = Some(cached_compiled_patterns);
         }
 
-        return *self._cached_compiled_patterns.as_mut().unwrap().compile(allow_a, allow_g);
+        return *self
+            ._cached_compiled_patterns
+            .as_mut()
+            .unwrap()
+            .compile(allow_a, allow_g);
     }
 }

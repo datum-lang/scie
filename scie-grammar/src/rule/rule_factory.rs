@@ -50,12 +50,8 @@ impl RuleFactory {
                 if let Some(rule) = options_patterns {
                     if rule.patterns.is_some() {
                         let _patterns = rule.patterns.clone();
-                        retokenize_captured_with_rule_id = RuleFactory::get_compiled_rule_id(
-                            desc.clone(),
-                            helper,
-                            repository,
-                            "",
-                        );
+                        retokenize_captured_with_rule_id =
+                            RuleFactory::get_compiled_rule_id(desc.clone(), helper, repository, "");
                     }
                 }
                 r[numeric_capture_id] = RuleFactory::create_capture_rule(
@@ -64,7 +60,8 @@ impl RuleFactory {
                     desc.clone().name,
                     desc.clone().content_name,
                     retokenize_captured_with_rule_id,
-                ).clone();
+                )
+                .clone();
             }
             // todo: remove first element, because it's filled & empty.
         };
@@ -107,12 +104,8 @@ impl RuleFactory {
                     if include_s.starts_with("#") {
                         let first = remove_first(include_s.as_str());
                         if let Some(rule) = repository.map.name_map.get_mut(first).cloned() {
-                            pattern_id = RuleFactory::get_compiled_rule_id(
-                                *rule,
-                                helper,
-                                repository,
-                                first,
-                            );
+                            pattern_id =
+                                RuleFactory::get_compiled_rule_id(*rule, helper, repository, first);
                         } else {
                             println!(
                                 "CANNOT find rule for scopeName: {:?}",
@@ -121,13 +114,13 @@ impl RuleFactory {
                         }
                     } else if include_s == "$base" || include_s == "$self" {
                         pattern_id = 1;
-                        // let mut local_included_rule = repository.map.base_s.clone();
-                        // pattern_id = RuleFactory::get_compiled_rule_id(
-                        //     *local_included_rule.unwrap(),
-                        //     helper,
-                        //     repository,
-                        //     String::from(include_s.as_str()),
-                        // );
+                    // let mut local_included_rule = repository.map.base_s.clone();
+                    // pattern_id = RuleFactory::get_compiled_rule_id(
+                    //     *local_included_rule.unwrap(),
+                    //     helper,
+                    //     repository,
+                    //     String::from(include_s.as_str()),
+                    // );
                     } else {
                         println!("todo: external grammar {:?}", pattern.include);
                         let mut _external_grammar_name: Option<String> = None;
@@ -149,12 +142,8 @@ impl RuleFactory {
                         }
                     }
                 } else {
-                    pattern_id = RuleFactory::get_compiled_rule_id(
-                        pattern.clone(),
-                        helper,
-                        repository,
-                        "",
-                    );
+                    pattern_id =
+                        RuleFactory::get_compiled_rule_id(pattern.clone(), helper, repository, "");
                 }
 
                 if pattern_id != -1 {
@@ -221,20 +210,14 @@ impl RuleFactory {
             // by name.
             if desc_name != "" {
                 if repository.map.name_map.get(desc_name).is_some() {
-                    repository
-                        .map
-                        .name_map
-                        .get_mut(desc_name)
-                        .unwrap()
-                        .id = Some(id);
+                    repository.map.name_map.get_mut(desc_name).unwrap().id = Some(id);
                 }
             }
 
             if let Some(match_s) = desc.match_s {
                 let rule_factory = RuleFactory::compile_captures(desc.captures, helper, repository);
-                let match_rule = MatchRule::new(
-                    desc.location, id, desc.name, match_s, rule_factory,
-                );
+                let match_rule =
+                    MatchRule::new(desc.location, id, desc.name, match_s, rule_factory);
 
                 return helper.register_rule(Box::new(match_rule));
             };
