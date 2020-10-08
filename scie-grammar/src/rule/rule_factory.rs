@@ -258,11 +258,6 @@ impl RuleFactory {
                 desc.begin_captures = desc.captures.clone()
             }
 
-            let end_captures = desc.end_captures.clone();
-            if let None = end_captures {
-                desc.end_captures = desc.captures.clone()
-            }
-
             if let Some(_) = desc.while_s {
                 let begin_rule_factory =
                     RuleFactory::compile_captures(desc.begin_captures, helper, repository);
