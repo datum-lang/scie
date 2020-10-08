@@ -24,7 +24,6 @@ pub struct IOnigMatch {
 pub struct ScieScanner {
     #[serde(skip_serializing)]
     pub _ptr: *mut OnigScanner,
-    pub strings: Vec<UtfString>,
     pub last_onig_id: i32,
 }
 
@@ -35,15 +34,12 @@ impl ScieScanner {
         let mut str_len_arr: Vec<c_int> = vec![0; patterns.len()];
         let mut str_ptrs_arr: Vec<*mut ::std::os::raw::c_uchar> = vec![];
         str_ptrs_arr.resize_with(patterns.len(), || &mut 0);
-        let mut strings: Vec<UtfString> = vec![];
 
         for i in 0..patterns.len() {
             let utf_string = UtfString::new(patterns[i].as_str());
 
             str_ptrs_arr[i] = patterns[i].as_ptr() as *mut u8;
             str_len_arr[i] = utf_string.utf8length;
-
-            strings.push(utf_string)
         }
 
         let onig_scanner;
@@ -56,8 +52,7 @@ impl ScieScanner {
         }
 
         ScieScanner {
-            last_onig_id: 0,
-            strings,
+            last_onig_id: 1,
             _ptr: onig_scanner as *mut OnigScanner,
         }
     }
