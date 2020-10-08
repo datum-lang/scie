@@ -331,7 +331,7 @@ impl RegExpSource {
         let captured_values: Vec<String> = capture_indices
             .into_iter()
             .map(|x| {
-                return (line_text[x.start..x.end].to_string()).clone();
+                return line_text[x.start..x.end].to_string();
             })
             .collect();
 
