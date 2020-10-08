@@ -148,8 +148,7 @@ impl AbstractRule for BeginEndRule {
                     ._cached_compiled_patterns
                     .as_ref()
                     .unwrap()
-                    .length()
-                    .clone();
+                    .length();
 
                 self._cached_compiled_patterns
                     .as_mut()
