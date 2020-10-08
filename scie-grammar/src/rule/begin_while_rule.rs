@@ -9,15 +9,11 @@ use std::any::Any;
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginWhileRule {
     pub rule: Rule,
-
     pub _begin: RegExpSource,
     pub begin_captures: Vec<Box<dyn AbstractRule>>,
-
     pub _while: RegExpSource,
     pub while_captures: Vec<Box<dyn AbstractRule>>,
-
     pub apply_end_pattern_last: bool,
-
     pub patterns: Vec<i32>,
     pub has_missing_patterns: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -63,7 +59,7 @@ impl BeginWhileRule {
     ) -> CompiledRule {
         if self._cached_compiled_patterns.is_none() {
             let mut compiled_patterns = RegExpSourceList::new();
-            compiled_patterns.push(Box::new(self._while.clone()));
+            compiled_patterns.push(self._while.clone());
 
             self._cached_compiled_patterns = Some(compiled_patterns);
         }
@@ -126,7 +122,7 @@ impl AbstractRule for BeginWhileRule {
                 grammar.register_rule(rule);
             }
         } else {
-            out.push(Box::new(self._begin.clone()));
+            out.push(self._begin.clone());
         }
     }
 
