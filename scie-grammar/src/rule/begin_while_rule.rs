@@ -123,6 +123,7 @@ impl AbstractRule for BeginWhileRule {
             for x in self.patterns.iter() {
                 let mut rule = grammar.get_rule(*x).clone();
                 rule.collect_patterns_recursive(grammar, out, false);
+                grammar.register_rule(rule);
             }
         } else {
             out.push(Box::new(self._begin.clone()));

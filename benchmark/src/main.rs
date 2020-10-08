@@ -12,9 +12,9 @@ fn main() {
         .unwrap()
         .to_path_buf();
 
-    // run(root_dir.clone(), "json", "JSON.tmLanguage.json", "JavaScript.tmLanguage.json.txt");
+    run(root_dir.clone(), "json", "JSON.tmLanguage.json", "JavaScript.tmLanguage.json.txt");
     // run(root_dir.clone(), "javascript", "JavaScript.tmLanguage.json", "large.min.js.txt");
-    run(root_dir.clone(), "javascript", "JavaScript.tmLanguage.json", "large.js.txt");
+    // run(root_dir.clone(), "javascript", "JavaScript.tmLanguage.json", "large.js.txt");
 }
 
 fn run(root_dir: PathBuf, lang: &str, lang_file: &str, code_file: &str) {

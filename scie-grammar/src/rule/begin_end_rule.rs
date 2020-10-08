@@ -116,6 +116,7 @@ impl AbstractRule for BeginEndRule {
             for pattern_id in self.patterns.iter() {
                 let mut rule = grammar.get_rule(*pattern_id).clone();
                 rule.collect_patterns_recursive(grammar, &mut out, false);
+                grammar.register_rule(rule);
             }
         } else {
             &mut out.push(Box::from(self._begin.clone()));
