@@ -184,11 +184,13 @@ impl RegExpSource {
         let mut last_pushed_pos = 0;
 
         let mut pos = 0;
+        let mut chars: Vec<char> = exp_source.chars().collect();
+
         while pos < length {
-            let ch = exp_source.chars().nth(pos).unwrap();
+            let ch = chars[pos];
             if ch == '\\' {
                 if pos + 1 < length {
-                    let next_char = exp_source.chars().nth(pos + 1).unwrap();
+                    let next_char = chars[pos + 1];
                     if next_char == 'z' {
                         output.push(exp_source[last_pushed_pos..pos].to_string());
                         output.push(String::from("$(?!\n)(?<!\n)"));
