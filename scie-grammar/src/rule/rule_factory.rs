@@ -49,11 +49,11 @@ impl RuleFactory {
 
                 if let Some(rule) = options_patterns {
                     if rule.patterns.is_some() {
-                        let _patterns = rule.patterns.clone();
                         retokenize_captured_with_rule_id =
                             RuleFactory::get_compiled_rule_id(desc.clone(), helper, repository, "");
                     }
                 }
+
                 r[numeric_capture_id] = RuleFactory::create_capture_rule(
                     helper,
                     desc.location.clone(),
