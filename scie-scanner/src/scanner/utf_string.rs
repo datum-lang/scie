@@ -9,6 +9,8 @@ pub struct UtfString {
 }
 
 impl UtfString {
+    // todo: find better way for performance
+    // TypeScript default use utf16, Rust default use UTF8
     pub fn new(str: &str) -> Self {
         let utf16_vec: Vec<u16> = str.encode_utf16().collect();
         let utf16length = utf16_vec.len();
