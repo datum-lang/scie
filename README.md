@@ -11,7 +11,8 @@ major issues:
     - [ ] UTF 8 to UTF 16 in `UtfString`
     - [x] normal issue
  - [ ] crash
-    - [ ] OnigScanner
+    - [ ] OnigScanner.
+       - Signal 6 (<cite>SIGABRT</cite>) = SIGABRT is commonly used by `libc` and other libraries to abort the program in case of critical errors. For example, `glibc` sends an SIGABRT in case of a detected double-free or other heap corruptions.
 
 Todo:
 
