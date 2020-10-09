@@ -4,6 +4,15 @@
 
 goal: build a better code figure engine for code refactoring.
 
+major issues:
+
+ - [ ] performance
+    - [ ] rule in `Grammar`
+    - [ ] UTF 8 to UTF 16 in `UtfString`
+    - [x] normal issue
+ - [ ] crash
+    - [ ] OnigScanner
+
 Todo:
 
  - [ ] replace with [fancy-regex](https://github.com/fancy-regex/fancy-regex)
