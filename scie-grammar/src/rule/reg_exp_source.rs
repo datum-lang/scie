@@ -223,10 +223,9 @@ impl RegExpSource {
             has_back_references: false,
         };
 
-        let cache = reg_exp_source.build_anchor_cache();
-        reg_exp_source._anchor_cache = Some(cache);
+        reg_exp_source._anchor_cache = Some(reg_exp_source.build_anchor_cache());
 
-        if HAS_BACK_REFERENCES.is_match(reg_exp_source.source.clone().as_str()) {
+        if HAS_BACK_REFERENCES.is_match(reg_exp_source.source.as_str()) {
             reg_exp_source.has_back_references = true;
         }
 
