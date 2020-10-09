@@ -3,6 +3,7 @@
  *--------------------------------------------------------*/
 
 #include "stdlib.h"
+#include "stdio.h"
 #include "string.h"
 #include "oniguruma/src/oniguruma.h"
 #include <stdbool.h>
@@ -174,6 +175,11 @@ long createOnigScanner(unsigned char **patterns, int *lengths, int count) {
     free(regs);
 
     scanner = (OnigScanner *) malloc(sizeof(OnigScanner));
+    if (scanner == NULL) {
+        printf("failed to allocate memory.");
+        exit(-1);
+    }
+
     scanner->rset = rset;
     scanner->regexes = regexes;
     scanner->count = count;
