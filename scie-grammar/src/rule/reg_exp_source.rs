@@ -180,11 +180,11 @@ impl RegExpSource {
 
         let result: String;
         let length = exp_source.len();
-        let mut output: Vec<String> = vec![];
+        let mut output: Vec<&str> = vec![];
         let mut last_pushed_pos = 0;
 
         let mut pos = 0;
-        let mut chars: Vec<char> = exp_source.chars().collect();
+        let chars: Vec<char> = exp_source.chars().collect();
 
         while pos < length {
             let ch = chars[pos];
@@ -192,8 +192,8 @@ impl RegExpSource {
                 if pos + 1 < length {
                     let next_char = chars[pos + 1];
                     if next_char == 'z' {
-                        output.push(exp_source[last_pushed_pos..pos].to_string());
-                        output.push(String::from("$(?!\n)(?<!\n)"));
+                        output.push(&exp_source[last_pushed_pos..pos]);
+                        output.push("$(?!\n)(?<!\n)");
                         last_pushed_pos = pos + 2;
                     } else if next_char == 'G' || next_char == 'A' {
                         has_anchor = true
@@ -211,7 +211,7 @@ impl RegExpSource {
         if last_pushed_pos == 0 {
             result = exp_source.clone()
         } else {
-            output.push(exp_source[last_pushed_pos..length].to_string());
+            output.push(&exp_source[last_pushed_pos..length]);
             result = output.join("");
         }
 
