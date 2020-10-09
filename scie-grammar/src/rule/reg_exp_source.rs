@@ -248,9 +248,10 @@ impl RegExpSource {
         let mut pos = 0;
         let mut ch: char;
         let mut next_char: char;
+        let chars: Vec<char> = self.source.chars().collect();
 
         while pos < length {
-            ch = self.source.chars().nth(pos).unwrap();
+            ch = chars[pos];
             a0_g0_result[pos] = ch.to_string();
             a0_g1_result[pos] = ch.to_string();
             a1_g0_result[pos] = ch.to_string();
@@ -258,7 +259,7 @@ impl RegExpSource {
 
             if ch == '\\' {
                 if pos + 1 < length {
-                    next_char = self.source.chars().nth(pos + 1).unwrap();
+                    next_char = chars[pos + 1];
                     if next_char == 'A' {
                         a0_g0_result[pos + 1] = String::from("\u{FFFF}");
                         a0_g1_result[pos + 1] = String::from("\u{FFFF}");
