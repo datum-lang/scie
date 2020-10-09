@@ -8,7 +8,17 @@ Date: 2020-10-07
 
 ## Context
 
-Context here...
+For share data in different languages, we need a better format to storage data for:
+
+1. reduce size
+2. speed. no serialize
+3. data complete
+
+in those propose, we can try
+
+1. TLV
+
+then compare in with JSON.1
 
 ## Decision
 
