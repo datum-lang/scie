@@ -56,9 +56,9 @@ impl RuleFactory {
                 }
                 r[numeric_capture_id] = RuleFactory::create_capture_rule(
                     helper,
-                    desc.clone().location,
-                    desc.clone().name,
-                    desc.clone().content_name,
+                    desc.location.clone(),
+                    desc.name.clone(),
+                    desc.content_name.clone(),
                     retokenize_captured_with_rule_id,
                 )
                 .clone();
