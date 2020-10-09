@@ -56,11 +56,9 @@ impl ScieScanner {
         }
     }
 
-    pub fn dispose(&self) {
+    pub fn dispose(&mut self) {
         unsafe {
-            let mut scanner = self._ptr;
-            let scanner_ptr = &mut scanner;
-            freeOnigScanner(scanner_ptr);
+            freeOnigScanner(&mut self._ptr);
         }
     }
 
@@ -499,7 +497,6 @@ mod tests {
 
     #[test]
     fn should_compile_markdown_rule36() {
-        // let format_g = format!("{}", "\\G");
         let origin = vec!["^(?!\t)", "\\G", "^\t"];
         let debug_regex = str_vec_to_string(origin);
         let mut scanner = ScieScanner::new(debug_regex);
