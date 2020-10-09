@@ -42,9 +42,10 @@ impl ScieScanner {
 
         let onig_scanner;
 
+        let patterns_length_ptr = str_len_arr.as_mut_ptr();
+        let patterns_ptr: *mut *mut u8 = str_ptrs_arr.as_mut_ptr();
+
         unsafe {
-            let patterns_length_ptr = str_len_arr.as_mut_ptr();
-            let patterns_ptr: *mut *mut u8 = str_ptrs_arr.as_mut_ptr();
             onig_scanner =
                 createOnigScanner(patterns_ptr, patterns_length_ptr, patterns.len() as i32);
         }

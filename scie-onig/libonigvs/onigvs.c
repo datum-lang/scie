@@ -173,6 +173,7 @@ long createOnigScanner(unsigned char **patterns, int *lengths, int count) {
 
     onig_regset_new(&rset, count, regs);
     free(regs);
+    regs = NULL;
 
     scanner = (OnigScanner *) malloc(sizeof(OnigScanner));
     if (scanner == NULL) {
