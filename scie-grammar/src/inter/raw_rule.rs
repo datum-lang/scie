@@ -31,7 +31,7 @@ pub struct IRawRule {
     pub end_captures: Option<Box<IRawCaptures>>,
 
     #[serde(alias = "while", skip_serializing_if = "Option::is_none")]
-    pub while_s: Option<String>,
+    pub _while: Option<String>,
     #[serde(alias = "whileCaptures", skip_serializing_if = "Option::is_none")]
     pub while_captures: Option<Box<IRawCaptures>>,
 
@@ -61,7 +61,7 @@ impl IRawRule {
             begin_captures: None,
             end: None,
             end_captures: None,
-            while_s: None,
+            _while: None,
             while_captures: None,
             patterns: None,
             repository: None,

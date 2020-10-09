@@ -254,17 +254,30 @@ impl RuleFactory {
             }
 
             let begin_captures;
-            if let None = desc.begin_captures {
-                desc.begin_captures = desc.captures.clone()
-            } else {
-                begin_captures = desc.begin_captures.clone()
+            match desc.begin_captures {
+                None => {
+                    begin_captures = desc.captures.clone()
+                }
+                Some(..) => {
+                    begin_captures = desc.begin_captures.clone()
+                }
             }
 
-            if let Some(_) = desc.while_s {
-                let begin_rule_factory =
-                    RuleFactory::compile_captures(desc.begin_captures, helper, repository);
-                let end_rule_factory =
-                    RuleFactory::compile_captures(desc.end_captures, helper, repository);
+            if let Some(_) = desc._while {
+                let while_captures;
+                match desc.while_captures {
+                    None => {
+                        while_captures = desc.captures.clone()
+                    }
+                    Some(..) => {
+                        while_captures = desc.while_captures.clone()
+                    }
+                }
+
+                let compile_begin_captures =
+                    RuleFactory::compile_captures(begin_captures, helper, repository);
+                let compile_while_captures =
+                    RuleFactory::compile_captures(while_captures, helper, repository);
                 let pattern_factory =
                     RuleFactory::compile_patterns(desc.patterns, helper, repository);
 
@@ -274,19 +287,29 @@ impl RuleFactory {
                     desc.name,
                     desc.content_name,
                     desc.begin,
-                    begin_rule_factory,
-                    desc.while_s.unwrap(),
-                    end_rule_factory,
+                    compile_begin_captures,
+                    desc._while.unwrap(),
+                    compile_while_captures,
                     pattern_factory,
                 );
 
                 return helper.register_rule(Box::new(begin_while_rule));
             }
 
+            let end_captures;
+            match desc.end_captures {
+                None => {
+                    end_captures = desc.captures.clone()
+                }
+                Some(..) => {
+                    end_captures = desc.end_captures.clone()
+                }
+            }
+
             let begin_rule_factory =
-                RuleFactory::compile_captures(desc.begin_captures, helper, repository);
+                RuleFactory::compile_captures(begin_captures, helper, repository);
             let end_rule_factory =
-                RuleFactory::compile_captures(desc.end_captures, helper, repository);
+                RuleFactory::compile_captures(end_captures, helper, repository);
             let pattern_factory = RuleFactory::compile_patterns(desc.patterns, helper, repository);
 
             let begin_end_rule = BeginEndRule::new(
