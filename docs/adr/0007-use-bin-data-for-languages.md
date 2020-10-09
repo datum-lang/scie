@@ -18,7 +18,7 @@ in those propose, we can try
 
 1. TLV
 
-then compare in with JSON.1
+then compare in with JSON.
 
 ## Decision
 
