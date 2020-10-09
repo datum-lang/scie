@@ -1,3 +1,3 @@
-pub mod scie_model;
+pub mod artifact;
 
 fn main() {}
