@@ -255,23 +255,15 @@ impl RuleFactory {
 
             let begin_captures;
             match desc.begin_captures {
-                None => {
-                    begin_captures = desc.captures.clone()
-                }
-                Some(..) => {
-                    begin_captures = desc.begin_captures.clone()
-                }
+                None => begin_captures = desc.captures.clone(),
+                Some(..) => begin_captures = desc.begin_captures.clone(),
             }
 
             if let Some(_) = desc._while {
                 let while_captures;
                 match desc.while_captures {
-                    None => {
-                        while_captures = desc.captures.clone()
-                    }
-                    Some(..) => {
-                        while_captures = desc.while_captures.clone()
-                    }
+                    None => while_captures = desc.captures.clone(),
+                    Some(..) => while_captures = desc.while_captures.clone(),
                 }
 
                 let compile_begin_captures =
@@ -298,18 +290,13 @@ impl RuleFactory {
 
             let end_captures;
             match desc.end_captures {
-                None => {
-                    end_captures = desc.captures.clone()
-                }
-                Some(..) => {
-                    end_captures = desc.end_captures.clone()
-                }
+                None => end_captures = desc.captures.clone(),
+                Some(..) => end_captures = desc.end_captures.clone(),
             }
 
             let begin_rule_factory =
                 RuleFactory::compile_captures(begin_captures, helper, repository);
-            let end_rule_factory =
-                RuleFactory::compile_captures(end_captures, helper, repository);
+            let end_rule_factory = RuleFactory::compile_captures(end_captures, helper, repository);
             let pattern_factory = RuleFactory::compile_patterns(desc.patterns, helper, repository);
 
             let begin_end_rule = BeginEndRule::new(

@@ -3,7 +3,7 @@ pub struct Workspace {
 }
 
 pub struct Project {
-    pub modules: Vec<Module>
+    pub modules: Vec<Module>,
 }
 
 pub struct Module {
@@ -21,7 +21,7 @@ pub struct Package {
 }
 
 pub struct File {
-    pub elements: Vec<Element>
+    pub elements: Vec<Element>,
 }
 
 pub struct Element {
