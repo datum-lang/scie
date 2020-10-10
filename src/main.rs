@@ -8,6 +8,7 @@ pub mod artifact;
 pub mod bindata;
 pub mod identify;
 pub mod finder;
+pub mod model;
 
 fn main() {}
 
