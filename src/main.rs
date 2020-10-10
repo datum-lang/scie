@@ -4,110 +4,18 @@ extern crate serde_derive;
 #[macro_use]
 extern crate lazy_static;
 
-use std::path::PathBuf;
-use std::fs::File;
-use std::io::Read;
-use crate::artifact::Element;
-use scie_grammar::grammar::{StackElement, Grammar};
-
 pub mod artifact;
 pub mod bindata;
-
-lazy_static! {
-  static ref DEFAULT_VCS_EXCLUDES: Vec<&'static str> = vec![
-        "**/%*%",
-        "**/.#*",
-        "**/._*",
-        "**/#*#",
-        "**/*~",
-        "**/.DS_Store",
-
-        "**/CVS",
-        "**/CVS/**",
-        "**/.cvsignore",
-
-        "**/SCCS",
-        "**/SCCS/**",
-
-        "**/.bzr",
-        "**/.bzr/**",
-        "**/.bzrignore",
-
-        "**/vssver.scc",
-
-        "**/.hg",
-        "**/.hg/**",
-        "**/.hgtags",
-        "**/.hgignore",
-        "**/.hgsubstate",
-        "**/.hgsub",
-
-        "**/.svn",
-        "**/.svn/**",
-
-        "**/.git",
-        "**/.git/**",
-        "**/.gitignore",
-        "**/.gitmodules",
-        "**/.gitattributes"
-    ];
-
-}
+pub mod identify;
+pub mod finder;
 
 fn main() {}
-
-fn read_code(lang_test_dir: &PathBuf) -> String {
-    let mut file = File::open(lang_test_dir).unwrap();
-    let mut code = String::new();
-    file.read_to_string(&mut code).unwrap();
-    code
-}
-
-fn identify_file(lang: PathBuf, code: String) -> Vec<Element> {
-    let mut elements: Vec<Element> = vec![];
-    let mut grammar = Grammar::from_file(lang.to_str().unwrap());
-    let mut rule_stack = Some(StackElement::null());
-
-    // todo: build all scope name
-    // for rule in grammar.grammar.patterns.clone() {
-    //     println!("{:?}", rule.name);
-    // }
-
-    let mut line_num = 1;
-    for line in code.lines() {
-        let result = grammar.tokenize_line(line, &mut rule_stack);
-        for token in result.tokens {
-            let start = token.start_index;
-            let end = token.end_index;
-            let text: String = String::from(line)
-                .chars()
-                .skip(start as usize)
-                .take((end - start) as usize)
-                .collect();
-
-            elements.push(
-                Element {
-                    line_num,
-                    start_index: start,
-                    end_index: end,
-                    value: text,
-                    scopes: vec![],
-                }
-            );
-        }
-
-        rule_stack = result.rule_stack;
-        line_num = line_num + 1
-    }
-
-    elements
-}
-
 
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
-    use crate::{identify_file, read_code};
+    use crate::identify::Identify;
+    use crate::finder::Finder;
 
     #[test]
     fn should_build_first_file() {
@@ -116,10 +24,11 @@ mod tests {
             .join("extensions").join("java").join("syntaxes").join("java.tmLanguage.json");
 
         let code_dir = root_dir.join("fixtures").join("test-cases").join("e2e").join("java").join("HelloWorld.java");
-        let code = read_code(&code_dir);
+        let code = Finder::read_code(&code_dir);
 
-        let elements = identify_file(lang, code);
+        let elements = Identify::identify_file(lang, code);
 
+        println!("{:?}", elements);
         assert_eq!(39, elements.len());
     }
 }
