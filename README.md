@@ -4,6 +4,12 @@
 
 goal: build a better code figure engine for code refactoring.
 
+ - scie-grammar. A library that helps tokenize text using Text Mate grammars.
+ - scie-onig. Rust FFI for Oniguruma.
+ - scie-scanner. Wrapper Rust Oniguruma FFI api.
+
+## Guideline
+
 major issues:
 
  - [ ] performance
@@ -51,6 +57,29 @@ Todo:
 
 ## DevSetup
 
+1. git clone
+
+```
+git clone https://github.com/phodal/scie/
+```
+
+2. run
+
+```
+cargo run scie
+```
+
+install just
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to DEST
+```
+
+run tests
+
+```
+just tests
+```
 
 ## Documents
 
