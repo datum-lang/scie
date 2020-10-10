@@ -56,9 +56,11 @@ impl ScieScanner {
         }
     }
 
-    pub fn dispose(&mut self) {
+    pub fn dispose(&self) {
         unsafe {
-            freeOnigScanner(&mut self._ptr);
+            let mut scanner = self._ptr;
+            let scanner_ptr = &mut scanner;
+            freeOnigScanner(scanner_ptr);
         }
     }
 
