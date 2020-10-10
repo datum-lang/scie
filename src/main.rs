@@ -81,6 +81,11 @@ mod tests {
         let mut grammar = Grammar::from_file(lang.to_str().unwrap());
         let mut rule_stack = Some(StackElement::null());
 
+        // todo: build all scope name
+        // for rule in grammar.grammar.patterns.clone() {
+        //     println!("{:?}", rule.name);
+        // }
+
         let mut line_num = 1;
         for line in code.lines() {
             let result = grammar.tokenize_line(line, &mut rule_stack);

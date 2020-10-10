@@ -43,7 +43,7 @@ pub struct TokenizeResult {
 #[derive(Debug, Clone)]
 pub struct Grammar {
     root_id: i32,
-    grammar: IRawGrammar,
+    pub grammar: IRawGrammar,
     pub last_rule_id: i32,
     pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
     pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
