@@ -12,5 +12,3 @@ pub struct ContribGrammar {}
 pub struct BreakPoint {}
 
 pub struct ContribSnippet {}
-
-

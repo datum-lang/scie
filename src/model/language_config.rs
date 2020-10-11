@@ -36,7 +36,6 @@ impl LanguageConfig {
 
 }
 
-
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
