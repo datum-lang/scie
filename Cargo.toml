@@ -22,9 +22,13 @@ path = "scie-grammar"
 [dependencies.scie_scanner]
 path = "scie-scanner"
 
+[dependencies.scie_model]
+path = "scie-model"
+
 [workspace]
 members = [
  "scie-grammar",
  "scie-onig",
+ "scie-model",
  "benchmark",
 ]
