@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate serde_derive;
+
 extern crate serde;
 
 use scie_infra::finder::Finder;
@@ -5,6 +8,8 @@ use scie_model::{JsonPackage, TMGrammar};
 use std::collections::HashMap;
 use std::path::PathBuf;
 use walkdir::WalkDir;
+use std::fs::File;
+use std::io::Write;
 
 pub fn walk_dir(path: String) -> Vec<PathBuf> {
     let mut packages = vec![];
@@ -22,11 +27,13 @@ pub fn walk_dir(path: String) -> Vec<PathBuf> {
     packages
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ExtEntry {
     pub name: String,
     pub path: String,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct LangExtMap {
     pub ext_map: HashMap<String, ExtEntry>,
     pub grammar_map: HashMap<String, TMGrammar>,
@@ -87,9 +94,20 @@ fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
     lang_ext_map
 }
 
+fn write_to_file(map: &LangExtMap, path: &str) {
+    let json_str = serde_json::to_string(&map).unwrap();
+    let bytes = json_str.as_bytes();
+
+    let mut file = File::create(path).unwrap();
+    match file.write_all(bytes) {
+        Ok(_) => {}
+        Err(_) => {}
+    };
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::build_languages_map;
+    use crate::{build_languages_map, write_to_file};
     use std::path::PathBuf;
 
     #[test]
@@ -126,6 +144,8 @@ mod tests {
             .join(languages_map.ext_map[".css"].path.clone())
             .join(css_path);
         // let string = Finder::read_code(&path.to_path_buf());
+
+        write_to_file(&languages_map, "map.json");
         assert!(path.exists())
     }
 }
