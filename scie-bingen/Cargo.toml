@@ -7,7 +7,14 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_derive = "1.0.115"
+serde_json = "1.0"
+
 walkdir = "2"
 
 [dependencies.scie_infra]
 path = "../scie-infra"
+
+[dependencies.scie_model]
+path = "../scie-model"

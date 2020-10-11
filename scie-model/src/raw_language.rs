@@ -1,7 +1,9 @@
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RawLanguageExt {
     id: String,
-    extensions: Vec<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    extensions: Option<Vec<String>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     filenames: Option<Vec<String>>,
