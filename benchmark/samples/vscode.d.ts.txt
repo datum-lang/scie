@@ -3568,7 +3568,7 @@ declare module 'vscode' {
 		/**
 		 * If a line matches this pattern, then all the lines after it should be unindented once (until another rule matches).
 		 */
-		decreaseIndentPattern: RegExp;
+		decrease_indent_pattern: RegExp;
 		/**
 		 * If a line matches this pattern, then all the lines after it should be indented once (until another rule matches).
 		 */
