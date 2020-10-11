@@ -6,6 +6,8 @@ Date: 2020-08-29
 
 2020-08-29 proposed
 
+2020-10-11 done
+
 ## Context
 
 In currently, the [VSCode-textmate](https://github.com/microsoft/vscode-textmate) generated ruleid2rule has some duplicated fields.

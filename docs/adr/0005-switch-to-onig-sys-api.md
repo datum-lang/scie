@@ -8,6 +8,8 @@ Date: 2020-09-10
 
 2020-09-14 done
 
+2020-10-11 deprecated
+
 ## Context
 
 VCode-Oniguruma use different options for search, in order to match same results, we need to align API usage.

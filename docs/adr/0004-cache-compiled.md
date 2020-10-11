@@ -6,6 +6,8 @@ Date: 2020-09-09
 
 2020-09-09 proposed
 
+2020-10-11 done
+
 ## Context
 
 For now, we don't implement all cached logic from vscode-textmate, if we want to do better on it, we need this.
