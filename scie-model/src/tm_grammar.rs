@@ -15,22 +15,22 @@ pub struct TokenTypesContribution {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TMGrammar {
     #[serde(skip_serializing_if = "Option::is_none")]
-    language: Option<String>,
+    pub language: Option<String>,
     #[serde(alias = "scopeName")]
-    scope_name: String,
-    path: String,
+    pub scope_name: String,
+    pub path: String,
 
     #[serde(alias = "injectTo")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    inject_to: Option<Vec<String>>,
+    pub inject_to: Option<Vec<String>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(alias = "embeddedLanguages")]
-    embedded_languages: Option<IEmbeddedLanguagesMap>,
+    pub embedded_languages: Option<IEmbeddedLanguagesMap>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(alias = "tokenTypes")]
-    token_types: Option<TokenTypesContribution>,
+    pub token_types: Option<TokenTypesContribution>,
 }
 
 

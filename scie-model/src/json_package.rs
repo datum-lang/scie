@@ -2,8 +2,8 @@ use crate::contribute::Contribute;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct JsonPackage {
-    name: String,
-    contributes: Contribute
+    pub name: String,
+    pub contributes: Contribute
 }
 
 #[cfg(test)]
