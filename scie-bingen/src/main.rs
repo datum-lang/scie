@@ -82,9 +82,12 @@ fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
             }
 
             for ext in lang_ext.extensions.unwrap() {
+                let mut path = path.parent().unwrap().display().to_string();
+                path = path.replace(".//", "");
+
                 let ext_entry = ExtEntry {
                     name: lang_ext.id.clone(),
-                    path: path.parent().unwrap().display().to_string(),
+                    path,
                 };
                 lang_ext_map.ext_map.insert(ext, ext_entry);
             }
