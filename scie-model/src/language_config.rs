@@ -8,7 +8,7 @@ pub struct CommentRule {
     pub block_comment: Option<CharacterPair>,
 }
 
-type CharacterPair = Vec<String>;
+pub type CharacterPair = Vec<String>;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct IndentationRules {

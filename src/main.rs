@@ -2,7 +2,6 @@
 extern crate serde_derive;
 
 extern crate serde;
-// extern crate serde_regex;
 
 #[macro_use]
 extern crate lazy_static;
@@ -11,7 +10,6 @@ pub mod artifact;
 pub mod bindata;
 pub mod identify;
 pub mod finder;
-pub mod model;
 
 fn main() {}
 
