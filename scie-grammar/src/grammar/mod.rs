@@ -129,7 +129,7 @@ mod tests {
             .join("rust.rs.txt");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code("extensions/rust/rust.tmLanguage.json", &*code);
+        let grammar = to_grammar_with_code("extensions/rust/syntaxes/rust.tmLanguage.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 76);
     }
 }
