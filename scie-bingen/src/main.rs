@@ -1,10 +1,10 @@
 extern crate serde;
 
-use walkdir::{WalkDir};
-use std::path::{PathBuf};
 use scie_infra::finder::Finder;
 use scie_model::{JsonPackage, TMGrammar};
 use std::collections::HashMap;
+use std::path::PathBuf;
+use walkdir::WalkDir;
 
 pub fn walk_dir(path: String) -> Vec<PathBuf> {
     let mut packages = vec![];
@@ -41,7 +41,6 @@ impl LangExtMap {
     }
 }
 
-
 fn main() {}
 
 fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
@@ -71,10 +70,19 @@ fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
                 let lang_id = lang_ext.id;
                 if let Some(extensions) = lang_ext.extensions {
                     for ext in extensions {
-                        lang_ext_map.ext_map.insert(ext, ExtEntry {
-                            name: lang_id.clone(),
-                            path: path.parent().unwrap().as_os_str().to_str().unwrap().to_string(),
-                        });
+                        lang_ext_map.ext_map.insert(
+                            ext,
+                            ExtEntry {
+                                name: lang_id.clone(),
+                                path: path
+                                    .parent()
+                                    .unwrap()
+                                    .as_os_str()
+                                    .to_str()
+                                    .unwrap()
+                                    .to_string(),
+                            },
+                        );
                     }
                 }
             }
@@ -86,12 +94,15 @@ fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
 
 #[cfg(test)]
 mod tests {
-    use std::path::{PathBuf};
     use crate::build_languages_map;
+    use std::path::PathBuf;
 
     #[test]
     fn should_get_css_scope_name() {
-        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).parent().unwrap().to_path_buf();
+        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .to_path_buf();
         let ext_path = root_dir.join("extensions");
 
         let languages_map = build_languages_map(ext_path);
@@ -99,12 +110,18 @@ mod tests {
         assert!(languages_map.ext_map[".css"].path.ends_with("css"));
 
         assert_eq!("source.css", languages_map.grammar_map["css"].scope_name);
-        assert_eq!("./syntaxes/css.tmLanguage.json", languages_map.grammar_map["css"].path);
+        assert_eq!(
+            "./syntaxes/css.tmLanguage.json",
+            languages_map.grammar_map["css"].path
+        );
     }
 
     #[test]
     fn should_build_css_raw_grammar_path() {
-        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).parent().unwrap().to_path_buf();
+        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .to_path_buf();
         let ext_path = root_dir.join("extensions");
 
         let languages_map = build_languages_map(ext_path.clone());

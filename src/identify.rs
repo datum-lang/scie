@@ -1,10 +1,8 @@
-use std::path::PathBuf;
 use crate::artifact::Element;
 use scie_grammar::grammar::{Grammar, StackElement};
+use std::path::PathBuf;
 
-pub struct Identify {
-
-}
+pub struct Identify {}
 
 impl Identify {
     pub fn identify_file(lang: PathBuf, code: String) -> Vec<Element> {
@@ -29,15 +27,13 @@ impl Identify {
                     .take((end - start) as usize)
                     .collect();
 
-                elements.push(
-                    Element {
-                        line_num,
-                        start_index: start,
-                        end_index: end,
-                        value: text,
-                        scopes: vec![],
-                    }
-                );
+                elements.push(Element {
+                    line_num,
+                    start_index: start,
+                    end_index: end,
+                    value: text,
+                    scopes: vec![],
+                });
             }
 
             rule_stack = result.rule_stack;

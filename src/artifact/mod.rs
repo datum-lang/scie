@@ -38,7 +38,7 @@ pub struct Package {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct CodeFile {
-    pub elements: Vec<Element>
+    pub elements: Vec<Element>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -57,5 +57,5 @@ pub struct Element {
 pub struct ElementScope {
     #[serde(alias = "scopeName")]
     pub name: String,
-    pub index: i32
+    pub index: i32,
 }

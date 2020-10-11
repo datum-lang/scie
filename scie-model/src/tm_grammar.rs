@@ -33,7 +33,6 @@ pub struct TMGrammar {
     pub token_types: Option<TokenTypesContribution>,
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::tm_grammar::TMGrammar;

@@ -13,7 +13,7 @@ pub type CharacterPair = Vec<String>;
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct IndentationRules {
     #[serde(alias = "decreaseIndentPattern")]
-    pub decrease_indent_pattern: Option<String>
+    pub decrease_indent_pattern: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -32,16 +32,14 @@ pub struct LanguageConfig {
     pub indentation_rules: Option<IndentationRules>,
 }
 
-impl LanguageConfig {
-
-}
+impl LanguageConfig {}
 
 #[cfg(test)]
 mod tests {
-    use std::path::PathBuf;
     use crate::language_config::LanguageConfig;
     use std::fs::File;
     use std::io::Read;
+    use std::path::PathBuf;
 
     pub fn read_code(lang_test_dir: &PathBuf) -> String {
         let mut file = File::open(lang_test_dir).unwrap();
@@ -52,9 +50,15 @@ mod tests {
 
     #[test]
     fn should_serialise_block_comment() {
-        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).parent().unwrap().to_path_buf();
-        let config = root_dir.clone()
-            .join("extensions").join("java").join("language-configuration.json");
+        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .to_path_buf();
+        let config = root_dir
+            .clone()
+            .join("extensions")
+            .join("java")
+            .join("language-configuration.json");
 
         let code = read_code(&config);
 
