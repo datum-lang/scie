@@ -30,5 +30,7 @@ members = [
  "scie-grammar",
  "scie-onig",
  "scie-model",
+ "scie-scanner",
+ "scie-bingen",
  "benchmark",
 ]
