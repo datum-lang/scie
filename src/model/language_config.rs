@@ -1,4 +1,4 @@
-#[derive(Serialize, Deserialize, Eq, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct CommentRule {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(alias = "lineComment")]
@@ -10,19 +10,23 @@ pub struct CommentRule {
 
 type CharacterPair = Vec<String>;
 
-#[derive(Serialize, Deserialize, Eq, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct IndentationRules {
     #[serde(alias = "decreaseIndentPattern")]
     pub decrease_indent_pattern: Option<String>
 }
 
-#[derive(Serialize, Deserialize, Eq, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct LanguageConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub comments: Option<CommentRule>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub brackets: Option<Vec<CharacterPair>>,
-    // pub word_patterns: Regex,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub word_patterns: Option<String>,
+
     #[serde(alias = "indentationRules")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub indentation_rules: Option<IndentationRules>,
@@ -52,5 +56,12 @@ mod tests {
         let block_comment = lang_config.comments.unwrap().block_comment.unwrap();
         assert_eq!("/*", block_comment[0]);
         assert_eq!("*/", block_comment[1]);
+    }
+
+    #[test]
+    fn should_serialise_word_pattern() {
+        let code = "{}";
+        let lang_config: LanguageConfig = serde_json::from_str(&code).unwrap();
+        println!("{:?}", lang_config);
     }
 }
