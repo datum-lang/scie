@@ -24,11 +24,13 @@ pub struct TMGrammar {
     #[serde(skip_serializing_if = "Option::is_none")]
     inject_to: Option<Vec<String>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(alias = "embeddedLanguages")]
-    embedded_languages: IEmbeddedLanguagesMap,
+    embedded_languages: Option<IEmbeddedLanguagesMap>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(alias = "tokenTypes")]
-    token_types: TokenTypesContribution,
+    token_types: Option<TokenTypesContribution>,
 }
 
 
@@ -54,6 +56,6 @@ mod tests {
       }";
 
         let grammar: TMGrammar = serde_json::from_str(&code).unwrap();
-        assert_eq!("html", grammar.embedded_languages.map["text.html"]);
+        assert_eq!("html", grammar.embedded_languages.unwrap().map["text.html"]);
     }
 }

@@ -1,14 +1,21 @@
+use crate::model::raw_language::RawLanguageExt;
+use crate::model::tm_grammar::TMGrammar;
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Contribute {
-    pub languages: Vec<ContribLang>,
-    pub grammars: Vec<ContribGrammar>,
-    pub break_points: Vec<BreakPoint>,
-    pub snippets: Vec<ContribSnippet>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub languages: Option<Vec<RawLanguageExt>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub grammars: Option<Vec<TMGrammar>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(alias = "breakPoints")]
+    pub break_points: Option<Vec<BreakPoint>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub snippets: Option<Vec<ContribSnippet>>,
 }
 
-pub struct ContribLang {}
-
-pub struct ContribGrammar {}
-
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BreakPoint {}
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ContribSnippet {}

@@ -1,13 +1,25 @@
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct RawLanguageExtensionPoint {
+pub struct RawLanguageExt {
     id: String,
     extensions: Vec<String>,
-    filenames: Vec<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    filenames: Option<Vec<String>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(alias = "filenamePatterns")]
-    filename_patterns: Vec<String>,
+    filename_patterns: Option<Vec<String>>,
+
     #[serde(alias = "firstLine")]
-    first_line: String,
-    aliases: Vec<String>,
-    mimetypes: Vec<String>,
-    configuration: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    first_line: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    aliases: Option<Vec<String>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    mimetypes: Option<Vec<String>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    configuration: Option<String>,
 }
