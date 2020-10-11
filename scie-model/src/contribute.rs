@@ -1,5 +1,5 @@
-use crate::model::raw_language::RawLanguageExt;
-use crate::model::tm_grammar::TMGrammar;
+use crate::raw_language::RawLanguageExt;
+use crate::tm_grammar::TMGrammar;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Contribute {

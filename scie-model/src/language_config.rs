@@ -39,16 +39,24 @@ impl LanguageConfig {
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
-    use crate::finder::Finder;
-    use crate::model::language_config::LanguageConfig;
+    use crate::language_config::LanguageConfig;
+    use std::fs::File;
+    use std::io::Read;
+
+    pub fn read_code(lang_test_dir: &PathBuf) -> String {
+        let mut file = File::open(lang_test_dir).unwrap();
+        let mut code = String::new();
+        file.read_to_string(&mut code).unwrap();
+        code
+    }
 
     #[test]
     fn should_serialise_block_comment() {
-        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).to_path_buf();
+        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).parent().unwrap().to_path_buf();
         let config = root_dir.clone()
             .join("extensions").join("java").join("language-configuration.json");
 
-        let code = Finder::read_code(&config);
+        let code = read_code(&config);
 
         let lang_config: LanguageConfig = serde_json::from_str(&code).unwrap();
 

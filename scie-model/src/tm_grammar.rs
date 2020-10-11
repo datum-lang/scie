@@ -36,7 +36,7 @@ pub struct TMGrammar {
 
 #[cfg(test)]
 mod tests {
-    use crate::model::tm_grammar::TMGrammar;
+    use crate::tm_grammar::TMGrammar;
 
     #[test]
     fn should_serialise_language_map() {
