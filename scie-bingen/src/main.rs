@@ -1,12 +1,9 @@
-#[macro_use]
-extern crate serde_derive;
-
 extern crate serde;
 
 use walkdir::{WalkDir};
 use std::path::{PathBuf};
 use scie_infra::finder::Finder;
-use scie_model::JsonPackage;
+use scie_model::{JsonPackage, TMGrammar};
 use std::collections::HashMap;
 
 pub fn walk_dir(path: String) -> Vec<PathBuf> {
@@ -27,7 +24,7 @@ pub fn walk_dir(path: String) -> Vec<PathBuf> {
 
 pub struct LangExtMap {
     pub ext_map: HashMap<String, String>,
-    pub grammar_map: HashMap<String, String>,
+    pub grammar_map: HashMap<String, TMGrammar>,
 }
 
 impl LangExtMap {
@@ -58,8 +55,8 @@ fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
 
         if let Some(grammars) = pkg.contributes.grammars {
             for grammar in grammars {
-                if grammar.language.is_some() {
-                    lang_ext_map.grammar_map.insert(grammar.language.unwrap(), grammar.scope_name);
+                if  let Some(lang) = grammar.language.clone() {
+                    lang_ext_map.grammar_map.insert(lang, grammar);
                 }
             }
         }
@@ -91,6 +88,12 @@ mod tests {
 
         let languages_map = build_languages_map(ext_path);
         assert_eq!("css", languages_map.ext_map[".css"]);
-        assert_eq!("source.css", languages_map.grammar_map["css"]);
+        assert_eq!("source.css", languages_map.grammar_map["css"].scope_name);
+        assert_eq!("./syntaxes/css.tmLanguage.json", languages_map.grammar_map["css"].path);
+    }
+
+    #[test]
+    fn should_get_raw_by_file_name() {
+
     }
 }
