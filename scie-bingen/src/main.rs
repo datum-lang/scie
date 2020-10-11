@@ -65,26 +65,21 @@ fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
             }
         }
 
-        if let Some(exts) = pkg.contributes.languages {
-            for lang_ext in exts {
-                let lang_id = lang_ext.id;
-                if let Some(extensions) = lang_ext.extensions {
-                    for ext in extensions {
-                        lang_ext_map.ext_map.insert(
-                            ext,
-                            ExtEntry {
-                                name: lang_id.clone(),
-                                path: path
-                                    .parent()
-                                    .unwrap()
-                                    .as_os_str()
-                                    .to_str()
-                                    .unwrap()
-                                    .to_string(),
-                            },
-                        );
-                    }
-                }
+        if pkg.contributes.languages.is_none() {
+            continue;
+        }
+
+        for lang_ext in pkg.contributes.languages.unwrap() {
+            if lang_ext.extensions.is_none() {
+                continue;
+            }
+
+            for ext in lang_ext.extensions.unwrap() {
+                let ext_entry = ExtEntry {
+                    name: lang_ext.id.clone(),
+                    path: path.parent().unwrap().display().to_string(),
+                };
+                lang_ext_map.ext_map.insert(ext, ext_entry);
             }
         }
     }
