@@ -17,7 +17,7 @@ fn main() {}
 mod tests {
     use std::path::PathBuf;
     use crate::identify::Identify;
-    use crate::finder::Finder;
+    use scie_infra::finder::Finder;
 
     #[test]
     fn should_build_first_file() {

@@ -25,6 +25,9 @@ path = "scie-scanner"
 [dependencies.scie_model]
 path = "scie-model"
 
+[dependencies.scie_infra]
+path = "scie-infra"
+
 [workspace]
 members = [
  "scie-grammar",
@@ -32,5 +35,6 @@ members = [
  "scie-model",
  "scie-scanner",
  "scie-bingen",
+ "scie-infra",
  "benchmark",
 ]
