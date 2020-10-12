@@ -18,6 +18,27 @@ error path: "/Users/fdhuang/charj/scie/extensions/perl/syntaxes/perl.tmLanguage.
 
 "applyEndPatternLast": 1, => "applyEndPatternLast": true,
 
+### xml.tmLanguage.json not correnct issues
+
+related: https://github.com/atom/language-xml/issues/96
+
+solution: replace from xml.bundle
+
+https://github.com/textmate/xml.tmbundle
+
+### R issues
+
+```
+{
+    "end": "\\)",
+    "endCaptures": {
+        "0": {
+            "name": "punctuation.section.parens.end.r"
+        }
+    }
+},
+```
+
 ## Decision
 
 Decision here...
