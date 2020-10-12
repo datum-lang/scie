@@ -35,7 +35,7 @@
 			"include": "#variable"
 		},
 		{
-			"applyEndPatternLast": 1,
+			"applyEndPatternLast": true,
 			"begin": "\\b(?=qr\\s*[^\\s\\w])",
 			"comment": "string.regexp.compile.perl",
 			"end": "((([egimosxradlupcn]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\{\\}\\)]|\\s*$))",
@@ -201,7 +201,7 @@
 			]
 		},
 		{
-			"applyEndPatternLast": 1,
+			"applyEndPatternLast": true,
 			"begin": "(?<!\\{|\\+|\\-)\\b(?=m\\s*[^\\sa-zA-Z0-9])",
 			"comment": "string.regexp.find-m.perl",
 			"end": "((([egimosxradlupcn]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\{\\}\\)]|\\s*$))",
@@ -388,7 +388,7 @@
 			]
 		},
 		{
-			"applyEndPatternLast": 1,
+			"applyEndPatternLast": true,
 			"begin": "\\b(?=(?<!\\&)(s)(\\s+\\S|\\s*[;\\,\\{\\}\\(\\)\\[<]|$))",
 			"comment": "string.regexp.replace.perl",
 			"end": "((([egimosxradlupcn]*)))(?=(\\s+\\S|\\s*[;\\,\\{\\}\\)\\]>]|\\s*$))",

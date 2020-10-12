@@ -9,3 +9,4 @@
 * [7. use-bin-data-for-languages](0007-use-bin-data-for-languages.md)
 * [8. bindata-for-embed](0008-bindata-for-embed.md)
 * [9. framework-detector](0009-framework-detector.md)
+* [10. align-extensions](0010-align-extensions.md)

@@ -455,7 +455,7 @@
 			]
 		},
 		"constructors": {
-			"applyEndPatternLast": 1,
+			"applyEndPatternLast": true,
 			"begin": "(?<=;|^)(?=\\s*(?:(?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final)\\s+)*[A-Z]\\w*\\()",
 			"end": "}",
 			"patterns": [
@@ -890,7 +890,7 @@
 			]
 		},
 		"methods": {
-			"applyEndPatternLast": 1,
+			"applyEndPatternLast": true,
 			"begin": "(?x:(?<=;|^|{)(?=\\s*\n                (?:\n                    (?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final) # visibility/modifier\n                        |\n                    (?:def)\n                        |\n                    (?:\n                        (?:\n                            (?:void|boolean|byte|char|short|int|float|long|double)\n                                |\n                            (?:@?(?:[a-zA-Z]\\w*\\.)*[A-Z]+\\w*) # object type\n                        )\n                        [\\[\\]]*\n                        (?:<.*>)?\n                    ) \n                    \n                )\n                \\s+\n                ([^=]+\\s+)?\\w+\\s*\\(\n\t\t\t))",
 			"end": "}|(?=[^{])",
 			"name": "meta.definition.method.groovy",
@@ -1126,7 +1126,7 @@
 					"name": "constant.character.escape.groovy"
 				},
 				{
-					"applyEndPatternLast": 1,
+					"applyEndPatternLast": true,
 					"begin": "\\$\\w",
 					"end": "(?=\\W)",
 					"name": "variable.other.interpolated.groovy",
@@ -1324,7 +1324,7 @@
 			]
 		},
 		"variables": {
-			"applyEndPatternLast": 1,
+			"applyEndPatternLast": true,
 			"patterns": [
 				{
 					"begin": "(?x:(?=\n                        (?:\n                            (?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final) # visibility/modifier\n                                |\n                            (?:def)\n                                |\n                            (?:void|boolean|byte|char|short|int|float|long|double)\n                                |\n                            (?:(?:[a-z]\\w*\\.)*[A-Z]+\\w*) # object type\n                        )\n                        \\s+\n                        [\\w\\d_<>\\[\\],\\s]+\n                        (?:=|$)\n                        \n        \t\t\t))",
