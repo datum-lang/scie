@@ -16,7 +16,17 @@ for choice:
 
 ## Decision
 
-Decision here...
+In the basic version, we choice servo bincode
+
+in current:
+
+Rust [bindata](https://github.com/servo/bincode) not support for flatten items, we need to replace flatten or bincode
+
+issues:
+
+ - [`#[serde(flatten)]` causes error `SequenceMustHaveLength`](https://github.com/servo/bincode/issues/245)
+ - [Support serializing to Vec<u8> with unknown seq/map length](https://github.com/servo/bincode/issues/167)
+ - [Responding to Serialization Errors #257](https://github.com/servo/ipc-channel/issues/257)
 
 ## Consequences
 
