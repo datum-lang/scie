@@ -628,7 +628,7 @@ impl Grammar {
             Err(err) => {
                 println!("error path: {:?}, err: {:?}", grammar_path, err);
                 panic!(err);
-            },
+            }
         };
 
         Grammar::new(g)

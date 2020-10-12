@@ -1,9 +1,9 @@
 use crate::language_gen::LangExtGen;
-use std::collections::{BTreeMap, HashMap};
 use scie_grammar::inter::IRawGrammar;
-use std::path::Path;
+use std::collections::{BTreeMap, HashMap};
 use std::fs::File;
 use std::io::{Read, Write};
+use std::path::Path;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct LangConfig {
@@ -16,13 +16,13 @@ impl LangConfig {}
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct GrammarGen {
-    grammar_map: HashMap<String, IRawGrammar>
+    grammar_map: HashMap<String, IRawGrammar>,
 }
 
 impl GrammarGen {
     pub fn new() -> Self {
         GrammarGen {
-            grammar_map: Default::default()
+            grammar_map: Default::default(),
         }
     }
 
@@ -38,14 +38,12 @@ impl GrammarGen {
             match serde_json::from_str(&data) {
                 Ok(x) => {
                     grammar_map.insert(lang, x);
-                },
+                }
                 Err(err) => panic!(err),
             };
         }
 
-        GrammarGen {
-            grammar_map
-        }
+        GrammarGen { grammar_map }
     }
 
     pub fn build_format_grammar_map() -> BTreeMap<String, LangConfig> {
@@ -102,7 +100,9 @@ mod tests {
     #[test]
     fn should_build_default_maps() {
         let map = GrammarGen::build_format_grammar_map();
-        assert!(map[".zshrc"].path.contains("extensions/shellscript/syntaxes/shell-unix-bash.tmLanguage.json"));
+        assert!(map[".zshrc"]
+            .path
+            .contains("extensions/shellscript/syntaxes/shell-unix-bash.tmLanguage.json"));
     }
 
     #[test]

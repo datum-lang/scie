@@ -1,5 +1,5 @@
 use crate::inter::{ILocation, IRawRule};
-use std::collections::{BTreeMap};
+use std::collections::BTreeMap;
 
 #[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct IRawRepository {
