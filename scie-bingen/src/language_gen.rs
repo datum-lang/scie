@@ -13,12 +13,12 @@ pub struct ExtEntry {
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub struct LangExtMap {
+pub struct LangExtGen {
     pub ext_map: HashMap<String, ExtEntry>,
     pub grammar_map: HashMap<String, TMGrammar>,
 }
 
-impl Default for LangExtMap {
+impl Default for LangExtGen {
     fn default() -> Self {
         let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .parent()
@@ -26,13 +26,13 @@ impl Default for LangExtMap {
             .to_path_buf();
         let ext_path = root_dir.join("extensions");
 
-        LangExtMap::from_path(ext_path)
+        LangExtGen::from_path(ext_path)
     }
 }
 
-impl LangExtMap {
+impl LangExtGen {
     pub fn new() -> Self {
-        LangExtMap {
+        LangExtGen {
             ext_map: Default::default(),
             grammar_map: Default::default(),
         }
@@ -58,9 +58,9 @@ impl LangExtMap {
         };
     }
 
-    pub fn from_path(ext_path: PathBuf) -> LangExtMap {
+    pub fn from_path(ext_path: PathBuf) -> LangExtGen {
         let package_files = ExtFile::walk_dir(ext_path.to_str().unwrap().to_string());
-        let mut lang_ext_map = LangExtMap::new();
+        let mut lang_ext_map = LangExtGen::new();
 
         for path in package_files {
             let package = Finder::read_code(&path);
@@ -108,7 +108,7 @@ impl LangExtMap {
 
 #[cfg(test)]
 mod tests {
-    use crate::language_map::{ExtEntry, LangExtMap};
+    use crate::language_gen::{ExtEntry, LangExtGen};
     use std::collections::HashMap;
     use std::path::PathBuf;
 
@@ -120,7 +120,7 @@ mod tests {
             .to_path_buf();
         let ext_path = root_dir.join("extensions");
 
-        let languages_map = LangExtMap::from_path(ext_path);
+        let languages_map = LangExtGen::from_path(ext_path);
         assert_eq!("css", languages_map.ext_map[".css"].name);
         assert!(languages_map.ext_map[".css"].path.ends_with("css"));
 
@@ -139,7 +139,7 @@ mod tests {
             .to_path_buf();
         let ext_path = root_dir.join("extensions");
 
-        let languages_map = LangExtMap::from_path(ext_path.clone());
+        let languages_map = LangExtGen::from_path(ext_path.clone());
 
         let css_path = languages_map.grammar_map["css"].path.clone();
         let parent_path = languages_map.ext_map[".css"].path.clone();

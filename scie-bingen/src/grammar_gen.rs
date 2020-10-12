@@ -1,4 +1,4 @@
-use crate::language_map::LangExtMap;
+use crate::language_gen::LangExtGen;
 use std::collections::BTreeMap;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
@@ -10,15 +10,15 @@ pub struct LangConfig {
 
 impl LangConfig {}
 
-pub struct GrammarMap {}
+pub struct GrammarGen {}
 
-impl GrammarMap {
+impl GrammarGen {
     pub fn new() -> Self {
-        GrammarMap {}
+        GrammarGen {}
     }
 
     pub fn build_grammar_bin_data() -> BTreeMap<String, LangConfig> {
-        let langs = LangExtMap::default();
+        let langs = LangExtGen::default();
         let mut raw_grammar_map: BTreeMap<String, LangConfig> = Default::default();
         for (ext, entry) in langs.ext_map.iter() {
             let mut grammar_path = entry.path.clone();
@@ -44,11 +44,11 @@ impl GrammarMap {
 
 #[cfg(test)]
 mod tests {
-    use crate::grammar_map::GrammarMap;
+    use crate::grammar_gen::GrammarGen;
 
     #[test]
     fn should_build_default_maps() {
-        let map = GrammarMap::build_grammar_bin_data();
+        let map = GrammarGen::build_grammar_bin_data();
         println!("{:?}", map);
     }
 }
