@@ -158,8 +158,8 @@ mod tests {
             .join(parent_path)
             .join(css_path);
 
-        to_json_file(&languages_map, "map.json");
-        to_bin_file(&languages_map, "map.bin");
+        to_json_file(&languages_map, "lang_map.json");
+        to_bin_file(&languages_map, "lang_map.bin");
         assert!(path.exists())
     }
 
