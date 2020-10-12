@@ -2,8 +2,9 @@
 
 #[macro_use]
 extern crate serde_derive;
-
 extern crate serde;
+
+extern crate bincode;
 
 use scie_infra::finder::Finder;
 use scie_model::{JsonPackage, TMGrammar};
@@ -29,13 +30,13 @@ pub fn walk_dir(path: String) -> Vec<PathBuf> {
     packages
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ExtEntry {
     pub name: String,
     pub path: String,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct LangExtMap {
     pub ext_map: HashMap<String, ExtEntry>,
     pub grammar_map: HashMap<String, TMGrammar>,
@@ -99,7 +100,7 @@ fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
     lang_ext_map
 }
 
-fn write_to_file(map: &LangExtMap, path: &str) {
+fn to_json_file(map: &LangExtMap, path: &str) {
     let json_str = serde_json::to_string_pretty(&map).unwrap();
     let bytes = json_str.as_bytes();
 
@@ -110,9 +111,26 @@ fn write_to_file(map: &LangExtMap, path: &str) {
     };
 }
 
+
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
+struct Words(Vec<String>);
+
+fn to_bin_file(map: &LangExtMap, path: &str) {
+    let vec = Words(vec![String::from("zz")]);
+    // let vec = World(vec![String::from("zz")]);
+
+    let encoded: Vec<u8> = bincode::serialize(&vec).unwrap();
+
+    let mut file = File::create(path).unwrap();
+    match file.write_all(&*encoded) {
+        Ok(_) => {}
+        Err(_) => {}
+    };
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::{build_languages_map, write_to_file};
+    use crate::{build_languages_map, to_json_file, to_bin_file};
     use std::path::PathBuf;
 
     #[test]
@@ -151,7 +169,8 @@ mod tests {
             .join(parent_path)
             .join(css_path);
 
-        write_to_file(&languages_map, "map.json");
+        to_json_file(&languages_map, "map.json");
+        to_bin_file(&languages_map, "map.bin");
         assert!(path.exists())
     }
 }
