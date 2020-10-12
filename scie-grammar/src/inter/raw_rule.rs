@@ -2,20 +2,26 @@ use crate::inter::{ILocation, IRawCaptures, IRawRepository};
 
 #[derive(Serialize, Deserialize, Eq, PartialEq, Debug, Clone)]
 pub struct IRawRule {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i32>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<ILocation>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub include: Option<String>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 
     #[serde(alias = "contentName")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub content_name: Option<String>,
 
     #[serde(alias = "match")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub match_s: Option<String>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub captures: Option<Box<IRawCaptures>>,
 
@@ -27,16 +33,19 @@ pub struct IRawRule {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub end: Option<String>,
+
     #[serde(alias = "endCaptures", skip_serializing_if = "Option::is_none")]
     pub end_captures: Option<Box<IRawCaptures>>,
 
     #[serde(alias = "while", skip_serializing_if = "Option::is_none")]
     pub _while: Option<String>,
+
     #[serde(alias = "whileCaptures", skip_serializing_if = "Option::is_none")]
     pub while_captures: Option<Box<IRawCaptures>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub patterns: Option<Vec<IRawRule>>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub repository: Option<IRawRepository>,
 
