@@ -7,7 +7,6 @@ extern crate serde;
 extern crate lazy_static;
 
 pub mod artifact;
-pub mod bindata;
 pub mod finder;
 pub mod identify;
 

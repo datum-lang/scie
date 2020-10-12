@@ -9,7 +9,7 @@ edition = "2018"
 [dependencies]
 
 
-[dependencies.scie-grammar]
+[dependencies.scie_grammar]
 path = "../scie-grammar"
 
 [dependencies.scie_scanner]

@@ -6,22 +6,6 @@ use walkdir::WalkDir;
 use std::fs::File;
 use std::io::Write;
 
-pub fn walk_dir(path: String) -> Vec<PathBuf> {
-    let mut packages = vec![];
-    let walk_dir = WalkDir::new(path);
-
-    let filtered_entries = walk_dir.max_depth(2).into_iter();
-    for entry in filtered_entries {
-        let entry = entry.unwrap();
-        let path = entry.path();
-        if path.display().to_string().ends_with("package.json") {
-            packages.push(path.to_path_buf());
-        }
-    }
-
-    packages
-}
-
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ExtEntry {
     pub name: String,
@@ -62,60 +46,75 @@ impl LangExtMap {
         };
     }
 
-}
+    pub fn walk_dir(path: String) -> Vec<PathBuf> {
+        let mut packages = vec![];
+        let walk_dir = WalkDir::new(path);
 
-fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
-    let package_files = walk_dir(ext_path.to_str().unwrap().to_string());
-    let mut lang_ext_map = LangExtMap::new();
-
-    for path in package_files {
-        let package = Finder::read_code(&path);
-        let pkg: JsonPackage = match serde_json::from_str(&package) {
-            Ok(x) => x,
-            Err(err) => {
-                println!("{:?}, {:?}", &path, err);
-                panic!(err)
+        let filtered_entries = walk_dir.max_depth(2).into_iter();
+        for entry in filtered_entries {
+            let entry = entry.unwrap();
+            let path = entry.path();
+            if path.display().to_string().ends_with("package.json") {
+                packages.push(path.to_path_buf());
             }
-        };
+        }
 
-        if let Some(grammars) = pkg.contributes.grammars {
-            for grammar in grammars {
-                if let Some(lang) = grammar.language.clone() {
-                    lang_ext_map.grammar_map.insert(lang, grammar);
+        packages
+    }
+
+    pub fn from_path(ext_path: PathBuf) -> LangExtMap {
+        let package_files = LangExtMap::walk_dir(ext_path.to_str().unwrap().to_string());
+        let mut lang_ext_map = LangExtMap::new();
+
+        for path in package_files {
+            let package = Finder::read_code(&path);
+            let pkg: JsonPackage = match serde_json::from_str(&package) {
+                Ok(x) => x,
+                Err(err) => {
+                    println!("{:?}, {:?}", &path, err);
+                    panic!(err)
+                }
+            };
+
+            if let Some(grammars) = pkg.contributes.grammars {
+                for grammar in grammars {
+                    if let Some(lang) = grammar.language.clone() {
+                        lang_ext_map.grammar_map.insert(lang, grammar);
+                    }
+                }
+            }
+
+            if pkg.contributes.languages.is_none() {
+                continue;
+            }
+
+            for lang_ext in pkg.contributes.languages.unwrap() {
+                if lang_ext.extensions.is_none() {
+                    continue;
+                }
+
+                for ext in lang_ext.extensions.unwrap() {
+                    let mut path = path.parent().unwrap().display().to_string();
+                    path = path.replace(".//", "");
+
+                    let ext_entry = ExtEntry {
+                        name: lang_ext.id.clone(),
+                        path,
+                    };
+                    lang_ext_map.ext_map.insert(ext, ext_entry);
                 }
             }
         }
 
-        if pkg.contributes.languages.is_none() {
-            continue;
-        }
-
-        for lang_ext in pkg.contributes.languages.unwrap() {
-            if lang_ext.extensions.is_none() {
-                continue;
-            }
-
-            for ext in lang_ext.extensions.unwrap() {
-                let mut path = path.parent().unwrap().display().to_string();
-                path = path.replace(".//", "");
-
-                let ext_entry = ExtEntry {
-                    name: lang_ext.id.clone(),
-                    path,
-                };
-                lang_ext_map.ext_map.insert(ext, ext_entry);
-            }
-        }
+        lang_ext_map
     }
-
-    lang_ext_map
 }
 
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
     use std::collections::HashMap;
-    use crate::language_map::{build_languages_map, ExtEntry};
+    use crate::language_map::{ExtEntry, LangExtMap};
 
     #[test]
     fn should_get_css_scope_name() {
@@ -125,7 +124,7 @@ mod tests {
             .to_path_buf();
         let ext_path = root_dir.join("extensions");
 
-        let languages_map = build_languages_map(ext_path);
+        let languages_map = LangExtMap::from_path(ext_path);
         assert_eq!("css", languages_map.ext_map[".css"].name);
         assert!(languages_map.ext_map[".css"].path.ends_with("css"));
 
@@ -144,7 +143,7 @@ mod tests {
             .to_path_buf();
         let ext_path = root_dir.join("extensions");
 
-        let languages_map = build_languages_map(ext_path.clone());
+        let languages_map = LangExtMap::from_path(ext_path.clone());
 
         let css_path = languages_map.grammar_map["css"].path.clone();
         let parent_path = languages_map.ext_map[".css"].path.clone();

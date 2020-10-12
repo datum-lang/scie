@@ -20,3 +20,6 @@ path = "../scie-infra"
 
 [dependencies.scie_model]
 path = "../scie-model"
+
+[dependencies.scie_grammar]
+path = "../scie-grammar"

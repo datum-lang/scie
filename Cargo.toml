@@ -16,7 +16,7 @@ regex = "1"
 
 lazy_static = "1.4.0"
 
-[dependencies.scie-grammar]
+[dependencies.scie_grammar]
 path = "scie-grammar"
 
 [dependencies.scie_scanner]
