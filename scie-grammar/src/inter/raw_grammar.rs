@@ -1,7 +1,7 @@
 use crate::inter::{ILocatable, IRawRepository, IRawRule, InjectionMap};
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 // #[serde(deny_unknown_fields)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IRawGrammar {
     pub repository: Option<IRawRepository>,
     pub location: Option<ILocatable>,

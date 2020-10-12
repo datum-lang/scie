@@ -1,6 +1,9 @@
 use crate::language_gen::LangExtGen;
-use std::collections::BTreeMap;
-use scie_grammar::grammar::Grammar;
+use std::collections::{BTreeMap, HashMap};
+use scie_grammar::inter::IRawGrammar;
+use std::path::Path;
+use std::fs::File;
+use std::io::{Read, Write};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct LangConfig {
@@ -11,17 +14,37 @@ pub struct LangConfig {
 
 impl LangConfig {}
 
-pub struct GrammarGen {}
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+pub struct GrammarGen {
+    grammar_map: HashMap<String, IRawGrammar>
+}
 
 impl GrammarGen {
     pub fn new() -> Self {
-        GrammarGen {}
+        GrammarGen {
+            grammar_map: Default::default()
+        }
     }
 
-    pub fn build() {
+    pub fn build() -> GrammarGen {
         let config_map = GrammarGen::build_format_grammar_map();
-        for (_lang, config) in config_map {
-            Grammar::from_file(config.path.as_str());
+        let mut grammar_map: HashMap<String, IRawGrammar> = Default::default();
+        for (lang, config) in config_map {
+            let path = Path::new(&config.path);
+            let mut file = File::open(path).unwrap();
+            let mut data = String::new();
+            file.read_to_string(&mut data).unwrap();
+
+            match serde_json::from_str(&data) {
+                Ok(x) => {
+                    grammar_map.insert(lang, x);
+                },
+                Err(err) => panic!(err),
+            };
+        }
+
+        GrammarGen {
+            grammar_map
         }
     }
 
@@ -50,6 +73,26 @@ impl GrammarGen {
 
         raw_grammar_map
     }
+
+    fn to_json_file(&self, path: &str) {
+        let json_str = serde_json::to_string_pretty(&self).unwrap();
+        let bytes = json_str.as_bytes();
+
+        let mut file = File::create(path).unwrap();
+        match file.write_all(bytes) {
+            Ok(_) => {}
+            Err(_) => {}
+        };
+    }
+
+    fn to_bin_file(&self, path: &str) {
+        let encoded: Vec<u8> = bincode::serialize(&self).unwrap();
+        let mut file = File::create(path).unwrap();
+        match file.write_all(&*encoded) {
+            Ok(_) => {}
+            Err(_) => {}
+        };
+    }
 }
 
 #[cfg(test)]
@@ -64,6 +107,8 @@ mod tests {
 
     #[test]
     fn should_build_grammar_gen() {
-        GrammarGen::build();
+        let map = GrammarGen::build();
+        // map.to_bin_file("grammar.bin");
+        map.to_json_file("grammar.json");
     }
 }

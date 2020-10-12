@@ -1,5 +1,4 @@
 use crate::inter::{ILocation, IRawCaptures, IRawRepository};
-use scie_infra::serialize_support::{bool_from_int};
 
 #[derive(Serialize, Deserialize, Eq, PartialEq, Debug, Clone)]
 pub struct IRawRule {
