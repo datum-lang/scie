@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 #[macro_use]
 extern crate serde_derive;
 
@@ -98,7 +100,7 @@ fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
 }
 
 fn write_to_file(map: &LangExtMap, path: &str) {
-    let json_str = serde_json::to_string(&map).unwrap();
+    let json_str = serde_json::to_string_pretty(&map).unwrap();
     let bytes = json_str.as_bytes();
 
     let mut file = File::create(path).unwrap();
@@ -141,12 +143,13 @@ mod tests {
         let ext_path = root_dir.join("extensions");
 
         let languages_map = build_languages_map(ext_path.clone());
+
         let css_path = languages_map.grammar_map["css"].path.clone();
+        let parent_path = languages_map.ext_map[".css"].path.clone();
 
         let path = ext_path
-            .join(languages_map.ext_map[".css"].path.clone())
+            .join(parent_path)
             .join(css_path);
-        // let string = Finder::read_code(&path.to_path_buf());
 
         write_to_file(&languages_map, "map.json");
         assert!(path.exists())
