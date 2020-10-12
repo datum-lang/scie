@@ -1,10 +1,10 @@
 use crate::inter::{ILocatable, IRawRule};
-use std::collections::HashMap;
+use std::collections::{BTreeMap};
 
 #[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct IRawCapturesMap {
     #[serde(flatten)]
-    pub capture_map: HashMap<String, IRawRule>,
+    pub capture_map: BTreeMap<String, IRawRule>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]

@@ -1,8 +1,8 @@
 use crate::inter::IRawRule;
-use std::collections::HashMap;
+use std::collections::{BTreeMap};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct InjectionMap {
     #[serde(flatten)]
-    pub map: HashMap<String, IRawRule>,
+    pub map: BTreeMap<String, IRawRule>,
 }

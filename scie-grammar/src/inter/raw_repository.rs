@@ -1,5 +1,5 @@
 use crate::inter::{ILocation, IRawRule};
-use std::collections::HashMap;
+use std::collections::{BTreeMap};
 
 #[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct IRawRepository {
@@ -21,7 +21,7 @@ impl IRawRepository {
 #[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct IRawRepositoryMap {
     #[serde(flatten)]
-    pub name_map: HashMap<String, Box<IRawRule>>,
+    pub name_map: BTreeMap<String, Box<IRawRule>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub self_s: Option<Box<IRawRule>>,
     #[serde(skip_serializing_if = "Option::is_none")]
