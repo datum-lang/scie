@@ -20,7 +20,7 @@ impl GrammarGen {
 
     pub fn build() {
         let config_map = GrammarGen::build_format_grammar_map();
-        for (lang, config) in config_map {
+        for (_lang, config) in config_map {
             Grammar::from_file(config.path.as_str());
         }
     }

@@ -1,4 +1,4 @@
-use serde::{Deserialize, Deserializer, de};
+use serde::{Deserialize, Deserializer};
 
 pub fn bool_from_int<'de, D>(deserializer: D) -> Result<Option<bool>, D::Error>
     where

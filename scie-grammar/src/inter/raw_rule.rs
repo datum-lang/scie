@@ -41,7 +41,7 @@ pub struct IRawRule {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub repository: Option<IRawRepository>,
 
-    // #[serde(deserialize_with = "bool_from_int")]
+    // #[serde(alias = "applyEndPatternLast", deserialize_with = "bool_from_int")]
     #[serde(alias = "applyEndPatternLast", skip_serializing_if = "Option::is_none")]
     pub apply_end_pattern_last: Option<bool>,
 
