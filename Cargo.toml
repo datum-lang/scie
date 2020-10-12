@@ -30,11 +30,12 @@ path = "scie-infra"
 
 [workspace]
 members = [
- "scie-grammar",
- "scie-onig",
- "scie-model",
- "scie-scanner",
- "scie-bingen",
- "scie-infra",
- "benchmark",
+    "benchmark",
+    "scie-bingen",
+    "scie-detector",
+    "scie-grammar",
+    "scie-infra",
+    "scie-model",
+    "scie-onig",
+    "scie-scanner",
 ]
