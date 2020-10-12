@@ -21,3 +21,6 @@ lazy_static = "1.4.0"
 
 [dependencies.scie_scanner]
 path = "../scie-scanner"
+
+[dependencies.scie_infra]
+path = "../scie-infra"

@@ -1,4 +1,5 @@
 pub mod finder;
+pub mod serialize_support;
 
 #[cfg(test)]
 mod tests {
