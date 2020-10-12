@@ -41,6 +41,27 @@ impl LangExtMap {
             grammar_map: Default::default(),
         }
     }
+
+    pub fn to_json_file(&self, path: &str) {
+        let json_str = serde_json::to_string_pretty(&self).unwrap();
+        let bytes = json_str.as_bytes();
+
+        let mut file = File::create(path).unwrap();
+        match file.write_all(bytes) {
+            Ok(_) => {}
+            Err(_) => {}
+        };
+    }
+
+    pub fn to_bin_file(&self, path: &str) {
+        let encoded: Vec<u8> = bincode::serialize(&self).unwrap();
+        let mut file = File::create(path).unwrap();
+        match file.write_all(&*encoded) {
+            Ok(_) => {}
+            Err(_) => {}
+        };
+    }
+
 }
 
 fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
@@ -90,37 +111,11 @@ fn build_languages_map(ext_path: PathBuf) -> LangExtMap {
     lang_ext_map
 }
 
-fn to_json_file(map: &LangExtMap, path: &str) {
-    let json_str = serde_json::to_string_pretty(&map).unwrap();
-    let bytes = json_str.as_bytes();
-
-    let mut file = File::create(path).unwrap();
-    match file.write_all(bytes) {
-        Ok(_) => {}
-        Err(_) => {}
-    };
-}
-
-
-#[derive(Serialize, Deserialize, PartialEq, Debug)]
-struct Words(Vec<String>);
-
-pub fn to_bin_file(map: &LangExtMap, path: &str) {
-    let encoded: Vec<u8> = bincode::serialize(&map).unwrap();
-
-    let mut file = File::create(path).unwrap();
-    match file.write_all(&*encoded) {
-        Ok(_) => {}
-        Err(_) => {}
-    };
-}
-
-
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
     use std::collections::HashMap;
-    use crate::language_map::{build_languages_map, to_json_file, to_bin_file, ExtEntry};
+    use crate::language_map::{build_languages_map, ExtEntry};
 
     #[test]
     fn should_get_css_scope_name() {
@@ -158,8 +153,8 @@ mod tests {
             .join(parent_path)
             .join(css_path);
 
-        to_json_file(&languages_map, "lang_map.json");
-        to_bin_file(&languages_map, "lang_map.bin");
+        languages_map.to_json_file("lang_map.json");
+        languages_map.to_bin_file("lang_map.bin");
         assert!(path.exists())
     }
 
