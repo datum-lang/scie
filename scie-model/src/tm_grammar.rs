@@ -1,15 +1,15 @@
-use std::collections::HashMap;
+use std::collections::{BTreeMap};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct IEmbeddedLanguagesMap {
     #[serde(flatten)]
-    pub map: HashMap<String, String>,
+    pub map: BTreeMap<String, String>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct TokenTypesContribution {
     #[serde(flatten)]
-    pub map: HashMap<String, String>,
+    pub map: BTreeMap<String, String>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
@@ -26,11 +26,11 @@ pub struct TMGrammar {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(alias = "embeddedLanguages")]
-    pub embedded_languages: Option<IEmbeddedLanguagesMap>,
+    pub embedded_languages: Option<BTreeMap<String, String>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(alias = "tokenTypes")]
-    pub token_types: Option<TokenTypesContribution>,
+    pub token_types: Option<BTreeMap<String, String>>,
 }
 
 #[cfg(test)]

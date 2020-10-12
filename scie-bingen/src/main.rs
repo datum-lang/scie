@@ -116,10 +116,7 @@ fn to_json_file(map: &LangExtMap, path: &str) {
 struct Words(Vec<String>);
 
 fn to_bin_file(map: &LangExtMap, path: &str) {
-    let vec = Words(vec![String::from("zz")]);
-    // let vec = World(vec![String::from("zz")]);
-
-    let encoded: Vec<u8> = bincode::serialize(&vec).unwrap();
+    let encoded: Vec<u8> = bincode::serialize(&map).unwrap();
 
     let mut file = File::create(path).unwrap();
     match file.write_all(&*encoded) {
