@@ -1,10 +1,10 @@
+use crate::ext_file::ExtFile;
 use scie_infra::finder::Finder;
 use scie_model::{JsonPackage, TMGrammar};
 use std::collections::HashMap;
-use std::path::PathBuf;
 use std::fs::File;
 use std::io::Write;
-use crate::ext_file::ExtFile;
+use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ExtEntry {
@@ -108,9 +108,9 @@ impl LangExtMap {
 
 #[cfg(test)]
 mod tests {
-    use std::path::PathBuf;
-    use std::collections::HashMap;
     use crate::language_map::{ExtEntry, LangExtMap};
+    use std::collections::HashMap;
+    use std::path::PathBuf;
 
     #[test]
     fn should_get_css_scope_name() {
@@ -144,9 +144,7 @@ mod tests {
         let css_path = languages_map.grammar_map["css"].path.clone();
         let parent_path = languages_map.ext_map[".css"].path.clone();
 
-        let path = ext_path
-            .join(parent_path)
-            .join(css_path);
+        let path = ext_path.join(parent_path).join(css_path);
 
         languages_map.to_json_file("lang_map.json");
         languages_map.to_bin_file("lang_map.bin");
@@ -156,10 +154,13 @@ mod tests {
     #[test]
     fn should_build_bin_data_for_hashmap() {
         let mut map: HashMap<String, ExtEntry> = Default::default();
-        map.insert(String::from(".css"), ExtEntry {
-            name: "css".to_string(),
-            path: "css".to_string(),
-        });
+        map.insert(
+            String::from(".css"),
+            ExtEntry {
+                name: "css".to_string(),
+                path: "css".to_string(),
+            },
+        );
 
         assert!(bincode::serialize(&map).is_ok());
     }

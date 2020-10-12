@@ -1,9 +1,7 @@
 use std::path::PathBuf;
 use walkdir::WalkDir;
 
-pub struct ExtFile {
-
-}
+pub struct ExtFile {}
 
 impl ExtFile {
     pub(crate) fn walk_dir(path: String) -> Vec<PathBuf> {
