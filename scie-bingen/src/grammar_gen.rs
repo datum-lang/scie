@@ -1,5 +1,6 @@
 use crate::language_gen::LangExtGen;
 use std::collections::BTreeMap;
+use scie_grammar::grammar::Grammar;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct LangConfig {
@@ -17,7 +18,14 @@ impl GrammarGen {
         GrammarGen {}
     }
 
-    pub fn build_grammar_bin_data() -> BTreeMap<String, LangConfig> {
+    pub fn build() {
+        let config_map = GrammarGen::build_format_grammar_map();
+        for (lang, config) in config_map {
+            Grammar::from_file(config.path.as_str());
+        }
+    }
+
+    pub fn build_format_grammar_map() -> BTreeMap<String, LangConfig> {
         let langs = LangExtGen::default();
         let mut raw_grammar_map: BTreeMap<String, LangConfig> = Default::default();
         for (ext, entry) in langs.ext_map.iter() {
@@ -50,7 +58,12 @@ mod tests {
 
     #[test]
     fn should_build_default_maps() {
-        let map = GrammarGen::build_grammar_bin_data();
+        let map = GrammarGen::build_format_grammar_map();
         assert!(map[".zshrc"].path.contains("extensions/shellscript/syntaxes/shell-unix-bash.tmLanguage.json"));
+    }
+
+    #[test]
+    fn should_build_grammar_gen() {
+        GrammarGen::build();
     }
 }

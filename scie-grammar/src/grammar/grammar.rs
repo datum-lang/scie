@@ -623,7 +623,14 @@ impl Grammar {
         let mut data = String::new();
         file.read_to_string(&mut data).unwrap();
 
-        let g: IRawGrammar = serde_json::from_str(&data).unwrap();
+        let g: IRawGrammar = match serde_json::from_str(&data) {
+            Ok(x) => x,
+            Err(err) => {
+                println!("error path: {:?}, err: {:?}", grammar_path, err);
+                panic!(err);
+            },
+        };
+
         Grammar::new(g)
     }
 }
