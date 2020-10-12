@@ -19,7 +19,7 @@
 				}
 			},
 			"end": "(\\?>)",
-			"name": "meta.tag.preprocessor.xml",
+			"name": "meta.tag.metadata.processing.xml",
 			"patterns": [
 				{
 					"match": " ([a-zA-Z-]+)",
@@ -40,14 +40,14 @@
 					"name": "punctuation.definition.tag.xml"
 				},
 				"2": {
-					"name": "keyword.other.doctype.xml"
+					"name": "entity.name.tag.xml"
 				},
 				"3": {
-					"name": "variable.language.documentroot.xml"
+					"name": "entity.other.attribute-name.documentroot.xml"
 				}
 			},
 			"end": "\\s*(>)",
-			"name": "meta.tag.sgml.doctype.xml",
+			"name": "meta.tag.metadata.doctype.xml",
 			"patterns": [
 				{
 					"include": "#internalSubset"
@@ -55,40 +55,47 @@
 			]
 		},
 		{
-			"include": "#comments"
+			"begin": "<[!%]--",
+			"captures": {
+				"0": {
+					"name": "punctuation.definition.comment.xml"
+				}
+			},
+			"end": "--%?>",
+			"name": "comment.block.xml"
 		},
 		{
-			"begin": "(<)((?:([-_a-zA-Z0-9]+)(:))?([-_a-zA-Z0-9:]+))(?=(\\s[^>]*)?></\\2>)",
+			"begin": "(<)((?:([-_a-zA-Z0-9]+)((:)))?([-_a-zA-Z0-9:]+))(?=(\\s[^>]*)?></\\2>)",
 			"beginCaptures": {
 				"1": {
 					"name": "punctuation.definition.tag.xml"
-				},
-				"2": {
-					"name": "entity.name.tag.xml"
 				},
 				"3": {
 					"name": "entity.name.tag.namespace.xml"
 				},
 				"4": {
-					"name": "punctuation.separator.namespace.xml"
+					"name": "entity.name.tag.xml"
 				},
 				"5": {
+					"name": "punctuation.separator.namespace.xml"
+				},
+				"6": {
 					"name": "entity.name.tag.localname.xml"
 				}
 			},
-			"end": "(>)(</)((?:([-_a-zA-Z0-9]+)(:))?([-_a-zA-Z0-9:]+))(>)",
+			"end": "(>(<))/(?:([-_a-zA-Z0-9]+)((:)))?([-_a-zA-Z0-9:]+)(>)",
 			"endCaptures": {
 				"1": {
 					"name": "punctuation.definition.tag.xml"
 				},
 				"2": {
-					"name": "punctuation.definition.tag.xml"
+					"name": "meta.scope.between-tag-pair.xml"
 				},
 				"3": {
-					"name": "entity.name.tag.xml"
+					"name": "entity.name.tag.namespace.xml"
 				},
 				"4": {
-					"name": "entity.name.tag.namespace.xml"
+					"name": "entity.name.tag.xml"
 				},
 				"5": {
 					"name": "punctuation.separator.namespace.xml"
@@ -108,7 +115,7 @@
 			]
 		},
 		{
-			"begin": "(</?)(?:([-\\w\\.]+)((:)))?([-\\w\\.:]+)",
+			"begin": "(</?)(?:([-_a-zA-Z0-9]+)((:)))?([-_a-zA-Z0-9:]+)",
 			"captures": {
 				"1": {
 					"name": "punctuation.definition.tag.xml"
@@ -281,9 +288,6 @@
 				},
 				{
 					"include": "#parameterEntity"
-				},
-				{
-					"include": "#comments"
 				}
 			]
 		},
@@ -339,47 +343,13 @@
 							"name": "entity.other.attribute-name.localname.xml"
 						}
 					},
-					"match": "(?:^|\\s+)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*="
+					"match": " (?:([-_a-zA-Z0-9]+)((:)))?([-_a-zA-Z0-9]+)="
 				},
 				{
 					"include": "#doublequotedString"
 				},
 				{
 					"include": "#singlequotedString"
-				}
-			]
-		},
-		"comments": {
-			"patterns": [
-				{
-					"begin": "<%--",
-					"captures": {
-						"0": {
-							"name": "punctuation.definition.comment.xml"
-						},
-						"end": "--%>",
-						"name": "comment.block.xml"
-					}
-				},
-				{
-					"begin": "<!--",
-					"captures": {
-						"0": {
-							"name": "punctuation.definition.comment.xml"
-						}
-					},
-					"end": "-->",
-					"name": "comment.block.xml",
-					"patterns": [
-						{
-							"begin": "--(?!>)",
-							"captures": {
-								"0": {
-									"name": "invalid.illegal.bad-comments-or-CDATA.xml"
-								}
-							}
-						}
-					]
 				}
 			]
 		}
