@@ -55,6 +55,6 @@ mod tests {
       }";
 
         let grammar: TMGrammar = serde_json::from_str(&code).unwrap();
-        assert_eq!("html", grammar.embedded_languages.unwrap().map["text.html"]);
+        assert_eq!("html", grammar.embedded_languages.unwrap()["text.html"]);
     }
 }

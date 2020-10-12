@@ -68,11 +68,4 @@ mod tests {
         assert_eq!("/*", block_comment[0]);
         assert_eq!("*/", block_comment[1]);
     }
-
-    #[test]
-    fn should_serialise_word_pattern() {
-        let code = "{}";
-        let lang_config: LanguageConfig = serde_json::from_str(&code).unwrap();
-        println!("{:?}", lang_config);
-    }
 }
