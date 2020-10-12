@@ -2,9 +2,9 @@ use scie_infra::finder::Finder;
 use scie_model::{JsonPackage, TMGrammar};
 use std::collections::HashMap;
 use std::path::PathBuf;
-use walkdir::WalkDir;
 use std::fs::File;
 use std::io::Write;
+use crate::ext_file::ExtFile;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ExtEntry {
@@ -16,6 +16,18 @@ pub struct ExtEntry {
 pub struct LangExtMap {
     pub ext_map: HashMap<String, ExtEntry>,
     pub grammar_map: HashMap<String, TMGrammar>,
+}
+
+impl Default for LangExtMap {
+    fn default() -> Self {
+        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .to_path_buf();
+        let ext_path = root_dir.join("extensions");
+
+        LangExtMap::from_path(ext_path)
+    }
 }
 
 impl LangExtMap {
@@ -46,24 +58,8 @@ impl LangExtMap {
         };
     }
 
-    pub fn walk_dir(path: String) -> Vec<PathBuf> {
-        let mut packages = vec![];
-        let walk_dir = WalkDir::new(path);
-
-        let filtered_entries = walk_dir.max_depth(2).into_iter();
-        for entry in filtered_entries {
-            let entry = entry.unwrap();
-            let path = entry.path();
-            if path.display().to_string().ends_with("package.json") {
-                packages.push(path.to_path_buf());
-            }
-        }
-
-        packages
-    }
-
     pub fn from_path(ext_path: PathBuf) -> LangExtMap {
-        let package_files = LangExtMap::walk_dir(ext_path.to_str().unwrap().to_string());
+        let package_files = ExtFile::walk_dir(ext_path.to_str().unwrap().to_string());
         let mut lang_ext_map = LangExtMap::new();
 
         for path in package_files {
