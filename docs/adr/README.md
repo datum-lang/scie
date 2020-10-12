@@ -8,3 +8,4 @@
 * [6. add-rust-onig-to-source-code](0006-add-rust-onig-to-source-code.md)
 * [7. use-bin-data-for-languages](0007-use-bin-data-for-languages.md)
 * [8. bindata-for-embed](0008-bindata-for-embed.md)
+* [9. framework-detector](0009-framework-detector.md)
