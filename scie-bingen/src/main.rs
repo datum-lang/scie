@@ -130,8 +130,9 @@ fn to_bin_file(map: &LangExtMap, path: &str) {
 
 #[cfg(test)]
 mod tests {
-    use crate::{build_languages_map, to_json_file, to_bin_file};
+    use crate::{build_languages_map, to_json_file, to_bin_file, ExtEntry};
     use std::path::PathBuf;
+    use std::collections::HashMap;
 
     #[test]
     fn should_get_css_scope_name() {
@@ -172,5 +173,16 @@ mod tests {
         to_json_file(&languages_map, "map.json");
         to_bin_file(&languages_map, "map.bin");
         assert!(path.exists())
+    }
+
+    #[test]
+    fn should_build_bin_data_for_hashmap() {
+        let mut map: HashMap<String, ExtEntry> = Default::default();
+        map.insert(String::from(".css"), ExtEntry {
+            name: "css".to_string(),
+            path: "css".to_string(),
+        });
+
+        assert!(bincode::serialize(&map).is_ok());
     }
 }
