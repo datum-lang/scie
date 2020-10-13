@@ -96,6 +96,7 @@ impl GrammarGen {
 #[cfg(test)]
 mod tests {
     use crate::grammar_gen::GrammarGen;
+    use scie_grammar::grammar::{Grammar, StackElement};
 
     #[test]
     fn should_build_default_maps() {
@@ -110,5 +111,18 @@ mod tests {
         let map = GrammarGen::build_output();
         // map.to_bin_file("grammar.bin");
         map.to_json_file("grammar.json");
+    }
+
+
+    #[test]
+    fn should_use_grammar_gen_map_build_grammar() {
+        let map = GrammarGen::build_grammar_map();
+        let groovy_path = map[".gradle"].path.clone();
+
+        let mut grammar = Grammar::from_file(&*groovy_path);
+        let mut rule_stack = Some(StackElement::null());
+
+        let result = grammar.tokenize_line("println \"hello, world!\"", &mut rule_stack);
+        assert_eq!(5, result.tokens.len());
     }
 }
