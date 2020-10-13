@@ -11,7 +11,7 @@ goal: build a better code figure engine for code refactoring.
  - scie-onig. Rust FFI for Oniguruma.
  - scie-model. common model of VSCode models & Miao Model.
  - scie-scanner. Wrapper Rust Oniguruma FFI api.
- - scie-cli. cli part ofr Scie.
+ scie-cli. cli part ofr Scie.
 
 ## Guideline
 
@@ -30,29 +30,13 @@ major issues:
 
 Todo:
 
- - [ ] replace with [fancy-regex](https://github.com/fancy-regex/fancy-regex)
+ - [ ] replace with [fancy-regex](https://github.com/fancy-regex/fancy-regex) for pure Rust impl
  - [ ] process todo
     - [x] back references
-    - [ ] multiple languages
+    - [x] multiple languages
  - [ ] rewrite VSCode-textmate with Rust
     - [x] language for testing
-       - [x] makefile
-       - [x] json
-       - [x] html
-    - [ ] languages main support
-       - [ ] lua
-       - [x] javascript
-       - [x] java
-       - [ ] typescript
-       - [ ] groovy
-       - [ ] kotlin
-       - [ ] go
-       - [ ] rust
-       - [ ] python
-       - [ ] php
-       - [ ] swift
-       - [ ] c/c++
-    - [ ] support others language
+    - [x] support others language
  - [x] benchmark
     - [ ] fast than VSCode version
  - [ ] multiple languages one project support
