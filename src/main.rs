@@ -1,9 +1,11 @@
-#[macro_use]
 extern crate serde_derive;
 
 extern crate serde;
 
 use std::path::PathBuf;
+use scie_infra::finder::Finder;
+use scie_bingen::grammar_gen::GrammarGen;
+use scie_grammar::grammar::{Grammar, StackElement};
 
 pub mod artifact;
 pub mod identify;
@@ -18,14 +20,30 @@ pub fn get_lang_by_path(path: PathBuf) -> String {
     str
 }
 
+fn ident_by_dir(lang: &PathBuf) {
+    let files = Finder::get_files(&lang, None);
+    let map = GrammarGen::build_output();
+
+    for path in files {
+        if path.extension().is_none() { continue; }
+
+        let lang = get_lang_by_path(path.clone());
+        let mut grammar = Grammar::new(map.grammar_map[&lang].clone());
+        let code = Finder::read_code(&path);
+        let mut rule_stack = Some(StackElement::null());
+        for line in code.lines() {
+            let result = grammar.tokenize_line(line, &mut rule_stack);
+            rule_stack = result.rule_stack;
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::identify::Identify;
     use scie_infra::finder::Finder;
     use std::path::PathBuf;
-    use crate::get_lang_by_path;
-    use scie_bingen::grammar_gen::GrammarGen;
-    use scie_grammar::grammar::{Grammar, StackElement};
+    use crate::ident_by_dir;
 
     #[test]
     fn should_build_first_file() {
@@ -61,21 +79,6 @@ mod tests {
             .join("java")
             .join("simple");
 
-        let files = Finder::get_files(&lang, None);
-        let map = GrammarGen::build_output();
-
-        for path in files {
-            if path.extension().is_none() { continue; }
-
-            let lang = get_lang_by_path(path.clone());
-            let mut grammar = Grammar::new(map.grammar_map[&lang].clone());
-            let code = Finder::read_code(&path);
-            let mut rule_stack = Some(StackElement::null());
-            for line in code.lines() {
-                let result = grammar.tokenize_line(line, &mut rule_stack);
-                rule_stack = result.rule_stack;
-            }
-        }
+        ident_by_dir(&lang)
     }
-
 }
