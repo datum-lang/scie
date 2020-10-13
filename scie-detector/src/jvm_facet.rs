@@ -5,5 +5,5 @@ pub struct JvmFacet {
     pub has_java: bool,
     pub has_groovy: bool,
     pub has_kotlin: bool,
-    pub has_scala: bool
+    pub has_scala: bool,
 }

@@ -1,3 +1,3 @@
 pub struct GoFacet {
-    pub has_mod: bool
+    pub has_mod: bool,
 }
