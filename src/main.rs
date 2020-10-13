@@ -24,11 +24,11 @@ fn ident_by_dir(lang: &PathBuf) {
     let files = Finder::get_files(&lang, None);
     let map = GrammarGen::build_output();
 
+    let mut grammar = Grammar::new(map.grammar_map[".groovy"].clone());
+
     for path in files {
         if path.extension().is_none() { continue; }
 
-        let lang = get_lang_by_path(path.clone());
-        let mut grammar = Grammar::new(map.grammar_map[&lang].clone());
         let code = Finder::read_code(&path);
         let mut rule_stack = Some(StackElement::null());
         for line in code.lines() {
