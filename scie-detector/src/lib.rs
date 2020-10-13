@@ -1,3 +1,5 @@
+pub mod framework_detector;
+
 #[cfg(test)]
 mod tests {
     #[test]
