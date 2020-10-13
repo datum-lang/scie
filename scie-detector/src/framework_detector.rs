@@ -31,13 +31,13 @@ impl FrameworkDetector {
         }
     }
 
-    pub fn run(&self, path: String) {
-        FrameworkDetector::light_detector(path)
+    pub fn run(&mut self, path: String) {
+        self.light_detector(path)
     }
 
-    fn light_detector(path: String) {
+    fn light_detector(&mut self, path: String) {
         let name_set = FrameworkDetector::build_level_one_name_set(path);
-        name_set.contains("build.gradle");
+        self.tags.insert(String::from("workspace.java.gradle"), name_set.contains("build.gradle"));
     }
 
     pub fn build_level_one_name_set(path: String) -> HashSet<String, RandomState> {
@@ -75,11 +75,11 @@ mod tests {
             .join("java")
             .join("simple");
 
-        // let detector = FrameworkDetector::new();
-        // detector.run(test_project_dir.display().to_string());
+        let mut detector = FrameworkDetector::new();
+        detector.run(test_project_dir.display().to_string());
 
-        let name_set = FrameworkDetector::build_level_one_name_set(test_project_dir.display().to_string());
-        assert!(name_set.contains("build.gradle"));
+        let has_java_gradle = detector.tags.get("workspace.java.gradle").unwrap();
+        assert!(has_java_gradle);
     }
 }
 
