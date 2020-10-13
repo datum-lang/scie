@@ -28,6 +28,9 @@ path = "scie-model"
 [dependencies.scie_infra]
 path = "scie-infra"
 
+[dependencies.scie_bingen]
+path = "scie-bingen"
+
 [workspace]
 members = [
     "benchmark",

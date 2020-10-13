@@ -16,7 +16,7 @@ impl LangConfig {}
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct GrammarGen {
-    grammar_map: HashMap<String, IRawGrammar>,
+    pub grammar_map: HashMap<String, IRawGrammar>,
 }
 
 impl GrammarGen {

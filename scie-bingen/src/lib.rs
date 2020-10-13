@@ -9,5 +9,3 @@ extern crate bincode;
 pub mod ext_file;
 pub mod grammar_gen;
 pub mod language_gen;
-
-fn main() {}
