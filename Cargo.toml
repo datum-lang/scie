@@ -41,4 +41,5 @@ members = [
     "scie-model",
     "scie-onig",
     "scie-scanner",
+    "scie-cli",
 ]
