@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 lazy_static = "1.2"
+
+walkdir = "2"
