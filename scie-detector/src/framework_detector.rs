@@ -35,6 +35,8 @@ impl<'a> FrameworkDetector<'a> {
         self.light_detector(path)
     }
 
+    fn deep_detector(&mut self, path: String) {}
+
     fn light_detector(&mut self, path: String) {
         let name_set = FrameworkDetector::build_level_one_name_set(path);
         self.tags
@@ -42,6 +44,13 @@ impl<'a> FrameworkDetector<'a> {
         self.tags.insert(
             "workspace.java.gradle.composite",
             name_set.contains("build.gradle") && name_set.contains("settings.gradle"),
+        );
+        self.tags
+            .insert("workspace.java.pom", name_set.contains("pom.xml"));
+
+        self.tags.insert(
+            "workspace.bower",
+            name_set.contains("bower.json") || name_set.contains("bower_components"),
         );
 
         self.tags.insert(
@@ -73,7 +82,7 @@ mod tests {
     use std::path::PathBuf;
 
     #[test]
-    fn it_works() {
+    fn should_detect_java_gradle_project() {
         let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .parent()
             .unwrap()
@@ -90,6 +99,10 @@ mod tests {
         detector.run(test_project_dir.display().to_string());
 
         assert!(detector.tags.get("workspace.java.gradle").unwrap());
+        assert!(detector
+            .tags
+            .get("workspace.java.gradle.composite")
+            .unwrap());
         assert_eq!(&false, detector.tags.get("workspace.npm").unwrap());
     }
 }
