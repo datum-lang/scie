@@ -26,8 +26,8 @@ impl GrammarGen {
         }
     }
 
-    pub fn build() -> GrammarGen {
-        let config_map = GrammarGen::build_format_grammar_map();
+    pub fn build_output() -> GrammarGen {
+        let config_map = GrammarGen::build_grammar_map();
         let mut grammar_map: HashMap<String, IRawGrammar> = Default::default();
         for (lang, config) in config_map {
             let path = Path::new(&config.path);
@@ -46,7 +46,7 @@ impl GrammarGen {
         GrammarGen { grammar_map }
     }
 
-    pub fn build_format_grammar_map() -> BTreeMap<String, LangConfig> {
+    pub fn build_grammar_map() -> BTreeMap<String, LangConfig> {
         let langs = LangExtGen::default();
         let mut raw_grammar_map: BTreeMap<String, LangConfig> = Default::default();
         for (ext, entry) in langs.ext_map.iter() {
@@ -99,7 +99,7 @@ mod tests {
 
     #[test]
     fn should_build_default_maps() {
-        let map = GrammarGen::build_format_grammar_map();
+        let map = GrammarGen::build_grammar_map();
         assert!(map[".zshrc"]
             .path
             .contains("extensions/shellscript/syntaxes/shell-unix-bash.tmLanguage.json"));
@@ -107,7 +107,7 @@ mod tests {
 
     #[test]
     fn should_build_grammar_gen() {
-        let map = GrammarGen::build();
+        let map = GrammarGen::build_output();
         // map.to_bin_file("grammar.bin");
         map.to_json_file("grammar.json");
     }
