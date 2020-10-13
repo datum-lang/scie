@@ -6,6 +6,8 @@ use std::path::PathBuf;
 use scie_infra::finder::Finder;
 use scie_bingen::grammar_gen::GrammarGen;
 use scie_grammar::grammar::{Grammar, StackElement};
+use scie_detector::framework_detector::FrameworkDetector;
+use std::collections::HashMap;
 
 pub mod artifact;
 pub mod identify;
@@ -21,8 +23,16 @@ pub fn get_lang_by_path(path: PathBuf) -> String {
 }
 
 fn ident_by_dir(lang: &PathBuf) {
+    let mut detector = FrameworkDetector::new();
+    detector.run(lang.display().to_string());
+
     let files = Finder::get_files(&lang, None);
     let map = GrammarGen::build_output();
+
+    // let grammar_map = HashMap::new();
+    if detector.tags.contains_key("workspace.java.gradle") {
+
+    }
 
     let mut grammar = Grammar::new(map.grammar_map[".groovy"].clone());
 

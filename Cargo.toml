@@ -31,6 +31,9 @@ path = "scie-infra"
 [dependencies.scie_bingen]
 path = "scie-bingen"
 
+[dependencies.scie_detector]
+path = "scie-detector"
+
 [workspace]
 members = [
     "benchmark",

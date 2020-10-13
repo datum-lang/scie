@@ -35,7 +35,7 @@ impl<'a> FrameworkDetector<'a> {
         self.light_detector(path)
     }
 
-    fn deep_detector(&mut self, path: String) {}
+    fn deep_detector(&mut self, _path: String) {}
 
     fn light_detector(&mut self, path: String) {
         let name_set = FrameworkDetector::build_level_one_name_set(path);
