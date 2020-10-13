@@ -1,4 +1,6 @@
 use walkdir::WalkDir;
+use std::collections::{BTreeMap, HashSet};
+use std::collections::hash_map::RandomState;
 
 pub struct Framework {
     pub name: String,
@@ -15,6 +17,7 @@ pub struct Framework {
 }
 
 pub struct FrameworkDetector {
+    pub tags: BTreeMap<String, bool>,
     pub names: Vec<String>,
     pub frameworks: Vec<Framework>,
 }
@@ -22,16 +25,35 @@ pub struct FrameworkDetector {
 impl FrameworkDetector {
     pub fn new() -> Self {
         FrameworkDetector {
+            tags: Default::default(),
             names: vec![],
             frameworks: vec![],
         }
     }
 
     pub fn run(&self, path: String) {
+        FrameworkDetector::light_detector(path)
+    }
+
+    fn light_detector(path: String) {
+        let name_set = FrameworkDetector::build_level_one_name_set(path);
+        name_set.contains("build.gradle");
+    }
+
+    pub fn build_level_one_name_set(path: String) -> HashSet<String, RandomState> {
+        let mut name_sets: HashSet<String> = HashSet::new();
         let walk_dir = WalkDir::new(path);
-        for path in walk_dir.max_depth(1).into_iter() {
-            println!("{:?}", path);
+        for dir_entry in walk_dir.max_depth(1).into_iter() {
+            if dir_entry.is_err() {
+                continue;
+            }
+
+            let entry = dir_entry.unwrap();
+            let file_name = entry.path().file_name().unwrap().clone();
+            name_sets.insert(file_name.to_str().unwrap().to_string());
         }
+
+        name_sets
     }
 }
 
@@ -53,8 +75,11 @@ mod tests {
             .join("java")
             .join("simple");
 
-        let detector = FrameworkDetector::new();
-        detector.run(test_project_dir.display().to_string());
+        // let detector = FrameworkDetector::new();
+        // detector.run(test_project_dir.display().to_string());
+
+        let name_set = FrameworkDetector::build_level_one_name_set(test_project_dir.display().to_string());
+        assert!(name_set.contains("build.gradle"));
     }
 }
 
