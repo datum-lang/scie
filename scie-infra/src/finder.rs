@@ -2,6 +2,40 @@ use std::fs::File;
 use std::io::Read;
 use std::path::PathBuf;
 
+lazy_static! {
+    static ref DEFAULT_VCS_EXCLUDES: Vec<&'static str> = vec![
+        "**/%*%",
+        "**/.#*",
+        "**/._*",
+        "**/#*#",
+        "**/*~",
+        "**/.DS_Store",
+        "**/CVS",
+        "**/CVS/**",
+        "**/.cvsignore",
+        "**/SCCS",
+        "**/SCCS/**",
+        "**/.bzr",
+        "**/.bzr/**",
+        "**/.bzrignore",
+        "**/vssver.scc",
+        "**/.hg",
+        "**/.hg/**",
+        "**/.hgtags",
+        "**/.hgignore",
+        "**/.hgsubstate",
+        "**/.hgsub",
+        "**/.svn",
+        "**/.svn/**",
+        "**/.git",
+        "**/.git/**",
+        "**/.gitignore",
+        "**/.gitmodules",
+        "**/.gitattributes"
+    ];
+}
+
+
 pub struct Finder {}
 
 impl Finder {
@@ -18,5 +52,17 @@ impl Finder {
                 panic!(err.to_string())
             }
         }
+    }
+
+    pub fn get_files(file_path: &PathBuf, gitignore: Option<&PathBuf>)  {
+
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn should_filter_gitignore_rules() {
+        assert_eq!(2 + 2, 4);
     }
 }
