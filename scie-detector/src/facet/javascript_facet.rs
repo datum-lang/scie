@@ -1,3 +1,4 @@
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct JavaScriptFacet {
     pub is_frontend: bool,
     pub is_angular: bool,

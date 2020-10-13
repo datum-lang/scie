@@ -1,3 +1,4 @@
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct JvmFacet {
     pub is_gradle: bool,
     pub is_maven: bool,
