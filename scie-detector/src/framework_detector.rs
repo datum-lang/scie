@@ -1,6 +1,6 @@
-use walkdir::WalkDir;
-use std::collections::{BTreeMap, HashSet};
 use std::collections::hash_map::RandomState;
+use std::collections::{BTreeMap, HashSet};
+use walkdir::WalkDir;
 
 pub struct Framework {
     pub name: String,
@@ -16,13 +16,13 @@ pub struct Framework {
     pub language: Vec<String>,
 }
 
-pub struct FrameworkDetector {
-    pub tags: BTreeMap<String, bool>,
+pub struct FrameworkDetector<'a> {
+    pub tags: BTreeMap<&'a str, bool>,
     pub names: Vec<String>,
     pub frameworks: Vec<Framework>,
 }
 
-impl FrameworkDetector {
+impl<'a> FrameworkDetector<'a> {
     pub fn new() -> Self {
         FrameworkDetector {
             tags: Default::default(),
@@ -37,7 +37,17 @@ impl FrameworkDetector {
 
     fn light_detector(&mut self, path: String) {
         let name_set = FrameworkDetector::build_level_one_name_set(path);
-        self.tags.insert(String::from("workspace.java.gradle"), name_set.contains("build.gradle"));
+        self.tags
+            .insert("workspace.java.gradle", name_set.contains("build.gradle"));
+        self.tags.insert(
+            "workspace.java.gradle.composite",
+            name_set.contains("build.gradle") && name_set.contains("settings.gradle"),
+        );
+
+        self.tags.insert(
+            "workspace.npm",
+            name_set.contains("package.json") || name_set.contains("node_modules"),
+        );
     }
 
     pub fn build_level_one_name_set(path: String) -> HashSet<String, RandomState> {
@@ -59,8 +69,8 @@ impl FrameworkDetector {
 
 #[cfg(test)]
 mod tests {
-    use std::path::PathBuf;
     use crate::framework_detector::FrameworkDetector;
+    use std::path::PathBuf;
 
     #[test]
     fn it_works() {
@@ -69,7 +79,8 @@ mod tests {
             .unwrap()
             .to_path_buf();
 
-        let test_project_dir = root_dir.clone()
+        let test_project_dir = root_dir
+            .clone()
             .join("fixtures")
             .join("projects")
             .join("java")
@@ -78,8 +89,7 @@ mod tests {
         let mut detector = FrameworkDetector::new();
         detector.run(test_project_dir.display().to_string());
 
-        let has_java_gradle = detector.tags.get("workspace.java.gradle").unwrap();
-        assert!(has_java_gradle);
+        assert!(detector.tags.get("workspace.java.gradle").unwrap());
+        assert_eq!(&false, detector.tags.get("workspace.npm").unwrap());
     }
 }
-
