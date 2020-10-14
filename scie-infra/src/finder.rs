@@ -1,8 +1,9 @@
 use std::fs::File;
-use std::io::{Read, Write, Seek, SeekFrom};
+use std::io::{Read, Write};
 use std::path::PathBuf;
 use walkdir::WalkDir;
 use tempfile::tempdir;
+use ignore::Walk;
 
 lazy_static! {
     static ref DEFAULT_VCS_EXCLUDES: Vec<&'static str> = vec![
@@ -53,6 +54,20 @@ impl Finder {
                 panic!(err.to_string())
             }
         }
+    }
+
+    pub fn walk_filter_files(dir: &PathBuf) -> Vec<PathBuf> {
+        let mut files = vec![];
+        for result in Walk::new(dir) {
+            match result {
+                Ok(entry) => {
+                    files.push(entry.path().to_path_buf());
+                },
+                Err(err) => println!("ERROR: {}", err),
+            }
+        }
+
+        return files;
     }
 
     pub fn get_filter_files(dir: &PathBuf, gitignore_path: Option<&PathBuf>) -> Vec<PathBuf> {

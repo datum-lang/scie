@@ -26,7 +26,7 @@ pub fn ident_by_dir(lang: &PathBuf) {
     let mut detector = FrameworkDetector::new();
     detector.run(lang.display().to_string());
 
-    let files = Finder::get_filter_files(&lang, None);
+    let files = Finder::walk_filter_files(&lang);
     let map = GrammarGen::build_output();
 
     let mut grammar_map = HashMap::new();
