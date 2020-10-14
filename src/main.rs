@@ -22,7 +22,7 @@ pub fn get_lang_by_path(path: PathBuf) -> String {
     str
 }
 
-fn ident_by_dir(lang: &PathBuf) {
+pub fn ident_by_dir(lang: &PathBuf) {
     let mut detector = FrameworkDetector::new();
     detector.run(lang.display().to_string());
 
@@ -31,8 +31,11 @@ fn ident_by_dir(lang: &PathBuf) {
 
     let mut grammar_map = HashMap::new();
     if detector.tags.contains_key("workspace.java.gradle") {
-        let grammar = Grammar::new(map.grammar_map[".groovy"].clone());
-        grammar_map.insert(".groovy", grammar);
+        grammar_map.insert(".groovy", Grammar::new(map.grammar_map[".groovy"].clone()));
+    }
+
+    if detector.tags.contains_key("workspace.rust.cargo") {
+        grammar_map.insert(".rust", Grammar::new(map.grammar_map[".rust"].clone()));
     }
 
     for path in files {
@@ -41,7 +44,7 @@ fn ident_by_dir(lang: &PathBuf) {
         let lang = get_lang_by_path(path.clone());
         let lang_grammar = grammar_map.get_mut(lang.as_str());
         if lang_grammar.is_none() {
-           continue;
+            continue;
         }
         let grammar = lang_grammar.unwrap();
 
