@@ -83,8 +83,6 @@ mod tests {
         let code = Finder::read_code(&code_dir);
 
         let elements = Identify::identify_file(lang, code);
-
-        println!("{:?}", elements);
         assert_eq!(39, elements.len());
     }
 
