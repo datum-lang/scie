@@ -5,57 +5,61 @@ use scie_infra::finder::Finder;
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-pub fn get_lang_by_path(path: PathBuf) -> String {
-    let mut str = ".".to_owned();
-    let ext = path.extension().unwrap().to_str().unwrap();
-    str.push_str(ext);
+pub struct Analyser {}
 
-    str
-}
+impl Analyser {
+    pub fn get_lang_by_path(path: PathBuf) -> String {
+        let mut str = ".".to_owned();
+        let ext = path.extension().unwrap().to_str().unwrap();
+        str.push_str(ext);
 
-pub fn ident_by_dir(lang: &PathBuf) {
-    let mut detector = FrameworkDetector::new();
-    detector.run(lang.display().to_string());
-
-    let files = Finder::walk_filter_files(&lang);
-    let map = GrammarGen::build_output();
-
-    let mut grammar_map = HashMap::new();
-    if detector.tags.contains_key("workspace.java.gradle") {
-        grammar_map.insert(".groovy", Grammar::new(map.grammar_map[".groovy"].clone()));
-        grammar_map.insert(".java", Grammar::new(map.grammar_map[".java"].clone()));
+        str
     }
 
-    if detector.tags.contains_key("workspace.rust.cargo") {
-        grammar_map.insert(".rust", Grammar::new(map.grammar_map[".rs"].clone()));
-    }
+    pub fn ident_by_dir(lang: &PathBuf) {
+        let mut detector = FrameworkDetector::new();
+        detector.run(lang.display().to_string());
 
-    for path in files {
-        if path.extension().is_none() {
-            continue;
-        }
-        println!("analyses: {:?}", path);
+        let map = GrammarGen::build_output();
 
-        let lang = get_lang_by_path(path.clone());
-        let lang_grammar = grammar_map.get_mut(lang.as_str());
-        if lang_grammar.is_none() {
-            continue;
+        let mut grammar_map = HashMap::new();
+        if detector.tags.contains_key("workspace.java.gradle") {
+            grammar_map.insert(".groovy", Grammar::new(map.grammar_map[".groovy"].clone()));
+            grammar_map.insert(".java", Grammar::new(map.grammar_map[".java"].clone()));
         }
 
-        let grammar = lang_grammar.unwrap();
+        if detector.tags.contains_key("workspace.rust.cargo") {
+            grammar_map.insert(".rust", Grammar::new(map.grammar_map[".rs"].clone()));
+        }
 
-        let code = Finder::read_code(&path);
-        let mut rule_stack = Some(StackElement::null());
-        for line in code.lines() {
-            let result = grammar.tokenize_line(line, &mut rule_stack);
-            rule_stack = result.rule_stack;
+        let files = Finder::walk_filter_files(&lang);
+        for path in files {
+            if path.extension().is_none() {
+                continue;
+            }
+            println!("analyses: {:?}", path);
+
+            let lang = Analyser::get_lang_by_path(path.clone());
+            let lang_grammar = grammar_map.get_mut(lang.as_str());
+            if lang_grammar.is_none() {
+                continue;
+            }
+
+            let grammar = lang_grammar.unwrap();
+
+            let code = Finder::read_code(&path);
+            let mut rule_stack = Some(StackElement::null());
+            for line in code.lines() {
+                let result = grammar.tokenize_line(line, &mut rule_stack);
+                rule_stack = result.rule_stack;
+            }
         }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::analyser::ident_by_dir;
+    use crate::analyser::Analyser;
     use crate::identify::Identify;
     use scie_infra::finder::Finder;
     use std::path::PathBuf;
@@ -98,14 +102,14 @@ mod tests {
             .join("java")
             .join("simple");
 
-        ident_by_dir(&lang)
+        Analyser::ident_by_dir(&lang)
     }
 
     #[test]
     fn should_identify_self_grammar() {
         let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).to_path_buf();
-        let lang = root_dir.clone().join("scie-grammar");
+        let lang = root_dir.clone().parent().unwrap().join("scie-grammar");
 
-        ident_by_dir(&lang)
+        Analyser::ident_by_dir(&lang)
     }
 }
