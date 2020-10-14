@@ -7,3 +7,19 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+clap = "3.0.0-beta.2"
+
+[dependencies.scie_grammar]
+path = "../scie-grammar"
+
+[dependencies.scie_model]
+path = "../scie-model"
+
+[dependencies.scie_infra]
+path = "../scie-infra"
+
+[dependencies.scie_bingen]
+path = "../scie-bingen"
+
+[dependencies.scie_detector]
+path = "../scie-detector"
