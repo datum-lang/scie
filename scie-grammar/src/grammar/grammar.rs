@@ -584,7 +584,7 @@ impl Grammar {
             line_pos == anchor_position,
         );
 
-        // update cache to rule
+        // todo: update cache to rule
         stack.update_rule(self, rule);
 
         let r = rule_scanner
