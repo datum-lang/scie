@@ -1,7 +1,8 @@
 use std::fs::File;
-use std::io::{Read, Write};
+use std::io::{Read, Write, Seek, SeekFrom};
 use std::path::PathBuf;
 use walkdir::WalkDir;
+use tempfile::tempdir;
 
 lazy_static! {
     static ref DEFAULT_VCS_EXCLUDES: Vec<&'static str> = vec![
@@ -57,39 +58,33 @@ impl Finder {
     pub fn get_filter_files(dir: &PathBuf, gitignore_path: Option<&PathBuf>) -> Vec<PathBuf> {
         let walk_dir = WalkDir::new(dir);
 
-        // todo: merge gitignore
-        // let mut tmpfile: File = tempfile::tempfile().unwrap();
+        let dir = tempdir().unwrap();
+        let genearte_ignore_file_path = dir.path().join("scie-ignore.txt");
+        println!("generate ignore file: {:?}", genearte_ignore_file_path);
+
+        let mut tmpfile = File::create(genearte_ignore_file_path.clone()).unwrap();
+        let content: String = DEFAULT_VCS_EXCLUDES.join("\n");
+
         match gitignore_path {
             None => {
-                // tmpfile.write()
+                write!(tmpfile, "{}", content).unwrap();
             }
-            Some(x) => {
-
+            Some(ignore) => {
+                let code = Finder::read_code(ignore);
+                write!(tmpfile, "{}", code).unwrap();
+                write!(tmpfile, "{}", content).unwrap();
             }
         };
 
         let mut files = vec![];
-        match gitignore_path {
-            None => {
-                for entry in walk_dir.into_iter() {
-                    if entry.is_err() {
-                        continue;
-                    };
-
-                    files.push(entry.unwrap().path().to_path_buf());
-                }
-            }
-            Some(gitignore) => {
-                let file = gitignore::File::new(&gitignore).unwrap();
-                for entry in walk_dir.into_iter() {
-                    if entry.is_err() {
-                        continue;
-                    };
-                    let path = entry.unwrap().path().to_path_buf();
-                    if !file.is_excluded(&*path).unwrap() {
-                        files.push(path);
-                    }
-                }
+        let file = gitignore::File::new(&genearte_ignore_file_path).unwrap();
+        for entry in walk_dir.into_iter() {
+            if entry.is_err() {
+                continue;
+            };
+            let path = entry.unwrap().path().to_path_buf();
+            if !file.is_excluded(&*path).unwrap() {
+                files.push(path);
             }
         }
 
@@ -117,6 +112,6 @@ mod tests {
         let ignore_path = code_dir.clone().join(".gitignore");
 
         let files = Finder::get_filter_files(&code_dir, Some(&ignore_path));
-        assert_eq!(1, files.len())
+        assert_eq!(0, files.len())
     }
 }
