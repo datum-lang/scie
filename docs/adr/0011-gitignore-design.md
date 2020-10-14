@@ -30,6 +30,7 @@ So we need to:
 1. accept workspace Root `.Gitignore` file in project.
 2. accept workspace Module `.Gitignore` file in project.
 3. accept Different languages gitignore files
+4. add some default editor's rules such as `.idea` and also start with `.*`
 
 ## Decision
 
