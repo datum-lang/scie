@@ -40,12 +40,14 @@ pub fn ident_by_dir(lang: &PathBuf) {
 
     for path in files {
         if path.extension().is_none() { continue; }
+        println!("analyses: {:?}", path);
 
         let lang = get_lang_by_path(path.clone());
         let lang_grammar = grammar_map.get_mut(lang.as_str());
         if lang_grammar.is_none() {
             continue;
         }
+
         let grammar = lang_grammar.unwrap();
 
         let code = Finder::read_code(&path);
@@ -95,6 +97,16 @@ mod tests {
             .join("projects")
             .join("java")
             .join("simple");
+
+        ident_by_dir(&lang)
+    }
+
+    #[test]
+    fn should_identify_self_grammar() {
+        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).to_path_buf();
+        let lang = root_dir
+            .clone()
+            .join("scie-grammar");
 
         ident_by_dir(&lang)
     }
