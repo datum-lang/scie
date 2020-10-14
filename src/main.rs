@@ -29,15 +29,21 @@ fn ident_by_dir(lang: &PathBuf) {
     let files = Finder::get_files(&lang, None);
     let map = GrammarGen::build_output();
 
-    // let grammar_map = HashMap::new();
+    let mut grammar_map = HashMap::new();
     if detector.tags.contains_key("workspace.java.gradle") {
-
+        let grammar = Grammar::new(map.grammar_map[".groovy"].clone());
+        grammar_map.insert(".groovy", grammar);
     }
-
-    let mut grammar = Grammar::new(map.grammar_map[".groovy"].clone());
 
     for path in files {
         if path.extension().is_none() { continue; }
+
+        let lang = get_lang_by_path(path.clone());
+        let lang_grammar = grammar_map.get_mut(lang.as_str());
+        if lang_grammar.is_none() {
+           continue;
+        }
+        let grammar = lang_grammar.unwrap();
 
         let code = Finder::read_code(&path);
         let mut rule_stack = Some(StackElement::null());
