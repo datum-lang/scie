@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::Read;
+use std::io::{Read, Write};
 use std::path::PathBuf;
 use walkdir::WalkDir;
 
@@ -54,8 +54,19 @@ impl Finder {
         }
     }
 
-    pub fn get_files(dir: &PathBuf, gitignore_path: Option<&PathBuf>) -> Vec<PathBuf> {
+    pub fn get_filter_files(dir: &PathBuf, gitignore_path: Option<&PathBuf>) -> Vec<PathBuf> {
         let walk_dir = WalkDir::new(dir);
+
+        // todo: merge gitignore
+        // let mut tmpfile: File = tempfile::tempfile().unwrap();
+        match gitignore_path {
+            None => {
+                // tmpfile.write()
+            }
+            Some(x) => {
+
+            }
+        };
 
         let mut files = vec![];
         match gitignore_path {
@@ -105,7 +116,7 @@ mod tests {
 
         let ignore_path = code_dir.clone().join(".gitignore");
 
-        let files = Finder::get_files(&code_dir, Some(&ignore_path));
+        let files = Finder::get_filter_files(&code_dir, Some(&ignore_path));
         assert_eq!(1, files.len())
     }
 }

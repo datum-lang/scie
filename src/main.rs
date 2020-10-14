@@ -26,7 +26,7 @@ pub fn ident_by_dir(lang: &PathBuf) {
     let mut detector = FrameworkDetector::new();
     detector.run(lang.display().to_string());
 
-    let files = Finder::get_files(&lang, None);
+    let files = Finder::get_filter_files(&lang, None);
     let map = GrammarGen::build_output();
 
     let mut grammar_map = HashMap::new();
@@ -35,7 +35,7 @@ pub fn ident_by_dir(lang: &PathBuf) {
     }
 
     if detector.tags.contains_key("workspace.rust.cargo") {
-        grammar_map.insert(".rust", Grammar::new(map.grammar_map[".rust"].clone()));
+        grammar_map.insert(".rust", Grammar::new(map.grammar_map[".rs"].clone()));
     }
 
     for path in files {
