@@ -71,6 +71,11 @@ impl<'a> FrameworkDetector<'a> {
             }
 
             let entry = dir_entry.unwrap();
+            if entry.path().file_name().is_none() {
+                println!("none file_name {:?}", entry.path());
+                continue;
+            }
+
             let file_name = entry.path().file_name().unwrap().clone();
             name_sets.insert(file_name.to_str().unwrap().to_string());
         }
