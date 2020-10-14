@@ -12,13 +12,7 @@ mod tests {
     use std::fs::File;
     use std::io::Read;
     use std::path::PathBuf;
-
-    pub fn read_code(lang_test_dir: &PathBuf) -> String {
-        let mut file = File::open(lang_test_dir).unwrap();
-        let mut code = String::new();
-        file.read_to_string(&mut code).unwrap();
-        code
-    }
+    use scie_infra::finder::Finder;
 
     #[test]
     fn should_parse_json_package_optional() {
@@ -32,7 +26,7 @@ mod tests {
             .join("java")
             .join("package.json");
 
-        let code = read_code(&config);
+        let code = Finder::read_code(&config);
         let pkg: JsonPackage = serde_json::from_str(&code).unwrap();
 
         assert_eq!("java", pkg.name);
