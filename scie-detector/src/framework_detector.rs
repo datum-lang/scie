@@ -58,10 +58,8 @@ impl<'a> FrameworkDetector<'a> {
             name_set.contains("package.json") || name_set.contains("node_modules"),
         );
 
-        self.tags.insert(
-            "workspace.rust.cargo",
-            name_set.contains("Cargo.toml")
-        );
+        self.tags
+            .insert("workspace.rust.cargo", name_set.contains("Cargo.toml"));
     }
 
     pub fn build_level_one_name_set(path: String) -> HashSet<String, RandomState> {

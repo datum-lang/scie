@@ -1,9 +1,9 @@
+use ignore::Walk;
 use std::fs::File;
 use std::io::{Read, Write};
 use std::path::PathBuf;
-use walkdir::WalkDir;
 use tempfile::tempdir;
-use ignore::Walk;
+use walkdir::WalkDir;
 
 lazy_static! {
     static ref DEFAULT_VCS_EXCLUDES: Vec<&'static str> = vec![
@@ -62,7 +62,7 @@ impl Finder {
             match result {
                 Ok(entry) => {
                     files.push(entry.path().to_path_buf());
-                },
+                }
                 Err(err) => println!("ERROR: {}", err),
             }
         }

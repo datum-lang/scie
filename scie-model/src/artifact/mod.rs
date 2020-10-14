@@ -18,7 +18,7 @@ pub struct Project {
 pub struct Module {
     #[serde(alias = "moduleName")]
     pub name: String,
-    pub packages: Vec<Package>,  // or dir ?
+    pub packages: Vec<Package>, // or dir ?
     pub artifacts: Vec<Artifact>,
 }
 

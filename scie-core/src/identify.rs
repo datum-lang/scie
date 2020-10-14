@@ -1,6 +1,6 @@
 use scie_grammar::grammar::{Grammar, StackElement};
-use std::path::PathBuf;
 use scie_model::artifact::Element;
+use std::path::PathBuf;
 
 pub struct Identify {}
 

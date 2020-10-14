@@ -5,7 +5,7 @@ use clap::Clap;
 struct Opts {
     #[clap(short, long, default_value = "default.conf")]
     config: String,
-    #[clap(short, long)]
+    #[clap(short, long, default_value = ".")]
     path: String,
     #[clap(short, long, parse(from_occurrences))]
     verbose: i32,
