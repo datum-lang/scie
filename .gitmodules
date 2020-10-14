@@ -1,3 +1,6 @@
 [submodule "scie-onig/libonigvs/oniguruma"]
 	path = scie-onig/libonigvs/oniguruma
 	url = https://github.com/kkos/oniguruma.git
+[submodule "3rd-party/gitignores"]
+	path = 3rd-party/gitignores
+	url = https://github.com/github/gitignore
