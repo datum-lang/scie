@@ -9,7 +9,6 @@ use scie_grammar::grammar::{Grammar, StackElement};
 use scie_detector::framework_detector::FrameworkDetector;
 use std::collections::HashMap;
 
-pub mod artifact;
 pub mod identify;
 
 fn main() {}
@@ -32,6 +31,7 @@ pub fn ident_by_dir(lang: &PathBuf) {
     let mut grammar_map = HashMap::new();
     if detector.tags.contains_key("workspace.java.gradle") {
         grammar_map.insert(".groovy", Grammar::new(map.grammar_map[".groovy"].clone()));
+        grammar_map.insert(".java", Grammar::new(map.grammar_map[".java"].clone()));
     }
 
     if detector.tags.contains_key("workspace.rust.cargo") {
