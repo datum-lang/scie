@@ -1,4 +1,9 @@
 use clap::Clap;
+use crate::validate::Validate;
+use scie_core::analyser::Analyser;
+use std::path::{PathBuf, Path};
+
+pub mod validate;
 
 #[derive(Clap)]
 #[clap(version = "0.1", author = "Phodal HUANG<h@phodal.com>")]
@@ -16,4 +21,12 @@ fn main() {
 
     // println!("Value for config: {}", opts.config);
     println!("Using input file: {}", opts.path);
+
+    if !Validate::is_valid_path(opts.path.clone()) {
+        println!("error");
+        return;
+    }
+
+    let path = Path::new(&opts.path);
+    Analyser::ident_by_dir(&path.to_path_buf());
 }
