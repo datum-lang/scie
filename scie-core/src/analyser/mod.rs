@@ -17,7 +17,7 @@ impl Analyser {
         str
     }
 
-    pub fn ident_by_dir(lang: &PathBuf, is_debug: bool) -> Vec<CodeFile> {
+    pub fn ident_by_dir(lang: &PathBuf, _is_debug: bool) -> Vec<CodeFile> {
         let mut detector = FrameworkDetector::new();
         detector.run(lang.display().to_string());
 
