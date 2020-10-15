@@ -30,5 +30,6 @@ fn main() {
 
     let path = Path::new(&opts.path);
     let files = Analyser::ident_by_dir(&path.to_path_buf());
+    // BinGen::jsonify(files.clone(), "demo.json");
     BinGen::code_files(files, "demo.bin");
 }

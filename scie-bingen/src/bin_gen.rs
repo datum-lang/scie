@@ -5,10 +5,27 @@ use std::io::Write;
 pub struct BinGen {}
 
 impl BinGen {
+    /// output by each file for better performance
+    pub fn iter_file(files: Vec<CodeFile>, path: &str) {
+
+    }
+
+    // output by one file
     pub fn code_files(files: Vec<CodeFile>, path: &str) {
         let encoded: Vec<u8> = bincode::serialize(&files).unwrap();
         let mut file = File::create(path).unwrap();
         match file.write_all(&*encoded) {
+            Ok(_) => {}
+            Err(_) => {}
+        };
+    }
+
+    pub fn jsonify(files: Vec<CodeFile>, path: &str) {
+        let json_str = serde_json::to_string_pretty(&files).unwrap();
+        let bytes = json_str.as_bytes();
+
+        let mut file = File::create(path).unwrap();
+        match file.write_all(bytes) {
             Ok(_) => {}
             Err(_) => {}
         };
