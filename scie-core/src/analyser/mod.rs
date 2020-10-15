@@ -4,6 +4,7 @@ use scie_grammar::grammar::{Grammar, StackElement};
 use scie_infra::finder::Finder;
 use std::collections::HashMap;
 use std::path::PathBuf;
+use scie_model::artifact::CodeFile;
 
 pub struct Analyser {}
 
@@ -16,7 +17,7 @@ impl Analyser {
         str
     }
 
-    pub fn ident_by_dir(lang: &PathBuf) {
+    pub fn ident_by_dir(lang: &PathBuf) -> Vec<CodeFile> {
         let mut detector = FrameworkDetector::new();
         detector.run(lang.display().to_string());
 
@@ -25,6 +26,7 @@ impl Analyser {
         let mut grammar_map = HashMap::new();
         if detector.tags.contains_key("workspace.java.gradle") {
             grammar_map.insert(".groovy", Grammar::new(map.grammar_map[".groovy"].clone()));
+            grammar_map.insert(".gradle", Grammar::new(map.grammar_map[".groovy"].clone()));
             grammar_map.insert(".java", Grammar::new(map.grammar_map[".java"].clone()));
         }
 
@@ -36,7 +38,8 @@ impl Analyser {
         Analyser::process_files(&mut grammar_map, files)
     }
 
-    fn process_files(grammar_map: &mut HashMap<&str, Grammar>, files: Vec<PathBuf>) {
+    fn process_files(grammar_map: &mut HashMap<&str, Grammar>, files: Vec<PathBuf>) -> Vec<CodeFile> {
+        let mut parsed_files = vec![];
         for path in files {
             if path.extension().is_none() {
                 continue;
@@ -50,14 +53,19 @@ impl Analyser {
             }
 
             let grammar = lang_grammar.unwrap();
-
+            let code_file = CodeFile::new(path.clone());
             let code = Finder::read_code(&path);
             let mut rule_stack = Some(StackElement::null());
+
             for line in code.lines() {
                 let result = grammar.tokenize_line(line, &mut rule_stack);
                 rule_stack = result.rule_stack;
             }
+
+            parsed_files.push(code_file);
         }
+
+        parsed_files
     }
 }
 
@@ -106,7 +114,8 @@ mod tests {
             .join("java")
             .join("simple");
 
-        Analyser::ident_by_dir(&lang)
+        let files = Analyser::ident_by_dir(&lang);
+        assert_eq!(3, files.len())
     }
 
     #[test]
@@ -114,6 +123,6 @@ mod tests {
         let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).to_path_buf();
         let lang = root_dir.clone().parent().unwrap().join("scie-grammar");
 
-        Analyser::ident_by_dir(&lang)
+        Analyser::ident_by_dir(&lang);
     }
 }

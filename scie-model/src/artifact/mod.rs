@@ -1,5 +1,9 @@
 use serde::{Deserialize, Serialize};
 
+pub mod code_file;
+
+pub use code_file::CodeFile;
+
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Workspace {
     #[serde(alias = "workspaceName")]
@@ -34,12 +38,6 @@ pub struct Package {
     #[serde(alias = "packageName")]
     pub name: String,
     pub files: Vec<CodeFile>,
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct CodeFile {
-    pub path: String,
-    pub elements: Vec<Element>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
