@@ -2,6 +2,7 @@ use clap::Clap;
 use crate::validate::Validate;
 use scie_core::analyser::Analyser;
 use std::path::{PathBuf, Path};
+use scie_bingen::bin_gen::BinGen;
 
 pub mod validate;
 
@@ -28,5 +29,6 @@ fn main() {
     }
 
     let path = Path::new(&opts.path);
-    Analyser::ident_by_dir(&path.to_path_buf());
+    let files = Analyser::ident_by_dir(&path.to_path_buf());
+    BinGen::code_files(files, "demo.bin");
 }
