@@ -33,6 +33,10 @@ impl Analyser {
         }
 
         let files = Finder::walk_filter_files(&lang);
+        Analyser::process_files(&mut grammar_map, files)
+    }
+
+    fn process_files(grammar_map: &mut HashMap<&str, Grammar>, files: Vec<PathBuf>) {
         for path in files {
             if path.extension().is_none() {
                 continue;
