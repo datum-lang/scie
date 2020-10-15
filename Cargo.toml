@@ -16,6 +16,18 @@ exclude = [
     "vscode-tests/*",
     "benchmark/*",
     "fixtures/*",
+    ".github/*",
+    ".gitattributes",
+    ".adr.json",
+    ".cargo_vcs_info.json",
+
+    # vscode
+    "**/snippets/*",
+    "extensions/**/test/*",
+    "**/.vscodeignore",
+    "**/package.nls.json",
+    "**/language-configuration.json",
+    "**/*.language-configuration.json",
 ]
 
 [dependencies]
