@@ -11,6 +11,8 @@ pub mod validate;
 struct Opts {
     #[clap(short, long, default_value = "default.conf")]
     config: String,
+    #[clap(long)]
+    json: bool,
     #[clap(short, long, default_value = ".")]
     path: String,
     #[clap(short, long, parse(from_occurrences))]
@@ -30,6 +32,9 @@ fn main() {
 
     let path = Path::new(&opts.path);
     let files = Analyser::ident_by_dir(&path.to_path_buf());
-    // BinGen::jsonify(files.clone(), "demo.json");
-    BinGen::code_files(files, "demo.bin");
+    if opts.json {
+        BinGen::jsonify(files.clone(), "demo.json");
+    } else {
+        BinGen::code_files(files, "demo.bin");
+    }
 }
