@@ -31,7 +31,7 @@ impl Analyser {
         }
 
         if detector.tags.contains_key("workspace.rust.cargo") {
-            grammar_map.insert(".rust", Grammar::new(map.grammar_map[".rs"].clone()));
+            grammar_map.insert(".rs", Grammar::new(map.grammar_map[".rs"].clone()));
         }
 
         let files = Finder::walk_filter_files(&lang);
@@ -133,7 +133,6 @@ mod tests {
             .join("simple");
 
         let files = Analyser::ident_by_dir(&lang);
-        println!("{:?}", files);
         assert_eq!(3, files.len())
     }
 
@@ -142,6 +141,7 @@ mod tests {
         let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).to_path_buf();
         let lang = root_dir.clone().parent().unwrap().join("scie-grammar");
 
-        Analyser::ident_by_dir(&lang);
+        let files = Analyser::ident_by_dir(&lang);
+        // println!("{:?}", files);
     }
 }
