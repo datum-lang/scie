@@ -3,6 +3,20 @@ name = "scie"
 version = "0.1.0"
 authors = ["Phodal Huang <h@phodal.com>"]
 edition = "2018"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/phodal/scie"
+documentation = "https://github.com/phodal/scie"
+homepage = "https://github.com/phodal/scie"
+description = """
+Scie is a research about how to build simple code identify engine for different languages.
+"""
+categories = ["text-processing"]
+exclude = [
+    "vscode-tests/*",
+    "benchmark/*",
+    "fixtures/*",
+]
 
 [dependencies]
 
