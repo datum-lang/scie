@@ -1,8 +1,10 @@
 use serde::{Deserialize, Serialize};
 
 pub mod code_file;
+pub mod code_element;
 
 pub use code_file::CodeFile;
+pub use code_element::Element;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Workspace {
@@ -38,23 +40,4 @@ pub struct Package {
     #[serde(alias = "packageName")]
     pub name: String,
     pub files: Vec<CodeFile>,
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct Element {
-    #[serde(alias = "lineNum")]
-    pub line_num: i32,
-    #[serde(alias = "start")]
-    pub start_index: i32,
-    #[serde(alias = "end")]
-    pub end_index: i32,
-    pub value: String,
-    pub scopes: Vec<ElementScope>,
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct ElementScope {
-    #[serde(alias = "scopeName")]
-    pub name: String,
-    pub index: i32,
 }

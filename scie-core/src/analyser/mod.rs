@@ -4,7 +4,7 @@ use scie_grammar::grammar::{Grammar, StackElement};
 use scie_infra::finder::Finder;
 use std::collections::HashMap;
 use std::path::PathBuf;
-use scie_model::artifact::CodeFile;
+use scie_model::artifact::{CodeFile, Element};
 
 pub struct Analyser {}
 
@@ -53,13 +53,31 @@ impl Analyser {
             }
 
             let grammar = lang_grammar.unwrap();
-            let code_file = CodeFile::new(path.clone());
+            let mut code_file = CodeFile::new(path.clone());
             let code = Finder::read_code(&path);
             let mut rule_stack = Some(StackElement::null());
 
+            let mut line_num = 1;
             for line in code.lines() {
                 let result = grammar.tokenize_line(line, &mut rule_stack);
+                for token in result.tokens {
+                    let start = token.start_index;
+                    let end = token.end_index;
+                    let text: String = String::from(line)
+                        .chars()
+                        .skip(start as usize)
+                        .take((end - start) as usize)
+                        .collect();
+
+                    code_file.elements.push(Element::new(
+                        line_num,
+                        start,
+                        end,
+                        text,
+                    ));
+                }
                 rule_stack = result.rule_stack;
+                line_num = line_num + 1;
             }
 
             parsed_files.push(code_file);
@@ -115,6 +133,7 @@ mod tests {
             .join("simple");
 
         let files = Analyser::ident_by_dir(&lang);
+        println!("{:?}", files);
         assert_eq!(3, files.len())
     }
 
