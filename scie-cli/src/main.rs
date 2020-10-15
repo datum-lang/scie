@@ -1,8 +1,8 @@
-use clap::Clap;
 use crate::validate::Validate;
-use scie_core::analyser::Analyser;
-use std::path::{PathBuf, Path};
+use clap::Clap;
 use scie_bingen::bin_gen::BinGen;
+use scie_core::analyser::Analyser;
+use std::path::{Path, PathBuf};
 
 pub mod validate;
 

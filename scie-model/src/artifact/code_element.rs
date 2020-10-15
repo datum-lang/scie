@@ -17,7 +17,7 @@ impl Element {
             start_index,
             end_index,
             value,
-            scopes: vec![]
+            scopes: vec![],
         }
     }
 }
@@ -28,4 +28,3 @@ pub struct ElementScope {
     pub name: String,
     pub index: i32,
 }
-

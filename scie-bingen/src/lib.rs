@@ -6,7 +6,7 @@ extern crate serde;
 
 extern crate bincode;
 
+pub mod bin_gen;
 pub mod ext_file;
 pub mod grammar_gen;
 pub mod language_gen;
-pub mod bin_gen;

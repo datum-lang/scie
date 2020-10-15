@@ -14,8 +14,7 @@ impl CodeFile {
         CodeFile {
             path: path.display().to_string(),
             name: String::from(name),
-            elements: vec![]
+            elements: vec![],
         }
     }
 }
-

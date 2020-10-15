@@ -13,11 +13,8 @@ pub struct JavaFacet {
 }
 
 impl JavaFacet {
-    pub fn is_test() {
-
-    }
+    pub fn is_test() {}
 }
-
 
 #[cfg(test)]
 mod tests {

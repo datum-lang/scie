@@ -2,9 +2,9 @@ use scie_bingen::grammar_gen::GrammarGen;
 use scie_detector::framework_detector::FrameworkDetector;
 use scie_grammar::grammar::{Grammar, StackElement};
 use scie_infra::finder::Finder;
+use scie_model::artifact::{CodeFile, Element};
 use std::collections::HashMap;
 use std::path::PathBuf;
-use scie_model::artifact::{CodeFile, Element};
 
 pub struct Analyser {}
 
@@ -38,7 +38,10 @@ impl Analyser {
         Analyser::process_files(&mut grammar_map, files)
     }
 
-    fn process_files(grammar_map: &mut HashMap<&str, Grammar>, files: Vec<PathBuf>) -> Vec<CodeFile> {
+    fn process_files(
+        grammar_map: &mut HashMap<&str, Grammar>,
+        files: Vec<PathBuf>,
+    ) -> Vec<CodeFile> {
         let mut parsed_files = vec![];
         for path in files {
             if path.extension().is_none() {
@@ -69,12 +72,9 @@ impl Analyser {
                         .take((end - start) as usize)
                         .collect();
 
-                    code_file.elements.push(Element::new(
-                        line_num,
-                        start,
-                        end,
-                        text,
-                    ));
+                    code_file
+                        .elements
+                        .push(Element::new(line_num, start, end, text));
                 }
                 rule_stack = result.rule_stack;
                 line_num = line_num + 1;

@@ -37,10 +37,10 @@ impl LanguageConfig {}
 #[cfg(test)]
 mod tests {
     use crate::language_config::LanguageConfig;
+    use scie_infra::finder::Finder;
     use std::fs::File;
     use std::io::Read;
     use std::path::PathBuf;
-    use scie_infra::finder::Finder;
 
     #[test]
     fn should_serialise_block_comment() {

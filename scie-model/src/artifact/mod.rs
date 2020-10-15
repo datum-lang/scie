@@ -1,10 +1,10 @@
 use serde::{Deserialize, Serialize};
 
-pub mod code_file;
 pub mod code_element;
+pub mod code_file;
 
-pub use code_file::CodeFile;
 pub use code_element::Element;
+pub use code_file::CodeFile;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Workspace {
