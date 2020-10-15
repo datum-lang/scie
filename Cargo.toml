@@ -11,7 +11,7 @@ homepage = "https://github.com/phodal/scie"
 description = """
 Scie is a research about how to build simple code identify engine for different languages.
 """
-categories = ["text-processing"]
+categories = ["text-processing", "command-line-interface", "development-tools", "parser-implementations", "parsing"]
 exclude = [
     "vscode-tests/*",
     "benchmark/*",
