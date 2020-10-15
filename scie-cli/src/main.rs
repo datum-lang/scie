@@ -13,6 +13,8 @@ struct Opts {
     config: String,
     #[clap(long)]
     json: bool,
+    #[clap(long, short)]
+    debug: bool,
     #[clap(short, long, default_value = ".")]
     path: String,
     #[clap(short, long, parse(from_occurrences))]
@@ -31,7 +33,7 @@ fn main() {
     }
 
     let path = Path::new(&opts.path);
-    let files = Analyser::ident_by_dir(&path.to_path_buf());
+    let files = Analyser::ident_by_dir(&path.to_path_buf(), opts.debug);
     if opts.json {
         BinGen::jsonify(files.clone(), "demo.json");
     } else {

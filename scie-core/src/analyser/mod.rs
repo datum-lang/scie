@@ -17,7 +17,7 @@ impl Analyser {
         str
     }
 
-    pub fn ident_by_dir(lang: &PathBuf) -> Vec<CodeFile> {
+    pub fn ident_by_dir(lang: &PathBuf, is_debug: bool) -> Vec<CodeFile> {
         let mut detector = FrameworkDetector::new();
         detector.run(lang.display().to_string());
 
@@ -132,7 +132,7 @@ mod tests {
             .join("java")
             .join("simple");
 
-        let files = Analyser::ident_by_dir(&lang);
+        let files = Analyser::ident_by_dir(&lang, false);
         assert_eq!(3, files.len())
     }
 
@@ -141,7 +141,6 @@ mod tests {
         let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).to_path_buf();
         let lang = root_dir.clone().parent().unwrap().join("scie-grammar");
 
-        let files = Analyser::ident_by_dir(&lang);
-        // println!("{:?}", files);
+        let files = Analyser::ident_by_dir(&lang, false);
     }
 }
