@@ -2,7 +2,7 @@ use crate::validate::Validate;
 use clap::Clap;
 use scie_bingen::bin_gen::BinGen;
 use scie_core::analyser::Analyser;
-use std::path::{Path};
+use std::path::Path;
 
 pub mod validate;
 

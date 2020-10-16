@@ -1,8 +1,8 @@
+use crate::facet::java_facet::JavaFacet;
+use crate::facet::jvm_facet::JvmFacet;
 use std::collections::hash_map::RandomState;
 use std::collections::{BTreeMap, HashSet};
 use walkdir::WalkDir;
-use crate::facet::java_facet::JavaFacet;
-use crate::facet::jvm_facet::JvmFacet;
 
 pub struct Framework {
     pub name: String,
@@ -29,7 +29,7 @@ impl<'a> FrameworkDetector<'a> {
         FrameworkDetector {
             tags: Default::default(),
             frameworks: vec![],
-            java_facets: vec![]
+            java_facets: vec![],
         }
     }
 
@@ -40,8 +40,9 @@ impl<'a> FrameworkDetector<'a> {
     fn deep_detector(&mut self, _path: String) {}
 
     fn build_frameworks_info(&mut self) {
-        if self.tags.contains_key("workspace.java.gradle") ||
-            self.tags.contains_key("workspace.java.pom") {
+        if self.tags.contains_key("workspace.java.gradle")
+            || self.tags.contains_key("workspace.java.pom")
+        {
             let facet = JavaFacet {
                 jvm: JvmFacet {
                     is_gradle: self.tags.contains_key("workspace.java.gradle"),
@@ -49,9 +50,9 @@ impl<'a> FrameworkDetector<'a> {
                     has_java: false,
                     has_groovy: false,
                     has_kotlin: false,
-                    has_scala: false
+                    has_scala: false,
                 },
-                include_test: false
+                include_test: false,
             };
 
             self.java_facets.push(facet)

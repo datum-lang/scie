@@ -6,9 +6,7 @@ pub struct BinGen {}
 
 impl BinGen {
     /// output by each file for better performance
-    pub fn iter_file(files: Vec<CodeFile>, path: &str) {
-
-    }
+    pub fn iter_file(files: Vec<CodeFile>, path: &str) {}
 
     // output by one file
     pub fn code_files(files: Vec<CodeFile>, path: &str) {

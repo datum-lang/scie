@@ -44,7 +44,7 @@ impl Analyser {
     fn process_files(
         grammar_map: &mut HashMap<&str, Grammar>,
         files: Vec<PathBuf>,
-        _is_debug: bool
+        _is_debug: bool,
     ) -> Vec<CodeFile> {
         let mut parsed_files = vec![];
         for path in files {
