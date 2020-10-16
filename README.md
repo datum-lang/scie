@@ -4,14 +4,14 @@
 
 goal: build a better code figure engine for code refactoring.
 
- - scie-bingen. generate languages bindata.
+ - scie-cli. cli part of Scie.
+ - scie-bingen. generate languages bin-data.
  - scie-detector. detector for different frameworks & languages.
  - scie-grammar. A library that helps tokenize text using Text Mate grammars.
- - scie-infra. common infrasturcture support, like fs
- - scie-onig. Rust FFI for Oniguruma.
- - scie-model. common model of VSCode models & Miao Model.
- - scie-scanner. Wrapper Rust Oniguruma FFI api.
- - scie-cli. cli part ofr Scie.
+ - scie-infra. common infrastructure support, like fs
+ - scie-onig. Wrapper Rust [Oniguruma](https://github.com/kkos/oniguruma) FFI api based on [rust-onig](https://github.com/rust-onig/rust-onig)
+ - scie-model. common model of VSCode models & [Miao](https://github.com/phodal/miao/) Model.
+ - scie-scanner. Rewrite of [VS Code Oniguruma](https://github.com/microsoft/vscode-oniguruma)
 
 ## Guideline
 
