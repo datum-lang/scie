@@ -74,9 +74,10 @@ just tests
 
 ### refs
 
- - [Rust FFI 实践](https://blog.csdn.net/allwefantasy/article/details/89442758)
  - [Oniguruma Regular Expressions](https://github.com/kkos/oniguruma/blob/master/doc/RE)
  - [https://github.com/atom/node-oniguruma](https://github.com/atom/node-oniguruma)
+ - [Sloc Cloc and Code - What happened on the way to faster Cloc](https://boyter.org/posts/sloc-cloc-code/)
+ - [ripgrep](https://github.com/BurntSushi/ripgrep) for todo?
 
 License
 ---
