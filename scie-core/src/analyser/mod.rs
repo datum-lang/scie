@@ -25,13 +25,17 @@ impl Analyser {
 
         let mut grammar_map = HashMap::new();
         if detector.tags.contains_key("workspace.java.gradle") {
-            grammar_map.insert(".groovy", Grammar::new(map.grammar_map[".groovy"].clone()));
-            grammar_map.insert(".gradle", Grammar::new(map.grammar_map[".groovy"].clone()));
-            grammar_map.insert(".java", Grammar::new(map.grammar_map[".java"].clone()));
+            let groovy_grammar = Grammar::new(map.grammar_map[".groovy"].clone());
+            grammar_map.insert(".groovy", groovy_grammar);
+            grammar_map.insert(".gradle", groovy_grammar.clone());
+
+            let java_grammar = Grammar::new(map.grammar_map[".java"].clone());
+            grammar_map.insert(".java", java_grammar);
         }
 
         if detector.tags.contains_key("workspace.rust.cargo") {
-            grammar_map.insert(".rs", Grammar::new(map.grammar_map[".rs"].clone()));
+            let rust_grammar = Grammar::new(map.grammar_map[".rs"].clone());
+            grammar_map.insert(".rs", rust_grammar);
         }
 
         let files = Finder::walk_filter_files(&lang);
