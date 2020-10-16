@@ -33,7 +33,7 @@ fn main() {
     }
 
     let path = Path::new(&opts.path);
-    let files = Analyser::ident_by_dir(&path.to_path_buf(), opts.debug);
+    let files = Analyser::ident_by_dir(&path.to_path_buf(), opts.debug, true);
     if opts.json {
         BinGen::jsonify(files.clone(), "demo.json");
     } else {

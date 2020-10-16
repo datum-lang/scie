@@ -17,7 +17,7 @@ impl Analyser {
         str
     }
 
-    pub fn ident_by_dir(lang: &PathBuf, is_debug: bool) -> Vec<CodeFile> {
+    pub fn ident_by_dir(lang: &PathBuf, is_debug: bool, is_cli: bool) -> Vec<CodeFile> {
         let mut detector = FrameworkDetector::new();
         detector.run(lang.display().to_string());
 
@@ -39,20 +39,24 @@ impl Analyser {
             println!("{:?}", detector.tags);
         }
 
-        Analyser::process_files(&mut grammar_map, files, is_debug)
+        Analyser::process_files(&mut grammar_map, files, is_debug, is_cli)
     }
 
     fn process_files(
         grammar_map: &mut HashMap<&str, Grammar>,
         files: Vec<PathBuf>,
         _is_debug: bool,
+        is_cli: bool,
     ) -> Vec<CodeFile> {
         let mut parsed_files = vec![];
         for path in files {
             if path.extension().is_none() {
                 continue;
             }
-            println!("analyses: {:?}", path);
+
+            if is_cli {
+                println!("analyses: {:?}", path);
+            }
 
             let lang = Analyser::get_lang_by_path(path.clone());
             let lang_grammar = grammar_map.get_mut(lang.as_str());
@@ -137,7 +141,7 @@ mod tests {
             .join("java")
             .join("simple");
 
-        let files = Analyser::ident_by_dir(&lang, false);
+        let files = Analyser::ident_by_dir(&lang, false, false);
         assert_eq!(3, files.len())
     }
 
@@ -146,6 +150,6 @@ mod tests {
         let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).to_path_buf();
         let lang = root_dir.clone().parent().unwrap().join("scie-grammar");
 
-        let files = Analyser::ident_by_dir(&lang, false);
+        let files = Analyser::ident_by_dir(&lang, false, false);
     }
 }
