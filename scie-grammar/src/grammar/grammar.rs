@@ -47,6 +47,7 @@ pub struct Grammar {
     pub last_rule_id: i32,
     pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
     pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
+    pub scope_name_map: Map<String, i32>,
     pub _token_type_matchers: Vec<TokenTypeMatcher>,
 }
 
@@ -86,6 +87,7 @@ impl Grammar {
             grammar: inited_grammar,
             root_id: -1,
             rule_id2desc: Map::new(),
+            scope_name_map: Map::new(),
             _token_type_matchers: vec![],
             _empty_rule,
         };
@@ -109,6 +111,15 @@ impl Grammar {
                 &mut repository.clone(),
                 "",
             );
+
+            for (id, rule) in self.rule_id2desc.clone() {
+                if rule.get_rule()._name.is_some() {
+                    self.scope_name_map.insert(
+                        rule.get_rule()._name.as_ref().unwrap().clone(),
+                        id
+                    );
+                }
+            }
         }
 
         let mut is_first_line: bool = false;
@@ -697,10 +708,10 @@ pub fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
                 .take(end - start)
                 .collect();
             let token_str: String = token.scopes.join(", ");
-            println!(
-                " - token from {} to {} ({}) with scopes {}",
-                token.start_index, token.end_index, new_line, token_str
-            )
+            // println!(
+            //     " - token from {} to {} ({}) with scopes {}",
+            //     token.start_index, token.end_index, new_line, token_str
+            // )
         }
     }
 
@@ -731,6 +742,19 @@ return 0;
         let first_rule = grammar.rule_id2desc.get(&1).unwrap();
         assert_eq!(28, first_rule.clone().patterns_length());
         debug_output(&grammar, String::from("program.json"));
+    }
+
+    #[test]
+    fn should_build_scope_name_map() {
+        let code = "
+#include <stdio.h>
+int main() {
+printf(\"Hello, World!\");
+return 0;
+}
+";
+        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/c.json", code);
+        assert_eq!(78, grammar.scope_name_map.len());
     }
 
     #[test]
