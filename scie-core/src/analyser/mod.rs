@@ -38,6 +38,7 @@ impl Analyser {
         if is_debug {
             println!("{:?}", detector.tags);
         }
+
         Analyser::process_files(&mut grammar_map, files, is_debug)
     }
 

@@ -28,7 +28,7 @@ fn main() {
     println!("Using input file: {}", opts.path);
 
     if !Validate::is_valid_path(opts.path.clone()) {
-        println!("error");
+        println!("is invalid path: {:?}", opts.path.clone());
         return;
     }
 
