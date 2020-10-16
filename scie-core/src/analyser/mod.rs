@@ -36,7 +36,9 @@ impl Analyser {
 
         let files = Finder::walk_filter_files(&lang);
         if is_debug {
-            println!("{:?}", detector.tags);
+            if !detector.tags.is_empty() {
+                println!("{:?}", detector.tags);
+            }
         }
 
         Analyser::process_files(&mut grammar_map, files, is_debug, is_cli)
@@ -55,6 +57,8 @@ impl Analyser {
             }
 
             if is_cli {
+                // todo: add clear current line & set value http://rosettacode.org/wiki/Terminal_control
+                // print!("\ranalyses: {:?}", path);
                 println!("analyses: {:?}", path);
             }
 

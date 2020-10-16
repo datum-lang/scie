@@ -24,6 +24,7 @@ struct Opts {
 fn main() {
     let opts: Opts = Opts::parse();
 
+    print!("\x1B[2J\x1B[1;1H"); //clear screen and move to first line
     // println!("Value for config: {}", opts.config);
     println!("Using input file: {}", opts.path);
 
