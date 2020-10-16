@@ -10,8 +10,6 @@ pub struct JsonPackage {
 mod tests {
     use crate::json_package::JsonPackage;
     use scie_infra::finder::Finder;
-    use std::fs::File;
-    use std::io::Read;
     use std::path::PathBuf;
 
     #[test]

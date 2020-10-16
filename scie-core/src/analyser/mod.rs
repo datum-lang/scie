@@ -26,8 +26,8 @@ impl Analyser {
         let mut grammar_map = HashMap::new();
         if detector.tags.contains_key("workspace.java.gradle") {
             let groovy_grammar = Grammar::new(map.grammar_map[".groovy"].clone());
-            grammar_map.insert(".groovy", groovy_grammar);
             grammar_map.insert(".gradle", groovy_grammar.clone());
+            grammar_map.insert(".groovy", groovy_grammar);
 
             let java_grammar = Grammar::new(map.grammar_map[".java"].clone());
             grammar_map.insert(".java", java_grammar);
@@ -158,6 +158,6 @@ mod tests {
         let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).to_path_buf();
         let lang = root_dir.clone().parent().unwrap().join("scie-grammar");
 
-        let files = Analyser::ident_by_dir(&lang, false, false);
+        let _files = Analyser::ident_by_dir(&lang, false, false);
     }
 }

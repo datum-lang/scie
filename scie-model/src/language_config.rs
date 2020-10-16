@@ -38,8 +38,6 @@ impl LanguageConfig {}
 mod tests {
     use crate::language_config::LanguageConfig;
     use scie_infra::finder::Finder;
-    use std::fs::File;
-    use std::io::Read;
     use std::path::PathBuf;
 
     #[test]

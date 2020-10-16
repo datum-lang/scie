@@ -50,7 +50,6 @@ mod tests {
         execute,
         style::{Color, Print, ResetColor, SetBackgroundColor, SetForegroundColor},
         ExecutableCommand, Result,
-        event,
     };
 
     fn sample_term() -> Result<()> {
@@ -74,7 +73,7 @@ mod tests {
 
     #[test]
     fn should_run() {
-        let result = sample_term();
+        let _result = sample_term();
         assert_eq!(1, 1)
     }
 }
