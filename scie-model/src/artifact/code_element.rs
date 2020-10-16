@@ -1,6 +1,6 @@
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Element {
-    #[serde(alias = "lineNum")]
+    #[serde(alias = "line")]
     pub line_num: i32,
     #[serde(alias = "start")]
     pub start_index: i32,
@@ -24,7 +24,6 @@ impl Element {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ElementScope {
-    #[serde(alias = "scopeName")]
     pub name: String,
     pub index: i32,
 }
