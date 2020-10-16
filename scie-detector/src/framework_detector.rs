@@ -1,6 +1,8 @@
 use std::collections::hash_map::RandomState;
 use std::collections::{BTreeMap, HashSet};
 use walkdir::WalkDir;
+use crate::facet::java_facet::JavaFacet;
+use crate::facet::jvm_facet::JvmFacet;
 
 pub struct Framework {
     pub name: String,
@@ -18,16 +20,16 @@ pub struct Framework {
 
 pub struct FrameworkDetector<'a> {
     pub tags: BTreeMap<&'a str, bool>,
-    pub names: Vec<String>,
     pub frameworks: Vec<Framework>,
+    pub java_facets: Vec<JavaFacet>,
 }
 
 impl<'a> FrameworkDetector<'a> {
     pub fn new() -> Self {
         FrameworkDetector {
             tags: Default::default(),
-            names: vec![],
             frameworks: vec![],
+            java_facets: vec![]
         }
     }
 
@@ -37,6 +39,25 @@ impl<'a> FrameworkDetector<'a> {
 
     fn deep_detector(&mut self, _path: String) {}
 
+    fn build_frameworks_info(&mut self) {
+        if self.tags.contains_key("workspace.java.gradle") ||
+            self.tags.contains_key("workspace.java.pom") {
+            let facet = JavaFacet {
+                jvm: JvmFacet {
+                    is_gradle: self.tags.contains_key("workspace.java.gradle"),
+                    is_maven: self.tags.contains_key("workspace.java.pom"),
+                    has_java: false,
+                    has_groovy: false,
+                    has_kotlin: false,
+                    has_scala: false
+                },
+                include_test: false
+            };
+
+            self.java_facets.push(facet)
+        }
+    }
+
     fn light_detector(&mut self, path: String) {
         let name_set = FrameworkDetector::build_level_one_name_set(path);
         self.tags
@@ -45,6 +66,7 @@ impl<'a> FrameworkDetector<'a> {
             "workspace.java.gradle.composite",
             name_set.contains("build.gradle") && name_set.contains("settings.gradle"),
         );
+
         self.tags
             .insert("workspace.java.pom", name_set.contains("pom.xml"));
 
@@ -60,6 +82,8 @@ impl<'a> FrameworkDetector<'a> {
 
         self.tags
             .insert("workspace.rust.cargo", name_set.contains("Cargo.toml"));
+
+        self.build_frameworks_info();
     }
 
     pub fn build_level_one_name_set(path: String) -> HashSet<String, RandomState> {
@@ -89,8 +113,7 @@ mod tests {
     use crate::framework_detector::FrameworkDetector;
     use std::path::PathBuf;
 
-    #[test]
-    fn should_detect_java_gradle_project() {
+    fn build_test_detector<'a>() -> FrameworkDetector<'a> {
         let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .parent()
             .unwrap()
@@ -105,6 +128,12 @@ mod tests {
 
         let mut detector = FrameworkDetector::new();
         detector.run(test_project_dir.display().to_string());
+        detector
+    }
+
+    #[test]
+    fn should_detect_java_gradle_project() {
+        let detector = build_test_detector();
 
         assert!(detector.tags.get("workspace.java.gradle").unwrap());
         assert!(detector
@@ -112,5 +141,12 @@ mod tests {
             .get("workspace.java.gradle.composite")
             .unwrap());
         assert_eq!(&false, detector.tags.get("workspace.npm").unwrap());
+    }
+
+    #[test]
+    fn should_build_framework_info() {
+        let detector = build_test_detector();
+
+        assert_eq!(1, detector.java_facets.len());
     }
 }

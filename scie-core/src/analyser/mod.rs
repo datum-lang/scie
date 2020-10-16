@@ -17,7 +17,7 @@ impl Analyser {
         str
     }
 
-    pub fn ident_by_dir(lang: &PathBuf, _is_debug: bool) -> Vec<CodeFile> {
+    pub fn ident_by_dir(lang: &PathBuf, is_debug: bool) -> Vec<CodeFile> {
         let mut detector = FrameworkDetector::new();
         detector.run(lang.display().to_string());
 
@@ -35,12 +35,16 @@ impl Analyser {
         }
 
         let files = Finder::walk_filter_files(&lang);
-        Analyser::process_files(&mut grammar_map, files)
+        if is_debug {
+            println!("{:?}", detector.tags);
+        }
+        Analyser::process_files(&mut grammar_map, files, is_debug)
     }
 
     fn process_files(
         grammar_map: &mut HashMap<&str, Grammar>,
         files: Vec<PathBuf>,
+        _is_debug: bool
     ) -> Vec<CodeFile> {
         let mut parsed_files = vec![];
         for path in files {
