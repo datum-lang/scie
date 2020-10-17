@@ -1,9 +1,15 @@
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct BaseLibrary {
     pub name: String,
     pub version: String,
     pub group: String,
     pub source: String,
     pub scope: String,
+}
+
+pub enum LibraryScope {
+    Dev,
+    Test,
 }
 
 impl BaseLibrary {

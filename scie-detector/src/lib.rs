@@ -12,3 +12,4 @@ pub mod framework_detector;
 
 pub mod dependency;
 pub mod facet;
+pub mod content_root;
