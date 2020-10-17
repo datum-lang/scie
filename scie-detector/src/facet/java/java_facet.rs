@@ -20,7 +20,7 @@ impl JavaFacet {
 
 #[cfg(test)]
 mod tests {
-    use crate::facet::java_facet::JavaFacet;
+    use crate::facet::JavaFacet;
 
     #[test]
     fn should_ident_test_java_file() {

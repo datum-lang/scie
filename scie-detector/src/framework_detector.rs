@@ -1,8 +1,7 @@
-use crate::facet::java_facet::JavaFacet;
-use crate::facet::jvm_facet::JvmFacet;
 use std::collections::hash_map::RandomState;
 use std::collections::{BTreeMap, HashSet};
 use walkdir::WalkDir;
+use crate::facet::{JavaFacet, JvmFacet};
 
 pub struct Framework {
     pub name: String,
