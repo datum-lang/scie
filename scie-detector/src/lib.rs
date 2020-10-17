@@ -10,5 +10,5 @@ extern crate serde;
 
 pub mod framework_detector;
 
-pub mod facet;
 pub mod dependency;
+pub mod facet;

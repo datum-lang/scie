@@ -114,10 +114,8 @@ impl Grammar {
 
             for (id, rule) in self.rule_id2desc.clone() {
                 if rule.get_rule()._name.is_some() {
-                    self.scope_name_map.insert(
-                        rule.get_rule()._name.as_ref().unwrap().clone(),
-                        id
-                    );
+                    self.scope_name_map
+                        .insert(rule.get_rule()._name.as_ref().unwrap().clone(), id);
                 }
             }
         }

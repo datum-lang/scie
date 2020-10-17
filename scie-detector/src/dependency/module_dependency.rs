@@ -1,3 +1,1 @@
-pub struct ModuleDependency {
-
-}
+pub struct ModuleDependency {}

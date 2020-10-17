@@ -1,3 +1,1 @@
-pub struct LibraryDependency {
-
-}
+pub struct LibraryDependency {}

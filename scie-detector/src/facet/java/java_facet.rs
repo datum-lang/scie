@@ -2,8 +2,7 @@ use crate::facet::jvm_facet::JvmFacet;
 use regex::Regex;
 
 lazy_static! {
-    static ref JAVA_TEST: Regex =
-        Regex::new(r".*(Tests|Test).java").unwrap();
+    static ref JAVA_TEST: Regex = Regex::new(r".*(Tests|Test).java").unwrap();
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
@@ -13,8 +12,8 @@ pub struct JavaFacet {
 }
 
 impl JavaFacet {
-    pub fn is_test(path: &str) -> bool{
-        return JAVA_TEST.is_match(path)
+    pub fn is_test(path: &str) -> bool {
+        return JAVA_TEST.is_match(path);
     }
 }
 

@@ -3,12 +3,12 @@ pub struct BaseLibrary {
     pub version: String,
     pub group: String,
     pub source: String,
-    pub scope: String
+    pub scope: String,
 }
 
 impl BaseLibrary {
     pub fn is_dev(&self) -> bool {
-        return self.scope == "Test"
+        return self.scope == "Test";
     }
 }
 
@@ -23,7 +23,7 @@ mod tests {
             version: "0.1.1".to_string(),
             group: "".to_string(),
             source: "github.com".to_string(),
-            scope: "Test".to_string()
+            scope: "Test".to_string(),
         };
 
         assert!(base_library.is_dev());

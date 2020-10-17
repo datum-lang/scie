@@ -1,6 +1,4 @@
-pub struct FormatOutput {
-
-}
+pub struct FormatOutput {}
 
 impl FormatOutput {
     pub fn hashmap() {
@@ -27,4 +25,3 @@ mod tests {
         FormatOutput::hashmap();
     }
 }
-
