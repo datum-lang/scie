@@ -1,10 +1,10 @@
 use crate::facet::jvm_facet::JvmFacet;
-// use regex::Regex;
+use regex::Regex;
 
-// lazy_static! {
-//     static ref JAVA_TEST: Regex =
-//         Regex::new(r"").unwrap();
-// }
+lazy_static! {
+    static ref JAVA_TEST: Regex =
+        Regex::new(r".*(Tests|Test).java").unwrap();
+}
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct JavaFacet {
@@ -13,18 +13,19 @@ pub struct JavaFacet {
 }
 
 impl JavaFacet {
-    pub fn is_test() {}
+    pub fn is_test(path: &str) -> bool{
+        return JAVA_TEST.is_match(path)
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use regex::Regex;
+    use crate::facet::java_facet::JavaFacet;
 
     #[test]
     fn should_ident_test_java_file() {
-        let regex = Regex::new(r".*(Tests|Test).java").unwrap();
-        assert!(regex.is_match("src/test/java/com/phodal/scie/ScieTests.java"));
-
-        assert_eq!(false, regex.is_match("Hello.java"));
+        assert_eq!(false, JavaFacet::is_test("Hello.java"));
+        assert_eq!(true, JavaFacet::is_test("HelloTest.java"));
+        assert_eq!(true, JavaFacet::is_test("HelloTests.java"));
     }
 }
