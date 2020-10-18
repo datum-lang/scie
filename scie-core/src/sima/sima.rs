@@ -1,6 +1,7 @@
-use scie_model::artifact::CodeFile;
 use std::fs::File;
 use std::io::{Cursor, Read, Seek, SeekFrom, Write};
+
+use scie_model::artifact::CodeFile;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct Sima {}
@@ -9,8 +10,8 @@ impl Sima {
     pub fn code_to_file(code_file: &CodeFile) -> Cursor<Vec<u8>> {
         let mut c = Cursor::new(Vec::new());
 
-        let mut line = 1;
-        let mut pos = 0;
+        let mut current_line = 1;
+        let mut position = 0;
         let mut index = 0;
 
         let mut stop = false;
@@ -18,20 +19,20 @@ impl Sima {
 
         while !stop {
             let element = &code_file.elements[index];
-            if line < element.line_num {
+            if current_line < element.line_num {
                 c.write_all("\n".as_ref()).unwrap();
-                line = line + 1;
+                current_line = current_line + 1;
                 continue;
             }
 
-            if element.start_index == pos {
+            if element.start_index == position {
                 c.write_all(element.value.as_ref()).unwrap();
-                pos = element.end_index;
+                position = element.end_index;
             } else {
                 let has_next = index < length - 1;
                 if has_next {
                     let next_element = &code_file.elements[index + 1];
-                    let offset = next_element.end_index - pos as i32;
+                    let offset = next_element.end_index - position as i32;
                     c.write_all(" ".repeat(offset as usize).as_ref()).unwrap();
                 }
             }
@@ -66,12 +67,12 @@ impl Sima {
 
 #[cfg(test)]
 mod tests {
+    use std::path::PathBuf;
+
+    use scie_model::artifact::CodeFile;
+
     use crate::analyser::Analyser;
     use crate::sima::Sima;
-    use scie_model::artifact::CodeFile;
-    use std::fs::File;
-    use std::io::{Cursor, Read, Seek, SeekFrom, Write};
-    use std::path::PathBuf;
 
     #[test]
     fn should_build_from_element() {
