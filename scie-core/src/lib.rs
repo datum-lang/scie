@@ -35,19 +35,32 @@ mod tests {
         let mut line = 1;
         let mut pos = 0;
         let mut index = 0;
-        for element in code_file.elements {
+
+        let mut stop = false;
+        let length = code_file.elements.len();
+
+        println!("{:?}", code_file.elements);
+        while !stop {
+            let element = &code_file.elements[index];
             if line < element.line_num {
                 c.write_all("\n".as_ref()).unwrap();
                 line = line + 1;
                 continue;
             }
 
-            println!("{:?}, {:?}", element.start_index, pos);
             if element.start_index == pos {
                 c.write_all(element.value.as_ref()).unwrap();
-                pos = pos + element.end_index;
+                pos = element.end_index;
             } else {
-                c.write_all(" ".as_ref()).unwrap();
+                let has_next = index < length - 1;
+                if has_next {
+                    let next_element = &code_file.elements[index + 1];
+                    let offset = next_element.end_index - pos as i32;
+                    c.write_all(" ".repeat(offset as usize).as_ref()).unwrap();
+                }
+            }
+            if index + 1 == length {
+                stop = true;
             }
             index = index + 1;
         }
