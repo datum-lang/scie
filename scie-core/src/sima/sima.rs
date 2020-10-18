@@ -54,10 +54,10 @@ impl Sima {
         file.write_all(&*out).unwrap();
     }
 
-    fn output_to_vec(c: &mut Cursor<Vec<u8>>) {
+    fn output_to_vec(c: &mut Cursor<Vec<u8>>) -> Vec<u8> {
         let mut out = Vec::new();
         c.read_to_end(&mut out).unwrap();
-        println!("{:?}", out);
+        out
     }
 
     fn write_new_line(c: &mut Cursor<Vec<u8>>) -> usize {
@@ -67,9 +67,9 @@ impl Sima {
 
 #[cfg(test)]
 mod tests {
+    use std::fs::File;
+    use std::io::Read;
     use std::path::PathBuf;
-
-    use scie_model::artifact::CodeFile;
 
     use crate::analyser::Analyser;
     use crate::sima::Sima;
@@ -87,11 +87,16 @@ mod tests {
             .join("simple")
             .join("settings.gradle");
 
+        let origin_buffer = &mut vec![];
+        let mut file = File::open(lang.clone()).unwrap();
+        let _result = file.read_to_end(origin_buffer);
+
         let files = Analyser::ident_by_dir(&lang, false, false);
         let code_file = files[0].clone();
-
         let mut c = Sima::code_to_file(&code_file);
+        let output = Sima::output_to_vec(&mut c);
 
-        Sima::output_to_file("foo.txt".to_string(), &mut c);
+        assert_eq!(14, output.len());
+        assert_eq!(origin_buffer.clone(), output);
     }
 }
