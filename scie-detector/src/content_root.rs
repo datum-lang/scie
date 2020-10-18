@@ -9,3 +9,18 @@ pub struct ContentRoot {
     pub get_test_source_dirs: Vec<String>,
     pub exclude_dirs: Vec<String>,
 }
+
+impl Default for ContentRoot {
+    fn default() -> Self {
+        ContentRoot {
+            root_dirs: vec![],
+            source_dirs: vec![],
+            gen_source_dirs: vec![],
+            resource_dirs: vec![],
+            test_source_dirs: vec![],
+            get_test_dirs: vec![],
+            get_test_source_dirs: vec![],
+            exclude_dirs: vec![]
+        }
+    }
+}

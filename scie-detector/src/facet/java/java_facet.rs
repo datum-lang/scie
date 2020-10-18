@@ -12,6 +12,12 @@ pub struct JavaFacet {
 }
 
 impl JavaFacet {
+    pub fn new() -> JavaFacet {
+        JavaFacet {
+            jvm: Default::default(),
+            include_test: false
+        }
+    }
     pub fn is_test(path: &str) -> bool {
         return JAVA_TEST.is_match(path);
     }

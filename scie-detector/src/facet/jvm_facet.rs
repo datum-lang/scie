@@ -8,3 +8,16 @@ pub struct JvmFacet {
     pub has_kotlin: bool,
     pub has_scala: bool,
 }
+
+impl Default for JvmFacet {
+    fn default() -> Self {
+        JvmFacet {
+            is_gradle: false,
+            is_maven: false,
+            has_java: false,
+            has_groovy: false,
+            has_kotlin: false,
+            has_scala: false
+        }
+    }
+}
