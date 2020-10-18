@@ -19,11 +19,16 @@ mod tests {
         let demo = "Demo";
 
         c.write_all(demo.as_ref()).unwrap();
-        c.write_all("\n".as_ref()).unwrap();
+        write_new_line(&mut c);
 
         c.seek(SeekFrom::Start(0)).unwrap();
 
         output_to_file(&mut c);
+    }
+
+    fn write_new_line(c: &mut Cursor<Vec<u8>>) -> usize {
+        // \n in ascii is 10
+        c.write(&[10]).unwrap()
     }
 
     fn output_to_file(c: &mut Cursor<Vec<u8>>) {
