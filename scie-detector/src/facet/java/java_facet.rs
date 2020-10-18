@@ -15,7 +15,7 @@ impl JavaFacet {
     pub fn new() -> JavaFacet {
         JavaFacet {
             jvm: Default::default(),
-            include_test: false
+            include_test: false,
         }
     }
     pub fn is_test(path: &str) -> bool {

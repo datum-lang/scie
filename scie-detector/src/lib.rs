@@ -10,6 +10,6 @@ extern crate serde;
 
 pub mod framework_detector;
 
+pub mod content_root;
 pub mod dependency;
 pub mod facet;
-pub mod content_root;

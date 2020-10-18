@@ -35,7 +35,7 @@ impl Default for JavaScriptFacet {
             is_typescript: false,
             is_javascript: false,
             has_grunt: false,
-            has_gulp: false
+            has_gulp: false,
         }
     }
 }

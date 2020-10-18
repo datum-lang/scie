@@ -20,7 +20,7 @@ impl Default for ContentRoot {
             test_source_dirs: vec![],
             get_test_dirs: vec![],
             get_test_source_dirs: vec![],
-            exclude_dirs: vec![]
+            exclude_dirs: vec![],
         }
     }
 }

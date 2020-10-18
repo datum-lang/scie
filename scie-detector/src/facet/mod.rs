@@ -7,9 +7,9 @@ pub mod rust_facet;
 pub mod java;
 pub mod jvm_facet;
 
-pub use jvm_facet::JvmFacet;
 pub use java::JavaFacet;
 pub use java::JavaModuleData;
+pub use jvm_facet::JvmFacet;
 
 // JavaScript
 pub mod javascript;

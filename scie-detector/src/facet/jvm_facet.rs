@@ -17,7 +17,7 @@ impl Default for JvmFacet {
             has_java: false,
             has_groovy: false,
             has_kotlin: false,
-            has_scala: false
+            has_scala: false,
         }
     }
 }
