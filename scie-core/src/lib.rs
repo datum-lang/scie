@@ -9,8 +9,53 @@ pub mod sima;
 
 #[cfg(test)]
 mod tests {
+    use crate::analyser::Analyser;
     use std::fs::File;
     use std::io::{Cursor, Read, Seek, SeekFrom, Write};
+    use std::path::PathBuf;
+
+    #[test]
+    fn should_build_from_element() {
+        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).to_path_buf();
+        let lang = root_dir
+            .clone()
+            .parent()
+            .unwrap()
+            .join("fixtures")
+            .join("projects")
+            .join("java")
+            .join("simple")
+            .join("settings.gradle");
+
+        let files = Analyser::ident_by_dir(&lang, false, false);
+        let code_file = files[0].clone();
+
+        let mut c = Cursor::new(Vec::new());
+
+        let mut line = 1;
+        let mut pos = 0;
+        let mut index = 0;
+        for element in code_file.elements {
+            if line < element.line_num {
+                c.write_all("\n".as_ref()).unwrap();
+                line = line + 1;
+                continue;
+            }
+
+            println!("{:?}, {:?}", element.start_index, pos);
+            if element.start_index == pos {
+                c.write_all(element.value.as_ref()).unwrap();
+                pos = pos + element.end_index;
+            } else {
+                c.write_all(" ".as_ref()).unwrap();
+            }
+            index = index + 1;
+        }
+
+        c.seek(SeekFrom::Start(0)).unwrap();
+
+        output_to_file(&mut c);
+    }
 
     #[test]
     fn should_build_fake_file() {
