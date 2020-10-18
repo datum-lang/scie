@@ -1,5 +1,6 @@
 use scie_model::artifact::CodeFile;
-use std::io::{Cursor, Seek, SeekFrom, Write};
+use std::fs::File;
+use std::io::{Cursor, Read, Seek, SeekFrom, Write};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct Sima {}
@@ -43,6 +44,24 @@ impl Sima {
         c.seek(SeekFrom::Start(0)).unwrap();
         c
     }
+
+    fn output_to_file(path: String, c: &mut Cursor<Vec<u8>>) {
+        let mut file = File::create(path).unwrap();
+
+        let mut out = Vec::new();
+        c.read_to_end(&mut out).unwrap();
+        file.write_all(&*out).unwrap();
+    }
+
+    fn output_to_vec(c: &mut Cursor<Vec<u8>>) {
+        let mut out = Vec::new();
+        c.read_to_end(&mut out).unwrap();
+        println!("{:?}", out);
+    }
+
+    fn write_new_line(c: &mut Cursor<Vec<u8>>) -> usize {
+        c.write(&[10]).unwrap()
+    }
 }
 
 #[cfg(test)]
@@ -72,39 +91,6 @@ mod tests {
 
         let mut c = Sima::code_to_file(&code_file);
 
-        output_to_file(&mut c);
-    }
-
-    #[test]
-    fn should_build_fake_file() {
-        let mut c = Cursor::new(Vec::new());
-
-        let demo = "Demo";
-
-        c.write_all(demo.as_ref()).unwrap();
-        write_new_line(&mut c);
-
-        c.seek(SeekFrom::Start(0)).unwrap();
-
-        output_to_file(&mut c);
-    }
-
-    fn write_new_line(c: &mut Cursor<Vec<u8>>) -> usize {
-        // \n in ascii is 10
-        c.write(&[10]).unwrap()
-    }
-
-    fn output_to_file(c: &mut Cursor<Vec<u8>>) {
-        let mut file = File::create("foo.txt").unwrap();
-
-        let mut out = Vec::new();
-        c.read_to_end(&mut out).unwrap();
-        file.write_all(&*out).unwrap();
-    }
-
-    fn output_to_vec(c: &mut Cursor<Vec<u8>>) {
-        let mut out = Vec::new();
-        c.read_to_end(&mut out).unwrap();
-        println!("{:?}", out);
+        Sima::output_to_file("foo.txt".to_string(), &mut c);
     }
 }
