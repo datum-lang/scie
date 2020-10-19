@@ -736,14 +736,24 @@ printf(\"Hello, World!\");
 return 0;
 }
 ";
-        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/c.json", code);
+        let grammar = to_grammar_with_code("extensions/cpp/syntaxes/c.tmLanguage.json", code);
         let first_rule = grammar.rule_id2desc.get(&1).unwrap();
-        assert_eq!(28, first_rule.clone().patterns_length());
+        assert_eq!(38, first_rule.clone().patterns_length());
         debug_output(&grammar, String::from("program.json"));
     }
 
     #[test]
     fn should_build_scope_name_map() {
+        // should return:
+        // CANNOT find grammar for scopeName: source.asm, I am:  source.c
+        // CANNOT find grammar for scopeName: source.x86, I am:  source.c
+        // CANNOT find grammar for scopeName: source.x86_64, I am:  source.c
+        // CANNOT find grammar for scopeName: source.arm, I am:  source.c
+        // CANNOT find rule for scopeName: #evaluation_context, I am:  source.c
+        // CANNOT find rule for scopeName: #comments_context, I am:  source.c
+        // CANNOT find rule for scopeName: #evaluation_context, I am:  source.c
+        // CANNOT find rule for scopeName: #evaluation_context, I am:  source.c
+        // CANNOT find rule for scopeName: #evaluation_context, I am:  source.c
         let code = "
 #include <stdio.h>
 int main() {
@@ -751,14 +761,14 @@ printf(\"Hello, World!\");
 return 0;
 }
 ";
-        let grammar = to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/c.json", code);
-        assert_eq!(78, grammar.scope_name_map.len());
+        let grammar = to_grammar_with_code("extensions/cpp/syntaxes/c.tmLanguage.json", code);
+        assert_eq!(172, grammar.scope_name_map.len());
     }
 
     #[test]
     fn should_identify_c_include() {
         let code = "#include <stdio.h>";
-        let mut grammar = to_grammar_for_test("fixtures/test-cases/first-mate/fixtures/c.json");
+        let mut grammar = to_grammar_for_test("extensions/cpp/syntaxes/c.tmLanguage.json");
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line(code, &mut rule_stack);
 
