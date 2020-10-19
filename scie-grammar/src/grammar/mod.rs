@@ -47,11 +47,8 @@ mod tests {
             .join("Makefile");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code(
-            "fixtures/test-cases/first-mate/fixtures/makefile.json",
-            &*code,
-        );
-        assert_eq!(grammar.rule_id2desc.len(), 82);
+        let grammar = to_grammar_with_code("extensions/make/syntaxes/make.tmLanguage.json", &*code);
+        assert_eq!(grammar.rule_id2desc.len(), 104);
     }
 
     #[test]
@@ -68,9 +65,8 @@ mod tests {
             .join("simple-json.json");
         let code = read_code(&lang_test_dir);
 
-        let grammar =
-            to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/json.json", &*code);
-        assert_eq!(grammar.rule_id2desc.len(), 22);
+        let grammar = to_grammar_with_code("extensions/json/syntaxes/JSON.tmLanguage.json", &*code);
+        assert_eq!(grammar.rule_id2desc.len(), 35);
     }
 
     #[test]
@@ -88,10 +84,10 @@ mod tests {
         let code = read_code(&lang_test_dir);
 
         let grammar = to_grammar_with_code(
-            "fixtures/test-cases/first-mate/fixtures/javascript.json",
+            "extensions/javascript/syntaxes/JavaScript.tmLanguage.json",
             &*code,
         );
-        assert_eq!(grammar.rule_id2desc.len(), 113);
+        assert_eq!(grammar.rule_id2desc.len(), 997);
     }
 
     #[test]
@@ -108,10 +104,8 @@ mod tests {
             .join("test.cs");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code(
-            "fixtures/test-cases/first-mate/fixtures/csharp.json",
-            &*code,
-        );
+        let grammar =
+            to_grammar_with_code("extensions/csharp/syntaxes/csharp.tmLanguage.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 690);
     }
 
