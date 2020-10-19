@@ -1,6 +1,7 @@
+use std::path::PathBuf;
+
 use scie_grammar::grammar::{Grammar, StackElement};
 use scie_model::artifact::Element;
-use std::path::PathBuf;
 
 pub struct Identify {}
 
@@ -36,5 +37,40 @@ impl Identify {
         }
 
         elements
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::path::PathBuf;
+
+    use scie_infra::finder::Finder;
+
+    use crate::identify::Identify;
+
+    #[test]
+    fn should_build_first_file() {
+        let root_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).to_path_buf();
+        let lang = root_dir
+            .clone()
+            .parent()
+            .unwrap()
+            .join("extensions")
+            .join("java")
+            .join("syntaxes")
+            .join("java.tmLanguage.json");
+
+        let code_dir = root_dir
+            .parent()
+            .unwrap()
+            .join("fixtures")
+            .join("test-cases")
+            .join("e2e")
+            .join("java")
+            .join("HelloWorld.java");
+        let code = Finder::read_code(&code_dir);
+
+        let elements = Identify::identify_file(lang, code);
+        assert_eq!(39, elements.len());
     }
 }
