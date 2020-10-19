@@ -4,9 +4,9 @@ use std::io::{Cursor, Read, Seek, SeekFrom, Write};
 use scie_model::artifact::CodeFile;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub struct Sima {}
+pub struct SimaWriter {}
 
-impl Sima {
+impl SimaWriter {
     pub fn code_to_file(code_file: &CodeFile) -> Cursor<Vec<u8>> {
         let mut c = Cursor::new(Vec::new());
 
@@ -72,7 +72,7 @@ mod tests {
     use std::path::PathBuf;
 
     use crate::analyser::Analyser;
-    use crate::sima::Sima;
+    use crate::sima::SimaWriter;
 
     #[test]
     fn should_build_from_element() {
@@ -93,8 +93,8 @@ mod tests {
 
         let files = Analyser::ident_by_dir(&lang, false, false);
         let code_file = files[0].clone();
-        let mut c = Sima::code_to_file(&code_file);
-        let output = Sima::output_to_vec(&mut c);
+        let mut c = SimaWriter::code_to_file(&code_file);
+        let output = SimaWriter::output_to_vec(&mut c);
 
         assert_eq!(14, output.len());
         assert_eq!(origin_buffer.clone(), output);
