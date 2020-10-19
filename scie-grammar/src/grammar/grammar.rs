@@ -916,4 +916,16 @@ hellomake: $(OBJ)
         let x: Vec<String> = tokens.iter().map(|token| token.len().to_string()).collect();
         assert_eq!(String::from("6,14"), x.join(","));
     }
+
+    #[test]
+    fn should_build_for_groovy() {
+        let mut grammar = to_grammar_for_test("extensions/groovy/syntaxes/groovy.tmLanguage.json");
+        let result = grammar.tokenize_line("include \":app\"", &mut None);
+        let tokens = result.tokens.clone();
+        assert_eq!(4, tokens.len());
+        assert_eq!(0, tokens[0].start_index);
+        assert_eq!(8, tokens[1].start_index);
+        assert_eq!(9, tokens[2].start_index);
+        assert_eq!(13, tokens[3].start_index);
+    }
 }
