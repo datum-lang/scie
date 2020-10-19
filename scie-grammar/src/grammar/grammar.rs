@@ -783,9 +783,8 @@ return 0;
     #[test]
     fn should_build_json_grammar() {
         let code = "{}";
-        let grammar =
-            to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/json.json", code);
-        assert_eq!(grammar.rule_id2desc.len(), 22);
+        let grammar = to_grammar_with_code("extensions/json/syntaxes/json.tmLanguage.json", code);
+        assert_eq!(grammar.rule_id2desc.len(), 35);
         debug_output(&grammar, String::from("program.json"));
     }
 
@@ -797,7 +796,7 @@ return 0;
         assert_eq!(grammar.rule_id2desc.len(), 101);
 
         let tokens = get_all_tokens(
-            "fixtures/test-cases/first-mate/fixtures/html.json",
+            "extensions/html/syntaxes/html.tmLanguage.json",
             code.clone(),
         );
         assert_eq!(1, tokens.len());
@@ -810,10 +809,8 @@ CFLAGS=-I.
 DEPS = hellomake.h
 OBJ = hellomake.o hellofunc.o
 ";
-        let mut grammar = to_grammar_with_code(
-            "fixtures/test-cases/first-mate/fixtures/makefile.json",
-            code,
-        );
+        let mut grammar =
+            to_grammar_with_code("extensions/make/syntaxes/make.tmLanguage.json", code);
         let mut end_rule_count = 0;
         for (_x, rule) in grammar.rule_id2desc.iter() {
             let rule_instance = rule.get_rule_instance();
@@ -822,8 +819,8 @@ OBJ = hellomake.o hellofunc.o
                 end_rule_count = end_rule_count + 1;
             }
         }
-        assert_eq!(grammar.get_rule(1).patterns_length(), 4);
-        assert_eq!(end_rule_count, 24);
+        assert_eq!(grammar.get_rule(1).patterns_length(), 6);
+        assert_eq!(end_rule_count, 29);
         debug_output(&grammar, String::from("program.json"));
     }
 
@@ -839,20 +836,18 @@ OBJ = hellomake.o hellofunc.o
 
 hellomake: $(OBJ)
 \t$(CC) -o $@ $^ $(CFLAGS)";
-        let mut grammar = to_grammar_with_code(
-            "fixtures/test-cases/first-mate/fixtures/makefile.json",
-            code,
-        );
-        assert_eq!(grammar.rule_id2desc.len(), 82);
-        assert_eq!(grammar.get_rule(1).patterns_length(), 4);
+        let mut grammar =
+            to_grammar_with_code("extensions/make/syntaxes/make.tmLanguage.json", code);
+        assert_eq!(grammar.rule_id2desc.len(), 104);
+        assert_eq!(grammar.get_rule(1).patterns_length(), 6);
 
         let tokens = get_all_tokens(
-            "fixtures/test-cases/first-mate/fixtures/makefile.json",
+            "extensions/make/syntaxes/make.tmLanguage.json",
             code.clone(),
         );
         assert_eq!(10, tokens.len());
         let x: Vec<String> = tokens.iter().map(|token| token.len().to_string()).collect();
-        assert_eq!(String::from("3,3,4,4,1,9,14,1,6,14"), x.join(","));
+        assert_eq!(String::from("3,3,4,4,1,9,12,1,6,12"), x.join(","));
     }
 
     pub fn get_all_tokens(grammar_path: &str, code: &str) -> Vec<Vec<IToken>> {
@@ -872,8 +867,7 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues() {
-        let mut grammar =
-            to_grammar_for_test("fixtures/test-cases/first-mate/fixtures/makefile.json");
+        let mut grammar = to_grammar_for_test("extensions/make/syntaxes/make.tmLanguage.json");
         let result = grammar.tokenize_line("%.o: %.c $(DEPS)", &mut None);
         let tokens = result.tokens.clone();
         assert_eq!(9, tokens.len());
@@ -892,8 +886,7 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues2() {
-        let mut grammar =
-            to_grammar_for_test("fixtures/test-cases/first-mate/fixtures/makefile.json");
+        let mut grammar = to_grammar_for_test("extensions/make/syntaxes/make.tmLanguage.json");
 
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line("hellomake: $(OBJ)", &mut rule_stack);
@@ -901,7 +894,7 @@ hellomake: $(OBJ)
 
         rule_stack = result.rule_stack;
         let result2 = grammar.tokenize_line("\t$(CC) -o $@ $^ $(CFLAGS)", &mut rule_stack);
-        assert_eq!(14, result2.tokens.len());
+        assert_eq!(12, result2.tokens.len());
     }
 
     #[test]
