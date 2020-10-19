@@ -44,9 +44,8 @@ impl Identify {
 mod tests {
     use std::path::PathBuf;
 
+    use crate::analyser::Identify;
     use scie_infra::finder::Finder;
-
-    use crate::identify::Identify;
 
     #[test]
     fn should_build_first_file() {
