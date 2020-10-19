@@ -13,6 +13,54 @@ goal: build a better code figure engine for code refactoring.
  - scie-model. common model of VSCode models & [Miao](https://github.com/phodal/miao/) Model.
  - scie-scanner. Rewrite of [VS Code Oniguruma](https://github.com/microsoft/vscode-oniguruma)
 
+## Usage
+
+### Scie CLI
+
+```bash
+scie-cli 0.1
+Phodal HUANG<h@phodal.com>
+
+USAGE:
+    scie-cli [FLAGS] [OPTIONS]
+
+FLAGS:
+    -h, --help       Prints help information
+    -v, --verbose
+    -V, --version    Prints version information
+
+OPTIONS:
+    -c, --config <config>    [default: default.conf]
+    -p, --path <path>        [default: .]
+```
+
+## DevSetup
+
+1. git clone
+
+```
+git clone https://github.com/phodal/scie/
+```
+
+2. run
+
+```
+cargo run scie
+```
+
+install just
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to DEST
+```
+
+run tests
+
+```
+just tests
+```
+
+
 ## Guideline
 
 major issues:
@@ -43,32 +91,6 @@ Todo:
  - [ ] analyser
     - [ ] line counts
     - [ ] keywords map
-
-## DevSetup
-
-1. git clone
-
-```
-git clone https://github.com/phodal/scie/
-```
-
-2. run
-
-```
-cargo run scie
-```
-
-install just
-
-```
-curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to DEST
-```
-
-run tests
-
-```
-just tests
-```
 
 ## Documents
 
