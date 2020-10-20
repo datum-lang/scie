@@ -104,7 +104,7 @@ Todo:
 License
 ---
 
-[scie-grammar](scie-gramma/r) based on [vscode-textmate](https://github.com/microsoft/vscode-textmate) with MIT LICENSE see in  [scie-grammar/src/scanner/LICENSE](scie-grammar/src/scanner/LICENSE)
+[scie-grammar](scie-gramma/) based on [vscode-textmate](https://github.com/microsoft/vscode-textmate) with MIT LICENSE see in  [scie-grammar/src/scanner/LICENSE](scie-grammar/src/scanner/LICENSE)
 
 [onigvs](onigvs/) based on [rust-onig](https://github.com/rust-onig/rust-onig)
 
