@@ -47,6 +47,7 @@ pub struct Grammar {
     pub last_rule_id: i32,
     pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
     pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
+    // pub rule_container: &'a RuleContainer,
     pub scope_name_map: Map<String, i32>,
     pub _token_type_matchers: Vec<TokenTypeMatcher>,
 }
@@ -87,6 +88,7 @@ impl Grammar {
             grammar: inited_grammar,
             root_id: -1,
             rule_id2desc: Map::new(),
+            // rule_container: &Default::default(),
             scope_name_map: Map::new(),
             _token_type_matchers: vec![],
             _empty_rule,

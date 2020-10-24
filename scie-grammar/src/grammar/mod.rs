@@ -3,6 +3,7 @@ pub mod grammar_reader;
 pub mod line_tokens;
 
 pub mod local_stack_element;
+pub mod rule_container;
 pub mod scope_list_element;
 pub mod scope_metadata;
 pub mod stack_element;
