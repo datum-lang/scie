@@ -660,7 +660,7 @@ impl Grammar {
     }
 
     pub fn from_code(grammar_path: &str, code: &str) -> Self {
-        let mut grammar = to_grammar_for_test(grammar_path);
+        let mut grammar = Grammar::from_path_for_test(grammar_path);
         let c_code = String::from(code);
         let mut rule_stack = Some(StackElement::null());
         for line in c_code.lines() {
@@ -715,14 +715,6 @@ impl IRuleRegistry for Grammar {
     }
 }
 
-pub fn to_grammar_for_test(grammar_path: &str) -> Grammar {
-    Grammar::from_path_for_test(grammar_path)
-}
-
-pub fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
-    Grammar::from_code(grammar_path, code)
-}
-
 #[cfg(test)]
 mod tests {
     use std::fs::File;
@@ -743,7 +735,7 @@ printf(\"Hello, World!\");
 return 0;
 }
 ";
-        let grammar = to_grammar_with_code("extensions/cpp/syntaxes/c.tmLanguage.json", code);
+        let grammar = Grammar::from_code(grammar_path, code);
         let first_rule = grammar.rule_id2desc.get(&1).unwrap();
         assert_eq!(38, first_rule.clone().patterns_length());
         debug_output(&grammar, String::from("program.json"));
@@ -751,16 +743,6 @@ return 0;
 
     #[test]
     fn should_build_scope_name_map() {
-        // should return:
-        // CANNOT find grammar for scopeName: source.asm, I am:  source.c
-        // CANNOT find grammar for scopeName: source.x86, I am:  source.c
-        // CANNOT find grammar for scopeName: source.x86_64, I am:  source.c
-        // CANNOT find grammar for scopeName: source.arm, I am:  source.c
-        // CANNOT find rule for scopeName: #evaluation_context, I am:  source.c
-        // CANNOT find rule for scopeName: #comments_context, I am:  source.c
-        // CANNOT find rule for scopeName: #evaluation_context, I am:  source.c
-        // CANNOT find rule for scopeName: #evaluation_context, I am:  source.c
-        // CANNOT find rule for scopeName: #evaluation_context, I am:  source.c
         let code = "
 #include <stdio.h>
 int main() {
@@ -768,14 +750,14 @@ printf(\"Hello, World!\");
 return 0;
 }
 ";
-        let grammar = to_grammar_with_code("extensions/cpp/syntaxes/c.tmLanguage.json", code);
+        let grammar = Grammar::from_code(grammar_path, code);
         assert_eq!(172, grammar.scope_name_map.len());
     }
 
     #[test]
     fn should_identify_c_include() {
         let code = "#include <stdio.h>";
-        let mut grammar = to_grammar_for_test("extensions/cpp/syntaxes/c.tmLanguage.json");
+        let mut grammar = Grammar::from_path_for_test(grammar_path);
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line(code, &mut rule_stack);
 
@@ -800,7 +782,7 @@ return 0;
     #[test]
     fn should_build_json_grammar() {
         let code = "{}";
-        let grammar = to_grammar_with_code("extensions/json/syntaxes/json.tmLanguage.json", code);
+        let grammar = Grammar::from_code(grammar_path, code);
         assert_eq!(grammar.rule_id2desc.len(), 35);
         debug_output(&grammar, String::from("program.json"));
     }
@@ -808,8 +790,7 @@ return 0;
     #[test]
     fn should_build_html_grammar_for_back_refs() {
         let code = "<html></html>";
-        let grammar =
-            to_grammar_with_code("fixtures/test-cases/first-mate/fixtures/html.json", code);
+        let grammar = Grammar::from_code(grammar_path, code);
         assert_eq!(grammar.rule_id2desc.len(), 101);
 
         let tokens = get_all_tokens(
@@ -826,8 +807,7 @@ CFLAGS=-I.
 DEPS = hellomake.h
 OBJ = hellomake.o hellofunc.o
 ";
-        let mut grammar =
-            to_grammar_with_code("extensions/make/syntaxes/make.tmLanguage.json", code);
+        let mut grammar = Grammar::from_code(grammar_path, code);
         let mut end_rule_count = 0;
         for (_x, rule) in grammar.rule_id2desc.iter() {
             let rule_instance = rule.get_rule_instance();
@@ -853,8 +833,7 @@ OBJ = hellomake.o hellofunc.o
 
 hellomake: $(OBJ)
 \t$(CC) -o $@ $^ $(CFLAGS)";
-        let mut grammar =
-            to_grammar_with_code("extensions/make/syntaxes/make.tmLanguage.json", code);
+        let mut grammar = Grammar::from_code(grammar_path, code);
         assert_eq!(grammar.rule_id2desc.len(), 104);
         assert_eq!(grammar.get_rule(1).patterns_length(), 6);
 
@@ -868,7 +847,7 @@ hellomake: $(OBJ)
     }
 
     pub fn get_all_tokens(grammar_path: &str, code: &str) -> Vec<Vec<IToken>> {
-        let mut grammar = to_grammar_for_test(grammar_path);
+        let mut grammar = Grammar::from_path_for_test(grammar_path);
         let c_code = String::from(code);
         let mut rule_stack = Some(StackElement::null());
         let mut all_tokens: Vec<Vec<IToken>> = vec![];
@@ -884,7 +863,7 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues() {
-        let mut grammar = to_grammar_for_test("extensions/make/syntaxes/make.tmLanguage.json");
+        let mut grammar = Grammar::from_path_for_test(grammar_path);
         let result = grammar.tokenize_line("%.o: %.c $(DEPS)", &mut None);
         let tokens = result.tokens.clone();
         assert_eq!(9, tokens.len());
@@ -903,7 +882,7 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_resolve_make_file_error_issues2() {
-        let mut grammar = to_grammar_for_test("extensions/make/syntaxes/make.tmLanguage.json");
+        let mut grammar = Grammar::from_path_for_test(grammar_path);
 
         let mut rule_stack = Some(StackElement::null());
         let result = grammar.tokenize_line("hellomake: $(OBJ)", &mut rule_stack);
@@ -929,7 +908,7 @@ hellomake: $(OBJ)
 
     #[test]
     fn should_build_for_groovy() {
-        let mut grammar = to_grammar_for_test("extensions/groovy/syntaxes/groovy.tmLanguage.json");
+        let mut grammar = Grammar::from_path_for_test(grammar_path);
         let result = grammar.tokenize_line("include \":app\"", &mut None);
         let tokens = result.tokens.clone();
         assert_eq!(4, tokens.len());

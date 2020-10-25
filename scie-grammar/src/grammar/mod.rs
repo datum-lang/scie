@@ -48,7 +48,7 @@ mod tests {
             .join("Makefile");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code("extensions/make/syntaxes/make.tmLanguage.json", &*code);
+        let grammar = Grammar::from_code(grammar_path, code);
         assert_eq!(grammar.rule_id2desc.len(), 104);
     }
 
@@ -66,7 +66,7 @@ mod tests {
             .join("simple-json.json");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code("extensions/json/syntaxes/JSON.tmLanguage.json", &*code);
+        let grammar = Grammar::from_code(grammar_path, code);
         assert_eq!(grammar.rule_id2desc.len(), 35);
     }
 
@@ -84,10 +84,7 @@ mod tests {
             .join("pairs.js");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code(
-            "extensions/javascript/syntaxes/JavaScript.tmLanguage.json",
-            &*code,
-        );
+        let grammar = Grammar::from_code(grammar_path, code);
         assert_eq!(grammar.rule_id2desc.len(), 997);
     }
 
@@ -105,8 +102,7 @@ mod tests {
             .join("test.cs");
         let code = read_code(&lang_test_dir);
 
-        let grammar =
-            to_grammar_with_code("extensions/csharp/syntaxes/csharp.tmLanguage.json", &*code);
+        let grammar = Grammar::from_code(grammar_path, code);
         assert_eq!(grammar.rule_id2desc.len(), 690);
     }
 
@@ -124,7 +120,7 @@ mod tests {
             .join("rust.rs.txt");
         let code = read_code(&lang_test_dir);
 
-        let grammar = to_grammar_with_code("extensions/rust/syntaxes/rust.tmLanguage.json", &*code);
+        let grammar = Grammar::from_code(grammar_path, code);
         assert_eq!(grammar.rule_id2desc.len(), 76);
     }
 }
