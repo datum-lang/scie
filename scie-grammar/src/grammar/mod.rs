@@ -22,7 +22,7 @@ pub struct MatchRuleResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::grammar::grammar::to_grammar_with_code;
+    use crate::grammar::Grammar;
     use std::fs::File;
     use std::io::Read;
     use std::path::PathBuf;
@@ -48,7 +48,7 @@ mod tests {
             .join("Makefile");
         let code = read_code(&lang_test_dir);
 
-        let grammar = Grammar::from_code(grammar_path, code);
+        let grammar = Grammar::from_code("extensions/make/syntaxes/make.tmLanguage.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 104);
     }
 
@@ -66,7 +66,7 @@ mod tests {
             .join("simple-json.json");
         let code = read_code(&lang_test_dir);
 
-        let grammar = Grammar::from_code(grammar_path, code);
+        let grammar = Grammar::from_code("extensions/json/syntaxes/JSON.tmLanguage.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 35);
     }
 
@@ -84,7 +84,10 @@ mod tests {
             .join("pairs.js");
         let code = read_code(&lang_test_dir);
 
-        let grammar = Grammar::from_code(grammar_path, code);
+        let grammar = Grammar::from_code(
+            "extensions/javascript/syntaxes/JavaScript.tmLanguage.json",
+            &*code,
+        );
         assert_eq!(grammar.rule_id2desc.len(), 997);
     }
 
@@ -102,7 +105,8 @@ mod tests {
             .join("test.cs");
         let code = read_code(&lang_test_dir);
 
-        let grammar = Grammar::from_code(grammar_path, code);
+        let grammar =
+            Grammar::from_code("extensions/csharp/syntaxes/csharp.tmLanguage.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 690);
     }
 
@@ -120,7 +124,7 @@ mod tests {
             .join("rust.rs.txt");
         let code = read_code(&lang_test_dir);
 
-        let grammar = Grammar::from_code(grammar_path, code);
+        let grammar = Grammar::from_code("extensions/rust/syntaxes/rust.tmLanguage.json", &*code);
         assert_eq!(grammar.rule_id2desc.len(), 76);
     }
 }
