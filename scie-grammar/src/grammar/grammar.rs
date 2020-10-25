@@ -14,8 +14,7 @@ use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{
-    AbstractRule, BeginEndRule, BeginWhileRule, EmptyRule, IGrammarRegistry, IRuleFactoryHelper,
-    IRuleRegistry,
+    AbstractRule, BeginEndRule, BeginWhileRule, EmptyRule, IGrammarRegistry, IRuleRegistry,
 };
 
 pub trait Matcher {}
@@ -644,6 +643,47 @@ impl Grammar {
 
         Grammar::new(g)
     }
+
+    pub fn from_path_for_test(grammar_path: &str) -> Self {
+        let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        path = PathBuf::from(path.parent().unwrap());
+        path.push(grammar_path);
+
+        println!("{:?}", path);
+
+        let mut file = File::open(path).unwrap();
+        let mut data = String::new();
+        file.read_to_string(&mut data).unwrap();
+
+        let g: IRawGrammar = serde_json::from_str(&data).unwrap();
+        Grammar::new(g)
+    }
+
+    pub fn from_code(grammar_path: &str, code: &str) -> Self {
+        let mut grammar = to_grammar_for_test(grammar_path);
+        let c_code = String::from(code);
+        let mut rule_stack = Some(StackElement::null());
+        for line in c_code.lines() {
+            let result = grammar.tokenize_line(line, &mut rule_stack);
+            rule_stack = result.rule_stack;
+            for token in result.tokens {
+                let start = token.start_index.clone() as usize;
+                let end = token.end_index.clone() as usize;
+                let new_line: String = String::from(line)
+                    .chars()
+                    .skip(start)
+                    .take(end - start)
+                    .collect();
+                let token_str: String = token.scopes.join(", ");
+                println!(
+                    " - token from {} to {} ({}) with scopes {}",
+                    token.start_index, token.end_index, new_line, token_str
+                )
+            }
+        }
+
+        grammar
+    }
 }
 
 impl IGrammarRegistry for Grammar {
@@ -676,44 +716,11 @@ impl IRuleRegistry for Grammar {
 }
 
 pub fn to_grammar_for_test(grammar_path: &str) -> Grammar {
-    let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    path = PathBuf::from(path.parent().unwrap());
-    path.push(grammar_path);
-
-    println!("{:?}", path);
-
-    let mut file = File::open(path).unwrap();
-    let mut data = String::new();
-    file.read_to_string(&mut data).unwrap();
-
-    let g: IRawGrammar = serde_json::from_str(&data).unwrap();
-    Grammar::new(g)
+    Grammar::from_path_for_test(grammar_path)
 }
 
 pub fn to_grammar_with_code(grammar_path: &str, code: &str) -> Grammar {
-    let mut grammar = to_grammar_for_test(grammar_path);
-    let c_code = String::from(code);
-    let mut rule_stack = Some(StackElement::null());
-    for line in c_code.lines() {
-        let result = grammar.tokenize_line(line, &mut rule_stack);
-        rule_stack = result.rule_stack;
-        for token in result.tokens {
-            let start = token.start_index.clone() as usize;
-            let end = token.end_index.clone() as usize;
-            let new_line: String = String::from(line)
-                .chars()
-                .skip(start)
-                .take(end - start)
-                .collect();
-            let token_str: String = token.scopes.join(", ");
-            println!(
-                " - token from {} to {} ({}) with scopes {}",
-                token.start_index, token.end_index, new_line, token_str
-            )
-        }
-    }
-
-    grammar
+    Grammar::from_code(grammar_path, code)
 }
 
 #[cfg(test)]
