@@ -9,6 +9,7 @@ use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
 use crate::grammar::line_tokens::{IToken, LineTokens, TokenTypeMatcher};
 use crate::grammar::local_stack_element::LocalStackElement;
+use crate::grammar::rule_container::RuleContainer;
 use crate::grammar::{MatchRuleResult, ScopeListElement, StackElement};
 use crate::inter::{IRawGrammar, IRawRepository, IRawRepositoryMap, IRawRule};
 use crate::rule::abstract_rule::RuleEnum;
@@ -46,7 +47,7 @@ pub struct Grammar {
     pub last_rule_id: i32,
     pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
     pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
-    // pub rule_container: &'a RuleContainer,
+    pub rule_container: Box<RuleContainer>,
     pub scope_name_map: Map<String, i32>,
     pub _token_type_matchers: Vec<TokenTypeMatcher>,
 }
@@ -87,7 +88,7 @@ impl Grammar {
             grammar: inited_grammar,
             root_id: -1,
             rule_id2desc: Map::new(),
-            // rule_container: &Default::default(),
+            rule_container: Box::new(Default::default()),
             scope_name_map: Map::new(),
             _token_type_matchers: vec![],
             _empty_rule,
