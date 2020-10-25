@@ -1,3 +1,10 @@
+use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
+
+pub use self::grammar::Grammar;
+pub use self::scope_list_element::ScopeListElement;
+pub use self::scope_metadata::ScopeMetadata;
+pub use self::stack_element::StackElement;
+
 pub mod grammar;
 pub mod grammar_reader;
 pub mod line_tokens;
@@ -8,12 +15,6 @@ pub mod scope_list_element;
 pub mod scope_metadata;
 pub mod stack_element;
 
-pub use self::grammar::Grammar;
-pub use self::scope_list_element::ScopeListElement;
-pub use self::scope_metadata::ScopeMetadata;
-pub use self::stack_element::StackElement;
-use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
-
 #[derive(Debug, Clone, Serialize)]
 pub struct MatchRuleResult {
     capture_indices: Vec<IOnigCaptureIndex>,
@@ -22,10 +23,11 @@ pub struct MatchRuleResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::grammar::Grammar;
     use std::fs::File;
     use std::io::Read;
     use std::path::PathBuf;
+
+    use crate::grammar::Grammar;
 
     fn read_code(lang_test_dir: &PathBuf) -> String {
         let mut file = File::open(lang_test_dir).unwrap();
