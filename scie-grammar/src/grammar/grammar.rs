@@ -46,7 +46,7 @@ pub struct Grammar {
     pub grammar: IRawGrammar,
     pub last_rule_id: i32,
     pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
-    pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
+    // pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
     pub rule_container: Box<RuleContainer>,
     pub scope_name_map: Map<String, i32>,
     pub _token_type_matchers: Vec<TokenTypeMatcher>,
@@ -87,7 +87,7 @@ impl Grammar {
             last_rule_id: 0,
             grammar: inited_grammar,
             root_id: -1,
-            rule_id2desc: Map::new(),
+            // rule_id2desc: Map::new(),
             rule_container: Box::new(Default::default()),
             scope_name_map: Map::new(),
             _token_type_matchers: vec![],
@@ -114,7 +114,7 @@ impl Grammar {
                 "",
             );
 
-            for (id, rule) in self.rule_id2desc.iter() {
+            for (id, rule) in self.rule_container.rule_id2desc.iter() {
                 if rule.get_rule()._name.is_some() {
                     self.scope_name_map
                         .insert(rule.get_rule()._name.as_ref().unwrap().clone(), *id);
@@ -623,7 +623,7 @@ impl Grammar {
     }
 
     pub fn dispose(&self) {
-        for (_key, _rule) in self.rule_id2desc.iter() {
+        for (_key, _rule) in self.rule_container.rule_id2desc.iter() {
             // rule.dispose();
         }
     }
@@ -704,14 +704,16 @@ impl IRuleRegistry for Grammar {
     }
 
     fn get_rule(&mut self, pattern_id: i32) -> &mut Box<dyn AbstractRule> {
-        self.rule_id2desc
+        return self
+            .rule_container
+            .rule_id2desc
             .get_mut(&pattern_id)
-            .unwrap_or(self._empty_rule.get_mut(&-2).unwrap())
+            .unwrap_or(self._empty_rule.get_mut(&-2).unwrap());
     }
 
     fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32 {
         let id = result.id();
-        self.rule_id2desc.insert(id, result);
+        self.rule_container.rule_id2desc.insert(id, result);
         id
     }
 }
@@ -736,7 +738,7 @@ return 0;
 }
 ";
         let grammar = Grammar::from_code("extensions/cpp/syntaxes/c.tmLanguage.json", code);
-        let first_rule = grammar.rule_id2desc.get(&1).unwrap();
+        let first_rule = grammar.rule_container.rule_id2desc.get(&1).unwrap();
         assert_eq!(38, first_rule.clone().patterns_length());
         debug_output(&grammar, String::from("program.json"));
     }
@@ -771,7 +773,7 @@ return 0;
     }
 
     fn debug_output(grammar: &Grammar, path: String) {
-        let j = serde_json::to_string(&grammar.rule_id2desc).unwrap();
+        let j = serde_json::to_string(&grammar.rule_container.rule_id2desc).unwrap();
         let mut file = File::create(path).unwrap();
         match file.write_all(j.as_bytes()) {
             Ok(_) => {}
@@ -783,7 +785,7 @@ return 0;
     fn should_build_json_grammar() {
         let code = "{}";
         let grammar = Grammar::from_code("extensions/json/syntaxes/json.tmLanguage.json", code);
-        assert_eq!(grammar.rule_id2desc.len(), 35);
+        assert_eq!(grammar.rule_container.rule_id2desc.len(), 35);
         debug_output(&grammar, String::from("program.json"));
     }
 
@@ -791,7 +793,7 @@ return 0;
     fn should_build_html_grammar_for_back_refs() {
         let code = "<html></html>";
         let grammar = Grammar::from_code("fixtures/test-cases/first-mate/fixtures/html.json", code);
-        assert_eq!(grammar.rule_id2desc.len(), 101);
+        assert_eq!(grammar.rule_container.rule_id2desc.len(), 101);
 
         let tokens = get_all_tokens(
             "extensions/html/syntaxes/html.tmLanguage.json",
@@ -809,7 +811,7 @@ OBJ = hellomake.o hellofunc.o
 ";
         let mut grammar = Grammar::from_code("extensions/make/syntaxes/make.tmLanguage.json", code);
         let mut end_rule_count = 0;
-        for (_x, rule) in grammar.rule_id2desc.iter() {
+        for (_x, rule) in grammar.rule_container.rule_id2desc.iter() {
             let rule_instance = rule.get_rule_instance();
             if let RuleEnum::BeginEndRule(rule) = rule_instance {
                 assert_eq!(rule._end.rule_id, -1);
@@ -834,7 +836,7 @@ OBJ = hellomake.o hellofunc.o
 hellomake: $(OBJ)
 \t$(CC) -o $@ $^ $(CFLAGS)";
         let mut grammar = Grammar::from_code("extensions/make/syntaxes/make.tmLanguage.json", code);
-        assert_eq!(grammar.rule_id2desc.len(), 104);
+        assert_eq!(grammar.rule_container.rule_id2desc.len(), 104);
         assert_eq!(grammar.get_rule(1).patterns_length(), 6);
 
         let tokens = get_all_tokens(
