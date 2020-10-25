@@ -78,7 +78,7 @@ pub fn init_grammar(raw_grammar: IRawGrammar, _base: Option<IRawRule>) -> IRawGr
 }
 
 impl Grammar {
-    pub fn new(raw_grammar: IRawGrammar) -> Grammar {
+    pub fn new(raw_grammar: IRawGrammar) -> Self {
         let inited_grammar = init_grammar(raw_grammar, None);
 
         let mut _empty_rule = Map::new();
@@ -645,8 +645,6 @@ impl Grammar {
         Grammar::new(g)
     }
 }
-
-impl IRuleFactoryHelper for Grammar {}
 
 impl IGrammarRegistry for Grammar {
     fn get_external_grammar(
