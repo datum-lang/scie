@@ -627,7 +627,7 @@ impl Grammar {
         }
     }
 
-    pub fn from_file(grammar_path: &str) -> Grammar {
+    pub fn from_file(grammar_path: &str) -> Self {
         let path = Path::new(grammar_path);
         let mut file = File::open(path).unwrap();
         let mut data = String::new();
