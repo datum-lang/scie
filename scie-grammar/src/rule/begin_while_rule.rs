@@ -1,8 +1,8 @@
-use crate::grammar::Grammar;
+use crate::grammar::rule_container::RuleContainer;
 use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
-use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, Rule};
+use crate::rule::{AbstractRule, CompiledRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
 use std::any::Any;
 
@@ -111,15 +111,15 @@ impl AbstractRule for BeginWhileRule {
 
     fn collect_patterns_recursive(
         &mut self,
-        grammar: &mut Grammar,
+        container: &mut RuleContainer,
         out: &mut RegExpSourceList,
         is_first: bool,
     ) {
         if is_first {
             for x in self.patterns.iter() {
-                let mut rule = grammar.get_rule(*x).clone();
-                rule.collect_patterns_recursive(grammar, out, false);
-                grammar.register_rule(rule);
+                let mut rule = container.get_rule(*x).clone();
+                rule.collect_patterns_recursive(container, out, false);
+                container.register_rule(rule);
             }
         } else {
             out.push(self._begin.clone());
@@ -128,7 +128,7 @@ impl AbstractRule for BeginWhileRule {
 
     fn compile(
         &mut self,
-        grammar: &mut Grammar,
+        container: &mut RuleContainer,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -136,7 +136,7 @@ impl AbstractRule for BeginWhileRule {
         if self._cached_compiled_patterns.is_none() {
             let mut cached_compiled_patterns = RegExpSourceList::new();
 
-            self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
+            self.collect_patterns_recursive(container, &mut cached_compiled_patterns, true);
             self._cached_compiled_patterns = Some(cached_compiled_patterns);
         }
 

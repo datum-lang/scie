@@ -1,4 +1,4 @@
-use crate::grammar::Grammar;
+use crate::grammar::rule_container::RuleContainer;
 use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, CompiledRule, Rule};
@@ -54,7 +54,7 @@ impl AbstractRule for MatchRule {
     }
     fn collect_patterns_recursive(
         &mut self,
-        _grammar: &mut Grammar,
+        _container: &mut RuleContainer,
         out: &mut RegExpSourceList,
         _is_first: bool,
     ) {
@@ -63,14 +63,14 @@ impl AbstractRule for MatchRule {
 
     fn compile(
         &mut self,
-        grammar: &mut Grammar,
+        container: &mut RuleContainer,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
         if self._cached_compiled_patterns.is_none() {
             let mut cached_compiled_patterns = RegExpSourceList::new();
-            self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
+            self.collect_patterns_recursive(container, &mut cached_compiled_patterns, true);
             self._cached_compiled_patterns = Some(cached_compiled_patterns);
         }
 

@@ -1,4 +1,4 @@
-use crate::grammar::Grammar;
+use crate::grammar::rule_container::RuleContainer;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, CompiledRule, RegExpSourceList, Rule};
 use std::any::Any;
@@ -34,7 +34,7 @@ impl AbstractRule for EmptyRule {
     }
     fn collect_patterns_recursive(
         &mut self,
-        _grammar: &mut Grammar,
+        _container: &mut RuleContainer,
         _out: &mut RegExpSourceList,
         _is_first: bool,
     ) {
@@ -43,7 +43,7 @@ impl AbstractRule for EmptyRule {
 
     fn compile(
         &mut self,
-        _grammar: &mut Grammar,
+        _container: &mut RuleContainer,
         _end_regex_source: &Option<String>,
         _allow_a: bool,
         _allow_g: bool,

@@ -1,11 +1,13 @@
-use crate::grammar::Grammar;
+use std::any::Any;
+
+use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
+
+use crate::grammar::rule_container::RuleContainer;
 use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
-use crate::rule::{AbstractRule, CompiledRule, IRuleRegistry, Rule};
+use crate::rule::{AbstractRule, CompiledRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
-use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
-use std::any::Any;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
@@ -108,15 +110,15 @@ impl AbstractRule for BeginEndRule {
 
     fn collect_patterns_recursive(
         &mut self,
-        grammar: &mut Grammar,
+        container: &mut RuleContainer,
         mut out: &mut RegExpSourceList,
         is_first: bool,
     ) {
         if is_first {
             for pattern_id in self.patterns.iter() {
-                let mut rule = grammar.get_rule(*pattern_id).clone();
-                rule.collect_patterns_recursive(grammar, &mut out, false);
-                grammar.register_rule(rule);
+                let mut rule = container.get_rule(*pattern_id).clone();
+                rule.collect_patterns_recursive(container, &mut out, false);
+                container.register_rule(rule);
             }
         } else {
             &mut out.push(self._begin.clone());
@@ -125,14 +127,14 @@ impl AbstractRule for BeginEndRule {
 
     fn compile(
         &mut self,
-        grammar: &mut Grammar,
+        container: &mut RuleContainer,
         end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
         if self._cached_compiled_patterns.is_none() {
             let mut cached_compiled_patterns = RegExpSourceList::new();
-            self.collect_patterns_recursive(grammar, &mut cached_compiled_patterns, true);
+            self.collect_patterns_recursive(container, &mut cached_compiled_patterns, true);
 
             if self.apply_end_pattern_last {
                 cached_compiled_patterns.push(self._end.clone());

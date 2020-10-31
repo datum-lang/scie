@@ -1,4 +1,4 @@
-use crate::grammar::Grammar;
+use crate::grammar::rule_container::RuleContainer;
 use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, CompiledRule, RegExpSourceList, Rule};
@@ -61,7 +61,7 @@ impl AbstractRule for CaptureRule {
     }
     fn collect_patterns_recursive(
         &mut self,
-        _grammar: &mut Grammar,
+        _container: &mut RuleContainer,
         _out: &mut RegExpSourceList,
         _is_first: bool,
     ) {
@@ -70,7 +70,7 @@ impl AbstractRule for CaptureRule {
 
     fn compile(
         &mut self,
-        _grammar: &mut Grammar,
+        _container: &mut RuleContainer,
         _end_regex_source: &Option<String>,
         _allow_a: bool,
         _allow_g: bool,

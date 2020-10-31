@@ -589,7 +589,7 @@ impl Grammar {
     ) -> Option<MatchRuleResult> {
         let mut rule = self.get_rule(stack.rule_id).clone();
         let mut rule_scanner = rule.compile(
-            self,
+            &mut *self.rule_container,
             &stack.end_rule,
             is_first_line,
             line_pos == anchor_position,

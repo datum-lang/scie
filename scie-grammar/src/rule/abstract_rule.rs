@@ -1,13 +1,16 @@
-use crate::grammar::Grammar;
+use core::fmt;
+use std::any::Any;
+
+use dyn_clone::{clone_trait_object, DynClone};
+
+use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
+
+use crate::grammar::rule_container::RuleContainer;
 use crate::rule::{
     BeginEndRule, BeginWhileRule, CaptureRule, CompiledRule, EmptyRule, IncludeOnlyRule, MatchRule,
     RegExpSourceList, Rule,
 };
 use crate::support::regex_source::RegexSource;
-use core::fmt;
-use dyn_clone::{clone_trait_object, DynClone};
-use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
-use std::any::Any;
 
 pub enum RuleEnum<'r> {
     BeginEndRule(&'r BeginEndRule),
@@ -73,13 +76,13 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     }
     fn collect_patterns_recursive<'a>(
         &mut self,
-        grammar: &'a mut Grammar,
+        container: &'a mut RuleContainer,
         out: &mut RegExpSourceList,
         is_first: bool,
     );
     fn compile(
         &mut self,
-        grammar: &mut Grammar,
+        container: &mut RuleContainer,
         end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
