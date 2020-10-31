@@ -22,14 +22,14 @@ impl Default for RuleContainer {
 }
 
 impl RuleContainer {
-    fn get_rule(&mut self, pattern_id: i32) -> &mut Box<dyn AbstractRule> {
+    pub fn get_rule(&mut self, pattern_id: i32) -> &mut Box<dyn AbstractRule> {
         return self
             .rule_id2desc
             .get_mut(&pattern_id)
             .unwrap_or(self._empty_rule.get_mut(&-2).unwrap());
     }
 
-    fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32 {
+    pub fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32 {
         let id = result.id();
         self.rule_id2desc.insert(id, result);
         id
