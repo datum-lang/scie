@@ -1,11 +1,10 @@
 use core::cmp;
+use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 use std::collections::HashMap as Map;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 use std::path::PathBuf;
-
-use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
 use crate::grammar::line_tokens::{IToken, LineTokens, TokenTypeMatcher};
 use crate::grammar::local_stack_element::LocalStackElement;
