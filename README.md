@@ -67,7 +67,7 @@ major issues:
 
  - [ ] performance
     - [ ] rule in `Grammar`
-    - [ ] UTF 8 to UTF 16 in `UtfString`
+    - [x] UTF 8 to UTF 16 in `UtfString`
     - [x] normal issue
  - [ ] unstable
     - [ ] Random test failure on OnigScanner.
@@ -79,10 +79,10 @@ major issues:
 Todo:
 
  - [ ] replace with [fancy-regex](https://github.com/fancy-regex/fancy-regex) for pure Rust impl
- - [ ] process todo
+ - [x] process todo
     - [x] back references
     - [x] multiple languages
- - [ ] rewrite VSCode-textmate with Rust
+ - [x] rewrite VSCode-textmate with Rust
     - [x] language for testing
     - [x] support others language
  - [x] benchmark
