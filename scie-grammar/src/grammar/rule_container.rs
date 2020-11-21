@@ -5,6 +5,7 @@ use std::collections::HashMap as Map;
 pub struct RuleContainer {
     _empty_rule: Map<i32, Box<dyn AbstractRule>>,
     pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
+    pub rules: Vec<Box<dyn AbstractRule>>,
 }
 
 impl Default for RuleContainer {
@@ -14,8 +15,10 @@ impl Default for RuleContainer {
         let mut container = RuleContainer {
             _empty_rule,
             rule_id2desc: Default::default(),
+            rules: vec![],
         };
 
+        container.rules.push(Box::new(EmptyRule {}));
         container._empty_rule.insert(-2, Box::new(EmptyRule {}));
         container
     }
@@ -33,5 +36,16 @@ impl RuleContainer {
         let id = result.id();
         self.rule_id2desc.insert(id, result);
         id
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::grammar::rule_container::RuleContainer;
+
+    #[test]
+    fn should_get_default_rule() {
+        let container = RuleContainer::default();
+        assert_eq!(container.rules.len(), 1);
     }
 }
