@@ -47,7 +47,7 @@ impl RuleContainer {
         let id = result.id();
         if id >= RULE_SIZE as i32 {
             self.rules
-                .resize_with(RULE_SIZE + self.rules.len(), || Box::new(EmptyRule {}));
+                .resize_with(id as usize + 1, || Box::new(EmptyRule {}));
         }
         self.rules[id as usize] = result;
         id
@@ -75,7 +75,7 @@ mod tests {
         let mut rule = CaptureRule::empty();
         rule.rule.id = 100;
         container.register_rule_new(Box::new(rule));
-        assert_eq!(container.rules.len(), 200);
+        assert_eq!(container.rules.len(), 101);
     }
 
     #[test]
