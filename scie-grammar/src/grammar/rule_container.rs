@@ -1,4 +1,5 @@
 use crate::rule::{AbstractRule, EmptyRule};
+use std::borrow::BorrowMut;
 use std::collections::HashMap as Map;
 
 #[derive(Debug, Clone)]
@@ -51,6 +52,10 @@ impl RuleContainer {
         self.rules[id as usize] = result;
         id
     }
+
+    pub fn get_rule_new(&mut self, pattern_id: i32) -> &mut Box<dyn AbstractRule> {
+        return self.rules[pattern_id as usize].borrow_mut();
+    }
 }
 
 #[cfg(test)]
@@ -71,5 +76,16 @@ mod tests {
         rule.rule.id = 100;
         container.register_rule_new(Box::new(rule));
         assert_eq!(container.rules.len(), 200);
+    }
+
+    #[test]
+    fn should_get_rule() {
+        let mut container = RuleContainer::default();
+        let mut rule = CaptureRule::empty();
+        rule.rule.id = 101;
+
+        container.register_rule_new(Box::new(rule));
+        let x = container.get_rule_new(101);
+        assert_eq!(x.id(), 101);
     }
 }
