@@ -8,6 +8,8 @@ pub struct RuleContainer {
     pub rules: Vec<Box<dyn AbstractRule>>,
 }
 
+const RULE_SIZE: usize = 100;
+
 impl Default for RuleContainer {
     fn default() -> Self {
         let mut _empty_rule = Map::new();
@@ -18,7 +20,9 @@ impl Default for RuleContainer {
             rules: vec![],
         };
 
-        container.rules.push(Box::new(EmptyRule {}));
+        container
+            .rules
+            .resize_with(RULE_SIZE, || Box::new(EmptyRule {}));
         container._empty_rule.insert(-2, Box::new(EmptyRule {}));
         container
     }
@@ -37,15 +41,35 @@ impl RuleContainer {
         self.rule_id2desc.insert(id, result);
         id
     }
+
+    pub fn register_rule_new(&mut self, result: Box<dyn AbstractRule>) -> i32 {
+        let id = result.id();
+        if id >= RULE_SIZE as i32 {
+            self.rules
+                .resize_with(RULE_SIZE + self.rules.len(), || Box::new(EmptyRule {}));
+        }
+        self.rules[id as usize] = result;
+        id
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use crate::grammar::rule_container::RuleContainer;
+    use crate::rule::CaptureRule;
 
     #[test]
     fn should_get_default_rule() {
         let container = RuleContainer::default();
-        assert_eq!(container.rules.len(), 1);
+        assert_eq!(container.rules.len(), 100);
+    }
+
+    #[test]
+    fn should_get_200_rules_when_insert_100() {
+        let mut container = RuleContainer::default();
+        let mut rule = CaptureRule::empty();
+        rule.rule.id = 100;
+        container.register_rule_new(Box::new(rule));
+        assert_eq!(container.rules.len(), 200);
     }
 }

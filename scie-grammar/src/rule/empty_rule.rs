@@ -6,6 +6,12 @@ use std::any::Any;
 #[derive(Clone, Debug, Serialize)]
 pub struct EmptyRule {}
 
+impl EmptyRule {
+    pub fn new() -> Self {
+        EmptyRule {}
+    }
+}
+
 lazy_static! {
     static ref EMPTY_RULE: Rule = Rule {
         _type: "".to_string(),
