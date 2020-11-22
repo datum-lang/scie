@@ -121,8 +121,6 @@ impl Grammar {
             }
         }
 
-        self.rules = self.rule_container.rules.clone();
-
         let mut is_first_line: bool = false;
 
         let mut current_state = StackElement::null();

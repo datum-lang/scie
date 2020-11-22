@@ -5,10 +5,7 @@ use std::collections::HashMap as Map;
 pub struct RuleContainer {
     pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
     pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
-    pub rules: Vec<Box<dyn AbstractRule>>,
 }
-
-const RULE_SIZE: usize = 100;
 
 impl Default for RuleContainer {
     fn default() -> Self {
@@ -17,12 +14,8 @@ impl Default for RuleContainer {
         let mut container = RuleContainer {
             _empty_rule,
             rule_id2desc: Default::default(),
-            rules: vec![],
         };
 
-        container
-            .rules
-            .resize_with(RULE_SIZE, || Box::new(EmptyRule {}));
         container._empty_rule.insert(-2, Box::new(EmptyRule {}));
         container
     }
@@ -38,9 +31,6 @@ impl RuleContainer {
 
     pub fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32 {
         let id = result.id();
-        self.rules
-            .resize_with((id + 1) as usize, || Box::from(EmptyRule {}));
-        self.rules[id as usize] = result.clone();
         self.rule_id2desc.insert(id, result);
         id
     }
