@@ -1,5 +1,4 @@
-use crate::grammar::{Grammar, ScopeListElement};
-use crate::rule::{AbstractRule, IRuleRegistry};
+use crate::grammar::ScopeListElement;
 
 // todo: change to rccall https://stackoverflow.com/questions/36167160/how-do-i-express-mutually-recursive-data-structures-in-safe-rust
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
@@ -42,14 +41,6 @@ impl StackElement {
             return Some(*self.parent.to_owned().unwrap());
         }
         return None;
-    }
-    //
-    // pub fn get_rule<'a, 'b: 'a>(&self, grammar: &'b mut Grammar) -> &'b Option<&mut Box<dyn AbstractRule>> {
-    //     grammar.get_rule(self.rule_id)
-    // }
-
-    pub fn update_rule(&self, grammar: &mut Grammar, rule: Box<dyn AbstractRule>) -> i32 {
-        grammar.register_rule(rule)
     }
 
     pub fn new(

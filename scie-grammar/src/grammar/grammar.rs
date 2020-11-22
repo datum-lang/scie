@@ -44,6 +44,7 @@ pub struct Grammar {
     root_id: i32,
     pub grammar: IRawGrammar,
     pub last_rule_id: i32,
+    rules: Vec<Box<dyn AbstractRule>>,
     pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
     pub rule_container: Box<RuleContainer>,
     pub scope_name_map: Map<String, i32>,
@@ -89,9 +90,10 @@ impl Grammar {
             scope_name_map: Map::new(),
             _token_type_matchers: vec![],
             _empty_rule,
+            rules: vec![],
         };
-        grammar._empty_rule.insert(-2, Box::new(EmptyRule {}));
 
+        grammar._empty_rule.insert(-2, Box::new(EmptyRule {}));
         grammar
     }
 
@@ -118,6 +120,8 @@ impl Grammar {
                 }
             }
         }
+
+        self.rules = self.rule_container.rules.clone();
 
         let mut is_first_line: bool = false;
 
@@ -567,6 +571,15 @@ impl Grammar {
         stack: &mut StackElement,
         anchor_position: i32,
     ) -> Option<MatchRuleResult> {
+        // let rule = self.rules.get(stack.rule_id as usize)?;
+        // let mut rule_scanner = rule.to_owned().compile(
+        //     &mut *self.rule_container,
+        //     &stack.end_rule,
+        //     is_first_line,
+        //     line_pos == anchor_position,
+        // );
+        // self.rule_container.register_rule(rule.to_owned());
+
         let mut rule = self.get_rule(stack.rule_id).clone();
         let mut rule_scanner = rule.compile(
             &mut *self.rule_container,
@@ -576,7 +589,7 @@ impl Grammar {
         );
 
         // todo: update cache to rule
-        stack.update_rule(self, rule);
+        self.register_rule(rule);
 
         let r = rule_scanner
             .scanner

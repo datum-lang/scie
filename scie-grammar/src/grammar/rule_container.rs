@@ -3,7 +3,7 @@ use std::collections::HashMap as Map;
 
 #[derive(Debug, Clone)]
 pub struct RuleContainer {
-    _empty_rule: Map<i32, Box<dyn AbstractRule>>,
+    pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
     pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
     pub rules: Vec<Box<dyn AbstractRule>>,
 }
@@ -43,37 +43,5 @@ impl RuleContainer {
         self.rules[id as usize] = result.clone();
         self.rule_id2desc.insert(id, result);
         id
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::grammar::rule_container::RuleContainer;
-    use crate::rule::CaptureRule;
-
-    #[test]
-    fn should_get_default_rule() {
-        let container = RuleContainer::default();
-        assert_eq!(container.rules.len(), 100);
-    }
-
-    #[test]
-    fn should_get_200_rules_when_insert_100() {
-        let mut container = RuleContainer::default();
-        let mut rule = CaptureRule::empty();
-        rule.rule.id = 100;
-        container.register_rule(Box::new(rule));
-        assert_eq!(container.rules.len(), 101);
-    }
-
-    #[test]
-    fn should_get_rule() {
-        let mut container = RuleContainer::default();
-        let mut rule = CaptureRule::empty();
-        rule.rule.id = 101;
-
-        container.register_rule(Box::new(rule));
-        let x = container.get_rule(101);
-        assert_eq!(x.id(), 101);
     }
 }
