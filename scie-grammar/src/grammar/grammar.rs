@@ -569,25 +569,9 @@ impl Grammar {
         stack: &mut StackElement,
         anchor_position: i32,
     ) -> Option<MatchRuleResult> {
-        // let rule = self.rules.get(stack.rule_id as usize)?;
-        // let mut rule_scanner = rule.to_owned().compile(
-        //     &mut *self.rule_container,
-        //     &stack.end_rule,
-        //     is_first_line,
-        //     line_pos == anchor_position,
-        // );
-        // self.rule_container.register_rule(rule.to_owned());
-
-        let mut rule = self.get_rule(stack.rule_id).clone();
-        let mut rule_scanner = rule.compile(
-            &mut *self.rule_container,
-            &stack.end_rule,
-            is_first_line,
-            line_pos == anchor_position,
-        );
-
-        // todo: update cache to rule
-        self.register_rule(rule);
+        let mut rule_scanner =
+            self.rule_container
+                .compile_rule(stack, is_first_line, line_pos == anchor_position);
 
         let r = rule_scanner
             .scanner

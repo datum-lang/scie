@@ -8,6 +8,7 @@ use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
+use std::collections::HashMap;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
@@ -107,34 +108,40 @@ impl AbstractRule for BeginEndRule {
     fn patterns_length(&self) -> i32 {
         self.patterns.len() as i32
     }
-
-    fn collect_patterns_recursive(
-        &mut self,
-        container: &mut RuleContainer,
-        mut out: &mut RegExpSourceList,
-        is_first: bool,
-    ) {
-        if is_first {
-            for pattern_id in self.patterns.iter() {
-                let mut rule = container.get_rule(*pattern_id).clone();
-                rule.collect_patterns_recursive(container, &mut out, false);
-                container.register_rule(rule);
-            }
-        } else {
-            &mut out.push(self._begin.clone());
-        }
-    }
+    //
+    // fn collect_patterns_recursive(
+    //     &mut self,
+    //     container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+    //     mut out: &mut RegExpSourceList,
+    //     is_first: bool,
+    // ) {
+    //     if is_first {
+    //         for pattern_id in self.patterns.iter() {
+    //             let mut rule = container.get_rule(*pattern_id).clone();
+    //             rule.collect_patterns_recursive(container, &mut out, false);
+    //             container.register_rule(rule);
+    //         }
+    //     } else {
+    //         &mut out.push(self._begin.clone());
+    //     }
+    // }
 
     fn compile(
         &mut self,
-        container: &mut RuleContainer,
+        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
         end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
         if self._cached_compiled_patterns.is_none() {
             let mut cached_compiled_patterns = RegExpSourceList::new();
-            self.collect_patterns_recursive(container, &mut cached_compiled_patterns, true);
+
+            RuleContainer::collect_patterns_recursive(
+                self.id(),
+                container,
+                &mut cached_compiled_patterns,
+                true,
+            );
 
             if self.apply_end_pattern_last {
                 cached_compiled_patterns.push(self._end.clone());

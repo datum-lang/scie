@@ -5,12 +5,12 @@ use dyn_clone::{clone_trait_object, DynClone};
 
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
-use crate::grammar::rule_container::RuleContainer;
 use crate::rule::{
     BeginEndRule, BeginWhileRule, CaptureRule, CompiledRule, EmptyRule, IncludeOnlyRule, MatchRule,
-    RegExpSourceList, Rule,
+    Rule,
 };
 use crate::support::regex_source::RegexSource;
+use std::collections::HashMap;
 
 pub enum RuleEnum<'r> {
     BeginEndRule(&'r BeginEndRule),
@@ -74,15 +74,15 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     fn patterns_length(&self) -> i32 {
         -1
     }
-    fn collect_patterns_recursive<'a>(
-        &mut self,
-        container: &'a mut RuleContainer,
-        out: &mut RegExpSourceList,
-        is_first: bool,
-    );
+    // fn collect_patterns_recursive<'a>(
+    //     &mut self,
+    //     container: &'a mut RuleContainer,
+    //     out: &mut RegExpSourceList,
+    //     is_first: bool,
+    // );
     fn compile(
         &mut self,
-        container: &mut RuleContainer,
+        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
         end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,

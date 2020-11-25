@@ -5,6 +5,7 @@ use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
 use std::any::Any;
+use std::collections::HashMap;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginWhileRule {
@@ -109,26 +110,26 @@ impl AbstractRule for BeginWhileRule {
         self.patterns.len() as i32
     }
 
-    fn collect_patterns_recursive(
-        &mut self,
-        container: &mut RuleContainer,
-        out: &mut RegExpSourceList,
-        is_first: bool,
-    ) {
-        if is_first {
-            for x in self.patterns.iter() {
-                let mut rule = container.get_rule(*x).clone();
-                rule.collect_patterns_recursive(container, out, false);
-                container.register_rule(rule);
-            }
-        } else {
-            out.push(self._begin.clone());
-        }
-    }
+    // fn collect_patterns_recursive(
+    //     &mut self,
+    //     container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+    //     out: &mut RegExpSourceList,
+    //     is_first: bool,
+    // ) {
+    //     if is_first {
+    //         for x in self.patterns.iter() {
+    //             let mut rule = container.get_rule(*x).clone();
+    //             rule.collect_patterns_recursive(container, out, false);
+    //             container.register_rule(rule);
+    //         }
+    //     } else {
+    //         out.push(self._begin.clone());
+    //     }
+    // }
 
     fn compile(
         &mut self,
-        container: &mut RuleContainer,
+        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -136,7 +137,12 @@ impl AbstractRule for BeginWhileRule {
         if self._cached_compiled_patterns.is_none() {
             let mut cached_compiled_patterns = RegExpSourceList::new();
 
-            self.collect_patterns_recursive(container, &mut cached_compiled_patterns, true);
+            RuleContainer::collect_patterns_recursive(
+                self.id(),
+                container,
+                &mut cached_compiled_patterns,
+                true,
+            );
             self._cached_compiled_patterns = Some(cached_compiled_patterns);
         }
 

@@ -4,6 +4,7 @@ use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, CompiledRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
 use std::any::Any;
+use std::collections::HashMap;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct MatchRule {
@@ -52,25 +53,31 @@ impl AbstractRule for MatchRule {
     fn get_instance(&self) -> &dyn Any {
         self
     }
-    fn collect_patterns_recursive(
-        &mut self,
-        _container: &mut RuleContainer,
-        out: &mut RegExpSourceList,
-        _is_first: bool,
-    ) {
-        out.push(self._match.clone());
-    }
+    // fn collect_patterns_recursive(
+    //     &mut self,
+    //     _container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+    //     out: &mut RegExpSourceList,
+    //     _is_first: bool,
+    // ) {
+    //     out.push(self._match.clone());
+    // }
 
     fn compile(
         &mut self,
-        container: &mut RuleContainer,
+        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
         if self._cached_compiled_patterns.is_none() {
             let mut cached_compiled_patterns = RegExpSourceList::new();
-            self.collect_patterns_recursive(container, &mut cached_compiled_patterns, true);
+            // self.collect_patterns_recursive(container, &mut cached_compiled_patterns, true);
+            RuleContainer::collect_patterns_recursive(
+                self.id(),
+                container,
+                &mut cached_compiled_patterns,
+                true,
+            );
             self._cached_compiled_patterns = Some(cached_compiled_patterns);
         }
 
