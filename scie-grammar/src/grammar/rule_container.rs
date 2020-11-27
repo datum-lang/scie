@@ -1,13 +1,15 @@
 use crate::grammar::StackElement;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, CompiledRule, EmptyRule, RegExpSourceList};
+use std::cell::RefCell;
 use std::collections::{HashMap as Map, HashMap};
+use std::rc::Rc;
 
 #[derive(Debug, Clone)]
 pub struct RuleContainer {
     pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
-    pub rules: Vec<Box<dyn AbstractRule>>,
     pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
+    pub rules: HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
 }
 
 impl Default for RuleContainer {
@@ -16,8 +18,8 @@ impl Default for RuleContainer {
 
         let mut container = RuleContainer {
             _empty_rule,
-            rules: vec![],
             rule_id2desc: Default::default(),
+            rules: Default::default(),
         };
 
         container._empty_rule.insert(-2, Box::new(EmptyRule {}));
@@ -35,7 +37,6 @@ impl RuleContainer {
 
     pub fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32 {
         let id = result.id();
-        // self.rules[id as usize] = result.clone();
         self.rule_id2desc.insert(id, result);
         id
     }
@@ -47,6 +48,7 @@ impl RuleContainer {
         allow_g: bool,
     ) -> CompiledRule {
         let rule_id = stack.rule_id;
+        // https://stackoverflow.com/questions/44453398/how-can-i-borrow-from-a-hashmap-to-read-and-write-at-the-same-time
         let mut rule = self.get_rule(rule_id).clone();
         // let mut rule = &mut self.rules[id];
         let rule_scanner = rule.compile(&mut self.rule_id2desc, &stack.end_rule, allow_a, allow_g);
