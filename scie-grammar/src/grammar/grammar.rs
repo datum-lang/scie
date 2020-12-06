@@ -59,7 +59,7 @@ pub fn init_grammar(raw_grammar: IRawGrammar, _base: Option<IRawRule>) -> IRawGr
         new_based.location = raw_grammar.repository.clone().unwrap().location;
     }
     new_based.patterns = Some(raw_grammar.patterns.clone());
-    new_based.name = raw_grammar.name.clone();
+    new_based.name = raw_grammar.scope_name.clone();
 
     let mut repository_map = IRawRepositoryMap::new();
     repository_map.base_s = Some(Box::from(new_based.clone()));
@@ -838,7 +838,7 @@ hellomake: $(OBJ)
         let result = grammar.tokenize_line("%.o: %.c $(DEPS)", &mut None);
         let tokens = result.tokens.clone();
         assert_eq!(9, tokens.len());
-        assert_eq!("Makefile,meta.scope.target.makefile,entity.name.function.target.makefile,constant.other.placeholder.makefile", tokens[0].scopes.join(","));
+        assert_eq!("source.makefile,meta.scope.target.makefile,entity.name.function.target.makefile,constant.other.placeholder.makefile", tokens[0].scopes.join(","));
         assert_eq!(0, tokens[0].start_index);
         assert_eq!(1, tokens[1].start_index);
         assert_eq!(3, tokens[2].start_index);

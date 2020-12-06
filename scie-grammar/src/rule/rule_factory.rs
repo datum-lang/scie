@@ -107,14 +107,13 @@ impl RuleFactory {
                             pattern_id =
                                 RuleFactory::get_compiled_rule_id(*rule, helper, repository, first);
                         } else {
-                            println!(
-                                // "CANNOT find rule for scopeName: {:?}",
-                                pattern.clone().include
-                            );
+                            // println!(
+                            //     "CANNOT find rule for scopeName: {:?}",
+                            //     pattern.clone().include
+                            // );
                         }
                     } else if include_s == "$base" || include_s == "$self" {
                         pattern_id = 1;
-                    // let mut local_included_rule = repository.map.base_s.clone();
                     // pattern_id = RuleFactory::get_compiled_rule_id(
                     //     *local_included_rule.unwrap(),
                     //     helper,
