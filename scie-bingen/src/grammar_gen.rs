@@ -79,7 +79,9 @@ impl GrammarGen {
         let mut file = File::create(path).unwrap();
         match file.write_all(bytes) {
             Ok(_) => {}
-            Err(_) => {}
+            Err(_) => {
+                panic!(err);
+            }
         };
     }
 
@@ -88,7 +90,9 @@ impl GrammarGen {
         let mut file = File::create(path).unwrap();
         match file.write_all(&*encoded) {
             Ok(_) => {}
-            Err(_) => {}
+            Err(err) => {
+                panic!(err);
+            }
         };
     }
 }
