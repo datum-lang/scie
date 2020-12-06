@@ -44,13 +44,13 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
             return name;
         }
 
-        RegexSource::replace_captures(
+        let string = RegexSource::replace_captures(
             String::from((self.get_rule()._name).as_ref().unwrap()),
             line_text.unwrap(),
             capture_indices.unwrap(),
         );
 
-        return Some(String::from(""));
+        return Some(string);
     }
 
     fn get_content_name(

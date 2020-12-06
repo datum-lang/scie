@@ -34,8 +34,10 @@ impl ScopeListElement {
         for scope in scopes {
             target = ScopeListElement::new(Some(Box::new(target)), scope);
         }
+
         target
     }
+
     pub fn push(&self, scope: Option<String>) -> ScopeListElement {
         if scope.is_none() {
             return self.clone();
