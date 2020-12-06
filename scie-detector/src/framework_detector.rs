@@ -81,6 +81,9 @@ impl<'a> FrameworkDetector<'a> {
         );
 
         self.tags
+            .insert("workspace.c", name_set.contains("CMakeLists.txt"));
+
+        self.tags
             .insert("workspace.rust.cargo", name_set.contains("Cargo.toml"));
 
         self.build_frameworks_info();

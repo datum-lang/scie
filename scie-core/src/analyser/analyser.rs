@@ -39,6 +39,11 @@ impl Analyser {
             grammar_map.insert(".rs", rust_grammar);
         }
 
+        if detector.tags.contains_key("workspace.c") {
+            let rust_grammar = Grammar::new(map.grammar_map[".c"].clone());
+            grammar_map.insert(".c", rust_grammar);
+        }
+
         let files = Finder::walk_filter_files(&lang);
         if is_debug {
             if !detector.tags.is_empty() {
@@ -63,7 +68,6 @@ impl Analyser {
 
             if is_cli {
                 // todo: add clear current line & set value http://rosettacode.org/wiki/Terminal_control
-                // print!("\ranalyses: {:?}", path);
                 println!("analyses: {:?}", path);
             }
 
