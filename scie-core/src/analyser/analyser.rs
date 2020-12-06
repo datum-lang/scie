@@ -40,8 +40,8 @@ impl Analyser {
         }
 
         if detector.tags.contains_key("workspace.c") {
-            let rust_grammar = Grammar::new(map.grammar_map[".c"].clone());
-            grammar_map.insert(".c", rust_grammar);
+            let c_grammar = Grammar::new(map.grammar_map[".c"].clone());
+            grammar_map.insert(".c", c_grammar);
         }
 
         let files = Finder::walk_filter_files(&lang);
@@ -96,7 +96,7 @@ impl Analyser {
 
                     code_file
                         .elements
-                        .push(Element::new(line_num, start, end, text));
+                        .push(Element::new(line_num, start, end, text, token.scopes));
                 }
                 rule_stack = result.rule_stack;
                 line_num = line_num + 1;

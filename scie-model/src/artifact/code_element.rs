@@ -7,17 +7,23 @@ pub struct Element {
     #[serde(alias = "end")]
     pub end_index: i32,
     pub value: String,
-    pub scopes: Vec<ElementScope>,
+    pub scopes: Vec<String>,
 }
 
 impl Element {
-    pub fn new(line_num: i32, start_index: i32, end_index: i32, value: String) -> Element {
+    pub fn new(
+        line_num: i32,
+        start_index: i32,
+        end_index: i32,
+        value: String,
+        scopes: Vec<String>,
+    ) -> Element {
         Element {
             line_num,
             start_index,
             end_index,
             value,
-            scopes: vec![],
+            scopes,
         }
     }
 }
