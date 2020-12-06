@@ -108,7 +108,7 @@ impl RuleFactory {
                                 RuleFactory::get_compiled_rule_id(*rule, helper, repository, first);
                         } else {
                             println!(
-                                "CANNOT find rule for scopeName: {:?}",
+                                // "CANNOT find rule for scopeName: {:?}",
                                 pattern.clone().include
                             );
                         }
