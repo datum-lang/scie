@@ -36,9 +36,9 @@ fn main() {
     let path = Path::new(&opts.path);
     let files = Analyser::ident_by_dir(&path.to_path_buf(), opts.debug, true);
     if opts.json {
-        BinGen::jsonify(files.clone(), "demo.json");
+        BinGen::jsonify(files.clone(), "scie.json");
     } else {
-        BinGen::code_files(files, "demo.bin");
+        BinGen::code_files(files, "scie.bin");
     }
 }
 
