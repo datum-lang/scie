@@ -5,7 +5,7 @@ use scie_bingen::grammar_gen::GrammarGen;
 use scie_detector::framework_detector::FrameworkDetector;
 use scie_grammar::grammar::{Grammar, StackElement};
 use scie_infra::finder::Finder;
-use scie_model::artifact::{CodeFile, Element};
+use scie_model::artifact::{CodeFile, TokenElement};
 
 pub struct Analyser {}
 
@@ -94,9 +94,13 @@ impl Analyser {
                         .take((end - start) as usize)
                         .collect();
 
-                    code_file
-                        .elements
-                        .push(Element::new(line_num, start, end, text, token.scopes));
+                    code_file.elements.push(TokenElement::new(
+                        line_num,
+                        start,
+                        end,
+                        text,
+                        token.scopes,
+                    ));
                 }
                 rule_stack = result.rule_stack;
                 line_num = line_num + 1;

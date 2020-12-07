@@ -1,5 +1,5 @@
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct Element {
+pub struct TokenElement {
     #[serde(alias = "line")]
     pub line_num: i32,
     #[serde(alias = "start")]
@@ -10,15 +10,15 @@ pub struct Element {
     pub scopes: Vec<String>,
 }
 
-impl Element {
+impl TokenElement {
     pub fn new(
         line_num: i32,
         start_index: i32,
         end_index: i32,
         value: String,
         scopes: Vec<String>,
-    ) -> Element {
-        Element {
+    ) -> TokenElement {
+        TokenElement {
             line_num,
             start_index,
             end_index,

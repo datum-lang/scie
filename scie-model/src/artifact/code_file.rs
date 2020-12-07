@@ -1,11 +1,11 @@
-use crate::artifact::Element;
+use crate::artifact::TokenElement;
 use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct CodeFile {
     pub path: String,
     pub name: String,
-    pub elements: Vec<Element>,
+    pub elements: Vec<TokenElement>,
 }
 
 impl CodeFile {

@@ -1,13 +1,13 @@
 use std::path::PathBuf;
 
 use scie_grammar::grammar::{Grammar, StackElement};
-use scie_model::artifact::Element;
+use scie_model::artifact::TokenElement;
 
 pub struct Identify {}
 
 impl Identify {
-    pub fn identify_file(lang: PathBuf, code: String) -> Vec<Element> {
-        let mut elements: Vec<Element> = vec![];
+    pub fn identify_file(lang: PathBuf, code: String) -> Vec<TokenElement> {
+        let mut elements: Vec<TokenElement> = vec![];
         let mut grammar = Grammar::from_file(lang.to_str().unwrap());
         let mut rule_stack = Some(StackElement::null());
 
@@ -23,7 +23,7 @@ impl Identify {
                     .take((end - start) as usize)
                     .collect();
 
-                elements.push(Element {
+                elements.push(TokenElement {
                     line_num,
                     start_index: start,
                     end_index: end,
