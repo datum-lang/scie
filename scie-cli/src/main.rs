@@ -43,37 +43,4 @@ fn main() {
 }
 
 #[cfg(test)]
-mod tests {
-    use std::io::{stdout, Write};
-
-    use crossterm::{
-        execute,
-        style::{Color, Print, ResetColor, SetBackgroundColor, SetForegroundColor},
-        ExecutableCommand, Result,
-    };
-
-    fn sample_term() -> Result<()> {
-        execute!(
-            stdout(),
-            SetForegroundColor(Color::Blue),
-            SetBackgroundColor(Color::Red),
-            Print("Styled text here."),
-            ResetColor
-        )?;
-
-        // or using functions
-        stdout()
-            .execute(SetForegroundColor(Color::Blue))?
-            .execute(SetBackgroundColor(Color::Red))?
-            .execute(Print("Styled text here."))?
-            .execute(ResetColor)?;
-
-        Ok(())
-    }
-
-    #[test]
-    fn should_run() {
-        let _result = sample_term();
-        assert_eq!(1, 1)
-    }
-}
+mod tests {}
