@@ -5,15 +5,19 @@ use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
 use std::any::Any;
+use std::cell::RefCell;
 use std::collections::HashMap;
+use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginWhileRule {
     pub rule: Rule,
     pub _begin: RegExpSource,
-    pub begin_captures: Vec<Box<dyn AbstractRule>>,
+    #[serde(skip_serializing)]
+    pub begin_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
     pub _while: RegExpSource,
-    pub while_captures: Vec<Box<dyn AbstractRule>>,
+    #[serde(skip_serializing)]
+    pub while_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
     pub apply_end_pattern_last: bool,
     pub patterns: Vec<i32>,
     pub has_missing_patterns: bool,
@@ -28,9 +32,9 @@ impl BeginWhileRule {
         name: Option<String>,
         content_name: Option<String>,
         _begin: Option<String>,
-        begin_captures: Vec<Box<dyn AbstractRule>>,
+        begin_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
         _while: String,
-        while_captures: Vec<Box<dyn AbstractRule>>,
+        while_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
         patterns: ICompilePatternsResult,
     ) -> BeginWhileRule {
         BeginWhileRule {
@@ -112,7 +116,7 @@ impl AbstractRule for BeginWhileRule {
 
     // fn collect_patterns_recursive(
     //     &mut self,
-    //     container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+    //     container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
     //     out: &mut RegExpSourceList,
     //     is_first: bool,
     // ) {
@@ -129,7 +133,7 @@ impl AbstractRule for BeginWhileRule {
 
     fn compile(
         &mut self,
-        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,

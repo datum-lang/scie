@@ -4,6 +4,8 @@ use crate::rule::{
     AbstractRule, BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule,
     MatchRule,
 };
+use std::cell::RefCell;
+use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ICompilePatternsResult {
@@ -24,8 +26,8 @@ impl RuleFactory {
         captures: Option<Box<IRawCaptures>>,
         helper: &mut Grammar,
         repository: &mut IRawRepository,
-    ) -> Vec<Box<dyn AbstractRule>> {
-        let mut r: Vec<Box<dyn AbstractRule>> = vec![];
+    ) -> Vec<Rc<RefCell<dyn AbstractRule>>> {
+        let mut r: Vec<Rc<RefCell<dyn AbstractRule>>> = vec![];
         if captures.is_some() {
             let capts = captures.unwrap();
             let mut maximum_capture_id = 0;
@@ -36,10 +38,8 @@ impl RuleFactory {
                 }
             }
 
-            r.resize(
-                (maximum_capture_id + 1) as usize,
-                Box::new(CaptureRule::empty()),
-            );
+            let rc = Rc::new(RefCell::new(CaptureRule::empty()));
+            r.resize((maximum_capture_id + 1) as usize, rc);
 
             for (id_str, desc) in capts.clone().map.capture_map {
                 // todo: figure captureId === '$vscodeTextmateLocation'
@@ -60,8 +60,7 @@ impl RuleFactory {
                     desc.name.clone(),
                     desc.content_name.clone(),
                     retokenize_captured_with_rule_id,
-                )
-                .clone();
+                );
             }
             // todo: remove first element, because it's filled & empty.
         };
@@ -75,7 +74,7 @@ impl RuleFactory {
         name: Option<String>,
         content_name: Option<String>,
         retokenize_captured_with_rule_id: i32,
-    ) -> &mut Box<dyn AbstractRule> {
+    ) -> Rc<RefCell<dyn AbstractRule>> {
         let id = helper.register_id();
         let rule = CaptureRule::new(
             location,
@@ -85,8 +84,8 @@ impl RuleFactory {
             retokenize_captured_with_rule_id,
         );
 
-        helper.register_rule(Box::from(rule));
-        return helper.get_rule(id);
+        helper.register_rule(Rc::new(RefCell::new(rule)));
+        return helper.rule_container.get_rule(id);
     }
 
     pub fn compile_patterns(
@@ -146,7 +145,8 @@ impl RuleFactory {
                 }
 
                 if pattern_id != -1 {
-                    let rule = helper.get_rule(pattern_id);
+                    let rc = helper.rule_container.get_rule(pattern_id).clone();
+                    let rule = rc.borrow();
                     let mut skip_rule = false;
                     if rule.type_of() == "IncludeOnlyRule"
                         || rule.type_of() == "BeginEndRule"
@@ -218,7 +218,7 @@ impl RuleFactory {
                 let match_rule =
                     MatchRule::new(desc.location, id, desc.name, match_s, rule_factory);
 
-                return helper.register_rule(Box::new(match_rule));
+                return helper.register_rule(Rc::new(RefCell::new(match_rule)));
             };
 
             if let None = desc.begin {
@@ -249,7 +249,7 @@ impl RuleFactory {
                     rule_factory,
                 );
 
-                return helper.register_rule(Box::new(include_only_rule));
+                return helper.register_rule(Rc::new(RefCell::new(include_only_rule)));
             }
 
             let begin_captures;
@@ -284,7 +284,7 @@ impl RuleFactory {
                     pattern_factory,
                 );
 
-                return helper.register_rule(Box::new(begin_while_rule));
+                return helper.register_rule(Rc::new(RefCell::new(begin_while_rule)));
             }
 
             let end_captures;
@@ -311,7 +311,7 @@ impl RuleFactory {
                 pattern_factory,
             );
 
-            return helper.register_rule(Box::new(begin_end_rule));
+            return helper.register_rule(Rc::new(RefCell::new(begin_end_rule)));
         }
 
         desc.id.unwrap()

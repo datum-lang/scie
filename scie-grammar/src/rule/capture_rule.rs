@@ -2,7 +2,9 @@ use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, CompiledRule, Rule};
 use std::any::Any;
+use std::cell::RefCell;
 use std::collections::HashMap;
+use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct CaptureRule {
@@ -61,7 +63,7 @@ impl AbstractRule for CaptureRule {
     }
     // fn collect_patterns_recursive(
     //     &mut self,
-    //     _container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+    //     _container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
     //     _out: &mut RegExpSourceList,
     //     _is_first: bool,
     // ) {
@@ -70,7 +72,7 @@ impl AbstractRule for CaptureRule {
 
     fn compile(
         &mut self,
-        _container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+        _container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
         _end_regex_source: &Option<String>,
         _allow_a: bool,
         _allow_g: bool,

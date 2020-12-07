@@ -24,13 +24,15 @@ pub use self::reg_exp_source::RegExpSourceList;
 pub use self::rule::Rule;
 
 use crate::inter::{IRawGrammar, IRawRepository};
+use std::cell::RefCell;
+use std::rc::Rc;
 
 // todo: trait with types
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2
 pub trait IRuleRegistry {
     fn register_id(&mut self) -> i32;
-    fn get_rule(&mut self, pattern_id: i32) -> &mut Box<dyn AbstractRule>;
-    fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32;
+    fn get_rule(&mut self, pattern_id: i32) -> Rc<RefCell<dyn AbstractRule>>;
+    fn register_rule(&mut self, result: Rc<RefCell<dyn AbstractRule>>) -> i32;
 }
 
 pub trait IGrammarRegistry {

@@ -5,7 +5,9 @@ use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, CompiledRule, RegExpSourceList, Rule};
+use std::cell::RefCell;
 use std::collections::HashMap;
+use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct IncludeOnlyRule {
@@ -64,7 +66,7 @@ impl AbstractRule for IncludeOnlyRule {
     //
     // fn collect_patterns_recursive(
     //     &mut self,
-    //     container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+    //     container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
     //     out: &mut RegExpSourceList,
     //     _is_first: bool,
     // ) {
@@ -77,7 +79,7 @@ impl AbstractRule for IncludeOnlyRule {
 
     fn compile(
         &mut self,
-        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -91,7 +93,6 @@ impl AbstractRule for IncludeOnlyRule {
                 true,
             );
 
-            // self.collect_patterns_recursive(container, &mut cached_compiled_patterns, true);
             self._cached_compiled_patterns = Some(cached_compiled_patterns);
         }
 

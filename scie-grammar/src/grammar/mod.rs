@@ -51,7 +51,7 @@ mod tests {
         let code = read_code(&lang_test_dir);
 
         let grammar = Grammar::from_code("extensions/make/syntaxes/make.tmLanguage.json", &*code);
-        assert_eq!(grammar.rule_container.rule_id2desc.len(), 104);
+        assert_eq!(grammar.rule_container.rules.len(), 104);
     }
 
     #[test]
@@ -69,7 +69,7 @@ mod tests {
         let code = read_code(&lang_test_dir);
 
         let grammar = Grammar::from_code("extensions/json/syntaxes/JSON.tmLanguage.json", &*code);
-        assert_eq!(grammar.rule_container.rule_id2desc.len(), 35);
+        assert_eq!(grammar.rule_container.rules.len(), 35);
     }
 
     #[test]
@@ -90,7 +90,7 @@ mod tests {
             "extensions/javascript/syntaxes/JavaScript.tmLanguage.json",
             &*code,
         );
-        assert_eq!(grammar.rule_container.rule_id2desc.len(), 997);
+        assert_eq!(grammar.rule_container.rules.len(), 997);
     }
 
     #[test]
@@ -109,7 +109,7 @@ mod tests {
 
         let grammar =
             Grammar::from_code("extensions/csharp/syntaxes/csharp.tmLanguage.json", &*code);
-        assert_eq!(grammar.rule_container.rule_id2desc.len(), 690);
+        assert_eq!(grammar.rule_container.rules.len(), 690);
     }
 
     #[test]
@@ -127,6 +127,6 @@ mod tests {
         let code = read_code(&lang_test_dir);
 
         let grammar = Grammar::from_code("extensions/rust/syntaxes/rust.tmLanguage.json", &*code);
-        assert_eq!(grammar.rule_container.rule_id2desc.len(), 76);
+        assert_eq!(grammar.rule_container.rules.len(), 76);
     }
 }

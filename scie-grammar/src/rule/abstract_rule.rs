@@ -10,7 +10,9 @@ use crate::rule::{
     Rule,
 };
 use crate::support::regex_source::RegexSource;
+use std::cell::RefCell;
 use std::collections::HashMap;
+use std::rc::Rc;
 
 pub enum RuleEnum<'r> {
     BeginEndRule(&'r BeginEndRule),
@@ -82,7 +84,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     // );
     fn compile(
         &mut self,
-        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
         end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,

@@ -1,43 +1,48 @@
+use std::cell::RefCell;
+use std::collections::HashMap;
+use std::rc::Rc;
+
 use crate::grammar::StackElement;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, CompiledRule, EmptyRule, RegExpSourceList};
-use std::cell::RefCell;
-use std::collections::{HashMap as Map, HashMap};
-use std::rc::Rc;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct RuleContainer {
-    pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
-    pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
+    #[serde(skip_serializing)]
+    pub _empty_rule: HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
+    #[serde(skip_serializing)]
     pub rules: HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
 }
 
 impl Default for RuleContainer {
     fn default() -> Self {
-        let mut _empty_rule = Map::new();
+        let mut _empty_rule = HashMap::new();
 
         let mut container = RuleContainer {
             _empty_rule,
-            rule_id2desc: Default::default(),
             rules: Default::default(),
         };
 
-        container._empty_rule.insert(-2, Box::new(EmptyRule {}));
+        container
+            ._empty_rule
+            .insert(-2, Rc::new(RefCell::new(EmptyRule {})));
         container
     }
 }
 
 impl RuleContainer {
-    pub fn get_rule(&mut self, pattern_id: i32) -> &mut Box<dyn AbstractRule> {
-        return self
-            .rule_id2desc
-            .get_mut(&pattern_id)
+    pub fn get_rule(&mut self, pattern_id: i32) -> Rc<RefCell<dyn AbstractRule>> {
+        let option = self
+            .rules
+            .get(&pattern_id)
             .unwrap_or(self._empty_rule.get_mut(&-2).unwrap());
+
+        return option.clone();
     }
 
-    pub fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32 {
-        let id = result.id();
-        self.rule_id2desc.insert(id, result);
+    pub fn register_rule(&mut self, result: Rc<RefCell<dyn AbstractRule>>) -> i32 {
+        let id = result.borrow().id();
+        self.rules.insert(id, result);
         id
     }
 
@@ -48,23 +53,33 @@ impl RuleContainer {
         allow_g: bool,
     ) -> CompiledRule {
         let rule_id = stack.rule_id;
-        // https://stackoverflow.com/questions/44453398/how-can-i-borrow-from-a-hashmap-to-read-and-write-at-the-same-time
-        let mut rule = self.get_rule(rule_id).clone();
-        // let mut rule = &mut self.rules[id];
-        let rule_scanner = rule.compile(&mut self.rule_id2desc, &stack.end_rule, allow_a, allow_g);
 
-        self.register_rule(rule);
+        println!("{:?}", rule_id);
 
-        rule_scanner
+        let rule_scanner;
+        {
+            let rc = self
+                .rules
+                .get_mut(&rule_id)
+                .unwrap_or(self._empty_rule.get_mut(&-2).unwrap())
+                .clone();
+
+            let mut rule = rc.borrow_mut();
+            rule_scanner = rule.compile(&mut self.rules, &stack.end_rule, allow_a, allow_g);
+        }
+
+        return rule_scanner;
     }
 
     pub fn collect_patterns_recursive(
         pattern_id: i32,
-        rules: &mut HashMap<i32, Box<dyn AbstractRule>>,
+        rules: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
         mut out: &mut RegExpSourceList,
         is_first: bool,
     ) {
-        let match_rule = rules.get_mut(&pattern_id).unwrap();
+        println!("{:?}", pattern_id);
+        let rc = rules.get(&pattern_id).unwrap().clone();
+        let match_rule = &*rc.borrow();
         match match_rule.get_rule_instance() {
             RuleEnum::BeginEndRule(rule) => {
                 if is_first {
