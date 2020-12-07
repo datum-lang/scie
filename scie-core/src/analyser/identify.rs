@@ -23,13 +23,8 @@ impl Identify {
                     .take((end - start) as usize)
                     .collect();
 
-                elements.push(TokenElement {
-                    line_num,
-                    start_index: start,
-                    end_index: end,
-                    value: text,
-                    scopes: vec![],
-                });
+                let element = TokenElement::new(line_num, start, end, text, token.scopes);
+                elements.push(element);
             }
 
             rule_stack = result.rule_stack;
