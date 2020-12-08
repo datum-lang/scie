@@ -39,6 +39,11 @@ impl Analyser {
             grammar_map.insert(".rs", rust_grammar);
         }
 
+        if detector.tags.contains_key("workspace.go") {
+            let c_grammar = Grammar::new(map.grammar_map[".go"].clone());
+            grammar_map.insert(".go", c_grammar);
+        }
+
         if detector.tags.contains_key("workspace.c") {
             let c_grammar = Grammar::new(map.grammar_map[".c"].clone());
             grammar_map.insert(".c", c_grammar);

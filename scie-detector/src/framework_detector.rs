@@ -83,6 +83,11 @@ impl<'a> FrameworkDetector<'a> {
         self.tags
             .insert("workspace.c", name_set.contains("CMakeLists.txt"));
 
+        self.tags.insert(
+            "workspace.go",
+            name_set.contains("go.mod") || name_set.contains("main.got"),
+        );
+
         self.tags
             .insert("workspace.rust.cargo", name_set.contains("Cargo.toml"));
 
