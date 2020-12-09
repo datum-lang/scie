@@ -97,7 +97,7 @@ impl AbstractRule for BeginEndRule {
         RuleEnum::BeginEndRule(self)
     }
 
-    fn get_instance(&self) -> &dyn Any {
+    fn get_instance(&mut self) -> &mut dyn Any {
         self
     }
 

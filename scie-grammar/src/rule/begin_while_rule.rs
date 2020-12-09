@@ -100,7 +100,7 @@ impl AbstractRule for BeginWhileRule {
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::BeginWhileRule(self)
     }
-    fn get_instance(&self) -> &dyn Any {
+    fn get_instance(&mut self) -> &mut dyn Any {
         self
     }
     fn has_missing_pattern(&self) -> bool {

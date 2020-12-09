@@ -28,7 +28,7 @@ pub trait AbstractRule: DynClone + erased_serde::Serialize {
     }
     fn get_rule(&self) -> &Rule;
     fn get_rule_instance(&self) -> RuleEnum;
-    fn get_instance(&self) -> &dyn Any;
+    fn get_instance(&mut self) -> &mut dyn Any;
     fn get_name(
         &self,
         line_text: Option<String>,

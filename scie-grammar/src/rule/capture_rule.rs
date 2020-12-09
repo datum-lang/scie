@@ -56,7 +56,7 @@ impl AbstractRule for CaptureRule {
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::CaptureRule(self)
     }
-    fn get_instance(&self) -> &dyn Any {
+    fn get_instance(&mut self) -> &mut dyn Any {
         self
     }
     // fn collect_patterns_recursive(

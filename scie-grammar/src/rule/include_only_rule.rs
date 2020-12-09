@@ -52,7 +52,7 @@ impl AbstractRule for IncludeOnlyRule {
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::IncludeOnlyRule(self)
     }
-    fn get_instance(&self) -> &dyn Any {
+    fn get_instance(&mut self) -> &mut dyn Any {
         self
     }
     fn has_missing_pattern(&self) -> bool {
