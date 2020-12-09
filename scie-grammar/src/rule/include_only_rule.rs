@@ -1,11 +1,9 @@
 use std::any::Any;
 
-use crate::grammar::rule_container::RuleContainer;
 use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
-use crate::rule::{AbstractRule, CompiledRule, RegExpSourceList, Rule};
-use std::collections::HashMap;
+use crate::rule::{AbstractRule, RegExpSourceList, Rule};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct IncludeOnlyRule {
@@ -60,45 +58,5 @@ impl AbstractRule for IncludeOnlyRule {
     }
     fn patterns_length(&self) -> i32 {
         self.patterns.len() as i32
-    }
-    //
-    // fn collect_patterns_recursive(
-    //     &mut self,
-    //     container: &mut HashMap<i32, Box<dyn AbstractRule>>,
-    //     out: &mut RegExpSourceList,
-    //     _is_first: bool,
-    // ) {
-    //     for x in self.patterns.iter() {
-    //         let mut rule = container.get_rule(*x).clone();
-    //         rule.collect_patterns_recursive(container, out, false);
-    //         container.register_rule(rule);
-    //     }
-    // }
-
-    fn compile(
-        &mut self,
-        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
-        _end_regex_source: &Option<String>,
-        allow_a: bool,
-        allow_g: bool,
-    ) -> CompiledRule {
-        if self._cached_compiled_patterns.is_none() {
-            let mut cached_compiled_patterns = RegExpSourceList::new();
-            RuleContainer::collect_patterns_recursive(
-                self.id(),
-                container,
-                &mut cached_compiled_patterns,
-                true,
-            );
-
-            // self.collect_patterns_recursive(container, &mut cached_compiled_patterns, true);
-            self._cached_compiled_patterns = Some(cached_compiled_patterns);
-        }
-
-        return *self
-            ._cached_compiled_patterns
-            .as_mut()
-            .unwrap()
-            .compile(allow_a, allow_g);
     }
 }

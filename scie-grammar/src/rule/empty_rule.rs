@@ -1,7 +1,7 @@
-use crate::rule::abstract_rule::RuleEnum;
-use crate::rule::{AbstractRule, CompiledRule, Rule};
 use std::any::Any;
-use std::collections::HashMap;
+
+use crate::rule::abstract_rule::RuleEnum;
+use crate::rule::{AbstractRule, Rule};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct EmptyRule {}
@@ -37,23 +37,5 @@ impl AbstractRule for EmptyRule {
     }
     fn get_instance(&mut self) -> &mut dyn Any {
         self
-    }
-    // fn collect_patterns_recursive(
-    //     &mut self,
-    //     _container: &mut HashMap<i32, Box<dyn AbstractRule>>,
-    //     _out: &mut RegExpSourceList,
-    //     _is_first: bool,
-    // ) {
-    //     unimplemented!()
-    // }
-    //
-    fn compile(
-        &mut self,
-        _container: &mut HashMap<i32, Box<dyn AbstractRule>>,
-        _end_regex_source: &Option<String>,
-        _allow_a: bool,
-        _allow_g: bool,
-    ) -> CompiledRule {
-        unimplemented!()
     }
 }

@@ -2,13 +2,11 @@ use std::any::Any;
 
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
-use crate::grammar::rule_container::RuleContainer;
 use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
-use crate::rule::{AbstractRule, CompiledRule, Rule};
+use crate::rule::{AbstractRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
-use std::collections::HashMap;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
@@ -107,71 +105,5 @@ impl AbstractRule for BeginEndRule {
 
     fn patterns_length(&self) -> i32 {
         self.patterns.len() as i32
-    }
-    //
-    // fn collect_patterns_recursive(
-    //     &mut self,
-    //     container: &mut HashMap<i32, Box<dyn AbstractRule>>,
-    //     mut out: &mut RegExpSourceList,
-    //     is_first: bool,
-    // ) {
-    //     if is_first {
-    //         for pattern_id in self.patterns.iter() {
-    //             let mut rule = container.get_rule(*pattern_id).clone();
-    //             rule.collect_patterns_recursive(container, &mut out, false);
-    //             container.register_rule(rule);
-    //         }
-    //     } else {
-    //         &mut out.push(self._begin.clone());
-    //     }
-    // }
-
-    fn compile(
-        &mut self,
-        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
-        end_regex_source: &Option<String>,
-        allow_a: bool,
-        allow_g: bool,
-    ) -> CompiledRule {
-        if self._cached_compiled_patterns.is_none() {
-            let mut cached_compiled_patterns = RegExpSourceList::new();
-
-            RuleContainer::collect_patterns_recursive(
-                self.id(),
-                container,
-                &mut cached_compiled_patterns,
-                true,
-            );
-
-            if self.apply_end_pattern_last {
-                cached_compiled_patterns.push(self._end.clone());
-            } else {
-                cached_compiled_patterns.unshift(self._end.clone());
-            }
-
-            self._cached_compiled_patterns = Some(cached_compiled_patterns);
-        }
-
-        if self._end.has_back_references {
-            if self.apply_end_pattern_last {
-                let length = self._cached_compiled_patterns.as_ref().unwrap().length();
-
-                self._cached_compiled_patterns
-                    .as_mut()
-                    .unwrap()
-                    .set_source(length - 1, end_regex_source.as_ref().unwrap())
-            } else {
-                self._cached_compiled_patterns
-                    .as_mut()
-                    .unwrap()
-                    .set_source(0, end_regex_source.as_ref().unwrap())
-            }
-        }
-
-        return *self
-            ._cached_compiled_patterns
-            .as_mut()
-            .unwrap()
-            .compile(allow_a, allow_g);
     }
 }
