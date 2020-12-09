@@ -13,7 +13,7 @@ pub struct MatchRule {
     pub rule: Rule,
     pub _match: RegExpSource,
     #[serde(skip_serializing)]
-    pub captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
+    pub captures: Vec<Rc<dyn AbstractRule>>,
     pub _cached_compiled_patterns: Option<RegExpSourceList>,
 }
 
@@ -23,7 +23,7 @@ impl MatchRule {
         id: i32,
         name: Option<String>,
         _match: String,
-        captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
+        captures: Vec<Rc<dyn AbstractRule>>,
     ) -> Self {
         MatchRule {
             rule: Rule {

@@ -14,10 +14,10 @@ pub struct BeginWhileRule {
     pub rule: Rule,
     pub _begin: RegExpSource,
     #[serde(skip_serializing)]
-    pub begin_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
+    pub begin_captures: Vec<Rc<dyn AbstractRule>>,
     pub _while: RegExpSource,
     #[serde(skip_serializing)]
-    pub while_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
+    pub while_captures: Vec<Rc<dyn AbstractRule>>,
     pub apply_end_pattern_last: bool,
     pub patterns: Vec<i32>,
     pub has_missing_patterns: bool,
@@ -32,9 +32,9 @@ impl BeginWhileRule {
         name: Option<String>,
         content_name: Option<String>,
         _begin: Option<String>,
-        begin_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
+        begin_captures: Vec<Rc<dyn AbstractRule>>,
         _while: String,
-        while_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
+        while_captures: Vec<Rc<dyn AbstractRule>>,
         patterns: ICompilePatternsResult,
     ) -> BeginWhileRule {
         BeginWhileRule {

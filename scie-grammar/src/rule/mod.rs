@@ -31,8 +31,8 @@ use std::rc::Rc;
 // https://users.rust-lang.org/t/impl-trait-with-generic-function-for-generic-struct/27083/2
 pub trait IRuleRegistry {
     fn register_id(&mut self) -> i32;
-    fn get_rule(&mut self, pattern_id: i32) -> Rc<RefCell<dyn AbstractRule>>;
-    fn register_rule(&mut self, result: Rc<RefCell<dyn AbstractRule>>) -> i32;
+    fn get_rule(&mut self, pattern_id: i32) -> Rc<dyn AbstractRule>;
+    fn register_rule(&mut self, result: Rc<dyn AbstractRule>) -> i32;
 }
 
 pub trait IGrammarRegistry {

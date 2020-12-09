@@ -18,9 +18,9 @@ thread_local! {
 #[derive(Debug, Clone, Serialize)]
 pub struct RuleContainer {
     #[serde(skip_serializing)]
-    pub _empty_rule: HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
+    pub _empty_rule: HashMap<i32, Rc<dyn AbstractRule>>,
     #[serde(skip_serializing)]
-    pub rules: HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
+    pub rules: HashMap<i32, Rc<dyn AbstractRule>>,
     #[serde(skip_serializing)]
     pub refs: &'static LocalKey<RefCell<HashMap<i32, Rc<dyn AbstractRule>>>>,
 }
@@ -35,26 +35,30 @@ impl Default for RuleContainer {
             refs: &RULES,
         };
 
-        container
-            ._empty_rule
-            .insert(-2, Rc::new(RefCell::new(EmptyRule {})));
+        container._empty_rule.insert(-2, Rc::new(EmptyRule {}));
         container
     }
 }
 
 impl RuleContainer {
-    pub fn get_rule(&mut self, pattern_id: i32) -> Rc<RefCell<dyn AbstractRule>> {
-        let option = self
-            .rules
-            .get(&pattern_id)
-            .unwrap_or(self._empty_rule.get_mut(&-2).unwrap());
-
-        return option.clone();
+    pub fn get_rule_ref(pattern_id: i32) -> HashMap<i32, Rc<dyn AbstractRule>> {
+        RULES.with(|w| w.borrow_mut().clone())
     }
 
-    pub fn register_rule(&mut self, result: Rc<RefCell<dyn AbstractRule>>) -> i32 {
-        let id = result.borrow().id();
-        self.rules.insert(id, result);
+    pub fn register_rule_ref(rule: Rc<dyn AbstractRule>) {
+        RULES.with(|w| {
+            w.borrow_mut().insert(rule.id(), rule);
+        });
+    }
+
+    pub fn get_rule<'a>(&mut self, pattern_id: i32) -> Rc<dyn AbstractRule> {
+        let map = RuleContainer::get_rule_ref(pattern_id);
+        map.get(&pattern_id).unwrap().clone()
+    }
+
+    pub fn register_rule(&mut self, result: Rc<dyn AbstractRule>) -> i32 {
+        let id = result.id();
+        RuleContainer::register_rule_ref(result);
         id
     }
 
@@ -77,14 +81,14 @@ impl RuleContainer {
 
     pub fn compile<'rule>(
         rule_id: i32,
-        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
+        container: &mut HashMap<i32, Rc<dyn AbstractRule>>,
         end: &Option<String>,
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
         // todo: temp for clone
-        let rc = container.get(&rule_id).unwrap().clone();
-        let mut rule = &mut *rc.borrow_mut();
+        let map = RuleContainer::get_rule_ref(rule_id);
+        let mut rule = map.get(&rule_id).unwrap();
 
         let compiled;
         match rule.get_rule_instance() {
@@ -127,7 +131,7 @@ impl RuleContainer {
 
     fn compile_include_only(
         rule: &mut IncludeOnlyRule,
-        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
+        container: &mut HashMap<i32, Rc<dyn AbstractRule>>,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -154,7 +158,7 @@ impl RuleContainer {
 
     fn compile_match_rule(
         rule: &mut MatchRule,
-        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
+        container: &mut HashMap<i32, Rc<dyn AbstractRule>>,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -180,7 +184,7 @@ impl RuleContainer {
 
     fn compile_begin_while_rule(
         rule: &mut BeginWhileRule,
-        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
+        container: &mut HashMap<i32, Rc<dyn AbstractRule>>,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -206,7 +210,7 @@ impl RuleContainer {
 
     pub fn compile_begin_end_rule(
         rule: &mut BeginEndRule,
-        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
+        container: &mut HashMap<i32, Rc<dyn AbstractRule>>,
         end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -255,13 +259,12 @@ impl RuleContainer {
 
     pub fn collect_patterns_recursive(
         pattern_id: i32,
-        rules: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
+        rules: &mut HashMap<i32, Rc<dyn AbstractRule>>,
         mut out: &mut RegExpSourceList,
         is_first: bool,
     ) {
         println!("{:?}", pattern_id);
-        let rc = rules.get(&pattern_id).unwrap().clone();
-        let match_rule = &*rc.borrow();
+        let match_rule = rules.get(&pattern_id).unwrap().clone();
         match match_rule.get_rule_instance() {
             RuleEnum::BeginEndRule(rule) => {
                 if is_first {

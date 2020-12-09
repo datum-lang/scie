@@ -16,12 +16,12 @@ pub struct BeginEndRule {
     pub rule: Rule,
     pub _begin: RegExpSource,
     #[serde(skip_serializing)]
-    pub begin_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
+    pub begin_captures: Vec<Rc<dyn AbstractRule>>,
     pub _end: RegExpSource,
     pub end_has_back_references: bool,
 
     #[serde(skip_serializing)]
-    pub end_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
+    pub end_captures: Vec<Rc<dyn AbstractRule>>,
     pub apply_end_pattern_last: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub _cached_compiled_patterns: Option<RegExpSourceList>,
@@ -36,9 +36,9 @@ impl BeginEndRule {
         name: Option<String>,
         content_name: Option<String>,
         begin: String,
-        begin_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
+        begin_captures: Vec<Rc<dyn AbstractRule>>,
         _end: String,
-        end_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
+        end_captures: Vec<Rc<dyn AbstractRule>>,
         apply_end_pattern_last: Option<bool>,
         patterns: ICompilePatternsResult,
     ) -> BeginEndRule {
