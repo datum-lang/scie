@@ -8,6 +8,7 @@ use crate::rule::{
     AbstractRule, BeginEndRule, BeginWhileRule, CompiledRule, EmptyRule, IncludeOnlyRule,
     MatchRule, RegExpSourceList,
 };
+use std::thread::LocalKey;
 
 // todo: https://stackoverflow.com/questions/61070398/how-to-create-a-thread-local-variable-inside-of-a-rust-struct
 thread_local! {
@@ -20,6 +21,8 @@ pub struct RuleContainer {
     pub _empty_rule: HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
     #[serde(skip_serializing)]
     pub rules: HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
+    #[serde(skip_serializing)]
+    pub refs: &'static LocalKey<RefCell<HashMap<i32, Rc<dyn AbstractRule>>>>,
 }
 
 impl Default for RuleContainer {
@@ -29,6 +32,7 @@ impl Default for RuleContainer {
         let mut container = RuleContainer {
             _empty_rule,
             rules: Default::default(),
+            refs: &RULES,
         };
 
         container
@@ -67,20 +71,6 @@ impl RuleContainer {
             allow_a,
             allow_g,
         );
-        // let rule_id = stack.rule_id;
-        // println!("{:?}", rule_id);
-        //
-        // let rule_scanner;
-        // {
-        //     let rc = self
-        //         .rules
-        //         .get_mut(&rule_id)
-        //         .unwrap_or(self._empty_rule.get_mut(&-2).unwrap())
-        //         .clone();
-        //
-        //     let mut rule = rc.borrow_mut();
-        //     rule_scanner = rule.compile(&mut self.rules, &stack.end_rule, allow_a, allow_g);
-        // }
 
         return rule_scanner;
     }
