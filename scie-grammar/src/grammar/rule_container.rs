@@ -18,7 +18,7 @@ thread_local! {
 #[derive(Debug, Clone, Serialize)]
 pub struct RuleContainer {
     #[serde(skip_serializing)]
-    pub _empty_rule: HashMap<i32, Rc<dyn AbstractRule>>,
+    pub _empty_rule: Rc<dyn AbstractRule>,
     #[serde(skip_serializing)]
     pub rules: HashMap<i32, Rc<dyn AbstractRule>>,
     #[serde(skip_serializing)]
@@ -27,15 +27,13 @@ pub struct RuleContainer {
 
 impl Default for RuleContainer {
     fn default() -> Self {
-        let mut _empty_rule = HashMap::new();
-
+        let mut _empty_rule = Rc::new(EmptyRule {});
         let mut container = RuleContainer {
             _empty_rule,
             rules: Default::default(),
             refs: &RULES,
         };
 
-        container._empty_rule.insert(-2, Rc::new(EmptyRule {}));
         container
     }
 }
@@ -53,7 +51,7 @@ impl RuleContainer {
 
     pub fn get_rule<'a>(&mut self, pattern_id: i32) -> Rc<dyn AbstractRule> {
         let map = RuleContainer::get_rule_ref(pattern_id);
-        map.get(&pattern_id).unwrap().clone()
+        map.get(&pattern_id).unwrap_or(&self._empty_rule).clone()
     }
 
     pub fn register_rule(&mut self, result: Rc<dyn AbstractRule>) -> i32 {
@@ -87,8 +85,9 @@ impl RuleContainer {
         allow_g: bool,
     ) -> CompiledRule {
         // todo: temp for clone
-        let map = RuleContainer::get_rule_ref(rule_id);
-        let mut rule = map.get(&rule_id).unwrap();
+        let mut map = RuleContainer::get_rule_ref(rule_id);
+        let this = map.get_mut(&rule_id).unwrap();
+        let mut rule: &mut dyn AbstractRule = Rc::get_mut(this).unwrap();
 
         let compiled;
         match rule.get_rule_instance() {
