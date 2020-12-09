@@ -86,12 +86,15 @@ impl RuleContainer {
     ) -> CompiledRule {
         // todo: temp for clone
         let mut map = RuleContainer::get_rule_ref();
-        println!("{:?}", rule_id);
-        println!("{:?}", map.get_mut(&rule_id));
         let this = map.get_mut(&rule_id).unwrap();
-        // println!("{:?}", Rc::get_mut(this));
-        let mut rule: &mut dyn AbstractRule = Rc::get_mut(this).unwrap();
-        // println!("{:?}", rule);
+
+        let mut rule: &mut dyn AbstractRule;
+        match Rc::get_mut(this) {
+            None => {
+                return CompiledRule::default();
+            }
+            Some(z) => rule = z,
+        }
 
         let compiled;
         match rule.get_rule_instance() {
