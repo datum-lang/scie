@@ -1,6 +1,4 @@
 use std::any::Any;
-use std::cell::RefCell;
-use std::rc::Rc;
 
 use scie_scanner::scanner::scie_scanner::IOnigCaptureIndex;
 
@@ -9,6 +7,7 @@ use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
+use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {

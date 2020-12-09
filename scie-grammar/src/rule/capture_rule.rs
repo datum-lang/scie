@@ -2,8 +2,7 @@ use std::any::Any;
 
 use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
-use crate::rule::{AbstractRule, CompiledRule, Rule};
-use std::collections::HashMap;
+use crate::rule::{AbstractRule, Rule};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct CaptureRule {

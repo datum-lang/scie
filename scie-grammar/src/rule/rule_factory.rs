@@ -4,7 +4,6 @@ use crate::rule::{
     AbstractRule, BeginEndRule, BeginWhileRule, CaptureRule, IRuleRegistry, IncludeOnlyRule,
     MatchRule,
 };
-use std::cell::RefCell;
 use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]

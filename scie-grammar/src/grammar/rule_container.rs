@@ -1,5 +1,5 @@
 use std::cell::RefCell;
-use std::collections::{HashMap as Map, HashMap};
+use std::collections::HashMap;
 use std::rc::Rc;
 
 use crate::grammar::StackElement;
@@ -86,6 +86,7 @@ impl RuleContainer {
     ) -> CompiledRule {
         // todo: temp for clone
         let mut map = RuleContainer::get_rule_ref(rule_id);
+        println!("{:?}", rule_id);
         let this = map.get_mut(&rule_id).unwrap();
         let mut rule: &mut dyn AbstractRule = Rc::get_mut(this).unwrap();
 

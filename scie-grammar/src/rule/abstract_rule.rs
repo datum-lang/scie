@@ -1,7 +1,5 @@
 use core::fmt;
 use std::any::Any;
-use std::collections::HashMap;
-use std::rc::Rc;
 
 use dyn_clone::{clone_trait_object, DynClone};
 

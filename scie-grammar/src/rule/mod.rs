@@ -24,7 +24,6 @@ pub use self::reg_exp_source::RegExpSourceList;
 pub use self::rule::Rule;
 
 use crate::inter::{IRawGrammar, IRawRepository};
-use std::cell::RefCell;
 use std::rc::Rc;
 
 // todo: trait with types

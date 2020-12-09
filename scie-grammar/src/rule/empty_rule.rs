@@ -2,9 +2,6 @@ use std::any::Any;
 
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, Rule};
-use std::cell::RefCell;
-use std::collections::HashMap;
-use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct EmptyRule {}

@@ -3,10 +3,7 @@ use std::any::Any;
 use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
-use crate::rule::{AbstractRule, CompiledRule, RegExpSourceList, Rule};
-use std::cell::RefCell;
-use std::collections::HashMap;
-use std::rc::Rc;
+use crate::rule::{AbstractRule, RegExpSourceList, Rule};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct IncludeOnlyRule {

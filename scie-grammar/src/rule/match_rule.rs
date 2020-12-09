@@ -4,8 +4,6 @@ use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
-use std::cell::RefCell;
-use std::collections::HashMap;
 use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]

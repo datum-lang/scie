@@ -16,7 +16,6 @@ use crate::rule::rule_factory::RuleFactory;
 use crate::rule::{
     AbstractRule, BeginEndRule, BeginWhileRule, EmptyRule, IGrammarRegistry, IRuleRegistry,
 };
-use std::cell::RefCell;
 use std::rc::Rc;
 
 pub trait Matcher {}
@@ -701,7 +700,6 @@ impl IRuleRegistry for Grammar {
 mod tests {
     use crate::grammar::line_tokens::IToken;
     use crate::grammar::{Grammar, StackElement};
-    use crate::rule::abstract_rule::RuleEnum;
 
     #[test]
     fn should_build_grammar_json() {
@@ -878,6 +876,7 @@ hellomake: $(OBJ)
             "fixtures/test-cases/first-mate/fixtures/makefile.json",
             code.clone(),
         );
+
         assert_eq!(2, tokens.len());
         let x: Vec<String> = tokens.iter().map(|token| token.len().to_string()).collect();
         assert_eq!(String::from("6,14"), x.join(","));
