@@ -710,9 +710,9 @@ printf(\"Hello, World!\");
 return 0;
 }
 ";
-        let grammar = Grammar::from_code("extensions/cpp/syntaxes/c.tmLanguage.json", code);
-        let first_rule = grammar.rule_container.rules.get(&1).unwrap();
-        // assert_eq!(38, first_rule.clone().patterns_length());
+        let mut grammar = Grammar::from_code("extensions/cpp/syntaxes/c.tmLanguage.json", code);
+        let first_rule = grammar.rule_container.get_rule(1);
+        assert_eq!(38, first_rule.clone().patterns_length());
         debug_output(&grammar, String::from("program.json"));
     }
 

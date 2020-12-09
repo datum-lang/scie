@@ -39,7 +39,7 @@ impl Default for RuleContainer {
 }
 
 impl RuleContainer {
-    pub fn get_rule_ref(pattern_id: i32) -> HashMap<i32, Rc<dyn AbstractRule>> {
+    pub fn get_rule_ref() -> HashMap<i32, Rc<dyn AbstractRule>> {
         RULES.with(|w| w.borrow_mut().clone())
     }
 
@@ -50,7 +50,7 @@ impl RuleContainer {
     }
 
     pub fn get_rule<'a>(&mut self, pattern_id: i32) -> Rc<dyn AbstractRule> {
-        let map = RuleContainer::get_rule_ref(pattern_id);
+        let map = RuleContainer::get_rule_ref();
         map.get(&pattern_id).unwrap_or(&self._empty_rule).clone()
     }
 
@@ -85,10 +85,13 @@ impl RuleContainer {
         allow_g: bool,
     ) -> CompiledRule {
         // todo: temp for clone
-        let mut map = RuleContainer::get_rule_ref(rule_id);
+        let mut map = RuleContainer::get_rule_ref();
         println!("{:?}", rule_id);
+        println!("{:?}", map.get_mut(&rule_id));
         let this = map.get_mut(&rule_id).unwrap();
+        // println!("{:?}", Rc::get_mut(this));
         let mut rule: &mut dyn AbstractRule = Rc::get_mut(this).unwrap();
+        // println!("{:?}", rule);
 
         let compiled;
         match rule.get_rule_instance() {
