@@ -4,12 +4,16 @@ use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
+use std::cell::RefCell;
+use std::collections::HashMap;
+use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct MatchRule {
     pub rule: Rule,
     pub _match: RegExpSource,
-    pub captures: Vec<Box<dyn AbstractRule>>,
+    #[serde(skip_serializing)]
+    pub captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
     pub _cached_compiled_patterns: Option<RegExpSourceList>,
 }
 
@@ -19,7 +23,7 @@ impl MatchRule {
         id: i32,
         name: Option<String>,
         _match: String,
-        captures: Vec<Box<dyn AbstractRule>>,
+        captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
     ) -> Self {
         MatchRule {
             rule: Rule {
@@ -49,7 +53,10 @@ impl AbstractRule for MatchRule {
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::MatchRule(self)
     }
-    fn get_instance(&mut self) -> &mut dyn Any {
+    fn get_mut_instance(&mut self) -> &mut dyn Any {
+        self
+    }
+    fn get_instance(&self) -> &dyn Any {
         self
     }
 }

@@ -7,17 +7,22 @@ use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::rule_factory::ICompilePatternsResult;
 use crate::rule::{AbstractRule, Rule};
 use crate::rule::{RegExpSource, RegExpSourceList};
+use std::cell::RefCell;
+use std::collections::HashMap;
+use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct BeginEndRule {
     #[serde(flatten)]
     pub rule: Rule,
     pub _begin: RegExpSource,
-    // todo: refactor to RuleEnum
-    pub begin_captures: Vec<Box<dyn AbstractRule>>,
+    #[serde(skip_serializing)]
+    pub begin_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
     pub _end: RegExpSource,
     pub end_has_back_references: bool,
-    pub end_captures: Vec<Box<dyn AbstractRule>>,
+
+    #[serde(skip_serializing)]
+    pub end_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
     pub apply_end_pattern_last: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub _cached_compiled_patterns: Option<RegExpSourceList>,
@@ -32,9 +37,9 @@ impl BeginEndRule {
         name: Option<String>,
         content_name: Option<String>,
         begin: String,
-        begin_captures: Vec<Box<dyn AbstractRule>>,
+        begin_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
         _end: String,
-        end_captures: Vec<Box<dyn AbstractRule>>,
+        end_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
         apply_end_pattern_last: Option<bool>,
         patterns: ICompilePatternsResult,
     ) -> BeginEndRule {
@@ -95,7 +100,11 @@ impl AbstractRule for BeginEndRule {
         RuleEnum::BeginEndRule(self)
     }
 
-    fn get_instance(&mut self) -> &mut dyn Any {
+    fn get_mut_instance(&mut self) -> &mut dyn Any {
+        self
+    }
+
+    fn get_instance(&self) -> &dyn Any {
         self
     }
 

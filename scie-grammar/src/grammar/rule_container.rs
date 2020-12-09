@@ -1,46 +1,51 @@
+use std::cell::RefCell;
+use std::collections::{HashMap as Map, HashMap};
+use std::rc::Rc;
+
 use crate::grammar::StackElement;
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{
     AbstractRule, BeginEndRule, BeginWhileRule, CompiledRule, EmptyRule, IncludeOnlyRule,
     MatchRule, RegExpSourceList,
 };
-use std::cell::RefCell;
-use std::collections::{HashMap as Map, HashMap};
-use std::rc::Rc;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct RuleContainer {
-    pub _empty_rule: Map<i32, Box<dyn AbstractRule>>,
-    pub rule_id2desc: Map<i32, Box<dyn AbstractRule>>,
+    #[serde(skip_serializing)]
+    pub _empty_rule: HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
+    #[serde(skip_serializing)]
     pub rules: HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
 }
 
 impl Default for RuleContainer {
     fn default() -> Self {
-        let mut _empty_rule = Map::new();
+        let mut _empty_rule = HashMap::new();
 
         let mut container = RuleContainer {
             _empty_rule,
-            rule_id2desc: Default::default(),
             rules: Default::default(),
         };
 
-        container._empty_rule.insert(-2, Box::new(EmptyRule {}));
+        container
+            ._empty_rule
+            .insert(-2, Rc::new(RefCell::new(EmptyRule {})));
         container
     }
 }
 
 impl RuleContainer {
-    pub fn get_rule(&mut self, pattern_id: i32) -> &mut Box<dyn AbstractRule> {
-        return self
-            .rule_id2desc
-            .get_mut(&pattern_id)
+    pub fn get_rule(&mut self, pattern_id: i32) -> Rc<RefCell<dyn AbstractRule>> {
+        let option = self
+            .rules
+            .get(&pattern_id)
             .unwrap_or(self._empty_rule.get_mut(&-2).unwrap());
+
+        return option.clone();
     }
 
-    pub fn register_rule(&mut self, result: Box<dyn AbstractRule>) -> i32 {
-        let id = result.id();
-        self.rule_id2desc.insert(id, result);
+    pub fn register_rule(&mut self, result: Rc<RefCell<dyn AbstractRule>>) -> i32 {
+        let id = result.borrow().id();
+        self.rules.insert(id, result);
         id
     }
 
@@ -50,39 +55,55 @@ impl RuleContainer {
         allow_a: bool,
         allow_g: bool,
     ) -> CompiledRule {
-        let (rule, rule_scanner) = RuleContainer::compile(
+        let rule_scanner = RuleContainer::compile(
             stack.rule_id,
-            &mut self.rule_id2desc,
+            &mut self.rules,
             &stack.end_rule,
             allow_a,
             allow_g,
         );
+        // let rule_id = stack.rule_id;
+        // println!("{:?}", rule_id);
+        //
+        // let rule_scanner;
+        // {
+        //     let rc = self
+        //         .rules
+        //         .get_mut(&rule_id)
+        //         .unwrap_or(self._empty_rule.get_mut(&-2).unwrap())
+        //         .clone();
+        //
+        //     let mut rule = rc.borrow_mut();
+        //     rule_scanner = rule.compile(&mut self.rules, &stack.end_rule, allow_a, allow_g);
+        // }
 
-        self.register_rule(rule);
-
-        rule_scanner
+        return rule_scanner;
     }
 
-    pub fn compile(
+    pub fn compile<'rule>(
         rule_id: i32,
-        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
         end: &Option<String>,
         allow_a: bool,
         allow_g: bool,
-    ) -> (Box<dyn AbstractRule>, CompiledRule) {
+    ) -> CompiledRule {
         // todo: temp for clone
-        let mut rule = container.get_mut(&rule_id).unwrap().clone();
+        let rc = container.get(&rule_id).unwrap().clone();
+        let mut rule = &mut *rc.borrow_mut();
 
         let compiled;
         match rule.get_rule_instance() {
             RuleEnum::BeginEndRule(_) => {
-                let begin = rule.get_instance().downcast_mut::<BeginEndRule>().unwrap();
+                let begin = rule
+                    .get_mut_instance()
+                    .downcast_mut::<BeginEndRule>()
+                    .unwrap();
                 compiled =
                     RuleContainer::compile_begin_end_rule(begin, container, end, allow_a, allow_g);
             }
             RuleEnum::BeginWhileRule(_) => {
                 let while_rule = rule
-                    .get_instance()
+                    .get_mut_instance()
                     .downcast_mut::<BeginWhileRule>()
                     .unwrap();
                 compiled = RuleContainer::compile_begin_while_rule(
@@ -90,7 +111,7 @@ impl RuleContainer {
                 );
             }
             RuleEnum::MatchRule(_) => {
-                let match_rule = rule.get_instance().downcast_mut::<MatchRule>().unwrap();
+                let match_rule = rule.get_mut_instance().downcast_mut::<MatchRule>().unwrap();
                 compiled =
                     RuleContainer::compile_match_rule(match_rule, container, end, allow_a, allow_g);
             }
@@ -98,7 +119,7 @@ impl RuleContainer {
             RuleEnum::EmptyRule(_) => unimplemented!(),
             RuleEnum::IncludeOnlyRule(_) => {
                 let include = rule
-                    .get_instance()
+                    .get_mut_instance()
                     .downcast_mut::<IncludeOnlyRule>()
                     .unwrap();
                 compiled =
@@ -106,12 +127,12 @@ impl RuleContainer {
             }
         };
 
-        return (rule, compiled);
+        return compiled;
     }
 
     fn compile_include_only(
         rule: &mut IncludeOnlyRule,
-        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -138,7 +159,7 @@ impl RuleContainer {
 
     fn compile_match_rule(
         rule: &mut MatchRule,
-        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -164,7 +185,7 @@ impl RuleContainer {
 
     fn compile_begin_while_rule(
         rule: &mut BeginWhileRule,
-        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
         _end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -190,7 +211,7 @@ impl RuleContainer {
 
     pub fn compile_begin_end_rule(
         rule: &mut BeginEndRule,
-        container: &mut HashMap<i32, Box<dyn AbstractRule>>,
+        container: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
         end_regex_source: &Option<String>,
         allow_a: bool,
         allow_g: bool,
@@ -239,11 +260,13 @@ impl RuleContainer {
 
     pub fn collect_patterns_recursive(
         pattern_id: i32,
-        rules: &mut HashMap<i32, Box<dyn AbstractRule>>,
+        rules: &mut HashMap<i32, Rc<RefCell<dyn AbstractRule>>>,
         mut out: &mut RegExpSourceList,
         is_first: bool,
     ) {
-        let match_rule = rules.get_mut(&pattern_id).unwrap();
+        println!("{:?}", pattern_id);
+        let rc = rules.get(&pattern_id).unwrap().clone();
+        let match_rule = &*rc.borrow();
         match match_rule.get_rule_instance() {
             RuleEnum::BeginEndRule(rule) => {
                 if is_first {

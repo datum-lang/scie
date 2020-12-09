@@ -1,4 +1,7 @@
 use std::any::Any;
+use std::cell::RefCell;
+use std::collections::HashMap;
+use std::rc::Rc;
 
 use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
@@ -10,9 +13,11 @@ use crate::rule::{RegExpSource, RegExpSourceList};
 pub struct BeginWhileRule {
     pub rule: Rule,
     pub _begin: RegExpSource,
-    pub begin_captures: Vec<Box<dyn AbstractRule>>,
+    #[serde(skip_serializing)]
+    pub begin_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
     pub _while: RegExpSource,
-    pub while_captures: Vec<Box<dyn AbstractRule>>,
+    #[serde(skip_serializing)]
+    pub while_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
     pub apply_end_pattern_last: bool,
     pub patterns: Vec<i32>,
     pub has_missing_patterns: bool,
@@ -27,9 +32,9 @@ impl BeginWhileRule {
         name: Option<String>,
         content_name: Option<String>,
         _begin: Option<String>,
-        begin_captures: Vec<Box<dyn AbstractRule>>,
+        begin_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
         _while: String,
-        while_captures: Vec<Box<dyn AbstractRule>>,
+        while_captures: Vec<Rc<RefCell<dyn AbstractRule>>>,
         patterns: ICompilePatternsResult,
     ) -> BeginWhileRule {
         BeginWhileRule {
@@ -99,7 +104,10 @@ impl AbstractRule for BeginWhileRule {
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::BeginWhileRule(self)
     }
-    fn get_instance(&mut self) -> &mut dyn Any {
+    fn get_mut_instance(&mut self) -> &mut dyn Any {
+        self
+    }
+    fn get_instance(&self) -> &dyn Any {
         self
     }
     fn has_missing_pattern(&self) -> bool {

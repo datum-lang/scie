@@ -2,6 +2,9 @@ use std::any::Any;
 
 use crate::rule::abstract_rule::RuleEnum;
 use crate::rule::{AbstractRule, Rule};
+use std::cell::RefCell;
+use std::collections::HashMap;
+use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct EmptyRule {}
@@ -35,7 +38,10 @@ impl AbstractRule for EmptyRule {
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::EmptyRule(self)
     }
-    fn get_instance(&mut self) -> &mut dyn Any {
+    fn get_mut_instance(&mut self) -> &mut dyn Any {
+        self
+    }
+    fn get_instance(&self) -> &dyn Any {
         self
     }
 }

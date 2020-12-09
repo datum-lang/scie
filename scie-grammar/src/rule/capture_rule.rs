@@ -2,7 +2,10 @@ use std::any::Any;
 
 use crate::inter::ILocation;
 use crate::rule::abstract_rule::RuleEnum;
-use crate::rule::{AbstractRule, Rule};
+use crate::rule::{AbstractRule, CompiledRule, Rule};
+use std::cell::RefCell;
+use std::collections::HashMap;
+use std::rc::Rc;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct CaptureRule {
@@ -56,7 +59,10 @@ impl AbstractRule for CaptureRule {
     fn get_rule_instance(&self) -> RuleEnum {
         RuleEnum::CaptureRule(self)
     }
-    fn get_instance(&mut self) -> &mut dyn Any {
+    fn get_mut_instance(&mut self) -> &mut dyn Any {
+        self
+    }
+    fn get_instance(&self) -> &dyn Any {
         self
     }
 }
