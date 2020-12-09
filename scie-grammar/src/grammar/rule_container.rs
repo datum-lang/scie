@@ -9,6 +9,11 @@ use crate::rule::{
     MatchRule, RegExpSourceList,
 };
 
+// todo: https://stackoverflow.com/questions/61070398/how-to-create-a-thread-local-variable-inside-of-a-rust-struct
+thread_local! {
+    pub static RULES: RefCell<HashMap<i32, Rc<dyn AbstractRule>>> = RefCell::new(HashMap::new());
+}
+
 #[derive(Debug, Clone, Serialize)]
 pub struct RuleContainer {
     #[serde(skip_serializing)]
