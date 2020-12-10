@@ -62,7 +62,7 @@ mod tests {
             .join("e2e")
             .join("java")
             .join("HelloWorld.java");
-        let code = Finder::read_code(&code_dir);
+        let code = Finder::read_code(&code_dir).unwrap();
 
         let elements = Identify::identify_file(lang, code);
         assert_eq!(39, elements.len());

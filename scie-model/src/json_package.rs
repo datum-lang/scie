@@ -24,7 +24,7 @@ mod tests {
             .join("java")
             .join("package.json");
 
-        let code = Finder::read_code(&config);
+        let code = Finder::read_code(&config).unwrap();
         let pkg: JsonPackage = serde_json::from_str(&code).unwrap();
 
         assert_eq!("java", pkg.name);

@@ -52,7 +52,7 @@ mod tests {
             .join("java")
             .join("language-configuration.json");
 
-        let code = Finder::read_code(&config);
+        let code = Finder::read_code(&config).unwrap();
 
         let lang_config: LanguageConfig = serde_json::from_str(&code).unwrap();
 

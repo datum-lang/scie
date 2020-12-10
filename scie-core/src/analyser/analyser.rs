@@ -84,7 +84,15 @@ impl Analyser {
 
             let grammar = lang_grammar.unwrap();
             let mut code_file = CodeFile::new(path.clone());
-            let code = Finder::read_code(&path);
+            let code;
+            match Finder::read_code(&path) {
+                Ok(str) => {
+                    code = str;
+                }
+                Err(_) => {
+                    continue;
+                }
+            }
             let mut rule_stack = Some(StackElement::null());
 
             let mut line_num = 1;

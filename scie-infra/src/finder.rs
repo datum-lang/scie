@@ -41,19 +41,25 @@ lazy_static! {
 pub struct Finder {}
 
 impl Finder {
-    pub fn read_code(file_path: &PathBuf) -> String {
+    pub fn read_code(file_path: &PathBuf) -> Result<String, String> {
         let result = File::open(file_path);
-        match result {
+        return match result {
             Ok(mut file) => {
-                let mut code = String::new();
-                file.read_to_string(&mut code).unwrap();
-                code
+                let mut buffer: Vec<u8> = Vec::new();
+                let _ = file.read_to_end(&mut buffer);
+
+                match String::from_utf8(buffer) {
+                    Ok(str) => return Ok(str),
+                    Err(err) => {
+                        return Err(err.to_string());
+                    }
+                };
             }
             Err(err) => {
-                println!("{:?}", file_path);
-                panic!(err.to_string())
+                println!("error: {:?}", file_path);
+                return Err(err.to_string());
             }
-        }
+        };
     }
 
     pub fn walk_filter_files(dir: &PathBuf) -> Vec<PathBuf> {
@@ -85,7 +91,7 @@ impl Finder {
                 write!(tmpfile, "{}", content).unwrap();
             }
             Some(ignore) => {
-                let code = Finder::read_code(ignore);
+                let code = Finder::read_code(ignore).unwrap();
                 write!(tmpfile, "{}", code).unwrap();
                 write!(tmpfile, "{}", content).unwrap();
             }

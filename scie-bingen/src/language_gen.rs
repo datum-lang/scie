@@ -63,7 +63,7 @@ impl LangExtGen {
         let mut lang_ext_map = LangExtGen::new();
 
         for path in package_files {
-            let package = Finder::read_code(&path);
+            let package = Finder::read_code(&path).unwrap();
             let pkg: JsonPackage = match serde_json::from_str(&package) {
                 Ok(x) => x,
                 Err(err) => {
