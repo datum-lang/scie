@@ -66,7 +66,7 @@ just tests
 major issues:
 
  - [ ] performance
-    - [ ] rule in `Grammar`
+    - [ ] rule in `Grammar` seed in [rule_container.rs](scie-grammar/src/grammar/rule_container.rs)
     - [x] UTF 8 to UTF 16 in `UtfString`
     - [x] normal issue
  - [ ] unstable
