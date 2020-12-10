@@ -114,7 +114,7 @@ impl Grammar {
                 "",
             );
 
-            for (id, rule_ref) in self.rule_container.rules.iter() {
+            for (id, rule_ref) in RuleContainer::get_rule_ref().iter() {
                 let rule = &*rule_ref;
                 if rule.get_rule()._name.is_some() {
                     self.scope_name_map

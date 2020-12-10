@@ -113,7 +113,6 @@ mod tests {
     #[test]
     fn should_build_grammar_gen() {
         let map = GrammarGen::build_output();
-        // map.to_bin_file("grammar.bin");
         map.to_json_file("grammar.json");
     }
 
